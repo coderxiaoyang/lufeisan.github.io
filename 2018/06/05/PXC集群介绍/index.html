@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="MySQL," />
 
 
 
@@ -82,19 +82,24 @@
 
 
 <meta name="description" content="学习目标：  掌握PXC集群MySQL方案的原理 掌握PXC集群的强一致性 掌握PXC集群的高可用方案  首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码： 1234567mysqlslap -hlocalhost -uroot -pabc123456 -P3306 --concurrency=5000 --iterations=1 --auto-generat">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL搭建PXC集群">
-<meta property="og:url" content="http://yoursite.com/2018/06/05/MySQL搭建PXC集群/index.html">
+<meta property="og:title" content="PXC集群介绍">
+<meta property="og:url" content="http://yoursite.com/2018/06/05/PXC集群介绍/index.html">
 <meta property="og:site_name" content="hongshaorou">
 <meta property="og:description" content="学习目标：  掌握PXC集群MySQL方案的原理 掌握PXC集群的强一致性 掌握PXC集群的高可用方案  首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码： 1234567mysqlslap -hlocalhost -uroot -pabc123456 -P3306 --concurrency=5000 --iterations=1 --auto-generat">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs172714mkj30km09mmyq.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fs04kapdosj31hi0l0wie.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fs04qy69a8j30ti0fe77k.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fs0dcr0rx5j30pa0h2tbu.jpg">
-<meta property="og:updated_time" content="2018-06-05T08:12:08.344Z">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fs176e079dj30t80de411.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fs1791wp4tj30nw0c4wfm.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fs17e7zh28j30rk0cu0v2.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs17ixfyz7j30my08kwfj.jpg">
+<meta property="og:updated_time" content="2018-06-06T01:51:18.406Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL搭建PXC集群">
+<meta name="twitter:title" content="PXC集群介绍">
 <meta name="twitter:description" content="学习目标：  掌握PXC集群MySQL方案的原理 掌握PXC集群的强一致性 掌握PXC集群的高可用方案  首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码： 1234567mysqlslap -hlocalhost -uroot -pabc123456 -P3306 --concurrency=5000 --iterations=1 --auto-generat">
 <meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg">
 
@@ -126,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/05/MySQL搭建PXC集群/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/05/PXC集群介绍/"/>
 
 
 
 
 
-  <title>MySQL搭建PXC集群 | hongshaorou</title>
+  <title>PXC集群介绍 | hongshaorou</title>
   
 
 
@@ -269,7 +274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/MySQL搭建PXC集群/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/PXC集群介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -286,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL搭建PXC集群</h1>
+          <h1 class="post-title" itemprop="name headline">PXC集群介绍</h1>
         
 
         <div class="post-meta">
@@ -335,7 +340,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  727
+                  1,074
                 </span>
               
 
@@ -351,7 +356,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  3
+                  4
                 </span>
               
             </div>
@@ -386,6 +391,9 @@
 <h5 id="MySQL高性能高可用集群方案"><a href="#MySQL高性能高可用集群方案" class="headerlink" title="MySQL高性能高可用集群方案"></a>MySQL高性能高可用集群方案</h5><p>方案一：PXC集群方案</p>
 <p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg" alt="image-20180605104420124"></p>
 <p>PXC集群方案如上图所示，底层为pxc搭建MySQL集群，使用HA进行负载均衡分配查询，上层使用MyCat按照一定算法进行SQL数据切分。为什么要进行数据切分呢？（是因为当单个数据表达到两千万行之后就会出现性能瓶颈）PXC集群是以性能换取数据强一致性。</p>
+<p>PXC(Percona XtraDB Cluster)原理：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs172714mkj30km09mmyq.jpg" alt="image-20180606091946548"></p>
+<p>建议PXC使用PerconaServer</p>
 <p>方案二：Replication集群方案</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fs04kapdosj31hi0l0wie.jpg" alt="image-20180605110740607"></p>
 <p>Replication集群方案如上图所示，与PXC集群采用的强一致性不同的是Replication采用的是同步机制。这种非强一致性可能存在同步未及时（网络影响等）导致客户端查询数据不一致。</p>
@@ -393,7 +401,19 @@
 <p>联合使用：</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fs04qy69a8j30ti0fe77k.jpg" alt="image-20180605111412670"></p>
 <p>我们可以将两种集群方案一起使用，高价值数据使用PXC集群，海量低价值使用Replication集群，通过MyCat切片数据。同时我们也可以使用缓存进行数据的临时存储。</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs0dcr0rx5j30pa0h2tbu.jpg" alt="image-20180605161153734"></p>
+<h5 id="PXC方案与Replication方案对比"><a href="#PXC方案与Replication方案对比" class="headerlink" title="PXC方案与Replication方案对比"></a>PXC方案与Replication方案对比</h5><h6 id="PXC方案"><a href="#PXC方案" class="headerlink" title="PXC方案"></a>PXC方案</h6><p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs176e079dj30t80de411.jpg" alt="image-20180606092348871"></p>
+<p>PXC的数据同步是双向的，在任何一个节点写入数据都会同步到其他节点之中。也就是说在任何一个MySQL节点上我们可以同时读写数据。</p>
+<h6 id="Replication方案"><a href="#Replication方案" class="headerlink" title="Replication方案"></a>Replication方案</h6><p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs1791wp4tj30nw0c4wfm.jpg" alt="image-20180606092622194"></p>
+<p>Replication的数据同步是单向的，在Master中写入数据是可以在Slave中读取，然而在Slave中写入数据是不能在Master中读取不到的。也就是说不能再一个节点同时读取数据。</p>
+<p>同步机制示意图</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fs17e7zh28j30rk0cu0v2.jpg" alt="image-20180606093119885"></p>
+<p>我们在一个节点中写入数据，需要根据同步机制将数据同步到其他节点，并且在其他节点成功提交事务，才算写入成功，然后第一个节点再把写入成功的结果告诉客户端。</p>
+<p>异步复制示意图</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs17ixfyz7j30my08kwfj.jpg" alt="image-20180606093551386"></p>
+<p>我们在一个节点写入数据，当提交事务成功后会返回给客户端成功，但是在同步第二个节点的时候万一出现同步失败，我们是无法从第二个节点读取到数据的。</p>
+<p>总结：</p>
+<p>PXC的数据强一致性是因为采用了同步复制，事务在所有集群节点要么同时提交，要么不提交。</p>
+<p>Replication采用异步复制，无法保证数据的一致性。</p>
 
       
     </div>
@@ -449,6 +469,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+          
+        </div>
       
 
       
@@ -552,7 +578,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -565,7 +591,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -621,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#MySQL高性能高可用集群方案"><span class="nav-number">1.</span> <span class="nav-text">MySQL高性能高可用集群方案</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#MySQL高性能高可用集群方案"><span class="nav-number">1.</span> <span class="nav-text">MySQL高性能高可用集群方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PXC方案与Replication方案对比"><span class="nav-number">2.</span> <span class="nav-text">PXC方案与Replication方案对比</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#PXC方案"><span class="nav-number">2.1.</span> <span class="nav-text">PXC方案</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Replication方案"><span class="nav-number">2.2.</span> <span class="nav-text">Replication方案</span></a></li></ol></li></ol></div>
             
 
           </div>

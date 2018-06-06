@@ -264,6 +264,186 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/06/Docker搭建PXC集群/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hongshaorou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/06/Docker搭建PXC集群/" itemprop="url">Docker搭建PXC集群</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-06T09:51:57+08:00">
+                2018-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  1,130
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="如何创建MySQL的PXC集群"><a href="#如何创建MySQL的PXC集群" class="headerlink" title="如何创建MySQL的PXC集群"></a>如何创建MySQL的PXC集群</h4><h5 id="下载PXC集群镜像文件"><a href="#下载PXC集群镜像文件" class="headerlink" title="下载PXC集群镜像文件"></a>下载PXC集群镜像文件</h5><h6 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull percona/percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
+<h6 id="重命名"><a href="#重命名" class="headerlink" title="重命名"></a>重命名</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker tag docker.io/percona/percona-xtradb-cluster pxc</span><br></pre></td></tr></table></figure>
+<h5 id="创建内部网络"><a href="#创建内部网络" class="headerlink" title="创建内部网络"></a>创建内部网络</h5><p>处于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
+<h6 id="创建网段："><a href="#创建网段：" class="headerlink" title="创建网段："></a>创建网段：</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker network create --subnet=172.18.0.0/24 net1</span><br><span class="line">ad5c096baebe656f530576344ecde9a3674b907134aced66df27a8d72feefc63</span><br></pre></td></tr></table></figure>
+<p>查看网段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker network inspect net1</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        "Name": "net1",</span><br><span class="line">        "Id": "ad5c096baebe656f530576344ecde9a3674b907134aced66df27a8d72feefc63",</span><br><span class="line">        "Created": "2018-06-06T10:06:28.55654238+08:00",</span><br><span class="line">        "Scope": "local",</span><br><span class="line">        "Driver": "bridge",</span><br><span class="line">        "EnableIPv6": false,</span><br><span class="line">        "IPAM": &#123;</span><br><span class="line">            "Driver": "default",</span><br><span class="line">            "Options": &#123;&#125;,</span><br><span class="line">            "Config": [</span><br><span class="line">                &#123;</span><br><span class="line">                    "Subnet": "172.18.0.0/24"</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        "Internal": false,</span><br><span class="line">        "Attachable": false,</span><br><span class="line">        "Containers": &#123;&#125;,</span><br><span class="line">        "Options": &#123;&#125;,</span><br><span class="line">        "Labels": &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h6 id="删除网段"><a href="#删除网段" class="headerlink" title="删除网段"></a>删除网段</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker network rm net1</span><br></pre></td></tr></table></figure>
+<h5 id="创建Docker卷"><a href="#创建Docker卷" class="headerlink" title="创建Docker卷"></a>创建Docker卷</h5><p>Docker容器使用原则：一旦创建出容器，尽量不要在容器中保存数据。一般通过目录映射将数据保存在宿主机里面（我们把宿主机的一个目录映射到容器内，然后容器的数据都保存到映射目录，这样就保存到了宿主机，即使容器损坏，宿主机也有数据保存）。但是，PXC技术在使用Docker的时候无法直接使用映射目录，需要另外一种映射技术—Docker卷。</p>
+<h6 id="容器中的PXC节点映射数据目录的解决办法"><a href="#容器中的PXC节点映射数据目录的解决办法" class="headerlink" title="容器中的PXC节点映射数据目录的解决办法"></a>容器中的PXC节点映射数据目录的解决办法</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建Docker卷：[root@hongshaorou ~]# docker volume create --name v1 </span><br><span class="line">--name：设置卷名 可以不写</span><br></pre></td></tr></table></figure>
+<h6 id="我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录"><a href="#我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录" class="headerlink" title="我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录"></a>我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker inspect v1</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        "Driver": "local",</span><br><span class="line">        "Labels": &#123;&#125;,</span><br><span class="line">        "Mountpoint": "/var/lib/docker/volumes/v1/_data",</span><br><span class="line">        "Name": "v1",</span><br><span class="line">        "Options": &#123;&#125;,</span><br><span class="line">        "Scope": "local"</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">我们看到Docker卷v1映射到了/var/lib/docker/volumes/v1/_data</span><br></pre></td></tr></table></figure>
+<h6 id="删除Docker卷"><a href="#删除Docker卷" class="headerlink" title="删除Docker卷"></a>删除Docker卷</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker volume rm v1</span><br></pre></td></tr></table></figure>
+<h5 id="创建PXC容器"><a href="#创建PXC容器" class="headerlink" title="创建PXC容器"></a>创建PXC容器</h5><h6 id="只需要向PXC镜像传入运行参数就能创建出PXC容器"><a href="#只需要向PXC镜像传入运行参数就能创建出PXC容器" class="headerlink" title="只需要向PXC镜像传入运行参数就能创建出PXC容器"></a>只需要向PXC镜像传入运行参数就能创建出PXC容器</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker run -d -p 3307:3306 -v v1:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 --privileged --name=node1 --net=net1 --ip 172.18.0.2 pxc</span><br><span class="line">1da51c2b8817f414ad825ba48f69a46c176f0b5ba7539e3b31e9ac54de056877</span><br><span class="line"></span><br><span class="line">参数解释：</span><br><span class="line">-d：表示后台运行</span><br><span class="line">-v：映射Docker卷到容器的mysql数据目录</span><br><span class="line">MYSQL_ROOT_PASSWORD：表示创建的数据库密码</span><br><span class="line">CLUSTER_NAME： 表示创建出的集群名字</span><br><span class="line">XTRABACKUP_PASSWORD：表示集群通信密码</span><br><span class="line">--privileged：表示分配最高权限</span><br><span class="line">--net：指定网段</span><br><span class="line">--ip：指定IP</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                   NAMES</span><br><span class="line">1da51c2b8817        pxc                 "/entrypoint.sh "   7 seconds ago       Up 5 seconds        4567-4568/tcp, 0.0.0.0:3307-&gt;3306/tcp   node1</span><br></pre></td></tr></table></figure>
+<p>这样我们就创建了第一个PXC节点</p>
+<p>下面依次创建剩余四个节点</p>
+<h6 id="创建Docker卷-1"><a href="#创建Docker卷-1" class="headerlink" title="创建Docker卷"></a>创建Docker卷</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker volume create --name v2</span><br><span class="line">v2</span><br><span class="line">[root@hongshaorou ~]# docker volume create --name v3</span><br><span class="line">v3</span><br><span class="line">[root@hongshaorou ~]# docker volume create --name v4</span><br><span class="line">v4</span><br><span class="line">[root@hongshaorou ~]# docker volume create --name v5</span><br><span class="line">v5</span><br></pre></td></tr></table></figure>
+<h6 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">创建node2:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3308:3306 -v v2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node2 --net=net1 --ip 172.18.0.3 pxc</span><br><span class="line"></span><br><span class="line">创建node3:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3309:3306 -v v3:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node3 --net=net1 --ip 172.18.0.4 pxc</span><br><span class="line"></span><br><span class="line">创建node4:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3310:3306 -v v4:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node4 --net=net1 --ip 172.18.0.5 pxc</span><br><span class="line"></span><br><span class="line">创建node5:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3311:3306 -v v5:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node5 --net=net1 --ip 172.18.0.6 pxc</span><br><span class="line"></span><br><span class="line">查看当前有哪些运行容器:</span><br><span class="line">[root@hongshaorou ~]# docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                                   NAMES</span><br><span class="line">f7638daaa09b        pxc                 "/entrypoint.sh "   7 seconds ago        Up 4 seconds        4567-4568/tcp, 0.0.0.0:3311-&gt;3306/tcp   node5</span><br><span class="line">909261673fac        pxc                 "/entrypoint.sh "   25 seconds ago       Up 24 seconds       4567-4568/tcp, 0.0.0.0:3310-&gt;3306/tcp   node4</span><br><span class="line">763dca13edcd        pxc                 "/entrypoint.sh "   43 seconds ago       Up 42 seconds       4567-4568/tcp, 0.0.0.0:3309-&gt;3306/tcp   node3</span><br><span class="line">9a3f92074ad0        pxc                 "/entrypoint.sh "   About a minute ago   Up About a minute   4567-4568/tcp, 0.0.0.0:3308-&gt;3306/tcp   node2</span><br><span class="line">1da51c2b8817        pxc                 "/entrypoint.sh "   15 minutes ago       Up 15 minutes       4567-4568/tcp, 0.0.0.0:3307-&gt;3306/tcp   node1</span><br></pre></td></tr></table></figure>
+<p>在创建剩余容器的时候需要注意的是网络和端口的映射不同，以及多了<code>-e CLUSTER_JOIN=node1</code> 表示加入node1节点。</p>
+<p>注意：第一个节点创建时间较长，必须等待两分钟左右再创建剩余节点。</p>
+<p>创建好之后我们就可以使用客户端连接数据库</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1gdw9fvoj31080wgk0l.jpg" alt="image-20180606144223957"></p>
+<p>依次配置连接 得到五个连接</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1am32w97j30o0096js7.jpg" alt="image-20180606112241564"></p>
+<p>完成以上配置之后，我们的PXC集群就已经搭建完毕（数据同步我已验证，完全可行）。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+<div>
+      
+</div>
+    
+<div>
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/Docker学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -621,7 +801,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/MySQL搭建PXC集群/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/PXC集群介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -640,7 +820,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/05/MySQL搭建PXC集群/" itemprop="url">MySQL搭建PXC集群</a></h1>
+                <a class="post-title-link" href="/2018/06/05/PXC集群介绍/" itemprop="url">PXC集群介绍</a></h1>
         
 
         <div class="post-meta">
@@ -684,7 +864,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  727
+                  1,074
                 </span>
               
 
@@ -700,7 +880,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  3
+                  4
                 </span>
               
             </div>
@@ -737,6 +917,9 @@
 <h5 id="MySQL高性能高可用集群方案"><a href="#MySQL高性能高可用集群方案" class="headerlink" title="MySQL高性能高可用集群方案"></a>MySQL高性能高可用集群方案</h5><p>方案一：PXC集群方案</p>
 <p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg" alt="image-20180605104420124"></p>
 <p>PXC集群方案如上图所示，底层为pxc搭建MySQL集群，使用HA进行负载均衡分配查询，上层使用MyCat按照一定算法进行SQL数据切分。为什么要进行数据切分呢？（是因为当单个数据表达到两千万行之后就会出现性能瓶颈）PXC集群是以性能换取数据强一致性。</p>
+<p>PXC(Percona XtraDB Cluster)原理：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs172714mkj30km09mmyq.jpg" alt="image-20180606091946548"></p>
+<p>建议PXC使用PerconaServer</p>
 <p>方案二：Replication集群方案</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fs04kapdosj31hi0l0wie.jpg" alt="image-20180605110740607"></p>
 <p>Replication集群方案如上图所示，与PXC集群采用的强一致性不同的是Replication采用的是同步机制。这种非强一致性可能存在同步未及时（网络影响等）导致客户端查询数据不一致。</p>
@@ -744,7 +927,19 @@
 <p>联合使用：</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fs04qy69a8j30ti0fe77k.jpg" alt="image-20180605111412670"></p>
 <p>我们可以将两种集群方案一起使用，高价值数据使用PXC集群，海量低价值使用Replication集群，通过MyCat切片数据。同时我们也可以使用缓存进行数据的临时存储。</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs0dcr0rx5j30pa0h2tbu.jpg" alt="image-20180605161153734"></p>
+<h5 id="PXC方案与Replication方案对比"><a href="#PXC方案与Replication方案对比" class="headerlink" title="PXC方案与Replication方案对比"></a>PXC方案与Replication方案对比</h5><h6 id="PXC方案"><a href="#PXC方案" class="headerlink" title="PXC方案"></a>PXC方案</h6><p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs176e079dj30t80de411.jpg" alt="image-20180606092348871"></p>
+<p>PXC的数据同步是双向的，在任何一个节点写入数据都会同步到其他节点之中。也就是说在任何一个MySQL节点上我们可以同时读写数据。</p>
+<h6 id="Replication方案"><a href="#Replication方案" class="headerlink" title="Replication方案"></a>Replication方案</h6><p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs1791wp4tj30nw0c4wfm.jpg" alt="image-20180606092622194"></p>
+<p>Replication的数据同步是单向的，在Master中写入数据是可以在Slave中读取，然而在Slave中写入数据是不能在Master中读取不到的。也就是说不能再一个节点同时读取数据。</p>
+<p>同步机制示意图</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fs17e7zh28j30rk0cu0v2.jpg" alt="image-20180606093119885"></p>
+<p>我们在一个节点中写入数据，需要根据同步机制将数据同步到其他节点，并且在其他节点成功提交事务，才算写入成功，然后第一个节点再把写入成功的结果告诉客户端。</p>
+<p>异步复制示意图</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs17ixfyz7j30my08kwfj.jpg" alt="image-20180606093551386"></p>
+<p>我们在一个节点写入数据，当提交事务成功后会返回给客户端成功，但是在同步第二个节点的时候万一出现同步失败，我们是无法从第二个节点读取到数据的。</p>
+<p>总结：</p>
+<p>PXC的数据强一致性是因为采用了同步复制，事务在所有集群节点要么同时提交，要么不提交。</p>
+<p>Replication采用异步复制，无法保证数据的一致性。</p>
 
           
         
@@ -1003,7 +1198,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1016,7 +1211,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
