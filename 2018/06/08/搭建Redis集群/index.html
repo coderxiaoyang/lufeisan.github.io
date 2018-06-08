@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -81,16 +81,21 @@
 
 
 
-<meta name="description" content="小码农一只">
-<meta property="og:type" content="website">
-<meta property="og:title" content="hongshaorou">
-<meta property="og:url" content="https://lufeisan.github.io/tags/MySQL-Docker/index.html">
+<meta name="description" content="RedisCluster集群集群特点 无中心节点，客户端与redis节点直连，不需要中间代理层 数据可以被分片存储 管理方便，后续可自行增加或摘除节点  Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。  我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建Redis集群">
+<meta property="og:url" content="https://lufeisan.github.io/2018/06/08/搭建Redis集群/index.html">
 <meta property="og:site_name" content="hongshaorou">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="RedisCluster集群集群特点 无中心节点，客户端与redis节点直连，不需要中间代理层 数据可以被分片存储 管理方便，后续可自行增加或摘除节点  Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。  我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3lyxfcyaj30zg0ng43j.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3ma2p11mj30tq0aktaw.jpg">
+<meta property="og:updated_time" content="2018-06-08T06:18:48.190Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hongshaorou">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:title" content="搭建Redis集群">
+<meta name="twitter:description" content="RedisCluster集群集群特点 无中心节点，客户端与redis节点直连，不需要中间代理层 数据可以被分片存储 管理方便，后续可自行增加或摘除节点  Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。  我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3lyxfcyaj30zg0ng43j.jpg">
 
 
 
@@ -120,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://lufeisan.github.io/tags/MySQL-Docker/"/>
+  <link rel="canonical" href="https://lufeisan.github.io/2018/06/08/搭建Redis集群/"/>
 
 
 
 
 
-  <title>标签: MySQL, Docker | hongshaorou</title>
+  <title>搭建Redis集群 | hongshaorou</title>
   
 
 
@@ -145,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -287,54 +292,266 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>MySQL, Docker<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lufeisan.github.io/2018/06/08/搭建Redis集群/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hongshaorou">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/06/06/PXC集群的负载均衡/" itemprop="url">
-              
-                <span itemprop="name">PXC集群的负载均衡</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">搭建Redis集群</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-06T23:25:52+08:00"
-              content="2018-06-06" >
-          06-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-08T11:21:48+08:00">
+                2018-06-08
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/08/搭建Redis集群/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/08/搭建Redis集群/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/08/搭建Redis集群/" class="leancloud_visitors" data-flag-title="搭建Redis集群">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  492 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="RedisCluster集群"><a href="#RedisCluster集群" class="headerlink" title="RedisCluster集群"></a>RedisCluster集群</h4><h6 id="集群特点"><a href="#集群特点" class="headerlink" title="集群特点"></a>集群特点</h6><ul>
+<li>无中心节点，客户端与redis节点直连，不需要中间代理层</li>
+<li>数据可以被分片存储</li>
+<li>管理方便，后续可自行增加或摘除节点</li>
+</ul>
+<p>Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fs3lyxfcyaj30zg0ng43j.jpg" alt="image-20180608112643220"></p>
+<p>我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总共用到了六个节点，正常数据操作的是节点成为主节点，备份数据的称为从节点。</p>
+<h4 id="Redis主从同步"><a href="#Redis主从同步" class="headerlink" title="Redis主从同步"></a>Redis主从同步</h4><h6 id="Redis主从同步特点"><a href="#Redis主从同步特点" class="headerlink" title="Redis主从同步特点"></a>Redis主从同步特点</h6><ul>
+<li>Redis集群中的数据库复制是通过主从同步来实现的</li>
+<li>主节点（Master）实时把数据分发给从节点（Slave）</li>
+<li>主从同步的好处在于高可用，Redis节点有冗余设计</li>
+</ul>
+<h6 id="Redis集群高可用"><a href="#Redis集群高可用" class="headerlink" title="Redis集群高可用"></a>Redis集群高可用</h6><ul>
+<li>Redis集群中应该包含奇数个Master，至少应该有3个Master</li>
+<li>Redis集群中每个Master都应该有Slave</li>
+</ul>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fs3ma2p11mj30tq0aktaw.jpg" alt="image-20180608113727222"></p>
+<p>为什么要包含奇数个呢？</p>
+<p>这是因为PXC集群和Redis集群都有选举机制，当集群中大部分节点挂了之后，剩余节点会进行选举，组建一个新的集群。当挂了超过一半的时候将无法再组成集群。</p>
+<p>还有一点Redis集群是切片存储数据的，当我们连接到一个Master，通过一定的计算规则判断数据是否应该存储到该Master，如果是则存储，如果不是则发送到应该存储的Master节点。这样虽然是切片存储数据，我们只要连接一个Master就可以取出全部数据。</p>
+<h4 id="安装Redis镜像"><a href="#安装Redis镜像" class="headerlink" title="安装Redis镜像"></a>安装Redis镜像</h4><h6 id="导入本地Redis镜像文件，运行Redis容器"><a href="#导入本地Redis镜像文件，运行Redis容器" class="headerlink" title="导入本地Redis镜像文件，运行Redis容器"></a>导入本地Redis镜像文件，运行Redis容器</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
+    
+    
+    
 
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/06/PXC集群的负载均衡/" rel="next" title="PXC集群的负载均衡">
+                <i class="fa fa-chevron-left"></i> PXC集群的负载均衡
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -342,6 +559,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -362,8 +586,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -382,7 +615,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -441,6 +674,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#RedisCluster集群"><span class="nav-number">1.</span> <span class="nav-text">RedisCluster集群</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#集群特点"><span class="nav-number">1.0.1.</span> <span class="nav-text">集群特点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis主从同步"><span class="nav-number">2.</span> <span class="nav-text">Redis主从同步</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Redis主从同步特点"><span class="nav-number">2.0.1.</span> <span class="nav-text">Redis主从同步特点</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Redis集群高可用"><span class="nav-number">2.0.2.</span> <span class="nav-text">Redis集群高可用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Redis镜像"><span class="nav-number">3.</span> <span class="nav-text">安装Redis镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#导入本地Redis镜像文件，运行Redis容器"><span class="nav-number">3.0.1.</span> <span class="nav-text">导入本地Redis镜像文件，运行Redis容器</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -605,6 +854,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

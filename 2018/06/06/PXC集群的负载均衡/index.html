@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="MySQL, Docker," />
+  <meta name="keywords" content="MySQL," />
 
 
 
@@ -82,7 +82,7 @@
 
 
 <meta name="description" content="数据库的负载均衡什么是负载均衡？在上篇中我们搭建了一个PXC集群，数据完全通过，通过将请求均匀分配到每个数据库就是负载均衡。 数据库负载均衡的必要性 虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，负载高，性能差，很容易崩溃，而集群中的其他节点很空闲。  使用Haproxy做负载均衡，请求被均匀分发给每个节点，单节点负载低，性能好 安装Haproxy镜像直接从Docker仓库中下载镜">
-<meta name="keywords" content="MySQL, Docker">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PXC集群的负载均衡">
 <meta property="og:url" content="https://lufeisan.github.io/2018/06/06/PXC集群的负载均衡/index.html">
@@ -101,7 +101,7 @@
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fs2l2qnsqaj30xc0fi41k.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fs2l7jkvppj30sq0bagnl.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs2lbej2s6j31a40egjws.jpg">
-<meta property="og:updated_time" content="2018-06-07T15:17:08.456Z">
+<meta property="og:updated_time" content="2018-06-08T03:18:24.063Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PXC集群的负载均衡">
 <meta name="twitter:description" content="数据库的负载均衡什么是负载均衡？在上篇中我们搭建了一个PXC集群，数据完全通过，通过将请求均匀分配到每个数据库就是负载均衡。 数据库负载均衡的必要性 虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，负载高，性能差，很容易崩溃，而集群中的其他节点很空闲。  使用Haproxy做负载均衡，请求被均匀分发给每个节点，单节点负载低，性能好 安装Haproxy镜像直接从Docker仓库中下载镜">
@@ -403,7 +403,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,469 字
+                  1,552 字
                 </span>
               
 
@@ -490,6 +490,12 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@fd93ad892341:/etc/keepalived# service keepalived start </span><br><span class="line">[ ok ] Starting keepalived: keepalived.</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# ping 172.18.0.201</span><br><span class="line">PING 172.18.0.201 (172.18.0.201) 56(84) bytes of data.</span><br><span class="line">64 bytes from 172.18.0.201: icmp_seq=1 ttl=64 time=0.127 ms</span><br><span class="line">64 bytes from 172.18.0.201: icmp_seq=2 ttl=64 time=0.047 ms</span><br><span class="line">64 bytes from 172.18.0.201: icmp_seq=3 ttl=64 time=0.061 ms</span><br><span class="line">^C</span><br><span class="line">--- 172.18.0.201 ping statistics ---</span><br><span class="line">3 packets transmitted, 3 received, 0% packet loss, time 1999ms</span><br><span class="line">rtt min/avg/max/mdev = 0.047/0.078/0.127/0.035 ms</span><br></pre></td></tr></table></figure>
 <p>注意：我们有两个Haproxy，记得都要安装Keepalived，编写配置文件。</p>
+<h6 id="将Docker的虚拟IP映射到局域网内"><a href="#将Docker的虚拟IP映射到局域网内" class="headerlink" title="将Docker的虚拟IP映射到局域网内"></a>将Docker的虚拟IP映射到局域网内</h6><p>我们要在宿主机安装Keepalived使Docker内部的虚拟IP映射到局域网内。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# yum install -y keepalived</span><br></pre></td></tr></table></figure>
+<p>编辑配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou keepalived]# vim keepalived.conf </span><br><span class="line">[root@hongshaorou keepalived]# pwd</span><br><span class="line">/etc/keepalived</span><br></pre></td></tr></table></figure>
+<p>启动Keepalived服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou keepalived]# service keepalived start</span><br><span class="line">Redirecting to /bin/systemctl start  keepalived.service</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -548,7 +554,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL-Docker/" rel="tag"><i class="fa fa-tag"></i>MySQL, Docker</a>
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
           
         </div>
       
@@ -570,6 +576,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/08/搭建Redis集群/" rel="prev" title="搭建Redis集群">
+                搭建Redis集群 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -653,7 +663,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -722,7 +732,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库的负载均衡"><span class="nav-number">1.</span> <span class="nav-text">数据库的负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是负载均衡？"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是负载均衡？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库负载均衡的必要性"><span class="nav-number">1.0.2.</span> <span class="nav-text">数据库负载均衡的必要性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Haproxy镜像"><span class="nav-number">2.</span> <span class="nav-text">安装Haproxy镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#直接从Docker仓库中下载镜像"><span class="nav-number">2.0.1.</span> <span class="nav-text">直接从Docker仓库中下载镜像</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建Haproxy配置文件"><span class="nav-number">2.0.2.</span> <span class="nav-text">创建Haproxy配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建Haproxy容器"><span class="nav-number">2.0.3.</span> <span class="nav-text">创建Haproxy容器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#容器创建完成后执行配置文件"><span class="nav-number">2.0.4.</span> <span class="nav-text">容器创建完成后执行配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库创建haproxy用户"><span class="nav-number">2.0.5.</span> <span class="nav-text">数据库创建haproxy用户</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置链接到H1"><span class="nav-number">2.0.6.</span> <span class="nav-text">配置链接到H1</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#负载均衡的高可用方案"><span class="nav-number">3.</span> <span class="nav-text">负载均衡的高可用方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要采用双机热备？"><span class="nav-number">3.1.</span> <span class="nav-text">为什么要采用双机热备？</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#单节点Haproxy不具备高可用，必须要有冗余设计"><span class="nav-number">3.1.1.</span> <span class="nav-text">单节点Haproxy不具备高可用，必须要有冗余设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用Keepalived实现双机热备"><span class="nav-number">4.</span> <span class="nav-text">利用Keepalived实现双机热备</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#虚拟IP地址"><span class="nav-number">4.0.1.</span> <span class="nav-text">虚拟IP地址</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#双机热备原理"><span class="nav-number">4.0.2.</span> <span class="nav-text">双机热备原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Haproxy双机热备方案"><span class="nav-number">4.0.3.</span> <span class="nav-text">Haproxy双机热备方案</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安装Keepalived"><span class="nav-number">4.0.4.</span> <span class="nav-text">安装Keepalived</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Keepalived配置文件"><span class="nav-number">4.0.5.</span> <span class="nav-text">Keepalived配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动Keepalived"><span class="nav-number">4.0.6.</span> <span class="nav-text">启动Keepalived</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库的负载均衡"><span class="nav-number">1.</span> <span class="nav-text">数据库的负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是负载均衡？"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是负载均衡？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库负载均衡的必要性"><span class="nav-number">1.0.2.</span> <span class="nav-text">数据库负载均衡的必要性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Haproxy镜像"><span class="nav-number">2.</span> <span class="nav-text">安装Haproxy镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#直接从Docker仓库中下载镜像"><span class="nav-number">2.0.1.</span> <span class="nav-text">直接从Docker仓库中下载镜像</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建Haproxy配置文件"><span class="nav-number">2.0.2.</span> <span class="nav-text">创建Haproxy配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建Haproxy容器"><span class="nav-number">2.0.3.</span> <span class="nav-text">创建Haproxy容器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#容器创建完成后执行配置文件"><span class="nav-number">2.0.4.</span> <span class="nav-text">容器创建完成后执行配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库创建haproxy用户"><span class="nav-number">2.0.5.</span> <span class="nav-text">数据库创建haproxy用户</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置链接到H1"><span class="nav-number">2.0.6.</span> <span class="nav-text">配置链接到H1</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#负载均衡的高可用方案"><span class="nav-number">3.</span> <span class="nav-text">负载均衡的高可用方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要采用双机热备？"><span class="nav-number">3.1.</span> <span class="nav-text">为什么要采用双机热备？</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#单节点Haproxy不具备高可用，必须要有冗余设计"><span class="nav-number">3.1.1.</span> <span class="nav-text">单节点Haproxy不具备高可用，必须要有冗余设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用Keepalived实现双机热备"><span class="nav-number">4.</span> <span class="nav-text">利用Keepalived实现双机热备</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#虚拟IP地址"><span class="nav-number">4.0.1.</span> <span class="nav-text">虚拟IP地址</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#双机热备原理"><span class="nav-number">4.0.2.</span> <span class="nav-text">双机热备原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Haproxy双机热备方案"><span class="nav-number">4.0.3.</span> <span class="nav-text">Haproxy双机热备方案</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安装Keepalived"><span class="nav-number">4.0.4.</span> <span class="nav-text">安装Keepalived</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Keepalived配置文件"><span class="nav-number">4.0.5.</span> <span class="nav-text">Keepalived配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动Keepalived"><span class="nav-number">4.0.6.</span> <span class="nav-text">启动Keepalived</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#将Docker的虚拟IP映射到局域网内"><span class="nav-number">4.0.7.</span> <span class="nav-text">将Docker的虚拟IP映射到局域网内</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
