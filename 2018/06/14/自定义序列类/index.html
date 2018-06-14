@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hongshaorou" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="这篇文章我们会了解到Python的序列协议是什么，以及通过序列协议使类或者实例转变为序列。 Python中的内置序列分类我们按照两个维度来区分序列 第一个维度是按照序列存贮的数据类型，分为容器序列和扁平序列 12容器序列list, tuple, deque 12扁平序列str, bytes, bytearray, array.array 容器序列里面可以放任意类型的数据。扁平序列的数据类型一致。">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义序列类">
+<meta property="og:url" content="https://lufeisan.github.io/2018/06/14/自定义序列类/index.html">
+<meta property="og:site_name" content="hongshaorou">
+<meta property="og:description" content="这篇文章我们会了解到Python的序列协议是什么，以及通过序列协议使类或者实例转变为序列。 Python中的内置序列分类我们按照两个维度来区分序列 第一个维度是按照序列存贮的数据类型，分为容器序列和扁平序列 12容器序列list, tuple, deque 12扁平序列str, bytes, bytearray, array.array 容器序列里面可以放任意类型的数据。扁平序列的数据类型一致。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fsao4ht1cxj31gs0wwwmx.jpg">
+<meta property="og:updated_time" content="2018-06-14T06:23:48.011Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义序列类">
+<meta name="twitter:description" content="这篇文章我们会了解到Python的序列协议是什么，以及通过序列协议使类或者实例转变为序列。 Python中的内置序列分类我们按照两个维度来区分序列 第一个维度是按照序列存贮的数据类型，分为容器序列和扁平序列 12容器序列list, tuple, deque 12扁平序列str, bytes, bytearray, array.array 容器序列里面可以放任意类型的数据。扁平序列的数据类型一致。">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fsao4ht1cxj31gs0wwwmx.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'MMCKNE4XB2',
+      apiKey: 'b705e153032192773453bb10f3c01090',
+      indexName: 'zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lufeisan.github.io/2018/06/14/自定义序列类/"/>
+
+
+
+
+
+  <title>自定义序列类 | hongshaorou</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hongshaorou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lufeisan.github.io/2018/06/14/自定义序列类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hongshaorou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自定义序列类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-14T09:26:27+08:00">
+                2018-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/14/自定义序列类/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/14/自定义序列类/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/14/自定义序列类/" class="leancloud_visitors" data-flag-title="自定义序列类">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,148 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇文章我们会了解到Python的序列协议是什么，以及通过序列协议使类或者实例转变为序列。</p>
+<h4 id="Python中的内置序列分类"><a href="#Python中的内置序列分类" class="headerlink" title="Python中的内置序列分类"></a>Python中的内置序列分类</h4><p>我们按照两个维度来区分序列</p>
+<p>第一个维度是按照序列存贮的数据类型，分为容器序列和扁平序列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">容器序列</span><br><span class="line">list, tuple, deque</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">扁平序列</span><br><span class="line">str, bytes, bytearray, array.array</span><br></pre></td></tr></table></figure>
+<p>容器序列里面可以放任意类型的数据。扁平序列的数据类型一致。</p>
+<p>注意：array和list的一个重要区别， array只能存放指定的数据类型</p>
+<p>第二个维度是按照序列是否可变，分为可变序列和不可变序列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">可变序列</span><br><span class="line">list, deque, bytearray, array</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">不可变</span><br><span class="line">str, tuple, bytes</span><br></pre></td></tr></table></figure>
+<h4 id="Python中序列类型的abc继承关系"><a href="#Python中序列类型的abc继承关系" class="headerlink" title="Python中序列类型的abc继承关系"></a>Python中序列类型的abc继承关系</h4><p>这一小节我们将通过abc继承关系来讲下序列协议</p>
+<p>跟容器相关的数据结构的抽象基类都存在<code>_collections_abc.py</code>模块下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Sequence&quot;（不可变序列）, &quot;MutableSequence&quot;（可变序列）,</span><br></pre></td></tr></table></figure>
+<p>我们看下不可变序列（Sequence）的源码是由哪些抽象函数协议组成的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sequence</span><span class="params">(Reversible, Collection)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""All the operations on a read-only sequence.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Concrete subclasses must override __new__ or __init__,</span></span><br><span class="line"><span class="string">    __getitem__, and __len__.</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+<p>Sequence继承了Reversible（用于翻转）和Collection。</p>
+<p>我们再看看Collection的源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Collection</span><span class="params">(Sized, Iterable, Container)</span>:</span></span><br><span class="line"></span><br><span class="line">    __slots__ = ()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__subclasshook__</span><span class="params">(cls, C)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">is</span> Collection:</span><br><span class="line">            <span class="keyword">return</span> _check_methods(C,  <span class="string">"__len__"</span>, <span class="string">"__iter__"</span>, <span class="string">"__contains__"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">NotImplemented</span></span><br></pre></td></tr></table></figure>
+<p>Collection 又分别继承Sized, Iterable, Container。我们看下这三个类的源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sized</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"></span><br><span class="line">    __slots__ = ()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__subclasshook__</span><span class="params">(cls, C)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">is</span> Sized:</span><br><span class="line">            <span class="keyword">return</span> _check_methods(C, <span class="string">"__len__"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">NotImplemented</span></span><br></pre></td></tr></table></figure>
+<p>Sized实现了<code>__len__</code>使我们的序列具有长度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Iterable</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"></span><br><span class="line">    __slots__ = ()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">False</span>:</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__subclasshook__</span><span class="params">(cls, C)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">is</span> Iterable:</span><br><span class="line">            <span class="keyword">return</span> _check_methods(C, <span class="string">"__iter__"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">NotImplemented</span></span><br></pre></td></tr></table></figure>
+<p>Iterable实现了<code>__iter__</code>使我们的序列可以迭代（for 操作）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"></span><br><span class="line">    __slots__ = ()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__contains__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__subclasshook__</span><span class="params">(cls, C)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">is</span> Container:</span><br><span class="line">            <span class="keyword">return</span> _check_methods(C, <span class="string">"__contains__"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">NotImplemented</span></span><br></pre></td></tr></table></figure>
+<p>Container实现了<code>__contains__</code>使我们可以使用 is  in 判断是否存在序列中。</p>
+<p>通过上述的魔法函数组成了构成不可变序列的协议。</p>
+<p>对于可变序列MutableSequence，作为不可变序列Sequence的子类，我们看看它的源码多实现了哪些魔法函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MutableSequence</span><span class="params">(Sequence)</span>:</span></span><br><span class="line"></span><br><span class="line">    __slots__ = ()</span><br><span class="line"></span><br><span class="line">    <span class="string">"""All the operations on a read-write sequence.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Concrete subclasses must provide __new__ or __init__,</span></span><br><span class="line"><span class="string">    __getitem__, __setitem__, __delitem__, __len__, and insert().</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, index, value)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> IndexError</span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> IndexError</span><br></pre></td></tr></table></figure>
+<p>我们看到最主要的是新增了<code>__setitem__</code>用于赋值，<code>__delitem__</code>用于删除值。这两个魔法函数。</p>
+<p>如果我们想自定义一些序列类，只需要实现上述魔法函数（协议）即可。</p>
+<h4 id="序列的-、-和extend的区别"><a href="#序列的-、-和extend的区别" class="headerlink" title="序列的+、+=和extend的区别"></a>序列的+、+=和extend的区别</h4><p>我们看下下面代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">c = a + [<span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 就地加</span></span><br><span class="line">a += (<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">a += [<span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>对于 <code>+</code> 两边的数据类型必须一致，而 <code>+=</code> 只需要是序列类型即可。</p>
+<p>为什么 <code>+=</code>只要是序列就可以呢？</p>
+<p>我们看看<code>+=</code>的实现源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MutableSequence</span><span class="params">(Sequence)</span>:</span></span><br><span class="line"></span><br><span class="line">    __slots__ = ()</span><br><span class="line"></span><br><span class="line">    <span class="string">"""All the operations on a read-write sequence.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Concrete subclasses must provide __new__ or __init__,</span></span><br><span class="line"><span class="string">    __getitem__, __setitem__, __delitem__, __len__, and insert().</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extend</span><span class="params">(self, values)</span>:</span></span><br><span class="line">        <span class="string">'S.extend(iterable) -- extend sequence by appending elements from the iterable'</span></span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> values:</span><br><span class="line">            self.append(v)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iadd__</span><span class="params">(self, values)</span>:</span></span><br><span class="line">        self.extend(values)</span><br><span class="line">        <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+<p>在可变序列MutableSequence中的<code>__iadd__</code>就是实现 <code>+=</code>操作的，我们看到中间有调用</p>
+<p>extend，我们看看extend函数有要求的是可迭代类型。</p>
+<p>对于extend:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a.extend(range(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extend</span><span class="params">(self, iterable)</span>:</span> <span class="comment"># real signature unknown; restored from __doc__</span></span><br><span class="line">        <span class="string">""" L.extend(iterable) -&gt; None -- extend list by appending elements from the iterable """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>我们看到extend内置源码实现原理接收一个可迭代对象。</p>
+<h4 id="实现可切片的对象"><a href="#实现可切片的对象" class="headerlink" title="实现可切片的对象"></a>实现可切片的对象</h4><p>下面是Python序列切片使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模式[start:end:step]</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">    其中，第一个数字start表示切片开始位置，默认为0；</span></span><br><span class="line"><span class="string">    第二个数字end表示切片截止（但不包含）位置（默认为列表长度）；</span></span><br><span class="line"><span class="string">    第三个数字step表示切片的步长（默认为1）。</span></span><br><span class="line"><span class="string">    当start为0时可以省略，当end为列表长度时可以省略，</span></span><br><span class="line"><span class="string">    当step为1时可以省略，并且省略步长时可以同时省略最后一个冒号。</span></span><br><span class="line"><span class="string">    另外，当step为负整数时，表示反向切片，这时start应该比end的值要大才行。</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">aList = [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">17</span>]</span><br><span class="line">aList[::]  <span class="comment"># 返回包含原列表中所有元素的新列表</span></span><br><span class="line">aList[::<span class="number">-1</span>]  <span class="comment"># 返回包含原列表中所有元素的逆序列表</span></span><br><span class="line">aList[::<span class="number">2</span>]  <span class="comment"># 隔一个取一个，获取偶数位置的元素</span></span><br><span class="line">aList[<span class="number">1</span>::<span class="number">2</span>]  <span class="comment"># 隔一个取一个，获取奇数位置的元素</span></span><br><span class="line">aList[<span class="number">3</span>:<span class="number">6</span>]  <span class="comment"># 指定切片的开始和结束位置</span></span><br><span class="line">aList[<span class="number">0</span>:<span class="number">100</span>]  <span class="comment"># 切片结束位置大于列表长度时，从列表尾部截断</span></span><br><span class="line">aList[<span class="number">100</span>:]  <span class="comment"># 切片开始位置大于列表长度时，返回空列表</span></span><br><span class="line"></span><br><span class="line">aList[len(aList):] = [<span class="number">9</span>]  <span class="comment"># 在列表尾部增加元素</span></span><br><span class="line">aList[:<span class="number">0</span>] = [<span class="number">1</span>, <span class="number">2</span>]  <span class="comment"># 在列表头部插入元素</span></span><br><span class="line">aList[<span class="number">3</span>:<span class="number">3</span>] = [<span class="number">4</span>]  <span class="comment"># 在列表中间位置插入元素</span></span><br><span class="line">aList[:<span class="number">3</span>] = [<span class="number">1</span>, <span class="number">2</span>]  <span class="comment"># 替换列表元素，等号两边的列表长度相等</span></span><br><span class="line">aList[<span class="number">3</span>:] = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]  <span class="comment"># 等号两边的列表长度也可以不相等</span></span><br><span class="line">aList[::<span class="number">2</span>] = [<span class="number">0</span>] * <span class="number">3</span>  <span class="comment"># 隔一个修改一个</span></span><br><span class="line">aList[::<span class="number">2</span>] = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]  <span class="comment"># 隔一个修改一个</span></span><br><span class="line">aList[::<span class="number">2</span>] = [<span class="number">1</span>, <span class="number">2</span>]  <span class="comment"># 左侧切片不连续，等号两边列表长度必须相等</span></span><br><span class="line">aList[:<span class="number">3</span>] = []  <span class="comment"># 删除列表中前3个元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> aList[:<span class="number">3</span>]  <span class="comment"># 切片元素连续</span></span><br><span class="line"><span class="keyword">del</span> aList[::<span class="number">2</span>]  <span class="comment"># 切片元素不连续，隔一个删一个</span></span><br></pre></td></tr></table></figure>
+<p>下面是自定义一个不可变得序列类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numbers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Group</span>:</span></span><br><span class="line">    <span class="comment">#支持切片操作</span></span><br><span class="line">    <span class="comment"># staffs 是一个list以便于实现对数据的管理</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, group_name, company_name, staffs)</span>:</span></span><br><span class="line">        self.group_name = group_name</span><br><span class="line">        self.company_name = company_name</span><br><span class="line">        self.staffs = staffs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reversed__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 用于对数据的反转</span></span><br><span class="line">        self.staffs.reverse()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="comment"># 切片主要的实现函数</span></span><br><span class="line">        <span class="comment"># item有两类 </span></span><br><span class="line">        <span class="comment"># 当我们使用[:2]这种方式的时候item是切片类 item = &#123;slice&#125; slice(None, 2, None)</span></span><br><span class="line">        <span class="comment"># 当使用[2]这种方式的时候item是一个int类型 item = &#123;int&#125; 2</span></span><br><span class="line">        <span class="comment"># 下面返回的仍然是一个Group方便切片之后仍然可以切片</span></span><br><span class="line">        cls = type(self)</span><br><span class="line">        <span class="keyword">if</span> isinstance(item, slice):</span><br><span class="line">            <span class="keyword">return</span> cls(group_name=self.group_name, company_name=self.company_name, staffs=self.staffs[item])</span><br><span class="line">        <span class="keyword">elif</span> isinstance(item, numbers.Integral):</span><br><span class="line">            <span class="keyword">return</span> cls(group_name=self.group_name, company_name=self.company_name, staffs=[self.staffs[item]])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 返回长度</span></span><br><span class="line">        <span class="keyword">return</span> len(self.staffs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 可迭代</span></span><br><span class="line">        <span class="keyword">return</span> iter(self.staffs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__contains__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="comment"># 使用 is in</span></span><br><span class="line">        <span class="keyword">if</span> item <span class="keyword">in</span> self.staffs:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">staffs = [<span class="string">"staff1"</span>, <span class="string">"staff2"</span>, <span class="string">"staff3"</span>, <span class="string">"staff4"</span>]</span><br><span class="line">group = Group(company_name=<span class="string">"alibaba"</span>, group_name=<span class="string">"user"</span>, staffs=staffs)</span><br></pre></td></tr></table></figure>
+<h4 id="bisect维护已排序序列"><a href="#bisect维护已排序序列" class="headerlink" title="bisect维护已排序序列"></a>bisect维护已排序序列</h4><p>注意：一定要是一个已排序的序列</p>
+<p>我们先看下这个模块的源码结构</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fsao4ht1cxj31gs0wwwmx.jpg" alt="image-20180614140012534"></p>
+<p>其中的<code>insort</code>为插入数据是<code>insort_right</code>的缩写，<code>bisect</code>为查询插入位置是<code>bisect_right</code>的缩写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">11</span>]: <span class="keyword">import</span> bisect</span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: inter_list = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们使用insort插入数据 排序查找规则是二分法</span></span><br><span class="line">In [<span class="number">13</span>]: bisect.insort(inter_list, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: bisect.insort(inter_list, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: bisect.insort(inter_list, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: bisect.insort(inter_list, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: bisect.insort(inter_list, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: inter_list</span><br><span class="line">Out[<span class="number">18</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们使用bisect查找应该插入的位置</span></span><br><span class="line"><span class="comment"># bisect_right表示在查找到重复值的右侧插入</span></span><br><span class="line">In [<span class="number">19</span>]: bisect.bisect(inter_list, <span class="number">3</span>)</span><br><span class="line">Out[<span class="number">19</span>]: <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># bisect_left表示在查找到重复值的左侧插入</span></span><br><span class="line">In [<span class="number">20</span>]: bisect.bisect_left(inter_list, <span class="number">3</span>)</span><br><span class="line">Out[<span class="number">20</span>]: <span class="number">2</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 对应的插入</span></span><br><span class="line">In [<span class="number">21</span>]: bisect.insort(inter_list, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">22</span>]: inter_list</span><br><span class="line">Out[<span class="number">22</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">23</span>]: bisect.insort_left(inter_list, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">24</span>]: inter_list</span><br><span class="line">Out[<span class="number">24</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="什么时候不该使用列表"><a href="#什么时候不该使用列表" class="headerlink" title="什么时候不该使用列表"></a>什么时候不该使用列表</h4><p>有时对于使用list对性能有很大影响或者，我们可以考虑使用其他序列如array, deque。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> array</span><br><span class="line"></span><br><span class="line"><span class="comment"># array和list的一个重要区别， array只能存放指定的数据类型</span></span><br><span class="line"><span class="comment"># i 表示整型</span></span><br><span class="line">my_array = array.array(<span class="string">"i"</span>)</span><br><span class="line">my_array.append(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>array支持的数据类型查看：<a><a href="https://docs.python.org/3/library/array.html" target="_blank" rel="noopener">https://docs.python.org/3/library/array.html</a></a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/11/深入理解Python类和对象/" rel="next" title="深入理解Python类和对象">
+                <i class="fa fa-chevron-left"></i> 深入理解Python类和对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中的内置序列分类"><span class="nav-number">1.</span> <span class="nav-text">Python中的内置序列分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中序列类型的abc继承关系"><span class="nav-number">2.</span> <span class="nav-text">Python中序列类型的abc继承关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#序列的-、-和extend的区别"><span class="nav-number">3.</span> <span class="nav-text">序列的+、+=和extend的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现可切片的对象"><span class="nav-number">4.</span> <span class="nav-text">实现可切片的对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bisect维护已排序序列"><span class="nav-number">5.</span> <span class="nav-text">bisect维护已排序序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么时候不该使用列表"><span class="nav-number">6.</span> <span class="nav-text">什么时候不该使用列表</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
