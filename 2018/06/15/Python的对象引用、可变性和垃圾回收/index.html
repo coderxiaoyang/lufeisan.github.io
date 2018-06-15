@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="什么是魔法函数？在Python中魔法函数以__开始以__结束 我们下面看看魔法函数有什么用 12345678910class Company(object):    def __init__(self, employee_list):        self.employee = employee_listcompany = Company([&quot;tom&quot;, &quot;bob&quot;, &quot;jane&quot;])emplo">
+<meta name="description" content="Python中的变量Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。 Python中is和==的区别is主要用于判断两个变量是不是同一个对象（指向同一个对象） 12345678910111213# b 和 a指向同一个内存地址块In [1]: a = [1,2,3,4]">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python的魔法函数">
-<meta property="og:url" content="https://lufeisan.github.io/2018/06/09/Python的魔法函数/index.html">
+<meta property="og:title" content="Python的对象引用、可变性和垃圾回收">
+<meta property="og:url" content="https://lufeisan.github.io/2018/06/15/Python的对象引用、可变性和垃圾回收/index.html">
 <meta property="og:site_name" content="hongshaorou">
-<meta property="og:description" content="什么是魔法函数？在Python中魔法函数以__开始以__结束 我们下面看看魔法函数有什么用 12345678910class Company(object):    def __init__(self, employee_list):        self.employee = employee_listcompany = Company([&quot;tom&quot;, &quot;bob&quot;, &quot;jane&quot;])emplo">
+<meta property="og:description" content="Python中的变量Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。 Python中is和==的区别is主要用于判断两个变量是不是同一个对象（指向同一个对象） 12345678910111213# b 和 a指向同一个内存地址块In [1]: a = [1,2,3,4]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T02:34:25.420Z">
+<meta property="og:updated_time" content="2018-06-15T02:34:16.514Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python的魔法函数">
-<meta name="twitter:description" content="什么是魔法函数？在Python中魔法函数以__开始以__结束 我们下面看看魔法函数有什么用 12345678910class Company(object):    def __init__(self, employee_list):        self.employee = employee_listcompany = Company([&quot;tom&quot;, &quot;bob&quot;, &quot;jane&quot;])emplo">
+<meta name="twitter:title" content="Python的对象引用、可变性和垃圾回收">
+<meta name="twitter:description" content="Python中的变量Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。 Python中is和==的区别is主要用于判断两个变量是不是同一个对象（指向同一个对象） 12345678910111213# b 和 a指向同一个内存地址块In [1]: a = [1,2,3,4]">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://lufeisan.github.io/2018/06/09/Python的魔法函数/"/>
+  <link rel="canonical" href="https://lufeisan.github.io/2018/06/15/Python的对象引用、可变性和垃圾回收/"/>
 
 
 
 
 
-  <title>Python的魔法函数 | hongshaorou</title>
+  <title>Python的对象引用、可变性和垃圾回收 | hongshaorou</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lufeisan.github.io/2018/06/09/Python的魔法函数/">
+    <link itemprop="mainEntityOfPage" href="https://lufeisan.github.io/2018/06/15/Python的对象引用、可变性和垃圾回收/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python的魔法函数</h1>
+          <h1 class="post-title" itemprop="name headline">Python的对象引用、可变性和垃圾回收</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-09T08:59:38+08:00">
-                2018-06-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T09:41:02+08:00">
+                2018-06-15
               </time>
             
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/09/Python的魔法函数/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/09/Python的魔法函数/" itemprop="commentCount"></span>
+                <a href="/2018/06/15/Python的对象引用、可变性和垃圾回收/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/15/Python的对象引用、可变性和垃圾回收/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/06/09/Python的魔法函数/" class="leancloud_visitors" data-flag-title="Python的魔法函数">
+             <span id="/2018/06/15/Python的对象引用、可变性和垃圾回收/" class="leancloud_visitors" data-flag-title="Python的对象引用、可变性和垃圾回收">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  969 字
+                  753 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -449,65 +449,21 @@
       
 
       
-        <h4 id="什么是魔法函数？"><a href="#什么是魔法函数？" class="headerlink" title="什么是魔法函数？"></a>什么是魔法函数？</h4><p>在Python中魔法函数以<code>__</code>开始以<code>__</code>结束</p>
-<p>我们下面看看魔法函数有什么用</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Company</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, employee_list)</span>:</span></span><br><span class="line">        self.employee = employee_list</span><br><span class="line"></span><br><span class="line">company = Company([<span class="string">"tom"</span>, <span class="string">"bob"</span>, <span class="string">"jane"</span>])</span><br><span class="line"></span><br><span class="line">emploee = company.employee</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> em <span class="keyword">in</span> emploee:</span><br><span class="line">    print(em)</span><br></pre></td></tr></table></figure>
-<p>我们创建一个实例，然后使用for 循环遍历实例的属性employee。</p>
-<p>有没有什么方法可以直接遍历实例，而不需要遍历属性employee就能获得属性值呢？</p>
-<p>答案是魔法函数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Company</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, employee_list)</span>:</span></span><br><span class="line">        self.employee = employee_list</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.employee[item]</span><br></pre></td></tr></table></figure>
-<p>我们在类中增加魔法函数（魔法函数不是单属于一个类的单独方法）</p>
-<p>现在我们可以直接对实例变量。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">company = Company([<span class="string">"tom"</span>, <span class="string">"bob"</span>, <span class="string">"jane"</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> em <span class="keyword">in</span> company:</span><br><span class="line">    print(em)</span><br></pre></td></tr></table></figure>
-<p>实现原理是：当我们变量类实例的时候回去类里边查找是否存在<code>__getitem__</code>魔法函数，当存在时候，会逐个查找变量直至报错。也就是说当我们定义了函数<code>__getitem__</code>之后，对象就变成了可迭代对象。 </p>
-<h4 id="Python数据模型以及数据模型对Python的影响"><a href="#Python数据模型以及数据模型对Python的影响" class="headerlink" title="Python数据模型以及数据模型对Python的影响"></a>Python数据模型以及数据模型对Python的影响</h4><p>魔法函数就是Python数据模型的一种理念。</p>
-<p>Python中魔法函数会影响我们的Python语法的，我们在类中定义了魔法函数并不需要显示的调用。魔法函数是单独存在的，不是类继承与什么的父类得到的。我们在类中加入魔法函数之后会增加类的类型（上文说到的一些类型）。例如我们实现了<code>__getitem__</code>魔法函数之后就实现了序列类型，可以进行切片操作。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">company = Company([<span class="string">"tom"</span>, <span class="string">"bob"</span>, <span class="string">"jane"</span>])</span><br><span class="line"></span><br><span class="line">company1 = company[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> em <span class="keyword">in</span> company1:</span><br><span class="line">    print(em)</span><br></pre></td></tr></table></figure>
-<p>如果没有实现<code>__getitem__</code>直接切片会报错的。</p>
-<p>我们通过实现<code>__getitem__</code>使得能够切片，体现了魔法函数对Python的影响，我们大致可以认为Python一些模型的实现原理，例如切片正是实现了<code>__getitem__</code>。</p>
-<p> 例如我们想直接统计长度，在一个类的实例中。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(len(company))</span><br><span class="line"></span><br><span class="line">TypeError: object of type <span class="string">'Company'</span> has no len()</span><br></pre></td></tr></table></figure>
-<p>则会报没有len()方法，下面我们通过魔法函数实现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Company</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, employee_list)</span>:</span></span><br><span class="line">        self.employee = employee_list</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.employee)</span><br><span class="line">    </span><br><span class="line">company = Company([<span class="string">"tom"</span>, <span class="string">"bob"</span>, <span class="string">"jane"</span>])</span><br><span class="line">print(len(company))</span><br></pre></td></tr></table></figure>
-<p>这时会打印输出长度3.</p>
-<h4 id="Python魔法函数一览"><a href="#Python魔法函数一览" class="headerlink" title="Python魔法函数一览"></a>Python魔法函数一览</h4><h5 id="非数学运算"><a href="#非数学运算" class="headerlink" title="非数学运算"></a>非数学运算</h5><p>字符串表示</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__repr__, __str__</span><br></pre></td></tr></table></figure>
-<p>集合，序列相关</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__len__, __getitem__, __setitem__, __delitem__, __contains__</span><br></pre></td></tr></table></figure>
-<p>迭代相关</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__iter__, __next__</span><br></pre></td></tr></table></figure>
-<p>可调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__call__</span><br></pre></td></tr></table></figure>
-<p>with上下文管理器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__enter__, __exit__</span><br></pre></td></tr></table></figure>
-<p>数值转换</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__abs__, __bool__, __int__, __float__, __hash__, __index__</span><br></pre></td></tr></table></figure>
-<p>元类相关</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__new__, __init__</span><br></pre></td></tr></table></figure>
-<p>属性相关</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__getattr__, __setattr__, __getattribute__, __setattribute__, __dir__</span><br></pre></td></tr></table></figure>
-<p>属性描述符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__get__, __set__, __delete__</span><br></pre></td></tr></table></figure>
-<p>协程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__await__, __aiter__, __anext__, __aenter__, __aexit__</span><br></pre></td></tr></table></figure>
-<h5 id="数学运算"><a href="#数学运算" class="headerlink" title="数学运算"></a>数学运算</h5><p>一元运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__neg__(-), __pos__(+), __abs__</span><br></pre></td></tr></table></figure>
-<p>二元运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__lt__(&lt;), __le__(&lt;=), __eq__(=), __ne__(!=), __gt__(&gt;), __ge__(&gt;=)</span><br></pre></td></tr></table></figure>
-<p>算术运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__add__ + 、 __sub__ - 、 __mul__ * 、 __truediv__ / 、 __floordiv__ // 、 __mod__ % 、 __divmod__ divmod() 、 __pow__ ** 或 pow() 、 __round__ 、round()</span><br></pre></td></tr></table></figure>
-<p>反向算术运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__radd__ 、 __rsub__ 、 __rmul__ 、 __rtruediv__ 、 __rfloordiv__ 、 __rmod__ 、 __rdivmod__ 、 __rpow__</span><br></pre></td></tr></table></figure>
-<p>增量赋值算术运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__iadd__ 、 __isub__ 、 __imul__ 、 __itruediv__ 、 __ifloordiv__ 、 __imod__ 、 __ipow__</span><br></pre></td></tr></table></figure>
-<p>位运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__invert__ ~ 、 __lshift__ &lt;&lt; 、 __rshift__ &gt;&gt; 、 __and__ &amp; 、 __or__ | 、 __xor__ ^</span><br></pre></td></tr></table></figure>
-<p>反向未运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__rlshift__ 、 __rrshift__ 、 __rand__ 、 __rxor__ 、 __ror__</span><br></pre></td></tr></table></figure>
-<p>增量赋值位运算符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__ilshift__ 、 __irshift__ 、 __iand__ 、 __ixor__ 、 __ior__</span><br></pre></td></tr></table></figure>
-<p>我们看第一个<code>__repr__</code>和<code>__str__</code>，当我们打印输出一个对象的时候是默认调用<code>str</code>方法（对应魔法函数<code>__str__</code>）当我们未定义魔法函数只会打印出对象地址。<code>__repr__</code>是开发状态调用的（运行时）。魔法函数定义之后会隐式调用。</p>
-<h4 id="len函数的特殊性"><a href="#len函数的特殊性" class="headerlink" title="len函数的特殊性"></a>len函数的特殊性</h4><p>当我们使用len()方法统计set，list，dict的长度的时候，会直接通过cpython解释器获得长度，性能非常高，而不是遍历对象去获得长度。</p>
+        <h4 id="Python中的变量"><a href="#Python中的变量" class="headerlink" title="Python中的变量"></a>Python中的变量</h4><p>Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。</p>
+<h4 id="Python中is和-的区别"><a href="#Python中is和-的区别" class="headerlink" title="Python中is和==的区别"></a>Python中is和==的区别</h4><p>is主要用于判断两个变量是不是同一个对象（指向同一个对象）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># b 和 a指向同一个内存地址块</span></span><br><span class="line">In [<span class="number">1</span>]: a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>] </span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: b = a </span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: b <span class="keyword">is</span> a</span><br><span class="line">Out[<span class="number">3</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: id(b) </span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">4399472584</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: id(a)</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">4399472584</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存地址块不一样 因此是两个对象 但是存储的值是相同的 因此 == 是True</span></span><br><span class="line">In [<span class="number">6</span>]: b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: b <span class="keyword">is</span> a</span><br><span class="line">Out[<span class="number">8</span>]: <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: id(b)</span><br><span class="line">Out[<span class="number">9</span>]: <span class="number">4399015176</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: id(a)</span><br><span class="line">Out[<span class="number">10</span>]: <span class="number">4398993864</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: b == a</span><br><span class="line">Out[<span class="number">11</span>]: <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>我们是不是可以认为通过赋值就是两个不同的对象呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">12</span>]: a = <span class="number">256</span> </span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: b = <span class="number">256</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: a <span class="keyword">is</span> b </span><br><span class="line">Out[<span class="number">14</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: b = <span class="number">257</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: b = <span class="number">257</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: a <span class="keyword">is</span> b </span><br><span class="line">Out[<span class="number">17</span>]: <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: a = <span class="string">"abcd"</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">19</span>]: b = <span class="string">"abcd"</span> </span><br><span class="line"></span><br><span class="line">In [<span class="number">20</span>]: a <span class="keyword">is</span> b </span><br><span class="line">Out[<span class="number">20</span>]: <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>以上代码的原理是Python的内部优化机制，对于部分整型和部门短的字符串，第一次赋值时候回开辟一个内存块，再次赋值时候会指向同一个内存块，因此是同一个对象。</p>
+<h4 id="Python中的del语句和垃圾回收"><a href="#Python中的del语句和垃圾回收" class="headerlink" title="Python中的del语句和垃圾回收"></a>Python中的del语句和垃圾回收</h4><p><strong>引用计数</strong></p>
+<p>当给一个对象分配一个新名称或者将一个对象放入一个容器（列表、元组或字典）时，该对象的引用计数都会增加。</p>
+<p>当使用del对对象显示销毁或者引用超出作用于或者被重新赋值时，该对象的引用计数就会减少。</p>
+<p>可以使用sys.getrefcount()函数来获取对象的当前引用计数。多数情况下，引用计数要比我们猜测的大的 多。对于不可变数据（数字和字符串），解释器会在程序的不同部分共享内存，以便节约内存。</p>
+<p><strong>垃圾回收</strong></p>
+<p>当一个对象的引用计数归零时，它将被垃圾收集机制处理掉。</p>
+<p>当两个对象a和b相互引用时，del语句可以减少a和b的引用计数，并销毁用于引用底层对象的名称。然而由于每个对象都包含一个对其他对象的应用，因此引用计数不会归零，对象也不会销毁。（从而导致内存泄露）。为解决这一问题，解释器会定期执行一个循环检测器，搜索不可访问对象的循环并删除它们</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获得某个类的初始化默认值</span></span><br><span class="line">Object.__init__.defaults__</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -579,8 +535,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/08/Django零散知识点/" rel="next" title="Django零散知识点">
-                <i class="fa fa-chevron-left"></i> Django零散知识点
+              <a href="/2018/06/14/深入理解Python的dict和set/" rel="next" title="深入理解Python的dict和set">
+                <i class="fa fa-chevron-left"></i> 深入理解Python的dict和set
               </a>
             
           </div>
@@ -588,10 +544,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/11/Python零散知识点/" rel="prev" title="Python零散知识点">
-                Python零散知识点 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -753,7 +705,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是魔法函数？"><span class="nav-number">1.</span> <span class="nav-text">什么是魔法函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python数据模型以及数据模型对Python的影响"><span class="nav-number">2.</span> <span class="nav-text">Python数据模型以及数据模型对Python的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python魔法函数一览"><span class="nav-number">3.</span> <span class="nav-text">Python魔法函数一览</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#非数学运算"><span class="nav-number">3.1.</span> <span class="nav-text">非数学运算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数学运算"><span class="nav-number">3.2.</span> <span class="nav-text">数学运算</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len函数的特殊性"><span class="nav-number">4.</span> <span class="nav-text">len函数的特殊性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中的变量"><span class="nav-number">1.</span> <span class="nav-text">Python中的变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中is和-的区别"><span class="nav-number">2.</span> <span class="nav-text">Python中is和==的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中的del语句和垃圾回收"><span class="nav-number">3.</span> <span class="nav-text">Python中的del语句和垃圾回收</span></a></li></ol></div>
             
 
           </div>
