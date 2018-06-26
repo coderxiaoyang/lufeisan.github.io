@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="Django," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="这篇文章我们将会了解到类的整个实例化过程。 property动态属性12345678910111213141516171819from datetime import date, datetimeclass User:    def __init__(self, name, birthday):        self.name = name        self.birthday = birt">
-<meta name="keywords" content="Python">
+<meta name="description" content="信号Django包括一个“信号分配器”，它帮助允许解耦应用程序在框架中其他地方发生操作时得到通知。简而言之，信号允许某些 senders 通知一组 receivers 已经发生了一些行动。当许多代码可能对同一事件感兴趣时，它们特别有用。 Django提供了一些内置信号，让用户代码由Django本身通知某些操作。这些包括一些有用的通知：  django.db.models.signals.pre_s">
+<meta name="keywords" content="Django">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python的元类编程">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/15/python的元类编程/index.html">
+<meta property="og:title" content="Django中的信号使用">
+<meta property="og:url" content="https://zhaobugs.com/2018/06/26/Django中的信号使用/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="这篇文章我们将会了解到类的整个实例化过程。 property动态属性12345678910111213141516171819from datetime import date, datetimeclass User:    def __init__(self, name, birthday):        self.name = name        self.birthday = birt">
+<meta property="og:description" content="信号Django包括一个“信号分配器”，它帮助允许解耦应用程序在框架中其他地方发生操作时得到通知。简而言之，信号允许某些 senders 通知一组 receivers 已经发生了一些行动。当许多代码可能对同一事件感兴趣时，它们特别有用。 Django提供了一些内置信号，让用户代码由Django本身通知某些操作。这些包括一些有用的通知：  django.db.models.signals.pre_s">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T09:40:19.348Z">
+<meta property="og:updated_time" content="2018-06-26T08:40:40.168Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python的元类编程">
-<meta name="twitter:description" content="这篇文章我们将会了解到类的整个实例化过程。 property动态属性12345678910111213141516171819from datetime import date, datetimeclass User:    def __init__(self, name, birthday):        self.name = name        self.birthday = birt">
+<meta name="twitter:title" content="Django中的信号使用">
+<meta name="twitter:description" content="信号Django包括一个“信号分配器”，它帮助允许解耦应用程序在框架中其他地方发生操作时得到通知。简而言之，信号允许某些 senders 通知一组 receivers 已经发生了一些行动。当许多代码可能对同一事件感兴趣时，它们特别有用。 Django提供了一些内置信号，让用户代码由Django本身通知某些操作。这些包括一些有用的通知：  django.db.models.signals.pre_s">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/15/python的元类编程/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/06/26/Django中的信号使用/"/>
 
 
 
 
 
-  <title>python的元类编程 | 红烧肉</title>
+  <title>Django中的信号使用 | 红烧肉</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/15/python的元类编程/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/26/Django中的信号使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python的元类编程</h1>
+          <h1 class="post-title" itemprop="name headline">Django中的信号使用</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T10:43:21+08:00">
-                2018-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-26T15:05:04+08:00">
+                2018-06-26
               </time>
             
 
@@ -355,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
                   </a>
                 </span>
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/15/python的元类编程/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/15/python的元类编程/" itemprop="commentCount"></span>
+                <a href="/2018/06/26/Django中的信号使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/26/Django中的信号使用/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/06/15/python的元类编程/" class="leancloud_visitors" data-flag-title="python的元类编程">
+             <span id="/2018/06/26/Django中的信号使用/" class="leancloud_visitors" data-flag-title="Django中的信号使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  726 字
+                  755 字
                 </span>
               
 
@@ -449,19 +449,36 @@
       
 
       
-        <p>这篇文章我们将会了解到类的整个实例化过程。</p>
-<h4 id="property动态属性"><a href="#property动态属性" class="headerlink" title="property动态属性"></a>property动态属性</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date, datetime</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, birthday)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.birthday = birthday</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._age</span><br><span class="line"></span><br><span class="line"><span class="meta">    @age.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        self._age = value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    user = User(<span class="string">"hongshaorou"</span>, date(year=<span class="number">1992</span>, month=<span class="number">1</span>, day=<span class="number">1</span>))</span><br><span class="line">    user.age = <span class="number">26</span></span><br><span class="line">    print(user.age)</span><br></pre></td></tr></table></figure>
-<p>@property装饰器负责把一个方法变成属性调用。 把一个getter方法变成属性，只需要加上@property就可以了，此时@property本身又创建了另一个装饰器@age.setter，负责把一个setter方法变成属性赋值。</p>
-<p>参考文章：<a href="http://python.jobbole.com/80955/" target="_blank" rel="noopener">http://python.jobbole.com/80955/</a></p>
-<h4 id="getattr-和-getattribute-的区别"><a href="#getattr-和-getattribute-的区别" class="headerlink" title="___getattr__和__getattribute__的区别"></a><code>___getattr__</code>和<code>__getattribute__</code>的区别</h4><h6 id="getattr-是在属性查找不到的时候进行的调用"><a href="#getattr-是在属性查找不到的时候进行的调用" class="headerlink" title="___getattr__是在属性查找不到的时候进行的调用"></a><code>___getattr__</code>是在属性查找不到的时候进行的调用</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date, datetime</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, birthday)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.birthday = birthday</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"not find"</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    user = User(<span class="string">"hongshaorou"</span>, date(year=<span class="number">1992</span>, month=<span class="number">1</span>, day=<span class="number">1</span>))</span><br><span class="line">    print(user.age)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="keyword">not</span> find</span><br></pre></td></tr></table></figure>
-<p>这样我们就可以在查找不到的时候做一些操作。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,info=&#123;&#125;)</span>:</span></span><br><span class="line">        self.info = info</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.info[item]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    user = User(info=&#123;<span class="string">"name"</span>:<span class="string">"hongshaorou"</span>&#125;)</span><br><span class="line">    print(user.name)</span><br></pre></td></tr></table></figure>
-<p>上面代码我们虽然没有设置name属性，按时info里面有，我们通过这种操作完成了查询、</p>
-<h6 id="getattribute-是在查询任何属性的时候都调用"><a href="#getattribute-是在查询任何属性的时候都调用" class="headerlink" title="__getattribute__是在查询任何属性的时候都调用"></a><code>__getattribute__</code>是在查询任何属性的时候都调用</h6><p><code>__getattribute__</code>是非常可怕的，无论属性是否存在在查找的时候都会调用，不建议使用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, info=&#123;&#125;)</span>:</span></span><br><span class="line">        self.info = info</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hongshaorou"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    user = User(info=&#123;<span class="string">"name"</span>: <span class="string">"hongshaorou"</span>&#125;)</span><br><span class="line">    print(user.age)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">hongshaorou</span><br></pre></td></tr></table></figure>
-<h4 id="属性描述符和属性查找过程"><a href="#属性描述符和属性查找过程" class="headerlink" title="属性描述符和属性查找过程"></a>属性描述符和属性查找过程</h4><p>描述符是对多个属性运用相同存取逻辑的一种方式。例如，Django ORM 和 SQL Alchemy<br>等 ORM 中的字段类型是描述符，把数据库记录中字段里的数据与 Python 对象的属性对应<br>起来。<br>描述符是实现了特定协议的类，这个协议包括 <code>__get__</code>、<code>__set__</code> 和 <code>__delete__</code> 方<br>法。property 类实现了完整的描述符协议。通常，可以只实现部分协议。其实，我们在<br>真实的代码中见到的大多数描述符只实现了 <code>__get__</code> 和 <code>__set__</code>方法，还有很多只实现<br>了其中的一个。</p>
-<p>描述符是 Python 的独有特征，不仅在应用层中使用，在语言的基础设施中也有用到。除<br>了特性之外，使用描述符的 Python 功能还有方法及 classmethod 和 staticmethod 装饰<br>器。理解描述符是精通 Python 的关键。本章的话题就是描述符。</p>
-<p>实现了 <code>__get__</code>、<code>__set__</code> 或 <code>__delete__</code> 方法的类是描述符。描述符的用法是，创建<br>一个实例，作为另一个类的类属性。</p>
+        <h4 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h4><p>Django包括一个“信号分配器”，它帮助允许解耦应用程序在框架中其他地方发生操作时得到通知。简而言之，信号允许某些 <em>senders</em> 通知一组 <em>receivers</em> 已经发生了一些行动。当许多代码可能对同一事件感兴趣时，它们特别有用。</p>
+<p>Django提供了一些内置信号，让用户代码由Django本身通知某些操作。这些包括一些有用的通知：</p>
+<ul>
+<li><code>django.db.models.signals.pre_save</code>&amp;<code>django.db.models.signals.post_save</code><br>在模型的 save() 方法被调用之前或之后发送。</li>
+<li><code>django.db.models.signals.pre_delete</code>&amp;<code>django.db.models.signals.post_delete</code><br>在模型的 delete() 方法或查询集的 delete() 方法被调用之前或之后发送。</li>
+<li><code>django.db.models.signals.m2m_changed</code><br>模型上的 ManyToManyField 更改时发送。</li>
+<li><code>django.core.signals.request_started&amp;django.core.signals.request_finished</code><br>当Django启动或完成HTTP请求时发送。</li>
+</ul>
+<p>完整的内置信号可以参考文档：<a href="https://www.rddoc.com/doc/Django/1.10.5/zh/ref/signals/" target="_blank" rel="noopener">https://www.rddoc.com/doc/Django/1.10.5/zh/ref/signals/</a></p>
+<p>今天我们重点学习<code>pre_save</code>和<code>post_save</code>这两个内置信号。</p>
+<h5 id="pre-save"><a href="#pre-save" class="headerlink" title="pre_save"></a>pre_save</h5><p><code>django.db.models.signals.pre_save</code>  这个信号是在模型的 <code>save()</code>方法执行之前调用的。我们看看随着信号一起发送的参数：</p>
+<h6 id="sender"><a href="#sender" class="headerlink" title="sender"></a>sender</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">模型类</span><br></pre></td></tr></table></figure>
+<h6 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">正在保存的实际实例</span><br></pre></td></tr></table></figure>
+<h6 id="raw"><a href="#raw" class="headerlink" title="raw"></a>raw</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A boolean; True if the model is saved exactly as presented (i.e. when loading a fixture). One should not query/modify other records in the database as the database might not be in a consistent state yet.</span><br></pre></td></tr></table></figure>
+<h6 id="using"><a href="#using" class="headerlink" title="using"></a>using</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">正在使用的数据库别名。</span><br></pre></td></tr></table></figure>
+<h6 id="update-fields"><a href="#update-fields" class="headerlink" title="update_fields"></a>update_fields</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">要传送到 Model.save() 时要更新的字段集，如果 update_fields 未传递给 save()，则为 None。</span><br></pre></td></tr></table></figure>
+<p>实际代码输出</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.dispatch <span class="keyword">import</span> Signal, receiver</span><br><span class="line"><span class="keyword">from</span> django.db.models.signals <span class="keyword">import</span> post_save</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> PersonInfo</span><br><span class="line"></span><br><span class="line"><span class="meta">@receiver(post_save, sender=PersonInfo, dispatch_uid='zheshiyiciceshi')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_test</span><span class="params">(sender, **kwargs)</span>:</span></span><br><span class="line">    print(sender)</span><br><span class="line">    print(kwargs)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    one_person = PersonInfo.objects.get(pk=<span class="string">'77'</span>)</span><br><span class="line"></span><br><span class="line">    one_person.name = <span class="string">'小吴'</span></span><br><span class="line">    one_person.save()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">personmanage</span>.<span class="title">models</span>.<span class="title">models</span>.<span class="title">PersonInfo</span>'&gt;</span></span><br><span class="line">&#123;'signal': &lt;django.db.models.signals.ModelSignal object at 0x105c239b0&gt;, 'using': 'default', 'created': False, 'instance': &lt;PersonInfo: PersonInfo object&gt;, 'update_fields': None, 'raw': False&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们使用装饰器注册信号（稍后会学到），使用<code>sender</code>指定模型，若是不指定模型则是在任何模型调用过<code>save()</code>方法后都会调用该信号，我想这也不是我们期望的。</p>
+<h5 id="post-save"><a href="#post-save" class="headerlink" title="post_save"></a>post_save</h5><p><code>django.db.models.signals.post_save</code>  这个信号是在模型的 <code>save()</code>方法执行之后调用的。我们看看随着信号一起发送的参数：</p>
+<h6 id="sender-1"><a href="#sender-1" class="headerlink" title="sender"></a>sender</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">模型类。</span><br></pre></td></tr></table></figure>
+<h6 id="instance-1"><a href="#instance-1" class="headerlink" title="instance"></a>instance</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">正在保存的实际实例。</span><br></pre></td></tr></table></figure>
+<h6 id="created"><a href="#created" class="headerlink" title="created"></a>created</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">布尔值； True，如果创建了新记录。</span><br></pre></td></tr></table></figure>
+<h6 id="raw-1"><a href="#raw-1" class="headerlink" title="raw"></a>raw</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">布尔值； True，如果模型完全按提供的方式保存。不应该查询/修改数据库中的其他记录，因为数据库可能尚未处于一致状态。</span><br></pre></td></tr></table></figure>
+<h6 id="using-1"><a href="#using-1" class="headerlink" title="using"></a>using</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">正在使用的数据库别名。</span><br></pre></td></tr></table></figure>
+<h6 id="update-fields-1"><a href="#update-fields-1" class="headerlink" title="update_fields"></a>update_fields</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">要传送到 Model.save() 时要更新的字段集，如果 update_fields 未传递给 save()，则为 None。</span><br></pre></td></tr></table></figure>
+<p>参考文章：</p>
+<p><a href="https://www.cnblogs.com/renpingsheng/p/7566647.html" target="_blank" rel="noopener">https://www.cnblogs.com/renpingsheng/p/7566647.html</a></p>
+<p><a href="http://www.liujiangblog.com/course/django/170" target="_blank" rel="noopener">http://www.liujiangblog.com/course/django/170</a></p>
+<p><a href="https://www.rddoc.com/doc/Django/1.10.5/zh/topics/signals/" target="_blank" rel="noopener">https://www.rddoc.com/doc/Django/1.10.5/zh/topics/signals/</a></p>
 
       
     </div>
@@ -520,7 +537,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+            <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i>Django</a>
           
         </div>
       
@@ -533,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/15/Python的对象引用、可变性和垃圾回收/" rel="next" title="Python的对象引用、可变性和垃圾回收">
-                <i class="fa fa-chevron-left"></i> Python的对象引用、可变性和垃圾回收
+              <a href="/2018/06/25/配置pycharm远程代码调试/" rel="next" title="配置pycharm远程代码调试">
+                <i class="fa fa-chevron-left"></i> 配置pycharm远程代码调试
               </a>
             
           </div>
@@ -543,8 +560,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/20/Centos安装Python3/" rel="prev" title="Centos安装Python3">
-                Centos安装Python3 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/26/Django项目配置DjangoRESTFramework缓存/" rel="prev" title="Django项目配置DjangoRESTFramework缓存">
+                Django项目配置DjangoRESTFramework缓存 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -707,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#property动态属性"><span class="nav-number">1.</span> <span class="nav-text">property动态属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getattr-和-getattribute-的区别"><span class="nav-number">2.</span> <span class="nav-text">___getattr__和__getattribute__的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#getattr-是在属性查找不到的时候进行的调用"><span class="nav-number">2.0.1.</span> <span class="nav-text">___getattr__是在属性查找不到的时候进行的调用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#getattribute-是在查询任何属性的时候都调用"><span class="nav-number">2.0.2.</span> <span class="nav-text">__getattribute__是在查询任何属性的时候都调用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性描述符和属性查找过程"><span class="nav-number">3.</span> <span class="nav-text">属性描述符和属性查找过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#信号"><span class="nav-number">1.</span> <span class="nav-text">信号</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#pre-save"><span class="nav-number">1.1.</span> <span class="nav-text">pre_save</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#sender"><span class="nav-number">1.1.1.</span> <span class="nav-text">sender</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#instance"><span class="nav-number">1.1.2.</span> <span class="nav-text">instance</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#raw"><span class="nav-number">1.1.3.</span> <span class="nav-text">raw</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#using"><span class="nav-number">1.1.4.</span> <span class="nav-text">using</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#update-fields"><span class="nav-number">1.1.5.</span> <span class="nav-text">update_fields</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#post-save"><span class="nav-number">1.2.</span> <span class="nav-text">post_save</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#sender-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">sender</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#instance-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">instance</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#created"><span class="nav-number">1.2.3.</span> <span class="nav-text">created</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#raw-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">raw</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#using-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">using</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#update-fields-1"><span class="nav-number">1.2.6.</span> <span class="nav-text">update_fields</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
