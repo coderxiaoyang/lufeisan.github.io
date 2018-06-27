@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/06/26/Django项目配置DjangoRESTFramework缓存/
+https://zhaobugs.com/2018/06/27/通过DRF的throttle设置API的访问速率/
