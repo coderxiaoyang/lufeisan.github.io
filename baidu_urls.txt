@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/06/27/通过DRF的throttle设置API的访问速率/
+https://zhaobugs.com/2018/06/28/python中的迭代器和生成器/
