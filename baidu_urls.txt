@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/06/28/python中的迭代器和生成器/
+https://zhaobugs.com/2018/06/29/go基础语法-变量定义/
