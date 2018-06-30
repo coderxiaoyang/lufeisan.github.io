@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="go," />
 
 
 
@@ -81,18 +81,21 @@
 
 
 
-<meta name="description" content="如何保留小数点两位对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法 123456789101112131415161718192021In [1]: a = 1In [2]: b = 3In [3]: print(a/b)0.3333333333333333In [4]: print(a//b)0方法一：使用roundIn [5]: print(round(a/b, 2))0.33方法二">
-<meta name="keywords" content="Python">
+<meta name="description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 这两个和其他语言相同 整型1(u)int, (u)int8, (u)int16, (u)int32, (u)int64, uintptr 这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。uintptr是能存储指针">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python零散知识点">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/11/Python零散知识点/index.html">
+<meta property="og:title" content="go基础语法-内建变量类型">
+<meta property="og:url" content="https://zhaobugs.com/2018/06/30/go基础语法-内建变量类型/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="如何保留小数点两位对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法 123456789101112131415161718192021In [1]: a = 1In [2]: b = 3In [3]: print(a/b)0.3333333333333333In [4]: print(a//b)0方法一：使用roundIn [5]: print(round(a/b, 2))0.33方法二">
+<meta property="og:description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 这两个和其他语言相同 整型1(u)int, (u)int8, (u)int16, (u)int32, (u)int64, uintptr 这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。uintptr是能存储指针">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T02:34:35.404Z">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fstcsrybo3j30h606m3yv.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fstcw6ye2fj30kc07674q.jpg">
+<meta property="og:updated_time" content="2018-06-30T10:01:01.755Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python零散知识点">
-<meta name="twitter:description" content="如何保留小数点两位对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法 123456789101112131415161718192021In [1]: a = 1In [2]: b = 3In [3]: print(a/b)0.3333333333333333In [4]: print(a//b)0方法一：使用roundIn [5]: print(round(a/b, 2))0.33方法二">
+<meta name="twitter:title" content="go基础语法-内建变量类型">
+<meta name="twitter:description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 这两个和其他语言相同 整型1(u)int, (u)int8, (u)int16, (u)int32, (u)int64, uintptr 这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。uintptr是能存储指针">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fstcsrybo3j30h606m3yv.jpg">
 
 
 
@@ -122,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/11/Python零散知识点/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/06/30/go基础语法-内建变量类型/"/>
 
 
 
 
 
-  <title>Python零散知识点 | 红烧肉</title>
+  <title>go基础语法-内建变量类型 | 红烧肉</title>
   
 
 
@@ -303,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/11/Python零散知识点/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/30/go基础语法-内建变量类型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python零散知识点</h1>
+          <h1 class="post-title" itemprop="name headline">go基础语法-内建变量类型</h1>
         
 
         <div class="post-meta">
@@ -332,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T11:34:57+08:00">
-                2018-06-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-30T17:19:54+08:00">
+                2018-06-30
               </time>
             
 
@@ -355,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
                   </a>
                 </span>
 
@@ -373,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/11/Python零散知识点/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/11/Python零散知识点/" itemprop="commentCount"></span>
+                <a href="/2018/06/30/go基础语法-内建变量类型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/30/go基础语法-内建变量类型/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +385,7 @@
 
           
           
-             <span id="/2018/06/11/Python零散知识点/" class="leancloud_visitors" data-flag-title="Python零散知识点">
+             <span id="/2018/06/30/go基础语法-内建变量类型/" class="leancloud_visitors" data-flag-title="go基础语法-内建变量类型">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  125 字
+                  478 字
                 </span>
               
 
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -449,8 +452,31 @@
       
 
       
-        <h5 id="如何保留小数点两位"><a href="#如何保留小数点两位" class="headerlink" title="如何保留小数点两位"></a>如何保留小数点两位</h5><p>对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: b = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: print(a/b)</span><br><span class="line"><span class="number">0.3333333333333333</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: print(a//b)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"></span><br><span class="line">方法一：使用round</span><br><span class="line">In [<span class="number">5</span>]: print(round(a/b, <span class="number">2</span>))</span><br><span class="line"><span class="number">0.33</span></span><br><span class="line"></span><br><span class="line">方法二：使用format</span><br><span class="line">In [<span class="number">7</span>]: print(format(float(a)/float(b), <span class="string">'.2f'</span>))</span><br><span class="line"><span class="number">0.33</span></span><br><span class="line"></span><br><span class="line">方法三：使用 %</span><br><span class="line">In [<span class="number">8</span>]: print(<span class="string">'%.2f'</span> %(a/b))</span><br><span class="line"><span class="number">0.33</span></span><br></pre></td></tr></table></figure>
+        <p>这篇文章我们来学习go的内建变量类型有哪些。</p>
+<h6 id="布尔型和字符串"><a href="#布尔型和字符串" class="headerlink" title="布尔型和字符串"></a>布尔型和字符串</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span>, <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>这两个和其他语言相同</p>
+<h6 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(u)<span class="keyword">int</span>, (u)<span class="keyword">int8</span>, (u)<span class="keyword">int16</span>, (u)<span class="keyword">int32</span>, (u)<span class="keyword">int64</span>, <span class="keyword">uintptr</span></span><br></pre></td></tr></table></figure>
+<p>这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。<code>uintptr</code>是能存储指针的整型。</p>
+<h6 id="字符字节"><a href="#字符字节" class="headerlink" title="字符字节"></a>字符字节</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span>, <span class="keyword">rune</span></span><br></pre></td></tr></table></figure>
+<p><code>Go</code>语言中<code>byte</code>和<code>rune</code>实质上就是<code>uint8</code>和<code>int32</code>类型。<code>byte</code>用来强调数据是<code>raw data</code>，而不是数字；而<code>rune</code>用来表示<code>Unicode</code>的<code>code point</code>。</p>
+<p>看下规范：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint8</span>       the set of all unsigned  <span class="number">8</span>-bit integers (<span class="number">0</span> to <span class="number">255</span>)</span><br><span class="line"><span class="keyword">int32</span>       the set of all signed <span class="number">32</span>-bit integers (<span class="number">-2147483648</span> to <span class="number">2147483647</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span>        alias <span class="keyword">for</span> <span class="keyword">uint8</span></span><br><span class="line"><span class="keyword">rune</span>        alias <span class="keyword">for</span> <span class="keyword">int32</span></span><br></pre></td></tr></table></figure>
+<p>代码验证参考： <a href="https://nanxiao.me/golang-byte-rune/" target="_blank" rel="noopener">https://nanxiao.me/golang-byte-rune/</a></p>
+<h6 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float32</span>, <span class="keyword">float64</span>, <span class="keyword">complex64</span>, <span class="keyword">complex128</span></span><br></pre></td></tr></table></figure>
+<p>在go中没有单精度和双精度之分，直接指定小数的长度，后面两个代表的复数。</p>
+<h6 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h6><p>在go语言中类型转换是强制类型转换，而不是隐形类型转化。</p>
+<p>代码示例：</p>
+<p>我们求一下直角三角形的边。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fstcsrybo3j30h606m3yv.jpg" alt="image-20180630175405981"></p>
+<p>我们直接使用求平方和再开根号是不正确的（编辑器报错）这是因此<code>Sqrt</code>方法的接收参数是<code>float64</code></p>
+<p><code>Sqrt</code>方法的源码规范：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sqrt</span><span class="params">(x <span class="keyword">float64</span>)</span> <span class="title">float64</span></span></span><br></pre></td></tr></table></figure>
+<p>我们把参数强转下</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fstcw6ye2fj30kc07674q.jpg" alt="image-20180630175725133"></p>
+<p>编辑器还是报错。。。。。。</p>
+<p>这是因为<code>Sqrt</code>方法的返回值类型也是<code>float64</code>这里我们需要将结果再强转下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">triangle</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">var</span> a, b <span class="keyword">int</span> = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(<span class="keyword">float64</span>(a*a + b*b)))</span><br><span class="line">	fmt.Println(c)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	triangle()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"># 结果 </span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>文章暂时跟着慕课网教程来，未涉及到的变量类型会在以后熟悉后慢慢完善。</p>
 
       
     </div>
@@ -509,7 +535,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i>go</a>
           
         </div>
       
@@ -522,8 +548,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/09/Python的魔法函数/" rel="next" title="Python的魔法函数">
-                <i class="fa fa-chevron-left"></i> Python的魔法函数
+              <a href="/2018/06/29/go基础语法-变量定义/" rel="next" title="go基础语法-变量定义">
+                <i class="fa fa-chevron-left"></i> go基础语法-变量定义
               </a>
             
           </div>
@@ -531,10 +557,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/11/深入理解Python类和对象/" rel="prev" title="深入理解Python类和对象">
-                深入理解Python类和对象 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -696,7 +718,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何保留小数点两位"><span class="nav-number">1.</span> <span class="nav-text">如何保留小数点两位</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#布尔型和字符串"><span class="nav-number">1.</span> <span class="nav-text">布尔型和字符串</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#整型"><span class="nav-number">2.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#字符字节"><span class="nav-number">3.</span> <span class="nav-text">字符字节</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浮点型"><span class="nav-number">4.</span> <span class="nav-text">浮点型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#强制类型转换"><span class="nav-number">5.</span> <span class="nav-text">强制类型转换</span></a></li></ol></div>
             
 
           </div>
