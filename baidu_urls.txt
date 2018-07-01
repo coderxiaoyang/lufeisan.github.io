@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/06/30/go基础语法-内建变量类型/
+https://zhaobugs.com/2018/07/01/常量与枚举/
