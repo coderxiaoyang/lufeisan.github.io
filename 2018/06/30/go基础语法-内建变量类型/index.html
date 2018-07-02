@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 这两个和其他语言相同 整型1(u)int, (u)int8, (u)int16, (u)int32, (u)int64, uintptr 这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。uintptr是能存储指针">
+<meta name="description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 关键词 bool 用于定义 boolean类型变量，boolean 类型变量的取值只有 true 和 false, 零值(默认值)为 false。 golang 不允许把 boolean 类型转变为数字类型。  goalng 使用 UTF-8作为编码结合，使用 “ 或者 包裹起来的字符就是一个 string 定">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go基础语法-内建变量类型">
 <meta property="og:url" content="https://zhaobugs.com/2018/06/30/go基础语法-内建变量类型/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 这两个和其他语言相同 整型1(u)int, (u)int8, (u)int16, (u)int32, (u)int64, uintptr 这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。uintptr是能存储指针">
+<meta property="og:description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 关键词 bool 用于定义 boolean类型变量，boolean 类型变量的取值只有 true 和 false, 零值(默认值)为 false。 golang 不允许把 boolean 类型转变为数字类型。  goalng 使用 UTF-8作为编码结合，使用 “ 或者 包裹起来的字符就是一个 string 定">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fstcsrybo3j30h606m3yv.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fstcw6ye2fj30kc07674q.jpg">
-<meta property="og:updated_time" content="2018-06-30T10:01:01.755Z">
+<meta property="og:updated_time" content="2018-07-02T09:57:16.377Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go基础语法-内建变量类型">
-<meta name="twitter:description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 这两个和其他语言相同 整型1(u)int, (u)int8, (u)int16, (u)int32, (u)int64, uintptr 这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。uintptr是能存储指针">
+<meta name="twitter:description" content="这篇文章我们来学习go的内建变量类型有哪些。 布尔型和字符串1bool, string 关键词 bool 用于定义 boolean类型变量，boolean 类型变量的取值只有 true 和 false, 零值(默认值)为 false。 golang 不允许把 boolean 类型转变为数字类型。  goalng 使用 UTF-8作为编码结合，使用 “ 或者 包裹起来的字符就是一个 string 定">
 <meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fstcsrybo3j30h606m3yv.jpg">
 
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  478 字
+                  813 字
                 </span>
               
 
@@ -431,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -454,9 +454,33 @@
       
         <p>这篇文章我们来学习go的内建变量类型有哪些。</p>
 <h6 id="布尔型和字符串"><a href="#布尔型和字符串" class="headerlink" title="布尔型和字符串"></a>布尔型和字符串</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span>, <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
-<p>这两个和其他语言相同</p>
+<p>关键词 <code>bool</code> 用于定义 boolean类型变量，boolean 类型变量的取值只有 <code>true</code> 和 <code>false</code>, 零值(默认值)为 <code>false</code>。 golang 不允许把 boolean 类型转变为数字类型。</p>
+<blockquote>
+<p>goalng 使用 UTF-8作为编码结合，使用 “ 或者 <code>包裹起来的字符就是一个 string</code> 定义多行字符串</p>
+</blockquote>
+<blockquote>
+<p>string 对象不允许改变值(但是可以给重新赋值)，下面的语法错误</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">"hello"</span></span><br><span class="line">s[<span class="number">0</span>] = <span class="string">'c'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果要改变一个变量的值，需要使用旧的变量创建</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s := <span class="string">"heloo"</span></span><br><span class="line">c := <span class="keyword">byte</span>(s) <span class="comment">//string 转换为[]byte 类型</span></span><br><span class="line">c[<span class="number">0</span>] = <span class="string">'c'</span></span><br><span class="line">s2 := <span class="keyword">string</span>(c) <span class="comment">//把 c []byte 转为 string</span></span><br><span class="line">fmt.Printf(<span class="string">"%s\s\n"</span>, s2)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>+</code> 可以用来拼接两个字符串</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s := <span class="string">"hello, "</span></span><br><span class="line">m := <span class="string">"world"</span></span><br><span class="line">a := s + m</span><br><span class="line">fmt.Printf(<span class="string">"%s\n"</span>, a)</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出 "cello, "</span></span><br><span class="line">s = <span class="string">"c"</span> + s[<span class="number">1</span>:] <span class="comment">//返回 "c" + s从索引1到结束的字符串拼接</span></span><br></pre></td></tr></table></figure>
+<p>这点和Python语法相同</p>
+<h6 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h6><p>该错误类型为go内置的 其他语言没有的</p>
+<blockquote>
+<p>golang没有 try-catch 语句块处理异常，内置了 error 类型用于处理错误</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">err := errors.New(&quot;some error messaage&quot;)</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    //TODO something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h6 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(u)<span class="keyword">int</span>, (u)<span class="keyword">int8</span>, (u)<span class="keyword">int16</span>, (u)<span class="keyword">int32</span>, (u)<span class="keyword">int64</span>, <span class="keyword">uintptr</span></span><br></pre></td></tr></table></figure>
-<p>这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位系统就是32的。<code>uintptr</code>是能存储指针的整型。</p>
+<p>这里的整型又分有符号整数(不加u)和无符号整数(加u)，我们同时也可以指定整型的长度，当没有指定长度时候会根据操作系统指定来，32位操作系统是32位，64位操作系统是64位。<code>uintptr</code>是能存储指针的整型。</p>
+<blockquote>
+<p>golang 不允许类型不同的变量进行运算，例如 int8类型的变量和 int32类型的变量不能进行加法操作</p>
+</blockquote>
 <h6 id="字符字节"><a href="#字符字节" class="headerlink" title="字符字节"></a>字符字节</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span>, <span class="keyword">rune</span></span><br></pre></td></tr></table></figure>
 <p><code>Go</code>语言中<code>byte</code>和<code>rune</code>实质上就是<code>uint8</code>和<code>int32</code>类型。<code>byte</code>用来强调数据是<code>raw data</code>，而不是数字；而<code>rune</code>用来表示<code>Unicode</code>的<code>code point</code>。</p>
 <p>看下规范：</p>
@@ -464,6 +488,9 @@
 <p>代码验证参考： <a href="https://nanxiao.me/golang-byte-rune/" target="_blank" rel="noopener">https://nanxiao.me/golang-byte-rune/</a></p>
 <h6 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float32</span>, <span class="keyword">float64</span>, <span class="keyword">complex64</span>, <span class="keyword">complex128</span></span><br></pre></td></tr></table></figure>
 <p>在go中没有单精度和双精度之分，直接指定小数的长度，后面两个代表的复数。</p>
+<blockquote>
+<p>注意没有 float 这个类型</p>
+</blockquote>
 <h6 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h6><p>在go语言中类型转换是强制类型转换，而不是隐形类型转化。</p>
 <p>代码示例：</p>
 <p>我们求一下直角三角形的边。</p>
@@ -558,8 +585,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/01/常量与枚举/" rel="prev" title="常量与枚举">
-                常量与枚举 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/01/常量与枚举/" rel="prev" title="go基础语法-常量与枚举">
+                go基础语法-常量与枚举 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -644,7 +671,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -722,7 +749,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#布尔型和字符串"><span class="nav-number">1.</span> <span class="nav-text">布尔型和字符串</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#整型"><span class="nav-number">2.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#字符字节"><span class="nav-number">3.</span> <span class="nav-text">字符字节</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浮点型"><span class="nav-number">4.</span> <span class="nav-text">浮点型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#强制类型转换"><span class="nav-number">5.</span> <span class="nav-text">强制类型转换</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#布尔型和字符串"><span class="nav-number">1.</span> <span class="nav-text">布尔型和字符串</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Error"><span class="nav-number">2.</span> <span class="nav-text">Error</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#整型"><span class="nav-number">3.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#字符字节"><span class="nav-number">4.</span> <span class="nav-text">字符字节</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浮点型"><span class="nav-number">5.</span> <span class="nav-text">浮点型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#强制类型转换"><span class="nav-number">6.</span> <span class="nav-text">强制类型转换</span></a></li></ol></div>
             
 
           </div>

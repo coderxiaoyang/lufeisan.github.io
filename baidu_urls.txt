@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/07/01/常量与枚举/
+https://zhaobugs.com/2018/07/02/go基础语法-条件语句/

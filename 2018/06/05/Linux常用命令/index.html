@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="##常见Linux简单汇总 #####防火墙相关命令： 12345678910111213查看状态： firewall-cmd --state开启：service firewall start关闭：service firewall stop重启：service firewall restart端口管理开启端口：firewall-cmd --permanent --add-port=8080-808">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T02:33:46.093Z">
+<meta property="og:updated_time" content="2018-07-02T02:15:34.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux常用命令">
 <meta name="twitter:description" content="##常见Linux简单汇总 #####防火墙相关命令： 12345678910111213查看状态： firewall-cmd --state开启：service firewall start关闭：service firewall stop重启：service firewall restart端口管理开启端口：firewall-cmd --permanent --add-port=8080-808">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  146 字
+                  173 字
                 </span>
               
 
@@ -452,6 +452,8 @@
         <p>##常见Linux简单汇总</p>
 <p>#####防火墙相关命令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">查看状态： firewall-cmd --state</span><br><span class="line">开启：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启：service firewall restart</span><br><span class="line"></span><br><span class="line">端口管理</span><br><span class="line">开启端口：firewall-cmd --permanent --add-port=8080-8085/tcp</span><br><span class="line">重新加载：firewall-cmd --reload</span><br><span class="line">查看防火墙开放端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看服务：firewall-cmd --permanent --list-services</span><br><span class="line">移除端口：firewall-cmd --permanent --remove-port=8080-8085/tcp</span><br><span class="line"></span><br><span class="line">注意：我们开放的是一个端口段 我们删的时候也要同时删除端口段 单独删除一个端口会失败</span><br></pre></td></tr></table></figure>
+<h5 id="目录文件大小统计-du"><a href="#目录文件大小统计-du" class="headerlink" title="目录文件大小统计 du"></a>目录文件大小统计 du</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -h --max-depth=1</span><br></pre></td></tr></table></figure>
+<p>参考文章：<a href="https://blog.csdn.net/ouyang_peng/article/details/10414499" target="_blank" rel="noopener">https://blog.csdn.net/ouyang_peng/article/details/10414499</a></p>
 
       
     </div>
@@ -590,8 +592,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -610,7 +621,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -678,6 +689,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#目录文件大小统计-du"><span class="nav-number">1.</span> <span class="nav-text">目录文件大小统计 du</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
