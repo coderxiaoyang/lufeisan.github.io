@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Docker," />
+  <meta name="keywords" content="go," />
 
 
 
@@ -81,22 +81,18 @@
 
 
 
-<meta name="description" content="Docker 虚拟机架构 Docker创建的所有虚拟实例共用同一个Linux内核，对硬件占用较小，属于轻量级虚拟机。 PaaS：在Docker中安装了一些软件 SaaS：安装好系统的容器 Docker镜像与容器 容器是可运行的，镜像是不可运行的。 Centos安装Docker更新yum再安装Docker 12yum -y updateyum install docker -y 管理Docker虚拟">
-<meta name="keywords" content="Docker">
+<meta name="description" content="这一小节我们看看go语言中的常量。 常量的含义常量是指变量一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。 常量的定义定义语法和变量类似 12const constantName = valuecosnt constantName constantType = value 看个小🌰 12345678">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker学习笔记">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/05/Docker学习笔记/index.html">
+<meta property="og:title" content="go基础语法-常量与枚举">
+<meta property="og:url" content="https://zhaobugs.com/2018/07/01/go基础语法-常量与枚举/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="Docker 虚拟机架构 Docker创建的所有虚拟实例共用同一个Linux内核，对硬件占用较小，属于轻量级虚拟机。 PaaS：在Docker中安装了一些软件 SaaS：安装好系统的容器 Docker镜像与容器 容器是可运行的，镜像是不可运行的。 Centos安装Docker更新yum再安装Docker 12yum -y updateyum install docker -y 管理Docker虚拟">
+<meta property="og:description" content="这一小节我们看看go语言中的常量。 常量的含义常量是指变量一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。 常量的定义定义语法和变量类似 12const constantName = valuecosnt constantName constantType = value 看个小🌰 12345678">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fs0o3ktfe9j30lu0g2n09.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fs0oel0v3sj319g0jydsn.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fs0oqtyhhgj31ee0nadot.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:33:32.740Z">
+<meta property="og:updated_time" content="2018-07-03T00:07:02.732Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Docker学习笔记">
-<meta name="twitter:description" content="Docker 虚拟机架构 Docker创建的所有虚拟实例共用同一个Linux内核，对硬件占用较小，属于轻量级虚拟机。 PaaS：在Docker中安装了一些软件 SaaS：安装好系统的容器 Docker镜像与容器 容器是可运行的，镜像是不可运行的。 Centos安装Docker更新yum再安装Docker 12yum -y updateyum install docker -y 管理Docker虚拟">
-<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fs0o3ktfe9j30lu0g2n09.jpg">
+<meta name="twitter:title" content="go基础语法-常量与枚举">
+<meta name="twitter:description" content="这一小节我们看看go语言中的常量。 常量的含义常量是指变量一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。 常量的定义定义语法和变量类似 12const constantName = valuecosnt constantName constantType = value 看个小🌰 12345678">
 
 
 
@@ -126,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/05/Docker学习笔记/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/07/01/go基础语法-常量与枚举/"/>
 
 
 
 
 
-  <title>Docker学习笔记 | 红烧肉</title>
+  <title>go基础语法-常量与枚举 | 红烧肉</title>
   
 
 
@@ -307,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/05/Docker学习笔记/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/01/go基础语法-常量与枚举/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -324,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Docker学习笔记</h1>
+          <h1 class="post-title" itemprop="name headline">go基础语法-常量与枚举</h1>
         
 
         <div class="post-meta">
@@ -336,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T22:22:44+08:00">
-                2018-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T22:33:25+08:00">
+                2018-07-01
               </time>
             
 
@@ -359,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
                   </a>
                 </span>
 
@@ -377,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/05/Docker学习笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/05/Docker学习笔记/" itemprop="commentCount"></span>
+                <a href="/2018/07/01/go基础语法-常量与枚举/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/01/go基础语法-常量与枚举/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -386,7 +382,7 @@
 
           
           
-             <span id="/2018/06/05/Docker学习笔记/" class="leancloud_visitors" data-flag-title="Docker学习笔记">
+             <span id="/2018/07/01/go基础语法-常量与枚举/" class="leancloud_visitors" data-flag-title="go基础语法-常量与枚举">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -416,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  913 字
+                  824 字
                 </span>
               
 
@@ -453,44 +449,34 @@
       
 
       
-        <h4 id="Docker-虚拟机架构"><a href="#Docker-虚拟机架构" class="headerlink" title="Docker 虚拟机架构"></a>Docker 虚拟机架构</h4><p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fs0o3ktfe9j30lu0g2n09.jpg" alt="image-20180605222341407"></p>
-<p>Docker创建的所有虚拟实例共用同一个Linux内核，对硬件占用较小，属于轻量级虚拟机。</p>
-<p>PaaS：在Docker中安装了一些软件</p>
-<p>SaaS：安装好系统的容器</p>
-<h4 id="Docker镜像与容器"><a href="#Docker镜像与容器" class="headerlink" title="Docker镜像与容器"></a>Docker镜像与容器</h4><p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fs0oel0v3sj319g0jydsn.jpg" alt="image-20180605223418184"></p>
-<p>容器是可运行的，镜像是不可运行的。</p>
-<h4 id="Centos安装Docker"><a href="#Centos安装Docker" class="headerlink" title="Centos安装Docker"></a>Centos安装Docker</h4><p>更新yum再安装Docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install docker -y</span><br></pre></td></tr></table></figure>
-<p>管理Docker虚拟机</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">启动：service docker start</span><br><span class="line">关闭：service docker stop</span><br><span class="line">重启：service docker restart</span><br></pre></td></tr></table></figure>
-<h4 id="Docker虚拟机管理命令"><a href="#Docker虚拟机管理命令" class="headerlink" title="Docker虚拟机管理命令"></a>Docker虚拟机管理命令</h4><p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fs0oqtyhhgj31ee0nadot.jpg" alt="image-20180605224603596"></p>
-<h4 id="在线安装镜像"><a href="#在线安装镜像" class="headerlink" title="在线安装镜像"></a>在线安装镜像</h4><p>我们可以使用search命令搜索镜像然后拉取安装，不过国外镜像下载速度慢，建议使用国内镜像仓库，如DaoCloud。</p>
-<p>下面我们配置加速器：</p>
-<p>在DaoCloud官网注册找到加速器页面获得指令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://7af8d782.m.daocloud.io</span><br><span class="line">docker version &gt;= 1.12</span><br><span class="line">&#123;"registry-mirrors": ["http://7af8d782.m.daocloud.io"],&#125;</span><br><span class="line">Success.</span><br><span class="line">You need to restart docker to take effect: sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<p>执行的结果是在/etc/docker下增加了一个配置文件，不过多了一个 <code>,</code>，我们编辑文件将其删除。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
-<p>修改之后我们的加速器就生效了，现在我们搜索一个关于java的镜像将其从镜像源拉取下来。</p>
-<p>搜索：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker search java</span><br><span class="line">INDEX       NAME                                                   DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED</span><br><span class="line">docker.io   docker.io/node                                         Node.js is a JavaScript-based platform for...   5656      [OK]       </span><br><span class="line">docker.io   docker.io/tomcat                                       Apache Tomcat is an open source implementa...   1868      [OK]       </span><br><span class="line">docker.io   docker.io/java                                         Java is a concurrent, class-based, and obj...   1729      [OK]       </span><br><span class="line">docker.io   docker.io/openjdk                                      OpenJDK is an open-source implementation o...   990</span><br></pre></td></tr></table></figure>
-<p>拉取指定的镜像：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker pull docker.io/java</span><br><span class="line">Using default tag: latest</span><br><span class="line">Trying to pull repository docker.io/library/java ... </span><br><span class="line">latest: Pulling from docker.io/library/java</span><br><span class="line">5040bd298390: Pull complete </span><br><span class="line">fce5728aad85: Pull complete </span><br><span class="line">76610ec20bf5: Pull complete </span><br><span class="line">60170fec2151: Pull complete </span><br><span class="line">e98f73de8f0d: Pull complete </span><br><span class="line">11f7af24ed9c: Pull complete </span><br><span class="line">49e2d6393f32: Pull complete </span><br><span class="line">bb9cdec9c7f3: Pull complete </span><br><span class="line">Digest: sha256:c1ff613e8ba25833d2e1940da0940c3824f03f802c449f3d1815a66b7f8c0e9d</span><br><span class="line">Status: Downloaded newer image for docker.io/java:latest</span><br></pre></td></tr></table></figure>
-<p>查看有哪些镜像：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">docker.io/java      latest              d23bdf5b1b1b        16 months ago       643 MB</span><br></pre></td></tr></table></figure>
-<h4 id="导出导入镜像"><a href="#导出导入镜像" class="headerlink" title="导出导入镜像"></a>导出导入镜像</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">导出镜像：docker save docker.io/java &gt; /home/java.tar.gz</span><br><span class="line">导入镜像：docker load &lt; /home/java.tar.gz</span><br><span class="line">删除镜像：docker rmi java</span><br></pre></td></tr></table></figure>
-<h4 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h4><p>启动镜像会创建一个运行状态的容器</p>
-<h5 id="启动容器并给容器命名："><a href="#启动容器并给容器命名：" class="headerlink" title="启动容器并给容器命名："></a>启动容器并给容器命名：</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker run -it --name myjava docker.io/java bash</span><br><span class="line">root@ad433732991b:/# </span><br><span class="line">-it：启动容器后开启交互界面</span><br><span class="line">--name：给容器起一个名字</span><br><span class="line">bash：表示执行bash命令</span><br></pre></td></tr></table></figure>
-<h5 id="启动容器并映射端口"><a href="#启动容器并映射端口" class="headerlink" title="启动容器并映射端口"></a>启动容器并映射端口</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker run -it --name myjava -p 9000:8080 -p 9001:8085 docker.io/java bash</span><br><span class="line">root@6ffaf7b23ce8:/# </span><br><span class="line">-p：表示开启端口映射 将宿主机的9000映射到docker主机的8085 有多个端口映射就要有多个 -p</span><br></pre></td></tr></table></figure>
-<h5 id="启动容器并映射目录"><a href="#启动容器并映射目录" class="headerlink" title="启动容器并映射目录"></a>启动容器并映射目录</h5><p>数据一定要在容器之外保存</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker run -it --name myjava -v /home/project:/soft --privileged java bash</span><br><span class="line">-v：表示开启目录映射 将宿主机文件映射到docker主机</span><br><span class="line">--privileged：表示映射到docker的时候权限是最高的</span><br></pre></td></tr></table></figure>
-<h4 id="暂停和停止容器"><a href="#暂停和停止容器" class="headerlink" title="暂停和停止容器"></a>暂停和停止容器</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">暂停容器：[root@hongshaorou ~]# docker pause myjava</span><br><span class="line">恢复容器：[root@hongshaorou ~]# docker unpause myjava</span><br><span class="line">停止容器：[root@hongshaorou ~]# docker stop myjava</span><br><span class="line">启动容器：[root@hongshaorou ~]# docker start -i myjava</span><br></pre></td></tr></table></figure>
-<p>我们在容器shell中直接执行exit相当于stop容器。</p>
-<h4 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h4><p>删除容器之前我们要彻底停止容器</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker stop myjava</span><br></pre></td></tr></table></figure>
-<p>删除</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker rm myjava</span><br><span class="line">myjava</span><br></pre></td></tr></table></figure>
-<p>查看还有哪些容器</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES</span><br><span class="line">6ffaf7b23ce8        docker.io/java      "bash"              14 minutes ago      Exited (0) 5 minutes ago                       myjava2</span><br></pre></td></tr></table></figure>
+        <p>这一小节我们看看go语言中的常量。</p>
+<h6 id="常量的含义"><a href="#常量的含义" class="headerlink" title="常量的含义"></a>常量的含义</h6><p>常量是指变量一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。</p>
+<h6 id="常量的定义"><a href="#常量的定义" class="headerlink" title="常量的定义"></a>常量的定义</h6><p>定义语法和变量类似</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> constantName = value</span><br><span class="line">cosnt constantName constantType = value</span><br></pre></td></tr></table></figure>
+<p>看个小🌰</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consts</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">const</span> filename <span class="keyword">string</span> = <span class="string">"abc.txt"</span></span><br><span class="line">	<span class="keyword">const</span> a, b = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(a*a + b*b))</span><br><span class="line">	fmt.Println(filename, c)</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	consts()</span><br><span class="line">&#125;</span><br><span class="line"># 输出</span><br><span class="line">abc.txt <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>在常量定义中我们可以指定常量类型 也可以不指定，当不指定的时候 值会作为各种类型使用 会根据需要进行一定自动转换，如上面的函数会自动将 a和b转为float64类型。</p>
+<p>常量可以定义在包内的，这样就所有的函数就能使用。</p>
+<h6 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h6><p>我们可以使用 const生成普通的枚举</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		cpp    = <span class="number">0</span></span><br><span class="line">		java   = <span class="number">1</span></span><br><span class="line">		python = <span class="number">2</span></span><br><span class="line">		golang = <span class="number">3</span></span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	fmt.Println(cpp, java, python, golang)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	enums()</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以使用 <code>iota</code>进行简化，生成自增枚举</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">const</span> (</span><br><span class="line">      cpp    = <span class="literal">iota</span></span><br><span class="line">      _</span><br><span class="line">      python </span><br><span class="line">      golang</span><br><span class="line">      javascriptt</span><br><span class="line">   )</span><br><span class="line"></span><br><span class="line">   fmt.Println(cpp, javascriptt, python, golang)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   enums()</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"># 结果</span><br><span class="line"><span class="number">0</span> <span class="number">4</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>这里有的同学看到了<code>_</code>这个和Python中的类似是一个特殊的变量。</p>
+<blockquote>
+<p>变量 <code>_</code> 用来抛弃忽略某个值，golang 中不允许存在没有使用的变量</p>
+</blockquote>
+<p>使用<code>iota</code>可以实现更加复杂的运算</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span>(</span><br><span class="line">		b = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">		kb</span><br><span class="line">		mb</span><br><span class="line">		gb</span><br><span class="line">		tb</span><br><span class="line">		pb </span><br><span class="line">	)</span><br><span class="line">	fmt.Println(b, kb, mb, gb, tb, pb)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	enums()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 结果</span><br><span class="line"><span class="number">1</span> <span class="number">1024</span> <span class="number">1048576</span> <span class="number">1073741824</span> <span class="number">1099511627776</span> <span class="number">1125899906842624</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关键字 iota 可以生成枚举类型，枚举值从0开始，每次加1</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line">        <span class="comment">//x == 0</span></span><br><span class="line">        x = <span class="literal">iota</span></span><br><span class="line">        <span class="comment">//y == 1</span></span><br><span class="line">        y = <span class="literal">iota</span> </span><br><span class="line">        <span class="comment">//z == 2</span></span><br><span class="line">        z = <span class="literal">iota</span> </span><br><span class="line">        <span class="comment">//如果常量名称后面没有任何表达式</span></span><br><span class="line">        <span class="comment">//则 w 等价于 w = iota, w == 3</span></span><br><span class="line">        w</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">const</span> v = <span class="literal">iota</span> <span class="comment">//v == 0</span></span><br><span class="line">    <span class="comment">//PS 注意在同一行时的 iota 特殊情况</span></span><br><span class="line">    <span class="keyword">const</span>(</span><br><span class="line">        <span class="comment">//如果 iota 在同一行，则 e == f == g == 0</span></span><br><span class="line">        e, f, g = <span class="literal">iota</span>, <span class="literal">iota</span>, <span class="literal">iota</span> </span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<h6 id="变量、常量、函数的可见性"><a href="#变量、常量、函数的可见性" class="headerlink" title="变量、常量、函数的可见性"></a>变量、常量、函数的可见性</h6><ul>
+<li>任何以大写字母开头的变量都是可以被导出的，即在包外能被访问</li>
+<li>函数或者常量大写字母开头的，也是可以被导出的，包外可以访问的</li>
+<li>golang 中没有 public 或者 private 来控制变量函数常量等的可见性，通过变量函数常量的名称的首字母是否大小写来判断</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test</span><br><span class="line"><span class="comment">//Foo 在包 test 之外可以通过 test.Foo 访问</span></span><br><span class="line"><span class="keyword">var</span> Foo</span><br><span class="line"><span class="comment">//bar 在包 test 之外通过 test.bar 访问是错误的，因为它的首字母是小写，包外不可见</span></span><br><span class="line"><span class="keyword">var</span> bar</span><br><span class="line"><span class="comment">//函数在test 包外可以使用 test.Test1()访问</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test1</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//函数在 test 包外不可以通过 test.test2()访问，只可以在包内使用</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test2</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//包外使用 test.I访问</span></span><br><span class="line">Const I = <span class="number">1</span></span><br><span class="line"><span class="comment">// j 不可以在包外通过 test.j 访问</span></span><br><span class="line">cont j = <span class="number">10</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -549,7 +535,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i>go</a>
           
         </div>
       
@@ -562,8 +548,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/05/Linux常用命令/" rel="next" title="Linux常用命令">
-                <i class="fa fa-chevron-left"></i> Linux常用命令
+              <a href="/2018/06/30/go基础语法-内建变量类型/" rel="next" title="go基础语法-内建变量类型">
+                <i class="fa fa-chevron-left"></i> go基础语法-内建变量类型
               </a>
             
           </div>
@@ -572,8 +558,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/06/Docker搭建PXC集群/" rel="prev" title="Docker搭建PXC集群">
-                Docker搭建PXC集群 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/02/go基础语法-条件语句/" rel="prev" title="go基础语法-条件语句">
+                go基础语法-条件语句 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -736,7 +722,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-虚拟机架构"><span class="nav-number">1.</span> <span class="nav-text">Docker 虚拟机架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker镜像与容器"><span class="nav-number">2.</span> <span class="nav-text">Docker镜像与容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Centos安装Docker"><span class="nav-number">3.</span> <span class="nav-text">Centos安装Docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker虚拟机管理命令"><span class="nav-number">4.</span> <span class="nav-text">Docker虚拟机管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在线安装镜像"><span class="nav-number">5.</span> <span class="nav-text">在线安装镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出导入镜像"><span class="nav-number">6.</span> <span class="nav-text">导出导入镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动容器"><span class="nav-number">7.</span> <span class="nav-text">启动容器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动容器并给容器命名："><span class="nav-number">7.1.</span> <span class="nav-text">启动容器并给容器命名：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动容器并映射端口"><span class="nav-number">7.2.</span> <span class="nav-text">启动容器并映射端口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动容器并映射目录"><span class="nav-number">7.3.</span> <span class="nav-text">启动容器并映射目录</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#暂停和停止容器"><span class="nav-number">8.</span> <span class="nav-text">暂停和停止容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除容器"><span class="nav-number">9.</span> <span class="nav-text">删除容器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#常量的含义"><span class="nav-number">1.</span> <span class="nav-text">常量的含义</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#常量的定义"><span class="nav-number">2.</span> <span class="nav-text">常量的定义</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#枚举"><span class="nav-number">3.</span> <span class="nav-text">枚举</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#变量、常量、函数的可见性"><span class="nav-number">4.</span> <span class="nav-text">变量、常量、函数的可见性</span></a></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="go," />
 
 
 
@@ -81,17 +81,18 @@
 
 
 
-<meta name="description" content="小码农一只">
+<meta name="description" content="这一小节我们学习下go语言中的逻辑控制语句—条件语句。 if语句我们先看下一个小栗子： 12345678910func bounded(v int) int &amp;#123;	if v &amp;gt; 100 &amp;#123;		return 100	&amp;#125; else if v &amp;lt; 0 &amp;#123;		return 0	&amp;#125; else &amp;#123;		return v	&amp;#125;&amp;#125">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go基础语法-条件语句">
 <meta property="og:url" content="https://zhaobugs.com/2018/07/02/go基础语法-条件语句/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="这一小节我们学习下go语言中的逻辑控制语句—条件语句。 if语句我们先看下一个小栗子： 12345678910func bounded(v int) int &amp;#123;	if v &amp;gt; 100 &amp;#123;		return 100	&amp;#125; else if v &amp;lt; 0 &amp;#123;		return 0	&amp;#125; else &amp;#123;		return v	&amp;#125;&amp;#125">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-02T14:15:20.232Z">
+<meta property="og:updated_time" content="2018-07-03T02:32:37.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go基础语法-条件语句">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:description" content="这一小节我们学习下go语言中的逻辑控制语句—条件语句。 if语句我们先看下一个小栗子： 12345678910func bounded(v int) int &amp;#123;	if v &amp;gt; 100 &amp;#123;		return 100	&amp;#125; else if v &amp;lt; 0 &amp;#123;		return 0	&amp;#125; else &amp;#123;		return v	&amp;#125;&amp;#125">
 
 
 
@@ -342,6 +343,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -389,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  665 字
                 </span>
               
 
@@ -405,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -426,7 +449,31 @@
       
 
       
-        
+        <p>这一小节我们学习下go语言中的逻辑控制语句—条件语句。</p>
+<h6 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h6><p>我们先看下一个小栗子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bounded</span><span class="params">(v <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> v &gt; <span class="number">100</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">100</span></span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> v &lt; <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> v</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>go语言和大多语言一样是通过大括号来进行代码块区分，这个和Python通过代码缩进有所不同。我们还能看到一点就是<code>if</code>语句判断条件是没有加小括号的，这点和Python一样。</p>
+<p>我们再看个🌰：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">const</span> filename = <span class="string">"abc.txt"</span></span><br><span class="line">	contents, err := ioutil.ReadFile(filename)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"%s\n"</span>, contents)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"># 输出</span><br><span class="line">open abc.txt: no such file or directory</span><br><span class="line"></span><br><span class="line"># 新增文件之后输出</span><br><span class="line">abc</span><br><span class="line"><span class="number">123</span></span><br><span class="line"><span class="number">456</span></span><br><span class="line">abc</span><br></pre></td></tr></table></figure>
+<p>go语言的if语句还能使用<code>;</code>处理简化</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">const</span> filename = <span class="string">"abc.txt"</span></span><br><span class="line">	<span class="keyword">if</span> contents, err := ioutil.ReadFile(filename); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"%s\n"</span>, contents)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 在这类if语句中定义的变量 出了if语句就无法访问了</span></span><br><span class="line">	<span class="comment">//fmt.Println(contents)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们从上面代码块中看到:</p>
+<blockquote>
+<p>if的条件里可以赋值</p>
+</blockquote>
+<blockquote>
+<p>if的条件里赋值的变量作用域就在这个if语句里</p>
+</blockquote>
+<h6 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h6><p>我们先看一个小语句</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">eval</span><span class="params">(a, b <span class="keyword">int</span>, op <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> result <span class="keyword">int</span></span><br><span class="line">    # 这里后面跟上要判断的</span><br><span class="line">	<span class="keyword">switch</span> op &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"+"</span>:</span><br><span class="line">		result = a + b</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"-"</span>:</span><br><span class="line">		result = a - b</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"*"</span>:</span><br><span class="line">		result = a * b</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"/"</span>:</span><br><span class="line">		result = a / b</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"unsupported operator:"</span> + op)</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> result</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以发现上面的代码是不存在<code>break</code>，这是因为switch会自动<code>break</code>，除非使用<code>fallthrough</code>来阻止<code>break</code>。</p>
+<blockquote>
+<p>panic 是代码异常 直接阻止运行</p>
+</blockquote>
+<p>我们再看看另一种类型 </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">grade</span><span class="params">(score <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	g := <span class="string">""</span></span><br><span class="line">	<span class="keyword">switch</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> score &lt; <span class="number">60</span>:</span><br><span class="line">		g = <span class="string">"F"</span></span><br><span class="line">	<span class="keyword">case</span> score &lt; <span class="number">80</span>:</span><br><span class="line">		g = <span class="string">"C"</span></span><br><span class="line">	<span class="keyword">case</span> score &lt; <span class="number">90</span>:</span><br><span class="line">		g = <span class="string">"B"</span></span><br><span class="line">	<span class="keyword">case</span> score &lt; <span class="number">100</span>:</span><br><span class="line">		g = <span class="string">"A"</span></span><br><span class="line">	<span class="keyword">case</span> score &lt; <span class="number">0</span> || score &gt; <span class="number">100</span>:</span><br><span class="line">		<span class="built_in">panic</span>(fmt.Sprintf(</span><br><span class="line">			<span class="string">"Wrong score: %d"</span>, score))</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> g</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(</span><br><span class="line">		grade(<span class="number">1</span>),</span><br><span class="line">		grade(<span class="number">67</span>),</span><br><span class="line">		grade(<span class="number">81</span>),</span><br><span class="line">		grade(<span class="number">91</span>),</span><br><span class="line">		grade(<span class="number">10</span>),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 输出 </span><br><span class="line">F C B A F</span><br><span class="line"></span><br><span class="line"># 当存在错误值时候</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(</span><br><span class="line">		grade(<span class="number">1</span>),</span><br><span class="line">		grade(<span class="number">67</span>),</span><br><span class="line">		grade(<span class="number">81</span>),</span><br><span class="line">		grade(<span class="number">91</span>),</span><br><span class="line">		grade(<span class="number">110</span>),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"># 输出</span><br><span class="line"><span class="built_in">panic</span>: Wrong score: <span class="number">110</span></span><br><span class="line"></span><br><span class="line">goroutine <span class="number">1</span> [running]:</span><br><span class="line">main.grade(<span class="number">0x6e</span>, <span class="number">0x10c5f</span>b8, <span class="number">0x1</span>)</span><br><span class="line">	/Downloads/learngo/branch.<span class="keyword">go</span>:<span class="number">37</span> +<span class="number">0x153</span></span><br><span class="line">main.main()</span><br><span class="line">	/Downloads/learngo/branch.<span class="keyword">go</span>:<span class="number">53</span> +<span class="number">0xc0</span></span><br></pre></td></tr></table></figure>
+<p>我们可以在<code>switch</code>语句后面不加表达式，把判断语句加到<code>case</code>语句上。</p>
+
       
     </div>
     
@@ -482,6 +529,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i>go</a>
+          
+        </div>
+      
 
       
       
@@ -491,7 +544,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/01/常量与枚举/" rel="next" title="go基础语法-常量与枚举">
+              <a href="/2018/07/01/go基础语法-常量与枚举/" rel="next" title="go基础语法-常量与枚举">
                 <i class="fa fa-chevron-left"></i> go基础语法-常量与枚举
               </a>
             
@@ -500,6 +553,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/03/go基础语法-循环/" rel="prev" title="go基础语法-循环">
+                go基础语法-循环 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -554,8 +611,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -574,7 +640,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -642,6 +708,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#if语句"><span class="nav-number">1.</span> <span class="nav-text">if语句</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#switch语句"><span class="nav-number">2.</span> <span class="nav-text">switch语句</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

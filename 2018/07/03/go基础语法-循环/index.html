@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="这一小节我们看看go语言中的常量。 常量的含义常量是指变脸一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。 常量的定义定义语法和变量类似 12const constantName = valuecosnt constantName constantType = value 看个小🌰 12345678">
+<meta name="description" content="这一小节我们学习go语言中的循环。 我们可以看到，慕课网实战课程上面的这个系列并不是真正的入门级别，知识点还是有点跳，我尽量在记笔记的时候回参考网上相关知识点进行补充，ヾ(◍°∇°◍)ﾉﾞ。 for循环🐶语言中的循环也是for语句。先看一个小栗子： 1234sum := 0for i := 1; i &amp;lt;= 100; i++ &amp;#123;	sum += i&amp;#125; 我们看下for语言的特">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go基础语法-常量与枚举">
-<meta property="og:url" content="https://zhaobugs.com/2018/07/01/常量与枚举/index.html">
+<meta property="og:title" content="go基础语法-循环">
+<meta property="og:url" content="https://zhaobugs.com/2018/07/03/go基础语法-循环/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="这一小节我们看看go语言中的常量。 常量的含义常量是指变脸一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。 常量的定义定义语法和变量类似 12const constantName = valuecosnt constantName constantType = value 看个小🌰 12345678">
+<meta property="og:description" content="这一小节我们学习go语言中的循环。 我们可以看到，慕课网实战课程上面的这个系列并不是真正的入门级别，知识点还是有点跳，我尽量在记笔记的时候回参考网上相关知识点进行补充，ヾ(◍°∇°◍)ﾉﾞ。 for循环🐶语言中的循环也是for语句。先看一个小栗子： 1234sum := 0for i := 1; i &amp;lt;= 100; i++ &amp;#123;	sum += i&amp;#125; 我们看下for语言的特">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-02T14:14:44.232Z">
+<meta property="og:updated_time" content="2018-07-03T14:11:22.145Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go基础语法-常量与枚举">
-<meta name="twitter:description" content="这一小节我们看看go语言中的常量。 常量的含义常量是指变脸一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。 常量的定义定义语法和变量类似 12const constantName = valuecosnt constantName constantType = value 看个小🌰 12345678">
+<meta name="twitter:title" content="go基础语法-循环">
+<meta name="twitter:description" content="这一小节我们学习go语言中的循环。 我们可以看到，慕课网实战课程上面的这个系列并不是真正的入门级别，知识点还是有点跳，我尽量在记笔记的时候回参考网上相关知识点进行补充，ヾ(◍°∇°◍)ﾉﾞ。 for循环🐶语言中的循环也是for语句。先看一个小栗子： 1234sum := 0for i := 1; i &amp;lt;= 100; i++ &amp;#123;	sum += i&amp;#125; 我们看下for语言的特">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/07/01/常量与枚举/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/07/03/go基础语法-循环/"/>
 
 
 
 
 
-  <title>go基础语法-常量与枚举 | 红烧肉</title>
+  <title>go基础语法-循环 | 红烧肉</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/01/常量与枚举/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/03/go基础语法-循环/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">go基础语法-常量与枚举</h1>
+          <h1 class="post-title" itemprop="name headline">go基础语法-循环</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T22:33:25+08:00">
-                2018-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T21:59:17+08:00">
+                2018-07-03
               </time>
             
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/01/常量与枚举/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/01/常量与枚举/" itemprop="commentCount"></span>
+                <a href="/2018/07/03/go基础语法-循环/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/03/go基础语法-循环/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/07/01/常量与枚举/" class="leancloud_visitors" data-flag-title="go基础语法-常量与枚举">
+             <span id="/2018/07/03/go基础语法-循环/" class="leancloud_visitors" data-flag-title="go基础语法-循环">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  824 字
+                  157 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  1 分钟
                 </span>
               
             </div>
@@ -449,34 +449,17 @@
       
 
       
-        <p>这一小节我们看看go语言中的常量。</p>
-<h6 id="常量的含义"><a href="#常量的含义" class="headerlink" title="常量的含义"></a>常量的含义</h6><p>常量是指变脸一旦定义，在编译阶段它的值就是确定了的，在运行阶段是不可改变的，golang 中 number|boolean|string 类型可以定义为常量。</p>
-<h6 id="常量的定义"><a href="#常量的定义" class="headerlink" title="常量的定义"></a>常量的定义</h6><p>定义语法和变量类似</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> constantName = value</span><br><span class="line">cosnt constantName constantType = value</span><br></pre></td></tr></table></figure>
-<p>看个小🌰</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consts</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">const</span> filename <span class="keyword">string</span> = <span class="string">"abc.txt"</span></span><br><span class="line">	<span class="keyword">const</span> a, b = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(a*a + b*b))</span><br><span class="line">	fmt.Println(filename, c)</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	consts()</span><br><span class="line">&#125;</span><br><span class="line"># 输出</span><br><span class="line">abc.txt <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<p>在常量定义中我们可以指定常量类型 也可以不指定，当不指定的时候 值会作为各种类型使用 会根据需要进行一定自动转换，如上面的函数会自动将 a和b转为float64类型。</p>
-<p>常量可以定义在包内的，这样就所有的函数就能使用。</p>
-<h6 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h6><p>我们可以使用 const生成普通的枚举</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		cpp    = <span class="number">0</span></span><br><span class="line">		java   = <span class="number">1</span></span><br><span class="line">		python = <span class="number">2</span></span><br><span class="line">		golang = <span class="number">3</span></span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	fmt.Println(cpp, java, python, golang)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	enums()</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们可以使用 <code>iota</code>进行简化，生成自增枚举</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">const</span> (</span><br><span class="line">      cpp    = <span class="literal">iota</span></span><br><span class="line">      _</span><br><span class="line">      python </span><br><span class="line">      golang</span><br><span class="line">      javascriptt</span><br><span class="line">   )</span><br><span class="line"></span><br><span class="line">   fmt.Println(cpp, javascriptt, python, golang)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   enums()</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"># 结果</span><br><span class="line"><span class="number">0</span> <span class="number">4</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>这里有的同学看到了<code>_</code>这个和Python中的类似是一个特殊的变量。</p>
+        <p>这一小节我们学习go语言中的循环。</p>
+<p>我们可以看到，慕课网实战课程上面的这个系列并不是真正的入门级别，知识点还是有点跳，我尽量在记笔记的时候回参考网上相关知识点进行补充，ヾ(◍°∇°◍)ﾉﾞ。</p>
+<h6 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h6><p>🐶语言中的循环也是for语句。先看一个小栗子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sum := <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= <span class="number">100</span>; i++ &#123;</span><br><span class="line">	sum += i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看下for语言的特点：</p>
 <blockquote>
-<p>变量 <code>_</code> 用来抛弃忽略某个值，golang 中不允许存在没有使用的变量</p>
+<p>for的条件不需要括号</p>
 </blockquote>
-<p>使用<code>iota</code>可以实现更加复杂的运算</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span>(</span><br><span class="line">		b = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">		kb</span><br><span class="line">		mb</span><br><span class="line">		gb</span><br><span class="line">		tb</span><br><span class="line">		pb </span><br><span class="line">	)</span><br><span class="line">	fmt.Println(b, kb, mb, gb, tb, pb)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	enums()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 结果</span><br><span class="line"><span class="number">1</span> <span class="number">1024</span> <span class="number">1048576</span> <span class="number">1073741824</span> <span class="number">1099511627776</span> <span class="number">1125899906842624</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>关键字 iota 可以生成枚举类型，枚举值从0开始，每次加1</p>
+<p>for的条件里可以省略初始条件，结束条件，递增表达式（下面演示）</p>
 </blockquote>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line">        <span class="comment">//x == 0</span></span><br><span class="line">        x = <span class="literal">iota</span></span><br><span class="line">        <span class="comment">//y == 1</span></span><br><span class="line">        y = <span class="literal">iota</span> </span><br><span class="line">        <span class="comment">//z == 2</span></span><br><span class="line">        z = <span class="literal">iota</span> </span><br><span class="line">        <span class="comment">//如果常量名称后面没有任何表达式</span></span><br><span class="line">        <span class="comment">//则 w 等价于 w = iota, w == 3</span></span><br><span class="line">        w</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">const</span> v = <span class="literal">iota</span> <span class="comment">//v == 0</span></span><br><span class="line">    <span class="comment">//PS 注意在同一行时的 iota 特殊情况</span></span><br><span class="line">    <span class="keyword">const</span>(</span><br><span class="line">        <span class="comment">//如果 iota 在同一行，则 e == f == g == 0</span></span><br><span class="line">        e, f, g = <span class="literal">iota</span>, <span class="literal">iota</span>, <span class="literal">iota</span> </span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
-<h6 id="变量、常量、函数的可见性"><a href="#变量、常量、函数的可见性" class="headerlink" title="变量、常量、函数的可见性"></a>变量、常量、函数的可见性</h6><ul>
-<li>任何以大写字母开头的变量都是可以被导出的，即在包外能被访问</li>
-<li>函数或者常量大写字母开头的，也是可以被导出的，包外可以访问的</li>
-<li>golang 中没有 public 或者 private 来控制变量函数常量等的可见性，通过变量函数常量的名称的首字母是否大小写来判断</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test</span><br><span class="line"><span class="comment">//Foo 在包 test 之外可以通过 test.Foo 访问</span></span><br><span class="line"><span class="keyword">var</span> Foo</span><br><span class="line"><span class="comment">//bar 在包 test 之外通过 test.bar 访问是错误的，因为它的首字母是小写，包外不可见</span></span><br><span class="line"><span class="keyword">var</span> bar</span><br><span class="line"><span class="comment">//函数在test 包外可以使用 test.Test1()访问</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test1</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//函数在 test 包外不可以通过 test.test2()访问，只可以在包内使用</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test2</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//包外使用 test.I访问</span></span><br><span class="line">Const I = <span class="number">1</span></span><br><span class="line"><span class="comment">// j 不可以在包外通过 test.j 访问</span></span><br><span class="line">cont j = <span class="number">10</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -548,8 +531,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/30/go基础语法-内建变量类型/" rel="next" title="go基础语法-内建变量类型">
-                <i class="fa fa-chevron-left"></i> go基础语法-内建变量类型
+              <a href="/2018/07/02/go基础语法-条件语句/" rel="next" title="go基础语法-条件语句">
+                <i class="fa fa-chevron-left"></i> go基础语法-条件语句
               </a>
             
           </div>
@@ -557,10 +540,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/02/go基础语法-条件语句/" rel="prev" title="go基础语法-条件语句">
-                go基础语法-条件语句 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -644,7 +623,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -722,7 +701,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#常量的含义"><span class="nav-number">1.</span> <span class="nav-text">常量的含义</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#常量的定义"><span class="nav-number">2.</span> <span class="nav-text">常量的定义</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#枚举"><span class="nav-number">3.</span> <span class="nav-text">枚举</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#变量、常量、函数的可见性"><span class="nav-number">4.</span> <span class="nav-text">变量、常量、函数的可见性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#for循环"><span class="nav-number">1.</span> <span class="nav-text">for循环</span></a></li></ol></div>
             
 
           </div>

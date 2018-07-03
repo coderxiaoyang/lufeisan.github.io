@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/07/02/go基础语法-条件语句/
+https://zhaobugs.com/2018/07/03/go基础语法-循环/
