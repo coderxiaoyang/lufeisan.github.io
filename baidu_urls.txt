@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/07/03/go基础语法-循环/
+https://zhaobugs.com/2018/07/05/go基础语法-函数/

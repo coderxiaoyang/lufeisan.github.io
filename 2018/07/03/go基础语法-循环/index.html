@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="这一小节我们学习go语言中的循环。 我们可以看到，慕课网实战课程上面的这个系列并不是真正的入门级别，知识点还是有点跳，我尽量在记笔记的时候回参考网上相关知识点进行补充，ヾ(◍°∇°◍)ﾉﾞ。 for循环🐶语言中的循环也是for语句。先看一个小栗子： 1234sum := 0for i := 1; i &amp;lt;= 100; i++ &amp;#123;	sum += i&amp;#125; 我们看下for语言的特">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T14:11:22.145Z">
+<meta property="og:updated_time" content="2018-07-04T02:22:44.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go基础语法-循环">
 <meta name="twitter:description" content="这一小节我们学习go语言中的循环。 我们可以看到，慕课网实战课程上面的这个系列并不是真正的入门级别，知识点还是有点跳，我尽量在记笔记的时候回参考网上相关知识点进行补充，ヾ(◍°∇°◍)ﾉﾞ。 for循环🐶语言中的循环也是for语句。先看一个小栗子： 1234sum := 0for i := 1; i &amp;lt;= 100; i++ &amp;#123;	sum += i&amp;#125; 我们看下for语言的特">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  157 字
+                  628 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -459,6 +459,24 @@
 </blockquote>
 <blockquote>
 <p>for的条件里可以省略初始条件，结束条件，递增表达式（下面演示）</p>
+</blockquote>
+<p>我们看一个将数字转为二进制的函数，初始条件为空 这里相当于while </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">convertToBin</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	result := <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> ; n &gt; <span class="number">0</span>; n /= <span class="number">2</span> &#123;</span><br><span class="line">		lsb := n % <span class="number">2</span></span><br><span class="line">		result = strconv.Itoa(lsb) + result</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(</span><br><span class="line">		convertToBin(<span class="number">2</span>),</span><br><span class="line">		convertToBin(<span class="number">5</span>),</span><br><span class="line">		convertToBin(<span class="number">199</span>),</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"># 输出</span><br><span class="line"><span class="number">10</span> <span class="number">101</span> <span class="number">11000111</span></span><br></pre></td></tr></table></figure>
+<p>我们再看一个读取文件的例子，初始条件和结束条件都为空，只有最后的判断条件 也是相当于while</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printFile</span><span class="params">(filename <span class="keyword">string</span>)</span></span>  &#123;</span><br><span class="line">	file, err := os.Open(filename)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	scanner := bufio.NewScanner(file)</span><br><span class="line">	</span><br><span class="line">    # 这里没有开始条件，没有递增条件 只有最后结束判断条件 相当于while语句</span><br><span class="line">	<span class="keyword">for</span> scanner.Scan() &#123;</span><br><span class="line">		fmt.Println(scanner.Text())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	printFile(<span class="string">"abc.txt"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码中涉及到的文件操作后续我会专门学习写文章，加油！</p>
+<p>我们也可以什么都省略掉 相当于死循环</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">forever</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"aaa"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	forever()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的死循环就相当于其他语言中的 <code>while True</code>。</p>
+<p>条件表达式可中支持多重赋值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125; </span><br><span class="line"><span class="keyword">for</span> i, j := <span class="number">0</span>, <span class="built_in">len</span>(a) – <span class="number">1</span>; i &lt; j; i, j = i + <span class="number">1</span>, j – <span class="number">1</span> &#123; </span><br><span class="line">    a[i], a[j] = a[j], a[i] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用break跳出循环</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">JLoop:</span><br><span class="line"><span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">10</span>; j++ &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> i &gt; <span class="number">5</span> &#123;</span><br><span class="line">			<span class="keyword">break</span> JLoop</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(i)</span><br><span class="line">		fmt.Println(j)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于break使用的注意点：</p>
+<blockquote>
+<p>在没有使用loop标签的时候break只是跳出了第一层for循环</p>
+<p>使用标签后跳出到指定的标签,break只能跳出到之前，如果将Loop标签放在后边则会报错</p>
+<p>break标签只能用于for循环，跳出后不再执行标签对应的for循环</p>
 </blockquote>
 
       
@@ -540,6 +558,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/05/Centos7安装RabbitMQ/" rel="prev" title="Centos7安装RabbitMQ">
+                Centos7安装RabbitMQ <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -623,7 +645,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -634,7 +656,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -645,7 +667,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

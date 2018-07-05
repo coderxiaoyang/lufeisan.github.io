@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="随机排序想对查询的结果进行随机排序需要使用? 12#随机获取前10条记录qs = Blog.objects.order_by(&amp;apos;?&amp;apos;)[:10] 不等于过滤当我们想要使用不等于排除数据的时候，有两种方案 方案一：使用exclude 1Blog.objects.filter(author=user).exclude(id=1) 方案二：使用Q 123from django.db.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T02:32:50.417Z">
+<meta property="og:updated_time" content="2018-07-04T09:02:28.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django零散知识点">
 <meta name="twitter:description" content="随机排序想对查询的结果进行随机排序需要使用? 12#随机获取前10条记录qs = Blog.objects.order_by(&amp;apos;?&amp;apos;)[:10] 不等于过滤当我们想要使用不等于排除数据的时候，有两种方案 方案一：使用exclude 1Blog.objects.filter(author=user).exclude(id=1) 方案二：使用Q 123from django.db.">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  100 字
+                  331 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -456,6 +456,18 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Blog.objects.filter(author=user).exclude(id=1)</span><br></pre></td></tr></table></figure>
 <p>方案二：使用Q</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import Q</span><br><span class="line"></span><br><span class="line">Blog.objects.filter(~Q(id=1))</span><br></pre></td></tr></table></figure>
+<h6 id="对于ForeignKey对象，clear-和remove-方法仅在null-True时存在。"><a href="#对于ForeignKey对象，clear-和remove-方法仅在null-True时存在。" class="headerlink" title="对于ForeignKey对象，clear()和remove()方法仅在null=True时存在。"></a>对于ForeignKey对象，clear()和remove()方法仅在null=True时存在。</h6><p>举个例子：</p>
+<p>ForeignKey字段没设置null=True时，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    title = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    publisher = models.ForeignKey(to=Publisher)</span><br></pre></td></tr></table></figure>
+<p>没有clear()和remove()方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>models.Publisher.objects.first().book_set.clear()</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">AttributeError: <span class="string">'RelatedManager'</span> object has no attribute <span class="string">'clear'</span></span><br></pre></td></tr></table></figure>
+<p>当ForeignKey字段设置null=True时，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    publisher = models.ForeignKey(to=Class, null=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>此时就有clear()和remove()方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>models.Publisher.objects.first().book_set.clear()</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：对于所有类型的关联字段，add()、create()、remove()和clear(),set()都会马上更新数据库。换句话说，在关联的任何一端，都不需要再调用save()方法。</p>
+<h6 id="可以使用Concat修改字符串属性"><a href="#可以使用Concat修改字符串属性" class="headerlink" title="可以使用Concat修改字符串属性"></a>可以使用Concat修改字符串属性</h6><p>例子：把所有书名后面加上(第一版)</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> django.db.models.functions <span class="keyword">import</span> Concat</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Value</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>models.Book.objects.all().update(title=Concat(F(<span class="string">"title"</span>), Value(<span class="string">"("</span>), Value(<span class="string">"第一版"</span>), Value(<span class="string">")"</span>)))</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -623,7 +635,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -634,7 +646,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -645,7 +657,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -701,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#随机排序"><span class="nav-number">1.</span> <span class="nav-text">随机排序</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#不等于过滤"><span class="nav-number">2.</span> <span class="nav-text">不等于过滤</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#随机排序"><span class="nav-number">1.</span> <span class="nav-text">随机排序</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#不等于过滤"><span class="nav-number">2.</span> <span class="nav-text">不等于过滤</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#对于ForeignKey对象，clear-和remove-方法仅在null-True时存在。"><span class="nav-number">3.</span> <span class="nav-text">对于ForeignKey对象，clear()和remove()方法仅在null=True时存在。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#可以使用Concat修改字符串属性"><span class="nav-number">4.</span> <span class="nav-text">可以使用Concat修改字符串属性</span></a></li></ol></div>
             
 
           </div>
