@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="RabbitMQ," />
+  <meta name="keywords" content="DRF," />
 
 
 
@@ -81,20 +81,18 @@
 
 
 
-<meta name="description" content="这一篇文章我们来实现安装一些RabbitMQ，为后续学习做准备。 安装erlang12rpm -Uvh https://mirrors.ustc.edu.cn/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpmyum install erlang 安装完成以后，执行erl看是否能打开eshell，用’halt().’退出，注意后面的点号，那是">
-<meta name="keywords" content="RabbitMQ">
+<meta name="description" content="我们如果使用了DRF对于异常捕捉的范围是有限的。我们先看下Django中配置。 1234567891011121314151617181920212223242526272829303132333435363738394041def exception_handler(exc, context):    &quot;&quot;&quot;    Returns the response that should be used">
+<meta name="keywords" content="DRF">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Centos7安装RabbitMQ">
-<meta property="og:url" content="https://zhaobugs.com/2018/07/05/Centos7安装RabbitMQ/index.html">
+<meta property="og:title" content="Django-REST-framework自定义异常返回信息">
+<meta property="og:url" content="https://zhaobugs.com/2018/07/06/Django-REST-framework自定义异常返回信息/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="这一篇文章我们来实现安装一些RabbitMQ，为后续学习做准备。 安装erlang12rpm -Uvh https://mirrors.ustc.edu.cn/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpmyum install erlang 安装完成以后，执行erl看是否能打开eshell，用’halt().’退出，注意后面的点号，那是">
+<meta property="og:description" content="我们如果使用了DRF对于异常捕捉的范围是有限的。我们先看下Django中配置。 1234567891011121314151617181920212223242526272829303132333435363738394041def exception_handler(exc, context):    &quot;&quot;&quot;    Returns the response that should be used">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fszagxxdvjj31kw0vsqc1.jpg">
-<meta property="og:updated_time" content="2018-07-05T13:07:05.691Z">
+<meta property="og:updated_time" content="2018-07-06T08:26:38.397Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Centos7安装RabbitMQ">
-<meta name="twitter:description" content="这一篇文章我们来实现安装一些RabbitMQ，为后续学习做准备。 安装erlang12rpm -Uvh https://mirrors.ustc.edu.cn/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpmyum install erlang 安装完成以后，执行erl看是否能打开eshell，用’halt().’退出，注意后面的点号，那是">
-<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fszagxxdvjj31kw0vsqc1.jpg">
+<meta name="twitter:title" content="Django-REST-framework自定义异常返回信息">
+<meta name="twitter:description" content="我们如果使用了DRF对于异常捕捉的范围是有限的。我们先看下Django中配置。 1234567891011121314151617181920212223242526272829303132333435363738394041def exception_handler(exc, context):    &quot;&quot;&quot;    Returns the response that should be used">
 
 
 
@@ -124,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/07/05/Centos7安装RabbitMQ/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/07/06/Django-REST-framework自定义异常返回信息/"/>
 
 
 
 
 
-  <title>Centos7安装RabbitMQ | 红烧肉</title>
+  <title>Django-REST-framework自定义异常返回信息 | 红烧肉</title>
   
 
 
@@ -305,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/05/Centos7安装RabbitMQ/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/06/Django-REST-framework自定义异常返回信息/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -322,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Centos7安装RabbitMQ</h1>
+          <h1 class="post-title" itemprop="name headline">Django-REST-framework自定义异常返回信息</h1>
         
 
         <div class="post-meta">
@@ -334,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-05T18:02:47+08:00">
-                2018-07-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T16:00:54+08:00">
+                2018-07-06
               </time>
             
 
@@ -357,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/RabbitMQ/" itemprop="url" rel="index">
-                    <span itemprop="name">RabbitMQ</span>
+                  <a href="/categories/DRF/" itemprop="url" rel="index">
+                    <span itemprop="name">DRF</span>
                   </a>
                 </span>
 
@@ -375,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/05/Centos7安装RabbitMQ/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/05/Centos7安装RabbitMQ/" itemprop="commentCount"></span>
+                <a href="/2018/07/06/Django-REST-framework自定义异常返回信息/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/06/Django-REST-framework自定义异常返回信息/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +382,7 @@
 
           
           
-             <span id="/2018/07/05/Centos7安装RabbitMQ/" class="leancloud_visitors" data-flag-title="Centos7安装RabbitMQ">
+             <span id="/2018/07/06/Django-REST-framework自定义异常返回信息/" class="leancloud_visitors" data-flag-title="Django-REST-framework自定义异常返回信息">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -414,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  357 字
+                  496 字
                 </span>
               
 
@@ -430,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -451,32 +449,20 @@
       
 
       
-        <p>这一篇文章我们来实现安装一些RabbitMQ，为后续学习做准备。</p>
-<h6 id="安装erlang"><a href="#安装erlang" class="headerlink" title="安装erlang"></a>安装erlang</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https://mirrors.ustc.edu.cn/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm</span><br><span class="line">yum install erlang</span><br></pre></td></tr></table></figure>
-<p>安装完成以后，执行erl看是否能打开eshell，用’halt().’退出，注意后面的点号，那是erlang的结束符。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# erl</span><br><span class="line">Erlang R16B03-1 (erts-5.10.4) [source] [64-bit] [async-threads:10] [hipe] [kernel-poll:false]</span><br><span class="line"></span><br><span class="line">Eshell V5.10.4  (abort with ^G)</span><br><span class="line"><span class="meta">1&gt;</span> halt().</span><br></pre></td></tr></table></figure>
-<h6 id="安装-RabbitMQ"><a href="#安装-RabbitMQ" class="headerlink" title="安装 RabbitMQ"></a>安装 RabbitMQ</h6><p>官网下载安装包 ：<a href="https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/" target="_blank" rel="noopener">https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh rabbitmq-server-3.6.15-1.el7.noarch.rpm</span><br></pre></td></tr></table></figure>
-<p>直接安装会报错</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat 被 rabbitmq-server-3.6.15-1.el7.noarch 需要</span><br></pre></td></tr></table></figure>
-<p>安装依赖</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# yum -y install socat</span><br></pre></td></tr></table></figure>
-<p>安装依赖之后重新安装成功。</p>
-<h6 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start rabbitmq-server.service</span><br></pre></td></tr></table></figure>
-<p>开启管理界面插件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# rabbitmq-plugins enable rabbitmq_management </span><br><span class="line">The following plugins have been enabled:</span><br><span class="line">  amqp_client</span><br><span class="line">  cowlib</span><br><span class="line">  cowboy</span><br><span class="line">  rabbitmq_web_dispatch</span><br><span class="line">  rabbitmq_management_agent</span><br><span class="line">  rabbitmq_management</span><br><span class="line"></span><br><span class="line">Applying plugin configuration to rabbit@hongshaorou... started 6 plugins.</span><br></pre></td></tr></table></figure>
-<p>添加一个用户</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 命令</span><br><span class="line">rabbitmqctl add_user Username Password</span><br><span class="line"><span class="meta">#</span> 添加一个 admin</span><br><span class="line">[root@hongshaorou ~]# rabbitmqctl add_user admin admin</span><br></pre></td></tr></table></figure>
-<p>赋予用户权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# rabbitmqctl set_permissions -p "/" admin '.*' '.*' '.*'</span><br></pre></td></tr></table></figure>
-<p>赋予用户角色</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# rabbitmqctl set_user_tags admin administrator</span><br></pre></td></tr></table></figure>
-<p>查看当前用户列表</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# rabbitmqctl list_users </span><br><span class="line">Listing users</span><br><span class="line">admin	[administrator]</span><br><span class="line">guest	[administrator]</span><br></pre></td></tr></table></figure>
-<p>图形管理界面端口是 15672 需要开启</p>
-<p>现在可以通过<code>http://ip:15672</code>访问web管理界面了，使用<code>admin/admin</code>登录。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fszagxxdvjj31kw0vsqc1.jpg" alt="image-20180705210656872"></p>
-<p>加油ヾ(◍°∇°◍)ﾉﾞ</p>
+        <p>我们如果使用了DRF对于异常捕捉的范围是有限的。我们先看下Django中配置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exception_handler</span><span class="params">(exc, context)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Returns the response that should be used for any given exception.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    By default we handle the REST framework `APIException`, and also</span></span><br><span class="line"><span class="string">    Django's built-in `Http404` and `PermissionDenied` exceptions.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Any unhandled exceptions may return `None`, which will cause a 500 error</span></span><br><span class="line"><span class="string">    to be raised.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(exc, exceptions.APIException):</span><br><span class="line">        headers = &#123;&#125;</span><br><span class="line">        <span class="keyword">if</span> getattr(exc, <span class="string">'auth_header'</span>, <span class="keyword">None</span>):</span><br><span class="line">            headers[<span class="string">'WWW-Authenticate'</span>] = exc.auth_header</span><br><span class="line">        <span class="keyword">if</span> getattr(exc, <span class="string">'wait'</span>, <span class="keyword">None</span>):</span><br><span class="line">            headers[<span class="string">'Retry-After'</span>] = <span class="string">'%d'</span> % exc.wait</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> isinstance(exc.detail, (list, dict)):</span><br><span class="line">            data = exc.detail</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            data = &#123;<span class="string">'detail'</span>: exc.detail&#125;</span><br><span class="line"></span><br><span class="line">        set_rollback()</span><br><span class="line">        <span class="keyword">return</span> Response(data, status=exc.status_code, headers=headers)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> isinstance(exc, Http404):</span><br><span class="line">        msg = _(<span class="string">'Not found.'</span>)</span><br><span class="line">        data = &#123;<span class="string">'detail'</span>: six.text_type(msg)&#125;</span><br><span class="line"></span><br><span class="line">        set_rollback()</span><br><span class="line">        <span class="keyword">return</span> Response(data, status=status.HTTP_404_NOT_FOUND)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> isinstance(exc, PermissionDenied):</span><br><span class="line">        msg = _(<span class="string">'Permission denied.'</span>)</span><br><span class="line">        data = &#123;<span class="string">'detail'</span>: six.text_type(msg)&#125;</span><br><span class="line"></span><br><span class="line">        set_rollback()</span><br><span class="line">        <span class="keyword">return</span> Response(data, status=status.HTTP_403_FORBIDDEN)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Note: Unhandled exceptions will raise a 500 error.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<p>我们看到了只对部分异常进行了捕捉，我们想返回一些定制的信息很难实现。</p>
+<p>现在我们自定义一个自己的异常</p>
+<p>然后在<code>custom_exception_handler</code>中进行异常类型判断</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> exception_handler</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataException</span><span class="params">(Exception)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, code=<span class="number">0</span>, status=status.HTTP_400_BAD_REQUEST, data=None, message=<span class="string">""</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.code = code</span><br><span class="line">        self.status = status</span><br><span class="line">        self.message = message</span><br><span class="line">        self.data = data</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.message</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_exception_handler</span><span class="params">(exc, context)</span>:</span></span><br><span class="line">    <span class="comment"># Call REST framework's default exception handler first,</span></span><br><span class="line">    <span class="comment"># to get the standard error response.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> isinstance(exc, DataException):</span><br><span class="line">        <span class="keyword">return</span> Response(data=exc.data, status=exc.status, message=exc.message)</span><br><span class="line"></span><br><span class="line">    response = exception_handler(exc, context)</span><br><span class="line">	<span class="comment"># 其他逻辑代码</span></span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+<p>我们还需要将上述代码配置到<code>settings.py</code>文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 认证配置</span></span><br><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="string">'EXCEPTION_HANDLER'</span>: <span class="string">'exception_handler.custom_exception_handler'</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完成以上配置 我们就可以进行自定义异常信息返回拉！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> DataException(message=<span class="string">"自定义信息"</span>)</span><br></pre></td></tr></table></figure>
+<p>这个个人觉得比较实用，对于不同接口需要提示不同信息，我们完全可以这么设置。</p>
+<p>参考文章：</p>
+<p><a href="http://drf.jiuyou.info/#/drf/exceptions" target="_blank" rel="noopener">http://drf.jiuyou.info/#/drf/exceptions</a></p>
+<p><a href="https://my.oschina.net/duoduo3369/blog/612733" target="_blank" rel="noopener">https://my.oschina.net/duoduo3369/blog/612733</a></p>
 
       
     </div>
@@ -535,7 +521,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/RabbitMQ/" rel="tag"><i class="fa fa-tag"></i>RabbitMQ</a>
+            <a href="/tags/DRF/" rel="tag"><i class="fa fa-tag"></i>DRF</a>
           
         </div>
       
@@ -548,8 +534,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/03/go基础语法-循环/" rel="next" title="go基础语法-循环">
-                <i class="fa fa-chevron-left"></i> go基础语法-循环
+              <a href="/2018/07/05/go基础语法-函数/" rel="next" title="go基础语法-函数">
+                <i class="fa fa-chevron-left"></i> go基础语法-函数
               </a>
             
           </div>
@@ -557,10 +543,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/05/go基础语法-函数/" rel="prev" title="go基础语法-函数">
-                go基础语法-函数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -615,17 +597,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -712,22 +685,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#安装erlang"><span class="nav-number">1.</span> <span class="nav-text">安装erlang</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安装-RabbitMQ"><span class="nav-number">2.</span> <span class="nav-text">安装 RabbitMQ</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#启动"><span class="nav-number">3.</span> <span class="nav-text">启动</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
