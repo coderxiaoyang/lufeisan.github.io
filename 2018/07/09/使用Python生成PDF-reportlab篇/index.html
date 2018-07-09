@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="最近遇到一个需求是要生成一个PDF报表，网上找了几个库，最终使用了reportlab，这篇文章主要记录使用代码。 安装使用pip直接安装 1pip install reportlab 使用1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Python生成PDF-reportlab篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/07/09/使用Python生成PDF-reportlab篇/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="最近遇到一个需求是要生成一个PDF报表，网上找了几个库，最终使用了reportlab，这篇文章主要记录使用代码。 安装使用pip直接安装 1pip install reportlab 使用1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-09T14:07:36.053Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Python生成PDF-reportlab篇">
+<meta name="twitter:description" content="最近遇到一个需求是要生成一个PDF报表，网上找了几个库，最终使用了reportlab，这篇文章主要记录使用代码。 安装使用pip直接安装 1pip install reportlab 使用1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/07/09/使用Python生成PDF-reportlab篇/"/>
+
+
+
+
+
+  <title>使用Python生成PDF-reportlab篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/09/使用Python生成PDF-reportlab篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Python生成PDF-reportlab篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-09T21:12:43+08:00">
+                2018-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/09/使用Python生成PDF-reportlab篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/09/使用Python生成PDF-reportlab篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/09/使用Python生成PDF-reportlab篇/" class="leancloud_visitors" data-flag-title="使用Python生成PDF-reportlab篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,674 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近遇到一个需求是要生成一个PDF报表，网上找了几个库，最终使用了reportlab，这篇文章主要记录使用代码。</p>
+<h6 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h6><p>使用pip直接安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install reportlab</span><br></pre></td></tr></table></figure>
+<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-  </span></span><br><span class="line"><span class="keyword">from</span> reportlab.pdfgen.canvas <span class="keyword">import</span> Canvas  </span><br><span class="line"><span class="keyword">from</span> reportlab.pdfbase <span class="keyword">import</span> pdfmetrics  </span><br><span class="line"><span class="keyword">from</span> reportlab.pdfbase.cidfonts <span class="keyword">import</span> UnicodeCIDFont  </span><br><span class="line">pdfmetrics.registerFont(UnicodeCIDFont(<span class="string">'STSong-Light'</span>))</span><br><span class="line"><span class="keyword">from</span> reportlab.pdfbase.ttfonts <span class="keyword">import</span> TTFont </span><br><span class="line"><span class="comment"># 这里是要导入字体文件 下方我会给出地址</span></span><br><span class="line">pdfmetrics.registerFont(TTFont(<span class="string">'msyh'</span>, <span class="string">'msyh.ttf'</span>))  </span><br><span class="line"><span class="keyword">from</span> reportlab.lib.styles <span class="keyword">import</span> getSampleStyleSheet</span><br><span class="line"><span class="keyword">from</span> reportlab.lib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> reportlab.platypus <span class="keyword">import</span> SimpleDocTemplate, Paragraph, Spacer,Image,Table,TableStyle</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rpt</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 生成一个存储的对象集合</span></span><br><span class="line">    story=[]</span><br><span class="line">    <span class="comment"># 生成样式表</span></span><br><span class="line">    stylesheet=getSampleStyleSheet()</span><br><span class="line">    <span class="comment"># 字体的样式</span></span><br><span class="line">    normalStyle = stylesheet[<span class="string">'Normal'</span>]</span><br><span class="line"></span><br><span class="line">    curr_date = time.strftime(<span class="string">"%Y-%m-%d"</span>, time.localtime())</span><br><span class="line"></span><br><span class="line">    <span class="comment">#标题：段落的用法详见reportlab-userguide.pdf中chapter 6 Paragraph</span></span><br><span class="line">    rpt_title = <span class="string">f'&lt;para autoLeading="off" fontSize=15 align=center&gt;&lt;b&gt;&lt;font face="msyh"&gt;XX项目日报<span class="subst">&#123;curr_date&#125;</span>&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/para&gt;'</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将我们的标题文本样式追加到story</span></span><br><span class="line">    story.append(Paragraph(rpt_title,normalStyle)) </span><br><span class="line"></span><br><span class="line">    text = <span class="string">'''&lt;para autoLeading="off" fontSize=8&gt;&lt;font face="msyh" &gt;程度定义：&lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" color=red&gt;1.Blocker：指系统无法执行。&lt;/font&gt;&lt;br/&gt;&lt;font face="msyh" fontsize=7&gt;例如：系统无法启动或退出等&lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" color=orange&gt;2.Critical：指系统崩溃或严重资源不足、应用模块无法启动或异常退出、无法测试、造成系统不稳定。&lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" fontsize=7&gt;例如：各类崩溃、死机、应用无法启动或退出、按键无响应、整屏花屏、死循环、数据丢失、安装错误等</span></span><br><span class="line"><span class="string">    &lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" color=darkblue&gt;3.Major：指影响系统功能或操作，主要功能存在严重缺陷，但不会影响到系统稳定性、性能缺陷&lt;/font&gt;&lt;br/&gt;&lt;font face="msyh" fontsize=7&gt;例如：功能未做、功能实现与需求不一致、功能错误、声音问题、流程不正确、兼容性问题、查询结果不正确、性能不达标等</span></span><br><span class="line"><span class="string">    &lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" color=royalblue&gt;4.Minor：指界面显示类问题&lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" fontsize=7&gt;例如：界面错误、边界错误、提示信息错误、翻页错误、兼容性问题、界面样式不统一、别字、排列不整齐，字体不符规范、内容、格式、滚动条等等</span></span><br><span class="line"><span class="string">    &lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;font face="msyh" color=grey&gt;5.Trivial：本状态保留暂时不用&lt;/font&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">    &lt;/para&gt;'''</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 生成的段落文本样式加到story</span></span><br><span class="line">    story.append(Paragraph(text,normalStyle))</span><br><span class="line"></span><br><span class="line">    text = <span class="string">'&lt;para autoLeading="off" fontSize=9&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;&lt;font face="msyh"&gt;五、BUGLIST：&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;/para&gt;'</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 生成的段落文本样式加到story</span></span><br><span class="line">    story.append(Paragraph(text,normalStyle))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#图片，用法详见reportlab-userguide.pdf中chapter 9.3 Image</span></span><br><span class="line">    img = Image(<span class="string">'bug_trend.png'</span>)</span><br><span class="line">    img.drawHeight = <span class="number">20</span></span><br><span class="line">    img.drawWidth = <span class="number">28</span>`</span><br><span class="line"></span><br><span class="line">    <span class="comment">#表格数据：用法详见reportlab-userguide.pdf中chapter 7 Table</span></span><br><span class="line">    component_data= [[<span class="string">'模块'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>,img,<span class="string">''</span>],</span><br><span class="line">    [<span class="string">'标记'</span>,<span class="string">'bug-1'</span>,<span class="string">'Major'</span>,<span class="string">'some wrong'</span>,<span class="string">'open'</span>,<span class="string">'unresolved'</span>],</span><br><span class="line">    [<span class="string">''</span>,<span class="string">'bug-1'</span>,<span class="string">'Major'</span>,<span class="string">'some wrong'</span>,<span class="string">'closed'</span>,<span class="string">'fixed'</span>], </span><br><span class="line">    ]</span><br><span class="line">    <span class="comment">#创建表格对象，并设定各列宽度</span></span><br><span class="line">    component_table = Table(component_data, colWidths=[<span class="number">20</span>,<span class="number">50</span>,<span class="number">50</span>, <span class="number">150</span>, <span class="number">90</span>, <span class="number">90</span>])</span><br><span class="line">    <span class="comment">#添加表格样式</span></span><br><span class="line">    component_table.setStyle(TableStyle([</span><br><span class="line">    (<span class="string">'FONTNAME'</span>,(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">-1</span>,<span class="number">-1</span>),<span class="string">'msyh'</span>),<span class="comment">#字体</span></span><br><span class="line">    (<span class="string">'FONTSIZE'</span>,(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">-1</span>,<span class="number">-1</span>),<span class="number">6</span>),<span class="comment">#字体大小</span></span><br><span class="line">    (<span class="string">'SPAN'</span>,(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">3</span>,<span class="number">0</span>)),<span class="comment">#合并第一行前三列</span></span><br><span class="line">    (<span class="string">'BACKGROUND'</span>,(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">-1</span>,<span class="number">0</span>), colors.lightskyblue),<span class="comment">#设置第一行背景颜色</span></span><br><span class="line">    (<span class="string">'SPAN'</span>,(<span class="number">-1</span>,<span class="number">0</span>),(<span class="number">-2</span>,<span class="number">0</span>)), <span class="comment">#合并第一行后两列</span></span><br><span class="line">    (<span class="string">'ALIGN'</span>,(<span class="number">-1</span>,<span class="number">0</span>),(<span class="number">-2</span>,<span class="number">0</span>),<span class="string">'RIGHT'</span>),<span class="comment">#对齐</span></span><br><span class="line">    (<span class="string">'VALIGN'</span>,(<span class="number">-1</span>,<span class="number">0</span>),(<span class="number">-2</span>,<span class="number">0</span>),<span class="string">'MIDDLE'</span>),  <span class="comment">#对齐</span></span><br><span class="line">    (<span class="string">'LINEBEFORE'</span>,(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">0</span>,<span class="number">-1</span>),<span class="number">0.1</span>,colors.grey),<span class="comment">#设置表格左边线颜色为灰色，线宽为0.1</span></span><br><span class="line">    (<span class="string">'TEXTCOLOR'</span>,(<span class="number">0</span>,<span class="number">1</span>),(<span class="number">-2</span>,<span class="number">-1</span>),colors.royalblue),<span class="comment">#设置表格内文字颜色</span></span><br><span class="line">    (<span class="string">'GRID'</span>,(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">-1</span>,<span class="number">-1</span>),<span class="number">0.5</span>,colors.red),<span class="comment">#设置表格框线为红色，线宽为0.5</span></span><br><span class="line">    ]))</span><br><span class="line">    story.append(component_table)</span><br><span class="line"></span><br><span class="line">    doc = SimpleDocTemplate(<span class="string">'bug.pdf'</span>)</span><br><span class="line">    doc.build(story)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rpt()</span><br></pre></td></tr></table></figure>
+<p>关于代码的一些说明：</p>
+<p>我个人代码暂未贴出，上面代码为参考博客代码：<a href="https://blog.csdn.net/jtscript/article/details/45217697" target="_blank" rel="noopener">https://blog.csdn.net/jtscript/article/details/45217697</a></p>
+<p>如果你安装好库直接允许代码是不能成功的，因为这里分中文语言包你需要下载一下，中文语言包下载地址我已经帮你找好了：<a href="https://github.com/chenqing/ng-mini/blob/master/font/msyh.ttf" target="_blank" rel="noopener">https://github.com/chenqing/ng-mini/blob/master/font/msyh.ttf</a></p>
+<p>下载语言包之后直接放到和代码同一目录即可。</p>
+<p>又有小伙伴疑惑了，上面代码中的那些<code>para</code>,<code>font</code>等，具体还有那些怎么获取呢？</p>
+<p>我们可以看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Paragraph</span><span class="params">(Flowable)</span>:</span></span><br><span class="line">    <span class="string">""" Paragraph(text, style, bulletText=None, caseSensitive=1)</span></span><br><span class="line"><span class="string">        text a string of stuff to go into the paragraph.</span></span><br><span class="line"><span class="string">        style is a style definition as in reportlab.lib.styles.</span></span><br><span class="line"><span class="string">        bulletText is an optional bullet defintion.</span></span><br><span class="line"><span class="string">        caseSensitive set this to 0 if you want the markup tags and their attributes to be case-insensitive.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        This class is a flowable that can format a block of text</span></span><br><span class="line"><span class="string">        into a paragraph with a given style.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        The paragraph Text can contain XML-like markup including the tags:</span></span><br><span class="line"><span class="string">        &lt;b&gt; ... &lt;/b&gt; - bold</span></span><br><span class="line"><span class="string">        &lt;i&gt; ... &lt;/i&gt; - italics</span></span><br><span class="line"><span class="string">        &lt;u&gt; ... &lt;/u&gt; - underline</span></span><br><span class="line"><span class="string">        &lt;strike&gt; ... &lt;/strike&gt; - strike through</span></span><br><span class="line"><span class="string">        &lt;super&gt; ... &lt;/super&gt; - superscript</span></span><br><span class="line"><span class="string">        &lt;sub&gt; ... &lt;/sub&gt; - subscript</span></span><br><span class="line"><span class="string">        &lt;font name=fontfamily/fontname color=colorname size=float&gt;</span></span><br><span class="line"><span class="string">        &lt;span name=fontfamily/fontname color=colorname backcolor=colorname size=float style=stylename&gt;</span></span><br><span class="line"><span class="string">        &lt;onDraw name=callable label="a label"/&gt;</span></span><br><span class="line"><span class="string">        &lt;index [name="callablecanvasattribute"] label="a label"/&gt;</span></span><br><span class="line"><span class="string">        &lt;link&gt;link text&lt;/link&gt;</span></span><br><span class="line"><span class="string">        attributes of links</span></span><br><span class="line"><span class="string">        size/fontSize=num</span></span><br><span class="line"><span class="string">        name/face/fontName=name</span></span><br><span class="line"><span class="string">        fg/textColor/color=color</span></span><br><span class="line"><span class="string">        backcolor/backColor/bgcolor=color</span></span><br><span class="line"><span class="string">        dest/destination/target/href/link=target</span></span><br><span class="line"><span class="string">        &lt;a&gt;anchor text&lt;/a&gt;</span></span><br><span class="line"><span class="string">        attributes of anchors</span></span><br><span class="line"><span class="string">        fontSize=num</span></span><br><span class="line"><span class="string">        fontName=name</span></span><br><span class="line"><span class="string">        fg/textColor/color=color</span></span><br><span class="line"><span class="string">        backcolor/backColor/bgcolor=color</span></span><br><span class="line"><span class="string">        href=href</span></span><br><span class="line"><span class="string">        &lt;a name="anchorpoint"/&gt;</span></span><br><span class="line"><span class="string">        &lt;unichar name="unicode character name"/&gt;</span></span><br><span class="line"><span class="string">        &lt;unichar value="unicode code point"/&gt;</span></span><br><span class="line"><span class="string">        &lt;img src="path" width="1in" height="1in" valign="bottom"/&gt;</span></span><br><span class="line"><span class="string">                width="w%" --&gt; fontSize*w/100   idea from Roberto Alsina</span></span><br><span class="line"><span class="string">                height="h%" --&gt; linewidth*h/100 &lt;ralsina@netmanagers.com.ar&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        The whole may be surrounded by &lt;para&gt; &lt;/para&gt; tags</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        The &lt;b&gt; and &lt;i&gt; tags will work for the built-in fonts (Helvetica</span></span><br><span class="line"><span class="string">        /Times / Courier).  For other fonts you need to register a family</span></span><br><span class="line"><span class="string">        of 4 fonts using reportlab.pdfbase.pdfmetrics.registerFont; then</span></span><br><span class="line"><span class="string">        use the addMapping function to tell the library that these 4 fonts</span></span><br><span class="line"><span class="string">        form a family e.g.</span></span><br><span class="line"><span class="string">        from reportlab.lib.fonts import addMapping</span></span><br><span class="line"><span class="string">        addMapping('Vera', 0, 0, 'Vera')    #normal</span></span><br><span class="line"><span class="string">        addMapping('Vera', 0, 1, 'Vera-Italic')    #italic</span></span><br><span class="line"><span class="string">        addMapping('Vera', 1, 0, 'Vera-Bold')    #bold</span></span><br><span class="line"><span class="string">        addMapping('Vera', 1, 1, 'Vera-BoldItalic')    #italic and bold</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        It will also be able to handle any MathML specified Greek characters.</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+<p>从源码中我们得知<code>Paragraph</code>可以输入XML类的标签。重点关注下<code>img</code>标签哦！</p>
+<p>还有代码中一直说的<code>reportlab-userguide.pdf</code>是指<code>reportlab</code>的指导文件，我也已经帮你找到了：</p>
+<p><a href="https://www.reportlab.com/docs/reportlab-userguide.pdf" target="_blank" rel="noopener">https://www.reportlab.com/docs/reportlab-userguide.pdf</a></p>
+<p>我遇到的需求基本上上面的代码改造下就能完成，不过要有一个超链接功能。下面是增加超链接的一个代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text = <span class="string">"&lt;link href='https://www.baidu.com/' color='blue'&gt;&lt;font face="</span>msyh<span class="string">" fontsize=7&gt;百度&lt;/font&gt;&lt;/super&gt;&lt;/link&gt;"</span></span><br><span class="line">story.append(Paragraph(text,normalStyle))</span><br></pre></td></tr></table></figure>
+<p>注意：凡是用到中文的地方都要指定文字语言。</p>
+<p>其他参考文章：</p>
+<p><a href="https://www.jianshu.com/p/70eb3d9988da" target="_blank" rel="noopener">https://www.jianshu.com/p/70eb3d9988da</a></p>
+<p><a href="https://www.cnblogs.com/hujq1029/p/7767980.html" target="_blank" rel="noopener">https://www.cnblogs.com/hujq1029/p/7767980.html</a></p>
+<p><a href="https://www.programcreek.com/python/example/58583/reportlab.lib.styles.getSampleStyleSheet" target="_blank" rel="noopener">https://www.programcreek.com/python/example/58583/reportlab.lib.styles.getSampleStyleSheet</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/06/Django-REST-framework自定义异常返回信息/" rel="next" title="Django-REST-framework自定义异常返回信息">
+                <i class="fa fa-chevron-left"></i> Django-REST-framework自定义异常返回信息
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
