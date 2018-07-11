@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="红烧肉" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="title: Python的socket编程date: 2018-07-10 16:13:11tags: Pythoncategories: Python 本系列Python进阶高级编程为我购买慕课网实战课程的笔记，墙裂推荐大家购买原课程观看，课程地址： https://coding.imooc.com/class/200.html 这一篇我们学习下Python的socket编程。 弄懂HTTP、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红烧肉">
+<meta property="og:url" content="https://zhaobugs.com/2018/07/10/Python的socket编程/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="title: Python的socket编程date: 2018-07-10 16:13:11tags: Pythoncategories: Python 本系列Python进阶高级编程为我购买慕课网实战课程的笔记，墙裂推荐大家购买原课程观看，课程地址： https://coding.imooc.com/class/200.html 这一篇我们学习下Python的socket编程。 弄懂HTTP、">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1ft4u79h3u7g30v41830yk.gif">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1ft4u8tpsx0j30w20ihdq6.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1ft4uw2nihvj30oj0iudia.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1ft5pybednwj30rp07aq4s.jpg">
+<meta property="og:updated_time" content="2018-07-11T02:46:31.166Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="红烧肉">
+<meta name="twitter:description" content="title: Python的socket编程date: 2018-07-10 16:13:11tags: Pythoncategories: Python 本系列Python进阶高级编程为我购买慕课网实战课程的笔记，墙裂推荐大家购买原课程观看，课程地址： https://coding.imooc.com/class/200.html 这一篇我们学习下Python的socket编程。 弄懂HTTP、">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1ft4u79h3u7g30v41830yk.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/07/10/Python的socket编程/"/>
+
+
+
+
+
+  <title> | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/10/Python的socket编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T16:13:11+08:00">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/10/Python的socket编程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/10/Python的socket编程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/10/Python的socket编程/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,515 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>title: Python的socket编程<br>date: 2018-07-10 16:13:11<br>tags: Python<br>categories: Python</p>
+<p>本系列Python进阶高级编程为我购买慕课网实战课程的笔记，墙裂推荐大家购买原课程观看，课程地址：</p>
+<p><a href="https://coding.imooc.com/class/200.html" target="_blank" rel="noopener">https://coding.imooc.com/class/200.html</a></p>
+<p>这一篇我们学习下Python的socket编程。</p>
+<h5 id="弄懂HTTP、Socket、TCP这几个概念"><a href="#弄懂HTTP、Socket、TCP这几个概念" class="headerlink" title="弄懂HTTP、Socket、TCP这几个概念"></a>弄懂HTTP、Socket、TCP这几个概念</h5><p>我们先看下网络的七层结构模型。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1ft4u79h3u7g30v41830yk.gif" alt="OSI七层模型详解"></p>
+<p>下面是五层网络模型：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1ft4u8tpsx0j30w20ihdq6.jpg" alt="image-20180710161857626"></p>
+<p>上层的协议依赖于下层的协议（DNS依赖于UDP）</p>
+<h6 id="当我们应用层满足不了的时候我们如何和下层的TCP和UDP打交道呢"><a href="#当我们应用层满足不了的时候我们如何和下层的TCP和UDP打交道呢" class="headerlink" title="当我们应用层满足不了的时候我们如何和下层的TCP和UDP打交道呢?"></a>当我们应用层满足不了的时候我们如何和下层的TCP和UDP打交道呢?</h6><p>我们可以使用Socket接口进行和传输层打交道，Socket是不属于任何协议。 我们可以使用Socket脱离应用层可以直接和传输层进行打交道，脱离与应用层，实现自己的应用层协议。</p>
+<h5 id="Socket的client和server实现通信"><a href="#Socket的client和server实现通信" class="headerlink" title="Socket的client和server实现通信"></a>Socket的client和server实现通信</h5><p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1ft4uw2nihvj30oj0iudia.jpg" alt="image-20180710164117100"></p>
+<p>我们先看下Socket通信结构，左侧是服务端，右侧是客户端。</p>
+<p>对于服务端我们使用<code>bind</code>进行协议，地址，端口的指定，然后调用<code>listen</code>进行监听。</p>
+<p>与HTTP传输相比Socket通信只要建立连接之后就可以无限发送信息在客户端和服务端之间，而HTTP是只能进行一次信息传输，必须由客户端发起。</p>
+<p>下面我们编写两个文件一个是服务端，一个是客户端。</p>
+<p>服务端socket_server.py代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定网络模式 和 协议 </span></span><br><span class="line"><span class="comment"># AF_INET 表示IPV4</span></span><br><span class="line"><span class="comment"># SOCK_STREAM 表示TCP协议</span></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定任何主机都可以连接 端口8000</span></span><br><span class="line"><span class="comment"># 注意这里必须传输进去一个tuple</span></span><br><span class="line">server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8000</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启监听</span></span><br><span class="line">server.listen()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用accept可以获得socket和地址</span></span><br><span class="line">sock, addr = server.accept()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面接收客户端传来的消息</span></span><br><span class="line"><span class="comment"># 一次接收1024个字节</span></span><br><span class="line">data = sock.recv(<span class="number">1024</span>)</span><br><span class="line"><span class="comment"># 数据传输格式为byte类型，我们将其解码为utf8</span></span><br><span class="line">print(data.decode(<span class="string">"utf8"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向客户端发送数据</span></span><br><span class="line">sock.send((data.decode(<span class="string">"utf8"</span>)).encode(<span class="string">"utf8"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭socket 和 server 一般情况是不关闭server的</span></span><br><span class="line">sock.close()</span><br><span class="line">server.close()</span><br></pre></td></tr></table></figure>
+<p>客户端socket_client.py的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里配置和服务端一致</span></span><br><span class="line">client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># 客户端就要指定IP地址了</span></span><br><span class="line">client.connect((<span class="string">'127.0.0.1'</span>, <span class="number">8000</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据传输为byte 因此我们需要将数据编码</span></span><br><span class="line">re_data = <span class="string">"红烧肉"</span></span><br><span class="line">client.send(re_data.encode(<span class="string">"utf8"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 接收服务端发送来的数据</span></span><br><span class="line">data = client.recv(<span class="number">1024</span>)</span><br><span class="line">print(data.decode(<span class="string">"utf8"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭客户端</span></span><br><span class="line">client.close()</span><br></pre></td></tr></table></figure>
+<h5 id="socket实现聊天和多用户连接"><a href="#socket实现聊天和多用户连接" class="headerlink" title="socket实现聊天和多用户连接"></a>socket实现聊天和多用户连接</h5><p>上面我们已经完成了服务端和客户端的通信，但是信息是固定的，下面我们配置可以互发消息。</p>
+<p>服务端代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8000</span>))</span><br><span class="line">server.listen()</span><br><span class="line"></span><br><span class="line">sock, addr = server.accept()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    data = sock.recv(<span class="number">1024</span>)</span><br><span class="line">    print(data.decode(<span class="string">"utf8"</span>))</span><br><span class="line">    re_data = input()</span><br><span class="line">    sock.send(re_data.encode(<span class="string">"utf8"</span>))</span><br></pre></td></tr></table></figure>
+<p>注意：我们的配置好的<code>server</code>只是用来监听，真正和客户端通信的是<code>sock</code>。</p>
+<p>客户端代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">client.connect((<span class="string">'127.0.0.1'</span>, <span class="number">8000</span>))</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    re_data = input()</span><br><span class="line">    client.send(re_data.encode(<span class="string">"utf8"</span>))</span><br><span class="line">    data = client.recv(<span class="number">1024</span>)</span><br><span class="line">    print(data.decode(<span class="string">"utf8"</span>))</span><br></pre></td></tr></table></figure>
+<p>依次运行服务端和客户端，就可以像聊天一样互发消息。</p>
+<p>上面的代码只实现了一次建立<code>socket</code>，因此只支持单客户端，我们想要支持多客户端连接，就要建立多个<code>socket</code>。这里建立多个客户端我们通过多线程来实现。</p>
+<p>服务端代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8000</span>))</span><br><span class="line">server.listen()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_sock</span><span class="params">(sock, addr)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        data = sock.recv(<span class="number">1024</span>)</span><br><span class="line">        print(data.decode(<span class="string">"utf8"</span>))</span><br><span class="line">        re_data = input()</span><br><span class="line">        sock.send(re_data.encode(<span class="string">"utf8"</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="comment"># 把生成socket写在循环里 这样有多少个客户端就有多少个socket连接</span></span><br><span class="line">    sock, addr = server.accept()</span><br><span class="line">    <span class="comment">#用线程去处理新接收的连接(用户)</span></span><br><span class="line">    client_thread = threading.Thread(target=handle_sock, args=(sock, addr))</span><br><span class="line">    client_thread.start()</span><br></pre></td></tr></table></figure>
+<p>客户端代码不变。</p>
+<p>这样我们先开启服务端，就能开启多个客户端进行多客户端发消息。</p>
+<h5 id="Socket模拟HTTP请求"><a href="#Socket模拟HTTP请求" class="headerlink" title="Socket模拟HTTP请求"></a>Socket模拟HTTP请求</h5><p>我们已经知道，socket是HTTP协议之下让我们可以使用TCP，IP的一个接口。</p>
+<p>对于requests库是基于urlib来实现的，而urlib又是基于socket来实现的。对于网络上的大多请求（包含数据库的链接）底层都是通过socket来实现的。不同的操作系统封装了不同的socket接口。</p>
+<p>我们先看下网页上的HTTP请求长什么样子：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1ft5pybednwj30rp07aq4s.jpg" alt="image-20180711103557899"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlparse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment"># 通过socket请求html</span></span><br><span class="line">    <span class="comment"># 使用urlparse解析请求URL</span></span><br><span class="line">    url = urlparse(url)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获得解析的域名</span></span><br><span class="line">    host = url.netloc</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获得解析的路径</span></span><br><span class="line">    path = url.path</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 如果请求路径为空则需要将path设置为 / (域名请求方式)</span></span><br><span class="line">    <span class="comment"># https://www.baidu.com/</span></span><br><span class="line">    <span class="keyword">if</span> path == <span class="string">""</span>:</span><br><span class="line">        path = <span class="string">"/"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立socket连接</span></span><br><span class="line">    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    <span class="comment"># client.setblocking(False)</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># connect 连接不仅能够制定IP还能制定域名</span></span><br><span class="line">    <span class="comment"># 建立连接是一个耗时的过程</span></span><br><span class="line">    client.connect((host, <span class="number">80</span>))  <span class="comment"># 阻塞不会消耗cpu</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 下面发送请求，数据格式非常重要 不同的网站需要的请求信息不同</span></span><br><span class="line">    client.send(<span class="string">"GET &#123;&#125; HTTP/1.1\r\nHost:&#123;&#125;\r\nConnection:close\r\n\r\n"</span>.format(path, host).encode(<span class="string">"utf8"</span>))</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 解决数据大于1024</span></span><br><span class="line">    data = <span class="string">b""</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        d = client.recv(<span class="number">1024</span>)</span><br><span class="line">        <span class="keyword">if</span> d:</span><br><span class="line">            data += d</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    data = data.decode(<span class="string">"utf8"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 去除请求头 只保留返回的网页</span></span><br><span class="line">    <span class="comment"># 请求头和网页内容之间是两个回车换行</span></span><br><span class="line">    html_data = data.split(<span class="string">"\r\n\r\n"</span>)[<span class="number">1</span>]</span><br><span class="line">    print(html_data)</span><br><span class="line">    client.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line"></span><br><span class="line">    url = <span class="string">"https://www.baidu.com/"</span></span><br><span class="line">    get_url(url)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/09/使用Python生成PDF-reportlab篇/" rel="next" title="使用Python生成PDF-reportlab篇">
+                <i class="fa fa-chevron-left"></i> 使用Python生成PDF-reportlab篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#弄懂HTTP、Socket、TCP这几个概念"><span class="nav-number">1.</span> <span class="nav-text">弄懂HTTP、Socket、TCP这几个概念</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#当我们应用层满足不了的时候我们如何和下层的TCP和UDP打交道呢"><span class="nav-number">1.1.</span> <span class="nav-text">当我们应用层满足不了的时候我们如何和下层的TCP和UDP打交道呢?</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Socket的client和server实现通信"><span class="nav-number">2.</span> <span class="nav-text">Socket的client和server实现通信</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#socket实现聊天和多用户连接"><span class="nav-number">3.</span> <span class="nav-text">socket实现聊天和多用户连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Socket模拟HTTP请求"><span class="nav-number">4.</span> <span class="nav-text">Socket模拟HTTP请求</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
