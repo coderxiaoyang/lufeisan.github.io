@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -81,17 +81,18 @@
 
 
 
-<meta name="description" content="小码农一只">
+<meta name="description" content="书接上回我们继续学习Python中的多线程。 线程同步-SemaphoreSemaphore是控制线程进入数量的锁。 例子：对于一个文件来说，可以同时进行读和写，但是写一般只用于一个线程写，读可以允许多个，比如说我们指定十个线程进行读。 下面模拟一个爬虫，对线程数量进行控制。 一个线程用于抓取URL，用别的URL进行解析。 1234567891011121314151617181920212223">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python多线程">
+<meta property="og:title" content="python多线程多进程和线程池编程(二)">
 <meta property="og:url" content="https://zhaobugs.com/2018/07/12/python多线程/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="书接上回我们继续学习Python中的多线程。 线程同步-SemaphoreSemaphore是控制线程进入数量的锁。 例子：对于一个文件来说，可以同时进行读和写，但是写一般只用于一个线程写，读可以允许多个，比如说我们指定十个线程进行读。 下面模拟一个爬虫，对线程数量进行控制。 一个线程用于抓取URL，用别的URL进行解析。 1234567891011121314151617181920212223">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-12T09:58:42.677Z">
+<meta property="og:updated_time" content="2018-07-13T01:51:31.403Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python多线程">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:title" content="python多线程多进程和线程池编程(二)">
+<meta name="twitter:description" content="书接上回我们继续学习Python中的多线程。 线程同步-SemaphoreSemaphore是控制线程进入数量的锁。 例子：对于一个文件来说，可以同时进行读和写，但是写一般只用于一个线程写，读可以允许多个，比如说我们指定十个线程进行读。 下面模拟一个爬虫，对线程数量进行控制。 一个线程用于抓取URL，用别的URL进行解析。 1234567891011121314151617181920212223">
 
 
 
@@ -127,7 +128,7 @@
 
 
 
-  <title>python多线程 | 红烧肉</title>
+  <title>python多线程多进程和线程池编程(二) | 红烧肉</title>
   
 
 
@@ -319,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python多线程</h1>
+          <h1 class="post-title" itemprop="name headline">python多线程多进程和线程池编程(二)</h1>
         
 
         <div class="post-meta">
@@ -342,6 +343,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -359,7 +382,7 @@
 
           
           
-             <span id="/2018/07/12/python多线程/" class="leancloud_visitors" data-flag-title="python多线程">
+             <span id="/2018/07/12/python多线程/" class="leancloud_visitors" data-flag-title="python多线程多进程和线程池编程(二)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -389,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  850 字
                 </span>
               
 
@@ -405,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -426,7 +449,20 @@
       
 
       
-        
+        <p>书接上回我们继续学习Python中的多线程。</p>
+<h5 id="线程同步-Semaphore"><a href="#线程同步-Semaphore" class="headerlink" title="线程同步-Semaphore"></a>线程同步-Semaphore</h5><p>Semaphore是控制线程进入数量的锁。</p>
+<p>例子：对于一个文件来说，可以同时进行读和写，但是写一般只用于一个线程写，读可以允许多个，比如说我们指定十个线程进行读。</p>
+<p>下面模拟一个爬虫，对线程数量进行控制。</p>
+<p>一个线程用于抓取URL，用别的URL进行解析。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HtmlSpider</span><span class="params">(threading.Thread)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url, sem)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.url = url</span><br><span class="line">        self.sem = sem</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 模拟抓取网站</span></span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">        print(<span class="string">"got html text success"</span>)</span><br><span class="line">        <span class="comment"># 这里需要释放</span></span><br><span class="line">        self.sem.release()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UrlProducer</span><span class="params">(threading.Thread)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, sem)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.sem = sem</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>):</span><br><span class="line">            <span class="comment"># 每调用一次acquire 维护的数量就会减一 当数量为0的时候回一直阻塞</span></span><br><span class="line">            self.sem.acquire()</span><br><span class="line">            html_thread = HtmlSpider(<span class="string">"https://baidu.com/&#123;&#125;"</span>.format(i), self.sem)</span><br><span class="line">            html_thread.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment"># 生成一个支持三个线程并发的Semaphore</span></span><br><span class="line">    sem = threading.Semaphore(<span class="number">3</span>)</span><br><span class="line">    url_producer = UrlProducer(sem)</span><br><span class="line">    url_producer.start()</span><br></pre></td></tr></table></figure>
+<p><code>Semaphore</code>的大致原理是在每次线程执行前获得调用<code>acquire</code>，这时维护的数字会减一，当线程结束之后会加一。这样就完成了指定数量的线程并发。</p>
+<blockquote>
+<p>一定要注意是在主线程中获得，然后在执行的子线程中释放。</p>
+</blockquote>
+<p>我们看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Semaphore</span>:</span></span><br><span class="line">    <span class="string">"""This class implements semaphore objects.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Semaphores manage a counter representing the number of release() calls minus</span></span><br><span class="line"><span class="string">    the number of acquire() calls, plus an initial value. The acquire() method</span></span><br><span class="line"><span class="string">    blocks if necessary until it can return without making the counter</span></span><br><span class="line"><span class="string">    negative. If not given, value defaults to 1.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># After Tim Peters' semaphore class, but not quite the same (no maximum)</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, value=<span class="number">1</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> value &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"semaphore initial value must be &gt;= 0"</span>)</span><br><span class="line">        self._cond = Condition(Lock())</span><br><span class="line">        self._value = value</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">acquire</span><span class="params">(self, blocking=True, timeout=None)</span>:</span></span><br><span class="line">        <span class="string">"""Acquire a semaphore, decrementing the internal counter by one.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        When invoked without arguments: if the internal counter is larger than</span></span><br><span class="line"><span class="string">        zero on entry, decrement it by one and return immediately. If it is zero</span></span><br><span class="line"><span class="string">        on entry, block, waiting until some other thread has called release() to</span></span><br><span class="line"><span class="string">        make it larger than zero. This is done with proper interlocking so that</span></span><br><span class="line"><span class="string">        if multiple acquire() calls are blocked, release() will wake exactly one</span></span><br><span class="line"><span class="string">        of them up. The implementation may pick one at random, so the order in</span></span><br><span class="line"><span class="string">        which blocked threads are awakened should not be relied on. There is no</span></span><br><span class="line"><span class="string">        return value in this case.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        When invoked with blocking set to true, do the same thing as when called</span></span><br><span class="line"><span class="string">        without arguments, and return true.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        When invoked with blocking set to false, do not block. If a call without</span></span><br><span class="line"><span class="string">        an argument would block, return false immediately; otherwise, do the</span></span><br><span class="line"><span class="string">        same thing as when called without arguments, and return true.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        When invoked with a timeout other than None, it will block for at</span></span><br><span class="line"><span class="string">        most timeout seconds.  If acquire does not complete successfully in</span></span><br><span class="line"><span class="string">        that interval, return false.  Return true otherwise.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> blocking <span class="keyword">and</span> timeout <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"can't specify timeout for non-blocking acquire"</span>)</span><br><span class="line">        rc = <span class="keyword">False</span></span><br><span class="line">        endtime = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">with</span> self._cond:</span><br><span class="line">            <span class="keyword">while</span> self._value == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> blocking:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">if</span> timeout <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                    <span class="keyword">if</span> endtime <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                        endtime = _time() + timeout</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        timeout = endtime - _time()</span><br><span class="line">                        <span class="keyword">if</span> timeout &lt;= <span class="number">0</span>:</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                self._cond.wait(timeout)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self._value -= <span class="number">1</span></span><br><span class="line">                rc = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> rc</span><br><span class="line"></span><br><span class="line">    __enter__ = acquire</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">release</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Release a semaphore, incrementing the internal counter by one.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        When the counter is zero on entry and another thread is waiting for it</span></span><br><span class="line"><span class="string">        to become larger than zero again, wake up that thread.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">with</span> self._cond:</span><br><span class="line">            self._value += <span class="number">1</span></span><br><span class="line">            self._cond.notify()</span><br></pre></td></tr></table></figure>
+<p>内部也是通过<code>Condition</code>来实现的。</p>
+
       
     </div>
     
@@ -481,6 +517,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
       
 
       
@@ -554,8 +596,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -642,6 +693,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#线程同步-Semaphore"><span class="nav-number">1.</span> <span class="nav-text">线程同步-Semaphore</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

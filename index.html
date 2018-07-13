@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/12/python多线程/" itemprop="url">python多线程</a></h1>
+                <a class="post-title-link" href="/2018/07/12/python多线程/" itemprop="url">python多线程多进程和线程池编程(二)</a></h1>
         
 
         <div class="post-meta">
@@ -344,6 +344,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -361,7 +383,7 @@
 
           
           
-             <span id="/2018/07/12/python多线程/" class="leancloud_visitors" data-flag-title="python多线程">
+             <span id="/2018/07/12/python多线程/" class="leancloud_visitors" data-flag-title="python多线程多进程和线程池编程(二)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -386,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  850 字
                 </span>
               
 
@@ -402,7 +424,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -425,8 +447,13 @@
       
         
           
-          
-          
+          书接上回我们继续学习Python中的多线程。
+线程同步-SemaphoreSemaphore是控制线程进入数量的锁。
+例子：对于一个文件来说，可以同时进行读和写，但是写一般只用于一个线程写，读可以允许多个，比如说我们指定十个线程进行读。
+下面模拟一个爬虫，对线程数量进行控制。
+一个线程用于抓取URL，用别的URL进行解析。
+1234567891011121314151617181920212223
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/07/12/python多线程/#more" rel="contents">
