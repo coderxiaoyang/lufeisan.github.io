@@ -344,6 +344,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -386,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  1,844 字
                 </span>
               
 
@@ -402,7 +424,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -425,8 +447,11 @@
       
         
           
-          
-          
+          这一篇我们将深入学习flask的上下文机制。
+1. Working outside of application context引发的思考我们抒写一段测试代码，进行debug调试。
+
+我们实例化了一个Flask核心对象，从current_app读取的却是一个本地代理LocalProxy。当尝试从current_app中读取数据的时候就会触发RuntimeError: Working outside
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/08/05/Flask基础学习-第三篇/#more" rel="contents">

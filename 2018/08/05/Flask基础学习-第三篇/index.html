@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="Flask," />
 
 
 
@@ -81,17 +81,26 @@
 
 
 
-<meta name="description" content="小码农一只">
+<meta name="description" content="这一篇我们将深入学习flask的上下文机制。 1. Working outside of application context引发的思考我们抒写一段测试代码，进行debug调试。  我们实例化了一个Flask核心对象，从current_app读取的却是一个本地代理LocalProxy。当尝试从current_app中读取数据的时候就会触发RuntimeError: Working outside">
+<meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask基础学习-第三篇">
 <meta property="og:url" content="https://zhaobugs.com/2018/08/05/Flask基础学习-第三篇/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="这一篇我们将深入学习flask的上下文机制。 1. Working outside of application context引发的思考我们抒写一段测试代码，进行debug调试。  我们实例化了一个Flask核心对象，从current_app读取的却是一个本地代理LocalProxy。当尝试从current_app中读取数据的时候就会触发RuntimeError: Working outside">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-05T03:23:27.347Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1ftz5mbya5sj31eg09iabm.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1ftz6atw9fjj31kw0g4n3f.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1ftz6ehgu4nj31kw0o8qdq.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1ftztmwjqqaj31500m6tsy.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1ftzxuyvsmyj31ec0ekadc.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fu01fewmhdj30qs0d83zj.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/0069RVTdgy1fu0btv0lj1j31kw0v5gmp.jpg">
+<meta property="og:updated_time" content="2018-08-06T14:04:05.525Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-第三篇">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:description" content="这一篇我们将深入学习flask的上下文机制。 1. Working outside of application context引发的思考我们抒写一段测试代码，进行debug调试。  我们实例化了一个Flask核心对象，从current_app读取的却是一个本地代理LocalProxy。当尝试从current_app中读取数据的时候就会触发RuntimeError: Working outside">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1ftz5mbya5sj31eg09iabm.jpg">
 
 
 
@@ -342,6 +351,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -389,7 +420,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  1,844 字
                 </span>
               
 
@@ -405,7 +436,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -426,7 +457,90 @@
       
 
       
-        
+        <p>这一篇我们将深入学习flask的上下文机制。</p>
+<h5 id="1-Working-outside-of-application-context引发的思考"><a href="#1-Working-outside-of-application-context引发的思考" class="headerlink" title="1. Working outside of application context引发的思考"></a>1. Working outside of application context引发的思考</h5><p>我们抒写一段测试代码，进行debug调试。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1ftz5mbya5sj31eg09iabm.jpg" alt="image-20180805213925830"></p>
+<p>我们实例化了一个Flask核心对象，从<code>current_app</code>读取的却是一个本地代理<code>LocalProxy</code>。当尝试从<code>current_app</code>中读取数据的时候就会触发<code>RuntimeError: Working outside of application context</code>。</p>
+<p>我们从图中看到<code>current_app</code>并不是指向flask的核心对象。</p>
+<p>我们看下<code>current_app</code>的源码：</p>
+<p>我们看到<code>current_app</code>和<code>request</code>都是<code>LocalProxy</code>类。这引发了一系列的思考：</p>
+<p>什么是<code>LocalProxy</code>，<code>current_app</code>和核心对象的关系，<code>request</code>是<code>Request</code>吗？</p>
+<p>让我们带着疑问进行下个小节学习吧ヾ(◍°∇°◍)ﾉﾞ</p>
+<h5 id="2-AppContext、RequestContext、Flask和Request之间的关系"><a href="#2-AppContext、RequestContext、Flask和Request之间的关系" class="headerlink" title="2. AppContext、RequestContext、Flask和Request之间的关系"></a>2. AppContext、RequestContext、Flask和Request之间的关系</h5><p>在flask中有两个上下文，一个是应用上下文，一个是请求上下文。我们把这两个上下文当做对象来思考。这两个对象就是对flask和request对象的一些封装。比如说应用上下文是对核心对象<code>Flask</code>对象的封装，请求上下文是对<code>Request</code>对象的封装，然后在此基础上封装一些好用的方法。</p>
+<p>我们看下关于<code>AppContext</code>和<code>RequestContext</code>的源码：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1ftz6atw9fjj31kw0g4n3f.jpg" alt="image-20180805220301033"></p>
+<p>我们在实例化方法中看到将flask核心对象存储到了<code>AppContext</code>的属性中，并且实现了左侧红框四个方法。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1ftz6ehgu4nj31kw0o8qdq.jpg" alt="image-20180805220631561"></p>
+<p>我们在实例化方法中看到将<code>Request</code>对象存储到了<code>RequestContext</code>的属性中（右侧红线框），并且实现了左侧红框四个方法。</p>
+<blockquote>
+<p>flask核心对象<code>Flask</code>存储在<code>AppContext</code>中，<code>Request</code>对象存储在<code>RequestContext</code>中。</p>
+</blockquote>
+<p>我们对这四个对象的作用和意义做下解释：</p>
+<ol>
+<li><code>Flask</code>是flask的核心对象，里面保存了配置信息，提供了注册路由和视图函数的一系列功能。</li>
+<li><code>AppContext</code>是对<code>Flask</code>进行了封装，并增加了一些额外的参数。</li>
+<li><code>Request</code>保存了一些请求信息，如：请求参数和完整的url等。</li>
+<li><code>RequestContext</code>是对<code>Request</code>进行了封装，并增加了一些额外的参数。</li>
+</ol>
+<p>我们在编码的时候真正想使用的是<code>Flask</code>和<code>Request</code>，但是并不是直接导入，我们应该从<code>AppContext</code>和<code>RequestContext</code>获得这两个对象。</p>
+<p>如何获得呢？这就是我们接下来要学习的<code>LocalProxy</code>，通过它提供的间接操作上下文的能力，直接获得想要的对象。</p>
+<p>看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">current_app = LocalProxy(_find_app)</span><br><span class="line">request = LocalProxy(partial(_lookup_req_object, <span class="string">'request'</span>))</span><br></pre></td></tr></table></figure>
+<p>上面的<code>current_app</code>和<code>request</code>分别指向<code>Flask</code>和<code>Request</code>，通过设计模式中的本地代理模式来从上下文中获得。</p>
+<h5 id="3-详解flask上下文与出入栈"><a href="#3-详解flask上下文与出入栈" class="headerlink" title="3. 详解flask上下文与出入栈"></a>3. 详解flask上下文与出入栈</h5><p>这一小节是flask核心知识点，学会了是面试装逼利器。我们看下老师总结的一张图片。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1ftztmwjqqaj31500m6tsy.jpg" alt="image-20180806113023589"></p>
+<p>我们从一个web请求进入到flask框架来探讨下核心机制。</p>
+<p>当一个请求进入到flask框架后，flask首先会实例化一个请求上下文<code>RequestContext</code>，这个请求上下文封装了此次请求的一些信息（保存在Request中），在实例化完成之后会将上下文使用<code>push</code>方法推到一个栈<code>_request_ctx_stack</code>中。在flask中使用<code>LocalStack</code>来表示栈，<code>_request_ctx_stack</code>就是<code>LocalStack</code>的实例化对象。</p>
+<p>注意：在实例化<code>RequestContext</code>对象推入到栈<code>_request_ctx_stack</code>之前会先进行一次检查，检查栈<code>_app_ctx_stack</code>的栈顶是否为空或者是否为当前对象，如果不是将实例化一个<code>AppContext</code>对象，并将其推入到栈<code>_app_ctx_stack</code>当中，然后再将<code>RequestContext</code>的实例化对象推入到栈<code>_request_ctx_stack</code>中，一定要注意这个逻辑。</p>
+<p>我们再看下<code>current_app</code>和<code>request</code>这两个变量。</p>
+<p>这两个变量永远指向对应的栈的栈顶。因此当我们使用这两个变量的时候实际上就是操作这两个栈顶对用的上下文。当栈顶对应的上下文存在的时候就能正常使用，当栈顶不存在上下文的时候就会报文章开头的<code>Working outside of application context</code>和<code>unbound</code>状态。</p>
+<p>下面我们看看一开始的代码，想下如何解决<code>unbound</code>。</p>
+<p>我们知道之所以出现<code>unbound</code>是因为栈顶为空，我们可以自己推上下文到栈中。</p>
+<p>我们可以使用flask提供的<code>app_context</code>方法获得上下文，我么看下源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">app_context</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Create an :class:`~flask.ctx.AppContext`. Use as a ``with``</span></span><br><span class="line"><span class="string">    block to push the context, which will make :data:`current_app`</span></span><br><span class="line"><span class="string">    point at this application.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    An application context is automatically pushed by</span></span><br><span class="line"><span class="string">    :meth:`RequestContext.push() &lt;flask.ctx.RequestContext.push&gt;`</span></span><br><span class="line"><span class="string">    when handling a request, and when running a CLI command. Use</span></span><br><span class="line"><span class="string">    this to manually create a context outside of these situations.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        with app.app_context():</span></span><br><span class="line"><span class="string">            init_db()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    See :doc:`/appcontext`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionadded:: 0.9</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> AppContext(self)</span><br></pre></td></tr></table></figure>
+<p>我们从函数的文档注释可以看到我们所学习的知识点。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1ftzxuyvsmyj31ec0ekadc.jpg" alt="image-20180806135631420"></p>
+<p>我们获得上下文之后手动推到栈顶，这样就能获得<code>current_app</code>。</p>
+<p>之前我们说过<code>current_app</code>指向的是对应程序上下文的栈顶，但是<code>current_app</code>这个代理具体返回的是什么呢？我们来看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_find_app</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 取栈顶元素</span></span><br><span class="line">    top = _app_ctx_stack.top</span><br><span class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(_app_ctx_err_msg)</span><br><span class="line">    <span class="comment"># 返回app对象</span></span><br><span class="line">    <span class="keyword">return</span> top.app</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_app_ctx_stack = LocalStack()</span><br><span class="line">current_app = LocalProxy(_find_app)</span><br></pre></td></tr></table></figure>
+<p>我们看到<code>current_app</code>代理最终返回的是flask的核心对象<code>app</code>。</p>
+<p>同样看下<code>request</code>的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lookup_req_object</span><span class="params">(name)</span>:</span></span><br><span class="line">    top = _request_ctx_stack.top</span><br><span class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(_request_ctx_err_msg)</span><br><span class="line">    <span class="keyword">return</span> getattr(top, name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># context locals</span></span><br><span class="line">_request_ctx_stack = LocalStack()</span><br><span class="line">request = LocalProxy(partial(_lookup_req_object, <span class="string">'request'</span>))</span><br></pre></td></tr></table></figure>
+<p>最终返回也不是请求上下文，而是<code>request</code>对象。</p>
+<p>完整的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, current_app, request, Request</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">ctx = app.app_context()</span><br><span class="line"><span class="comment"># 入栈</span></span><br><span class="line">ctx.push()</span><br><span class="line"></span><br><span class="line">a = current_app</span><br><span class="line"></span><br><span class="line">d = current_app.config[<span class="string">'DEBUG'</span>]</span><br><span class="line"><span class="comment"># 出栈</span></span><br><span class="line">ctx.pop()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于单元测试和离线应用的时候，使用手动推栈很有必要。</p>
+</blockquote>
+<h5 id="4-flask上下文与with语句"><a href="#4-flask上下文与with语句" class="headerlink" title="4. flask上下文与with语句"></a>4. flask上下文与with语句</h5><p>我们之前看<code>AppContext</code>源码的时候看到了实现了上下文协议的两个魔法方法<code>__enter__</code>和<code>__exit__</code>。因此我们可以使用with语句简化上面的代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, current_app, request, Request</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> app.app_context():</span><br><span class="line">    a = current_app</span><br><span class="line"></span><br><span class="line">    d = current_app.config[<span class="string">'DEBUG'</span>]</span><br></pre></td></tr></table></figure>
+<p>关于with语句的一些知识：</p>
+<blockquote>
+<p>实现了上下文协议的对象才能使用with</p>
+</blockquote>
+<blockquote>
+<p>实现了上下文协议的对象被称为上下文管理器</p>
+</blockquote>
+<blockquote>
+<p> 只要一个对象实现了 <code>__enter__</code> <code>__exit__</code>魔法方法就是实现了上下文协议     </p>
+</blockquote>
+<blockquote>
+<p>with后面的语句被称为上下文表达式，上下文表达式必须返回一个上下文管理器</p>
+</blockquote>
+<p>上下文表达式必须返回一个上下文管理器，那下面的 <code>as</code> 后面的 <code>f</code>代表什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">r''</span>) ad f:</span><br><span class="line">    print(f.read())</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>as</code>后面的变量是指魔法方法<code>__enter__</code>的返回值</p>
+</blockquote>
+<p>我们写段代码验证下：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fu01fewmhdj30qs0d83zj.jpg" alt="image-20180806155959433"></p>
+<p>我们看到的确是<code>__enter__</code>函数的返回值，当什么都不返回的时候，将会为None。</p>
+<h5 id="5-上下文管理器中的exit方法"><a href="#5-上下文管理器中的exit方法" class="headerlink" title="5. 上下文管理器中的exit方法"></a>5. 上下文管理器中的<strong>exit</strong>方法</h5><p><img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fu0btv0lj1j31kw0v5gmp.jpg" alt="image-20180806214319724"></p>
+<p>我们看到<code>__exit__</code>参数多了几个，分别是代表异常类型，异常值，和异常栈。</p>
+<blockquote>
+<p><code>__exit__</code>也是有返回值的，分别是 <code>True</code>和<code>False</code>。当返回<code>True</code>的时候在with语句不再抛出异常，当返回<code>False</code>的时候外面会继续抛出异常。如果我们在with外面用try…except捕捉，将继续捕捉到错误。当我们什么都不返回就是代表返回None，即False。</p>
+</blockquote>
+
       
     </div>
     
@@ -481,6 +595,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i>Flask</a>
+          
+        </div>
       
 
       
@@ -554,8 +674,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -642,6 +771,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Working-outside-of-application-context引发的思考"><span class="nav-number">1.</span> <span class="nav-text">1. Working outside of application context引发的思考</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-AppContext、RequestContext、Flask和Request之间的关系"><span class="nav-number">2.</span> <span class="nav-text">2. AppContext、RequestContext、Flask和Request之间的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-详解flask上下文与出入栈"><span class="nav-number">3.</span> <span class="nav-text">3. 详解flask上下文与出入栈</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-flask上下文与with语句"><span class="nav-number">4.</span> <span class="nav-text">4. flask上下文与with语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-上下文管理器中的exit方法"><span class="nav-number">5.</span> <span class="nav-text">5. 上下文管理器中的exit方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
