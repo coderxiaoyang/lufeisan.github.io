@@ -93,7 +93,10 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c518973bgy1fu18gqrkwkj215c0d2470.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu18i2ndmfj316a0o4wwn.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu19e8drgij31fe0o84p6.jpg">
-<meta property="og:updated_time" content="2018-08-07T14:17:10.127Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu19e8drgij31fe0o84p6.jpg">
+<meta property="og:image" content="https://zhaobugs.com/var/folders/st/lbljp6kd6fq8g34qcy8_fl1m0000gn/T/abnerworks.Typora/image-20180808112749128.png">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu25fgxo9jj30rc0a2gmf.jpg">
+<meta property="og:updated_time" content="2018-08-08T06:41:04.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-第四篇">
 <meta name="twitter:description" content="1. 进程和线程进程就是操作系统分配和调度资源的最小单位。  线程之间的切换消耗更小。   进程 分配资源 内存资源    线程 利用CPU执行代码  线程是不能被分配和获得资源的，但是线程能够访问资源（对应所属进程的资源），正因为线程不用管理资源和拥有资源的 ，因此线程切换的开销比进程小。 对于多核CPU，当存在多个线程的时候，可以并行运行在多个CPU上，但是，由于Python中GIL的存在，导">
@@ -417,7 +420,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,613 字
+                  2,478 字
                 </span>
               
 
@@ -433,7 +436,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7 分钟
+                  11 分钟
                 </span>
               
             </div>
@@ -503,6 +506,55 @@
 <h5 id="6-LocalStack作为线程隔离的使用"><a href="#6-LocalStack作为线程隔离的使用" class="headerlink" title="6. LocalStack作为线程隔离的使用"></a>6. LocalStack作为线程隔离的使用</h5><p>我们直接看下代码的输出</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">my_stack = LocalStack()</span><br><span class="line">my_stack.push(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"in main thread after push, value is: "</span> + str(my_stack.top))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"in new thread before push, value is: "</span> + str(my_stack.top))</span><br><span class="line">    my_stack.push(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">"in new thread after push, value is: "</span> + str(my_stack.top))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">new_t = threading.Thread(target=worker, name=<span class="string">"new thread"</span>)</span><br><span class="line"></span><br><span class="line">new_t.start()</span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"in main thread finally push, value is: "</span> + str(my_stack.top))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="keyword">in</span> main thread after push, value <span class="keyword">is</span>: <span class="number">1</span></span><br><span class="line"><span class="keyword">in</span> new thread before push, value <span class="keyword">is</span>: <span class="keyword">None</span></span><br><span class="line"><span class="keyword">in</span> new thread after push, value <span class="keyword">is</span>: <span class="number">2</span></span><br><span class="line"><span class="keyword">in</span> main thread <span class="keyword">finally</span> push, value <span class="keyword">is</span>: <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>代码中我们看到主线程的操作和新线程互不影响，也就是说两个线程两个栈。</p>
+<h5 id="7-flask中被线程隔离的对象"><a href="#7-flask中被线程隔离的对象" class="headerlink" title="7. flask中被线程隔离的对象"></a>7. flask中被线程隔离的对象</h5><p><img src="https://ws4.sinaimg.cn/large/0069RVTdgy1fu19e8drgij31fe0o84p6.jpg" alt="image-20180807172112902"></p>
+<p>flask中为什么要使用<code>LocalStack</code>呢？</p>
+<p>看上面的图，每次请求的时候我们需要对两个上下文进行推栈操作，并且要求每次都是线程隔离的，<code>LocalStack</code>刚好能满足我们的需求。</p>
+<p>flask为什么要使用线程隔离呢？</p>
+<p>表面原因：在多线程编程的时候，每个线程中都会创建各种对象，如果不进行线程隔离，就会出现变量指代不明确，程序运行出错。</p>
+<p>深入原因： 我们以<code>Request</code>为例，使用线程隔离后<code>request</code>变量在各个线程中会指向当前的<code>Request</code>实例化对象，不会出现指代不明的情况。</p>
+<p><img src="/var/folders/st/lbljp6kd6fq8g34qcy8_fl1m0000gn/T/abnerworks.Typora/image-20180808112749128.png" alt="image-20180808112749128"></p>
+<blockquote>
+<p>线程隔离的意义：使当前线程能够正确引用到它自己所创建的对象，而不是引用到其他线程所创建的对象。</p>
+</blockquote>
+<p>我们现在对比下线程隔离和非线程隔离：</p>
+<p>先创建一个非线程隔离的对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoneLocal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, v)</span>:</span></span><br><span class="line">        self.v = v</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n = NoneLocal(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>在一个视图函数中使用和改变非线程隔离对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, session, g</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> nonelocal <span class="keyword">import</span> n</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/test')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    print(n.v)</span><br><span class="line">    n.v = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">'----------------'</span>)</span><br><span class="line">    print(getattr(request, <span class="string">'v'</span>, <span class="keyword">None</span>))</span><br><span class="line">    print(getattr(session, <span class="string">'v'</span>, <span class="keyword">None</span>))</span><br><span class="line">    print(getattr(g, <span class="string">'v'</span>, <span class="keyword">None</span>))</span><br><span class="line">	</span><br><span class="line">    setattr(request, <span class="string">'v'</span>, <span class="number">2</span>)</span><br><span class="line">    setattr(session, <span class="string">'v'</span>, <span class="number">2</span>)</span><br><span class="line">    setattr(g, <span class="string">'v'</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 记得开启多线程</span></span><br><span class="line">app.run(port=<span class="number">5005</span>, threaded=<span class="keyword">True</span>, debug=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>我们连续请求两次这个页面，查看输出：</p>
+<p><img src="https://ws4.sinaimg.cn/large/0069RVTdgy1fu25fgxo9jj30rc0a2gmf.jpg" alt="image-20180808114901745"></p>
+<p>从上面的输出我们看到，<code>request</code>, <code>session</code>, <code>g</code>这三个对象都是线程隔离的对象。不是线程隔离的对象在不同的请求中会相互影响。</p>
+<h5 id="flask中一些名词"><a href="#flask中一些名词" class="headerlink" title="flask中一些名词"></a>flask中一些名词</h5><p>线程隔离对象：<code>LocalStack</code>和<code>Local</code>就是线程隔离对象</p>
+<p>被线程隔离的对象：由线程隔离对象创建被线程隔离的对象，如两个上下文通过退到<code>LocalStack</code>中变成被线程隔离的对象。</p>
+<p>我们现在探讨一个问题，<code>current_app</code>是线程隔离的吗？</p>
+<p>先看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_find_app</span><span class="params">()</span>:</span></span><br><span class="line">    top = _app_ctx_stack.top</span><br><span class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(_app_ctx_err_msg)</span><br><span class="line">    <span class="keyword">return</span> top.app</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># context locals</span></span><br><span class="line">_app_ctx_stack = LocalStack()</span><br><span class="line">current_app = LocalProxy(_find_app)</span><br></pre></td></tr></table></figure>
+<p><code>_find_app</code>函数的最终返回值是flask的核心对象<code>Flask</code>.</p>
+<p>应用上下文和flask的核心对象是有区别的，flask的核心对象时作为一个属性存在应用上下文中。</p>
+<p>flask的核心对象在全局是只有一个的。</p>
+<p>为什么全局只有一个呢？</p>
+<p>这是因为<code>app</code>的创建是在入口文件中创建的，只是在程序初次运行的时候创建，相比于<code>Request</code>则是每次请求都是需要创建的。因此是全局只有一个的。</p>
+<p>从上我们得出的是<code>current_app</code>不是线程隔离的。</p>
+<p>最后看一些这些名词的关系：</p>
+<blockquote>
+<p>内部是以线程ID作为key的字典 –&gt; <code>Local</code> –&gt; <code>LocalStack</code></p>
+</blockquote>
+<blockquote>
+<p><code>AppContext</code> <code>RequestContext</code> -&gt; <code>LocalStack</code></p>
+</blockquote>
+<p>两个上下文在每次请求的时候会被推到<code>LocalStack</code>的栈结构中，当请求结束再弹出来。</p>
+<blockquote>
+<p><code>Flask</code> –&gt; <code>AppContext</code>  <code>Request</code> –&gt; <code>RequestContext</code></p>
+</blockquote>
+<p><code>AppContext</code>将flask的核心对象作为属性保存起来，<code>RequestContext</code>同样将<code>Request</code>保存封装起来。</p>
+<blockquote>
+<p><code>current_app</code> –&gt; (<code>LocalStack.top</code> == <code>AppContext top.app</code> = <code>Flask</code>)</p>
+</blockquote>
+<p><code>current_app</code>指向的是栈顶元素的<code>app</code>属性，栈顶元素是应用上下文。</p>
+<blockquote>
+<p><code>request</code> –&gt;  (<code>LocalStack.top</code> == <code>RequestContext top.request</code> = <code>Request</code>)</p>
+</blockquote>
+<p><code>request</code>实际指向的是<code>Request</code>。</p>
 
       
     </div>
@@ -583,6 +635,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/09/深入理解Flask读书笔记/" rel="prev" title="深入理解Flask读书笔记">
+                深入理解Flask读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -666,7 +722,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -744,7 +800,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-进程和线程"><span class="nav-number">1.</span> <span class="nav-text">1. 进程和线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-线程隔离"><span class="nav-number">2.</span> <span class="nav-text">2. 线程隔离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-线程隔离对象Local"><span class="nav-number">3.</span> <span class="nav-text">3. 线程隔离对象Local</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-线程隔离的栈：LocalStack"><span class="nav-number">4.</span> <span class="nav-text">4. 线程隔离的栈：LocalStack</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-LocalStack作为Stack的用法"><span class="nav-number">5.</span> <span class="nav-text">5. LocalStack作为Stack的用法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-LocalStack作为线程隔离的使用"><span class="nav-number">6.</span> <span class="nav-text">6. LocalStack作为线程隔离的使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-进程和线程"><span class="nav-number">1.</span> <span class="nav-text">1. 进程和线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-线程隔离"><span class="nav-number">2.</span> <span class="nav-text">2. 线程隔离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-线程隔离对象Local"><span class="nav-number">3.</span> <span class="nav-text">3. 线程隔离对象Local</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-线程隔离的栈：LocalStack"><span class="nav-number">4.</span> <span class="nav-text">4. 线程隔离的栈：LocalStack</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-LocalStack作为Stack的用法"><span class="nav-number">5.</span> <span class="nav-text">5. LocalStack作为Stack的用法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-LocalStack作为线程隔离的使用"><span class="nav-number">6.</span> <span class="nav-text">6. LocalStack作为线程隔离的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-flask中被线程隔离的对象"><span class="nav-number">7.</span> <span class="nav-text">7. flask中被线程隔离的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#flask中一些名词"><span class="nav-number">8.</span> <span class="nav-text">flask中一些名词</span></a></li></ol></div>
             
 
           </div>

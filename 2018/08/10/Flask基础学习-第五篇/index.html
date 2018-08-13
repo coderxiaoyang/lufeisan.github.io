@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Django," />
+  <meta name="keywords" content="Flask," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="随机排序想对查询的结果进行随机排序需要使用? 12#随机获取前10条记录qs = Blog.objects.order_by(&amp;apos;?&amp;apos;)[:10] 不等于过滤当我们想要使用不等于排除数据的时候，有两种方案 方案一：使用exclude 1Blog.objects.filter(author=user).exclude(id=1) 方案二：使用Q 123from django.db.">
-<meta name="keywords" content="Django">
+<meta name="description" content="1. 静态文件访问原理我们在访问由flask的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在app文件下面创建一个static文件，将各类静态文件放到该文件夹下。我们在浏览器中输入http://IP:port/static/some.jpg就可以访问到对应的照片。  应用程序的根目录是根据实例化Flask核心对象 我们传入的 __name__来定的  为什么是这样呢？ 因为flas">
+<meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Django零散知识点">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/08/Django零散知识点/index.html">
+<meta property="og:title" content="Flask基础学习-第五篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/08/10/Flask基础学习-第五篇/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="随机排序想对查询的结果进行随机排序需要使用? 12#随机获取前10条记录qs = Blog.objects.order_by(&amp;apos;?&amp;apos;)[:10] 不等于过滤当我们想要使用不等于排除数据的时候，有两种方案 方案一：使用exclude 1Blog.objects.filter(author=user).exclude(id=1) 方案二：使用Q 123from django.db.">
+<meta property="og:description" content="1. 静态文件访问原理我们在访问由flask的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在app文件下面创建一个static文件，将各类静态文件放到该文件夹下。我们在浏览器中输入http://IP:port/static/some.jpg就可以访问到对应的照片。  应用程序的根目录是根据实例化Flask核心对象 我们传入的 __name__来定的  为什么是这样呢？ 因为flas">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T09:02:28.045Z">
+<meta property="og:updated_time" content="2018-08-13T14:18:45.266Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Django零散知识点">
-<meta name="twitter:description" content="随机排序想对查询的结果进行随机排序需要使用? 12#随机获取前10条记录qs = Blog.objects.order_by(&amp;apos;?&amp;apos;)[:10] 不等于过滤当我们想要使用不等于排除数据的时候，有两种方案 方案一：使用exclude 1Blog.objects.filter(author=user).exclude(id=1) 方案二：使用Q 123from django.db.">
+<meta name="twitter:title" content="Flask基础学习-第五篇">
+<meta name="twitter:description" content="1. 静态文件访问原理我们在访问由flask的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在app文件下面创建一个static文件，将各类静态文件放到该文件夹下。我们在浏览器中输入http://IP:port/static/some.jpg就可以访问到对应的照片。  应用程序的根目录是根据实例化Flask核心对象 我们传入的 __name__来定的  为什么是这样呢？ 因为flas">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/08/Django零散知识点/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/08/10/Flask基础学习-第五篇/"/>
 
 
 
 
 
-  <title>Django零散知识点 | 红烧肉</title>
+  <title>Flask基础学习-第五篇 | 红烧肉</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/08/Django零散知识点/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/08/10/Flask基础学习-第五篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Django零散知识点</h1>
+          <h1 class="post-title" itemprop="name headline">Flask基础学习-第五篇</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-08T17:32:01+08:00">
-                2018-06-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T15:18:01+08:00">
+                2018-08-10
               </time>
             
 
@@ -355,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Django/" itemprop="url" rel="index">
-                    <span itemprop="name">Django</span>
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
                   </a>
                 </span>
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/08/Django零散知识点/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/08/Django零散知识点/" itemprop="commentCount"></span>
+                <a href="/2018/08/10/Flask基础学习-第五篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/10/Flask基础学习-第五篇/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/06/08/Django零散知识点/" class="leancloud_visitors" data-flag-title="Django零散知识点">
+             <span id="/2018/08/10/Flask基础学习-第五篇/" class="leancloud_visitors" data-flag-title="Flask基础学习-第五篇">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  331 字
+                  639 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -449,25 +449,28 @@
       
 
       
-        <h6 id="随机排序"><a href="#随机排序" class="headerlink" title="随机排序"></a>随机排序</h6><p>想对查询的结果进行随机排序需要使用<code>?</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#随机获取前10条记录</span><br><span class="line">qs = Blog.objects.order_by(&apos;?&apos;)[:10]</span><br></pre></td></tr></table></figure>
-<h6 id="不等于过滤"><a href="#不等于过滤" class="headerlink" title="不等于过滤"></a>不等于过滤</h6><p>当我们想要使用不等于排除数据的时候，有两种方案</p>
-<p>方案一：使用exclude</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Blog.objects.filter(author=user).exclude(id=1)</span><br></pre></td></tr></table></figure>
-<p>方案二：使用Q</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import Q</span><br><span class="line"></span><br><span class="line">Blog.objects.filter(~Q(id=1))</span><br></pre></td></tr></table></figure>
-<h6 id="对于ForeignKey对象，clear-和remove-方法仅在null-True时存在。"><a href="#对于ForeignKey对象，clear-和remove-方法仅在null-True时存在。" class="headerlink" title="对于ForeignKey对象，clear()和remove()方法仅在null=True时存在。"></a>对于ForeignKey对象，clear()和remove()方法仅在null=True时存在。</h6><p>举个例子：</p>
-<p>ForeignKey字段没设置null=True时，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    title = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    publisher = models.ForeignKey(to=Publisher)</span><br></pre></td></tr></table></figure>
-<p>没有clear()和remove()方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>models.Publisher.objects.first().book_set.clear()</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">AttributeError: <span class="string">'RelatedManager'</span> object has no attribute <span class="string">'clear'</span></span><br></pre></td></tr></table></figure>
-<p>当ForeignKey字段设置null=True时，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    publisher = models.ForeignKey(to=Class, null=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
-<p>此时就有clear()和remove()方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>models.Publisher.objects.first().book_set.clear()</span><br></pre></td></tr></table></figure>
-<p><strong>注意</strong>：对于所有类型的关联字段，add()、create()、remove()和clear(),set()都会马上更新数据库。换句话说，在关联的任何一端，都不需要再调用save()方法。</p>
-<h6 id="可以使用Concat修改字符串属性"><a href="#可以使用Concat修改字符串属性" class="headerlink" title="可以使用Concat修改字符串属性"></a>可以使用Concat修改字符串属性</h6><p>例子：把所有书名后面加上(第一版)</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> django.db.models.functions <span class="keyword">import</span> Concat</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Value</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>models.Book.objects.all().update(title=Concat(F(<span class="string">"title"</span>), Value(<span class="string">"("</span>), Value(<span class="string">"第一版"</span>), Value(<span class="string">")"</span>)))</span><br></pre></td></tr></table></figure>
+        <h5 id="1-静态文件访问原理"><a href="#1-静态文件访问原理" class="headerlink" title="1. 静态文件访问原理"></a>1. 静态文件访问原理</h5><p>我们在访问由<code>flask</code>的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在<code>app</code>文件下面创建一个<code>static</code>文件，将各类静态文件放到该文件夹下。我们在浏览器中输入<code>http://IP:port/static/some.jpg</code>就可以访问到对应的照片。</p>
+<blockquote>
+<p>应用程序的根目录是根据实例化Flask核心对象 我们传入的 <code>__name__</code>来定的</p>
+</blockquote>
+<p>为什么是这样呢？</p>
+<p>因为<code>flask</code>默认静态文件夹的名字是<code>static</code>，并且在应用程序的根目录下。</p>
+<p>如何更改默认值呢？</p>
+<p>我们可以在实例化<code>flask</code>核心对象的时候修改静态文件的位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__, static_folder=<span class="string">'/somepath/statics'</span>)</span><br></pre></td></tr></table></figure>
+<p>传入的路径为静态路径，是相对于程序的根目录的。我们指定了<code>somepath/statics</code>作为静态文件的目录，这时我们应该修改访问路径，</p>
+<p>我们看下源码，来看看原理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># register the static folder for the application.  Do that even</span></span><br><span class="line"><span class="comment"># if the folder does not exist.  First of all it might be created</span></span><br><span class="line"><span class="comment"># while the server is running (usually happens during development)</span></span><br><span class="line"><span class="comment"># but also because google appengine stores static files somewhere</span></span><br><span class="line"><span class="comment"># else when mapped with the .yml file.</span></span><br><span class="line"><span class="keyword">if</span> self.has_static_folder:</span><br><span class="line">    self.add_url_rule(self.static_url_path + <span class="string">'/&lt;path:filename&gt;'</span>,</span><br><span class="line">                      endpoint=<span class="string">'static'</span>,</span><br><span class="line">                      view_func=self.send_static_file)</span><br></pre></td></tr></table></figure>
+<p>这里我们看到了<code>add_url_rule</code>注册路由，路由是<code>self.static_url_path</code>加上文件名，我们看下它的源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_static_url_path</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> self._static_url_path <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">if</span> self.static_folder <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># 如果静态文件路径不为空 则是最后一个文件夹作为路径返回 </span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'/'</span> + os.path.basename(self.static_folder)</span><br><span class="line">    <span class="comment"># 如果我们制定了_static_url_path 则是直接使用我们指定的</span></span><br><span class="line">    <span class="keyword">return</span> self._static_url_path</span><br></pre></td></tr></table></figure>
+<p>如何制定<code>_static_url_path</code> 呢？</p>
+<p>同样是在实例化<code>flask</code>的核心对象的时候</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__, static_url_path=<span class="string">'statics'</span>)</span><br></pre></td></tr></table></figure>
+<p>静态文件有两个层级，一个是应用程序的级别，一个是蓝图的级别，蓝图的静态文件和应用程序的方法一致。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">web = Blueprint(<span class="string">'web'</span>, __name__, static_folder=<span class="string">''</span>, static_url_path=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+<p>我们在实际编程中，建议使用默认值。</p>
+<p>我们看下注册路由中的<code>view_func</code>，这个是在文件访问前执行的，我们可以在这个函数中做一些操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send_static_file</span><span class="params">(self, filename)</span>:</span></span><br><span class="line">    <span class="string">"""Function used internally to send static files from the static</span></span><br><span class="line"><span class="string">    folder to the browser.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionadded:: 0.5</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.has_static_folder:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">'No static folder for this object'</span>)</span><br><span class="line">    <span class="comment"># Ensure get_send_file_max_age is called in all cases.</span></span><br><span class="line">    <span class="comment"># Here, we ensure get_send_file_max_age is called for Blueprints.</span></span><br><span class="line">    cache_timeout = self.get_send_file_max_age(filename)</span><br><span class="line">    <span class="keyword">return</span> send_from_directory(self.static_folder, filename,</span><br><span class="line">                               cache_timeout=cache_timeout)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -526,7 +529,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i>Django</a>
+            <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i>Flask</a>
           
         </div>
       
@@ -539,8 +542,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/08/Python中一切皆对象/" rel="next" title="Python中一切皆对象">
-                <i class="fa fa-chevron-left"></i> Python中一切皆对象
+              <a href="/2018/08/09/深入理解Flask读书笔记/" rel="next" title="深入理解Flask读书笔记">
+                <i class="fa fa-chevron-left"></i> 深入理解Flask读书笔记
               </a>
             
           </div>
@@ -548,10 +551,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/09/Python的魔法函数/" rel="prev" title="Python的魔法函数">
-                Python的魔法函数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -713,7 +712,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#随机排序"><span class="nav-number">1.</span> <span class="nav-text">随机排序</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#不等于过滤"><span class="nav-number">2.</span> <span class="nav-text">不等于过滤</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#对于ForeignKey对象，clear-和remove-方法仅在null-True时存在。"><span class="nav-number">3.</span> <span class="nav-text">对于ForeignKey对象，clear()和remove()方法仅在null=True时存在。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#可以使用Concat修改字符串属性"><span class="nav-number">4.</span> <span class="nav-text">可以使用Concat修改字符串属性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-静态文件访问原理"><span class="nav-number">1.</span> <span class="nav-text">1. 静态文件访问原理</span></a></li></ol></div>
             
 
           </div>
