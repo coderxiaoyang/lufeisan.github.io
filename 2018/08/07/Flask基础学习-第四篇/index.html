@@ -84,7 +84,7 @@
 <meta name="description" content="1. 进程和线程进程就是操作系统分配和调度资源的最小单位。  线程之间的切换消耗更小。   进程 分配资源 内存资源    线程 利用CPU执行代码  线程是不能被分配和获得资源的，但是线程能够访问资源（对应所属进程的资源），正因为线程不用管理资源和拥有资源的 ，因此线程切换的开销比进程小。 对于多核CPU，当存在多个线程的时候，可以并行运行在多个CPU上，但是，由于Python中GIL的存在，导">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flask基础学习-第四篇">
+<meta property="og:title" content="Flask基础学习-线程隔离篇">
 <meta property="og:url" content="https://zhaobugs.com/2018/08/07/Flask基础学习-第四篇/index.html">
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="1. 进程和线程进程就是操作系统分配和调度资源的最小单位。  线程之间的切换消耗更小。   进程 分配资源 内存资源    线程 利用CPU执行代码  线程是不能被分配和获得资源的，但是线程能够访问资源（对应所属进程的资源），正因为线程不用管理资源和拥有资源的 ，因此线程切换的开销比进程小。 对于多核CPU，当存在多个线程的时候，可以并行运行在多个CPU上，但是，由于Python中GIL的存在，导">
@@ -96,9 +96,9 @@
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu19e8drgij31fe0o84p6.jpg">
 <meta property="og:image" content="https://zhaobugs.com/var/folders/st/lbljp6kd6fq8g34qcy8_fl1m0000gn/T/abnerworks.Typora/image-20180808112749128.png">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu25fgxo9jj30rc0a2gmf.jpg">
-<meta property="og:updated_time" content="2018-08-08T06:41:04.899Z">
+<meta property="og:updated_time" content="2018-08-15T02:01:45.246Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flask基础学习-第四篇">
+<meta name="twitter:title" content="Flask基础学习-线程隔离篇">
 <meta name="twitter:description" content="1. 进程和线程进程就是操作系统分配和调度资源的最小单位。  线程之间的切换消耗更小。   进程 分配资源 内存资源    线程 利用CPU执行代码  线程是不能被分配和获得资源的，但是线程能够访问资源（对应所属进程的资源），正因为线程不用管理资源和拥有资源的 ，因此线程切换的开销比进程小。 对于多核CPU，当存在多个线程的时候，可以并行运行在多个CPU上，但是，由于Python中GIL的存在，导">
 <meta name="twitter:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu0tht3vsgj30va0gotg9.jpg">
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>Flask基础学习-第四篇 | 红烧肉</title>
+  <title>Flask基础学习-线程隔离篇 | 红烧肉</title>
   
 
 
@@ -328,7 +328,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Flask基础学习-第四篇</h1>
+          <h1 class="post-title" itemprop="name headline">Flask基础学习-线程隔离篇</h1>
         
 
         <div class="post-meta">
@@ -390,7 +390,7 @@
 
           
           
-             <span id="/2018/08/07/Flask基础学习-第四篇/" class="leancloud_visitors" data-flag-title="Flask基础学习-第四篇">
+             <span id="/2018/08/07/Flask基础学习-第四篇/" class="leancloud_visitors" data-flag-title="Flask基础学习-线程隔离篇">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -626,8 +626,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/05/Flask基础学习-第三篇/" rel="next" title="Flask基础学习-第三篇">
-                <i class="fa fa-chevron-left"></i> Flask基础学习-第三篇
+              <a href="/2018/08/05/Flask基础学习-第三篇/" rel="next" title="Flask基础学习-上下文篇">
+                <i class="fa fa-chevron-left"></i> Flask基础学习-上下文篇
               </a>
             
           </div>
@@ -722,7 +722,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

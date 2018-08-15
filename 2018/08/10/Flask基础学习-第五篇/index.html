@@ -84,15 +84,18 @@
 <meta name="description" content="1. 静态文件访问原理我们在访问由flask的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在app文件下面创建一个static文件，将各类静态文件放到该文件夹下。我们在浏览器中输入http://IP:port/static/some.jpg就可以访问到对应的照片。  应用程序的根目录是根据实例化Flask核心对象 我们传入的 __name__来定的  为什么是这样呢？ 因为flas">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flask基础学习-第五篇">
+<meta property="og:title" content="Flask基础学习-静态文件篇">
 <meta property="og:url" content="https://zhaobugs.com/2018/08/10/Flask基础学习-第五篇/index.html">
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="1. 静态文件访问原理我们在访问由flask的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在app文件下面创建一个static文件，将各类静态文件放到该文件夹下。我们在浏览器中输入http://IP:port/static/some.jpg就可以访问到对应的照片。  应用程序的根目录是根据实例化Flask核心对象 我们传入的 __name__来定的  为什么是这样呢？ 因为flas">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-13T14:18:45.266Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fu99f12z29j31ew0uk0yk.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fu99hwimtpj31ew0ukaek.jpg">
+<meta property="og:updated_time" content="2018-08-15T02:02:16.592Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flask基础学习-第五篇">
+<meta name="twitter:title" content="Flask基础学习-静态文件篇">
 <meta name="twitter:description" content="1. 静态文件访问原理我们在访问由flask的服务时候，如果想访问静态文件，例如图片的时候，默认情况下我们在app文件下面创建一个static文件，将各类静态文件放到该文件夹下。我们在浏览器中输入http://IP:port/static/some.jpg就可以访问到对应的照片。  应用程序的根目录是根据实例化Flask核心对象 我们传入的 __name__来定的  为什么是这样呢？ 因为flas">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fu99f12z29j31ew0uk0yk.jpg">
 
 
 
@@ -128,7 +131,7 @@
 
 
 
-  <title>Flask基础学习-第五篇 | 红烧肉</title>
+  <title>Flask基础学习-静态文件篇 | 红烧肉</title>
   
 
 
@@ -320,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Flask基础学习-第五篇</h1>
+          <h1 class="post-title" itemprop="name headline">Flask基础学习-静态文件篇</h1>
         
 
         <div class="post-meta">
@@ -382,7 +385,7 @@
 
           
           
-             <span id="/2018/08/10/Flask基础学习-第五篇/" class="leancloud_visitors" data-flag-title="Flask基础学习-第五篇">
+             <span id="/2018/08/10/Flask基础学习-第五篇/" class="leancloud_visitors" data-flag-title="Flask基础学习-静态文件篇">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  639 字
+                  1,150 字
                 </span>
               
 
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -471,6 +474,32 @@
 <p>我们在实际编程中，建议使用默认值。</p>
 <p>我们看下注册路由中的<code>view_func</code>，这个是在文件访问前执行的，我们可以在这个函数中做一些操作。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send_static_file</span><span class="params">(self, filename)</span>:</span></span><br><span class="line">    <span class="string">"""Function used internally to send static files from the static</span></span><br><span class="line"><span class="string">    folder to the browser.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionadded:: 0.5</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.has_static_folder:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">'No static folder for this object'</span>)</span><br><span class="line">    <span class="comment"># Ensure get_send_file_max_age is called in all cases.</span></span><br><span class="line">    <span class="comment"># Here, we ensure get_send_file_max_age is called for Blueprints.</span></span><br><span class="line">    cache_timeout = self.get_send_file_max_age(filename)</span><br><span class="line">    <span class="keyword">return</span> send_from_directory(self.static_folder, filename,</span><br><span class="line">                               cache_timeout=cache_timeout)</span><br></pre></td></tr></table></figure>
+<h5 id="2-模板文件的位置和修改方案"><a href="#2-模板文件的位置和修改方案" class="headerlink" title="2. 模板文件的位置和修改方案"></a>2. 模板文件的位置和修改方案</h5><p>我们知道了静态文件的默认位置，这个小节我们看下模板文件的位置。</p>
+<p>默认情况下模板文件的位置是在应用程序的根目录下新建一个<code>templates</code>文件夹，里面存放我们需要的模板文件，然后在视图函数中直接使用返回。</p>
+<p>如何修改这些默认值呢？</p>
+<p>同样是在实例化<code>flask</code>核心对象的时候进行指定的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__, template_folder=<span class="string">'somepath'</span>)</span><br></pre></td></tr></table></figure>
+<p>上面的模板是针对于应用级别的，我们也可以在蓝图级别设置模板。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">web = Blueprint(<span class="string">'web'</span>, __name__, template_folder=<span class="string">'templates'</span>)</span><br></pre></td></tr></table></figure>
+<p>同样上面传入的路径都是相对路径（相对于程序根目录或者蓝图根目录）</p>
+<p>我们在实际编程中，如果存在多个蓝图建议使用蓝图模式。</p>
+<p>当你的模板文件在代码中显示异常的时候，可以手动将其设为模板文件。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fu99f12z29j31ew0uk0yk.jpg" alt=""></p>
+<h5 id="3-模板引擎jinja2"><a href="#3-模板引擎jinja2" class="headerlink" title="3. 模板引擎jinja2"></a>3. 模板引擎jinja2</h5><p>我们可以手动指定模板渲染引擎为<code>jinja2</code>，这样会有一些颜色提示</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fu99hwimtpj31ew0ukaek.jpg" alt="image-20180814152913796"></p>
+<p><code>jinja2</code>的文档：<a href="http://docs.jinkan.org/docs/jinja2/templates.html" target="_blank" rel="noopener">http://docs.jinkan.org/docs/jinja2/templates.html</a></p>
+<p>在<code>jinja2</code>中访问字典的两种方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; data.age &#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123; data[&apos;age&apos;] &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>对于一个对象<code>Object</code>，它的访问方式和字典一样，模板语言模糊了字典和对象的操作方式。</p>
+<p>如果我们访问一个不存在的属性可以设置默认值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; book.pages | default(&apos;&apos;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们访问一个存在的属性，但是值为空的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; book.pages | default(&apos;&apos;, true)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-反向构建URL"><a href="#4-反向构建URL" class="headerlink" title="4. 反向构建URL"></a>4. 反向构建URL</h5><p>我们可以使用<code>url_for</code>简化一些访问</p>
+<p>例如我们访问一个静态文件夹下的css文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;styesheet&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;some.css&apos;)&#125;&#125;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="5-消息闪现"><a href="#5-消息闪现" class="headerlink" title="5. 消息闪现"></a>5. 消息闪现</h5><p>消息闪现：<a href="http://docs.jinkan.org/docs/flask/patterns/flashing.html" target="_blank" rel="noopener">http://docs.jinkan.org/docs/flask/patterns/flashing.html</a></p>
+<p>使用消息闪现需要增加一个密钥，之所以需要一个密钥是因为客户端是不安全的，容易发生数据篡改。</p>
 
       
     </div>
@@ -551,6 +580,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/14/Flask基础学习-第六篇/" rel="prev" title="Flask基础学习-flask-login篇">
+                Flask基础学习-flask-login篇 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -634,7 +667,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -712,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-静态文件访问原理"><span class="nav-number">1.</span> <span class="nav-text">1. 静态文件访问原理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-静态文件访问原理"><span class="nav-number">1.</span> <span class="nav-text">1. 静态文件访问原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-模板文件的位置和修改方案"><span class="nav-number">2.</span> <span class="nav-text">2. 模板文件的位置和修改方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-模板引擎jinja2"><span class="nav-number">3.</span> <span class="nav-text">3. 模板引擎jinja2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-反向构建URL"><span class="nav-number">4.</span> <span class="nav-text">4. 反向构建URL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-消息闪现"><span class="nav-number">5.</span> <span class="nav-text">5. 消息闪现</span></a></li></ol></div>
             
 
           </div>
