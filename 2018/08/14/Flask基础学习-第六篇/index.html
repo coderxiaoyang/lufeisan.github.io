@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="由fliter引发的思考对于Python内置的一些函数例如：filter,map,reduce这些在代码中使用较少。这些高效的函数有时可以简化很多代码，以后注意要多使用。 关于SQLAlchemy的一个基类问题 我们可以创建一个基类，里面定义一些需要所有模型都要有的一些字段 12345class Base(db.Model):    # 将该类设置为抽象基类 才不会被创建为表    __abstr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T02:05:22.004Z">
+<meta property="og:updated_time" content="2018-08-15T07:50:49.094Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-flask-login篇">
 <meta name="twitter:description" content="由fliter引发的思考对于Python内置的一些函数例如：filter,map,reduce这些在代码中使用较少。这些高效的函数有时可以简化很多代码，以后注意要多使用。 关于SQLAlchemy的一个基类问题 我们可以创建一个基类，里面定义一些需要所有模型都要有的一些字段 12345class Base(db.Model):    # 将该类设置为抽象基类 才不会被创建为表    __abstr">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  421 字
+                  1,687 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -464,7 +464,45 @@
 <blockquote>
 <p> 利用属性描述符我们可以实现属性的预处理，将属性设置为只读或者只写等。</p>
 </blockquote>
-
+<h5 id="2-WTForms的自定义验证器"><a href="#2-WTForms的自定义验证器" class="headerlink" title="2. WTForms的自定义验证器"></a>2. WTForms的自定义验证器</h5><p>我们之前学过WTForms，但是没写一个自定义字段验证器，下面就是一个自定义的验证器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegisterForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    nickname = StringField(<span class="string">'昵称'</span>, validators=[</span><br><span class="line">        DataRequired(), Length(<span class="number">2</span>, <span class="number">10</span>, message=<span class="string">'昵称至少需要两个字符，最多10个字符'</span>)])</span><br><span class="line"></span><br><span class="line">    password = PasswordField(<span class="string">'密码'</span>, validators=[</span><br><span class="line">        DataRequired(), Length(<span class="number">6</span>, <span class="number">20</span>)])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_email</span><span class="params">(self, field)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> User.query.filter_by(email=field.data).first():</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">'电子邮件已被注册'</span>)</span><br></pre></td></tr></table></figure>
+<p>自定义验证器以<code>validate</code>开头，传入的参数就是对应的属性，使用<code>field.data</code>获得具体的值。自定义验证器无需传入到<code>validators</code>中，会自动生效。</p>
+<h5 id="3-在视图函数之间使用redirect进行路由跳转"><a href="#3-在视图函数之间使用redirect进行路由跳转" class="headerlink" title="3. 在视图函数之间使用redirect进行路由跳转"></a>3. 在视图函数之间使用redirect进行路由跳转</h5><p>我们在不同视图函数之间想要实现路由跳转，需要使用redirect。</p>
+<p>比如我们在注册成功之后跳转到登录页面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redirect(url_for(<span class="string">'web.login'</span>))</span><br></pre></td></tr></table></figure>
+<h5 id="4-什么是cookie"><a href="#4-什么是cookie" class="headerlink" title="4. 什么是cookie"></a>4. 什么是cookie</h5><p>我们的服务器会生成很多键值对的值，这些值包含在<code>response</code>中返回到浏览器，浏览器会存储起来。被浏览器存储起来的这些键值对就是<code>cookie</code>.我们可以给<code>cookie</code>设置有效期等特性。</p>
+<p><code>cookie</code>失效一般有两种原因：有效期过期，浏览器关闭。</p>
+<p>在<code>flask</code>中如何在响应中加入<code>cookie</code>呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response = make_response(<span class="string">'Hello'</span>)</span><br><span class="line">response.set_cookie(<span class="string">'name'</span>, <span class="string">'value'</span>, <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>既然浏览器可以保存服务器返回的一些数据，我们可以在服务器生成一些票据，返回给浏览器，这样浏览器就能在票据没有过期的情况下，免登陆访问服务器。</p>
+<p>在flask中我们可以使用<code>check_password_hash</code>比较加密的密码和原生密码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">check_password_hash(数据库密码，用户输入密码)</span><br><span class="line"><span class="comment"># 返回的结果是True或False</span></span><br></pre></td></tr></table></figure>
+<h5 id="5-使用Flask-Login插件管理登录"><a href="#5-使用Flask-Login插件管理登录" class="headerlink" title="5. 使用Flask-Login插件管理登录"></a>5. 使用Flask-Login插件管理登录</h5><p>在flask中如果我们手动去管理<code>cookie</code>会很麻烦，我们可以使用<code>flask-login</code>实现登录管理</p>
+<p>如何使用呢？</p>
+<h6 id="1-实例化"><a href="#1-实例化" class="headerlink" title="1. 实例化"></a>1. 实例化</h6><p>如同其他插件一样，我们新的插件都要进行实例化操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> LoginManager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">login_manager = LoginManager()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_app</span><span class="params">(config=None)</span>:</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 注册login模块</span></span><br><span class="line">    login_manager.init_app(app)</span><br></pre></td></tr></table></figure>
+<h6 id="2-使用login-user登录"><a href="#2-使用login-user登录" class="headerlink" title="2. 使用login_user登录"></a>2. 使用login_user登录</h6><p>登录的实际是生成令牌保存到<code>cookie</code>中，我们使用<code>login_user</code>是先登录</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> login_user</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过login_user 间接将用户票据写入到cookie中 通过remember设置不过期</span></span><br><span class="line">login_user(user, remember=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>这里我们传入的参数是我们定义的用户模型的实例化，实际保存到<code>cookie</code>中做用户表示的是用户的<code>id</code>，那<code>flask-login</code>是如何知道哪个字段属性代表<code>id</code>呢？</p>
+<p>这就需要我们在用户模型中创建一个函数，在这个函数中我们需要返回表示用户身份的字段</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_id</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> self.id</span><br></pre></td></tr></table></figure>
+<p>除了这一个方法，<code>flask-login</code>还需要我们定义其他几个方法，我们可以通过用户模型继承<code>UserMixin</code>来简化继承，这样我们就可以不用再定义这些方法了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> UserMixin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户模型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(UserMixin, db.Model)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'user'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：当标识用户身份的主键不是<code>id</code>字段的时候，同样需要重写<code>get_id</code>方法，然后返回唯一标识</p>
+</blockquote>
+<p>完成上面配置后，再登录的话就会生成令牌键值对（用户的id）保存到浏览器的<code>cookie</code>中。</p>
+<h6 id="3-访问权限控制"><a href="#3-访问权限控制" class="headerlink" title="3. 访问权限控制"></a>3. 访问权限控制</h6><p>我们上面已经完成了<code>flask-login</code>的配置，对于一些需要登录才能访问的页面，我们可以使用<code>login_required</code>装饰器来完成。</p>
+<p>在使用<code>login_required</code>之前我们还需要为插件编写一个函数</p>
+<p>在用户模型模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> login_manager</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个函数是被flask-logind</span></span><br><span class="line"><span class="meta">@login_manager.user_loader</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_user</span><span class="params">(user_id)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> User.query.get(int(user_id))</span><br><span class="line"></span><br><span class="line"><span class="comment"># login_manager 就是我们实例化的flask-login记得导入</span></span><br></pre></td></tr></table></figure>
+<p>完成后直接是视图函数上加上装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">somedef</span><span class="params">()</span>:</span></span><br></pre></td></tr></table></figure>
+<p>我们可以告诉<code>flask-login</code>插件我们的登录页面是哪个，可以在用户未登录的情况下，直接重定向到登录页面。</p>
+<p>我们在实例化<code>flask-login</code>插件的时候加入下面的配置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注册login模块</span></span><br><span class="line">login_manager.init_app(app)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当用户访问一个未授权需要登录的页面的时候 我们制定login_view进行指定登录页面 login_message指定提示信息</span></span><br><span class="line">login_manager.login_view = <span class="string">'web.login'</span></span><br><span class="line">login_manager.login_message = <span class="string">'请先登录或注册'</span></span><br></pre></td></tr></table></figure>
+<p>当用户在某个页面未登录跳转到登录跳转到登录页面，然后登录成功后，可以使用下面代码返回到之前的页面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask_login插件会记录为登录页面的url 登录后直接重定向到之前的页面</span></span><br><span class="line"><span class="comment"># url保存是以args参数next=url</span></span><br><span class="line">next = request.args.get(<span class="string">'next'</span>)</span><br><span class="line"><span class="comment"># 为了防止重定向攻击，这里加入判断startswith('/')</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> next <span class="keyword">or</span> <span class="keyword">not</span> next.startswith(<span class="string">'/'</span>):</span><br><span class="line">    next = url_for(<span class="string">'web.index'</span>)</span><br><span class="line"><span class="keyword">return</span> redirect(next)</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -705,7 +743,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#由fliter引发的思考"><span class="nav-number">1.</span> <span class="nav-text">由fliter引发的思考</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Python属性描述符实现getter和setter"><span class="nav-number"></span> <span class="nav-text">1. Python属性描述符实现getter和setter</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#由fliter引发的思考"><span class="nav-number">1.</span> <span class="nav-text">由fliter引发的思考</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Python属性描述符实现getter和setter"><span class="nav-number"></span> <span class="nav-text">1. Python属性描述符实现getter和setter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-WTForms的自定义验证器"><span class="nav-number"></span> <span class="nav-text">2. WTForms的自定义验证器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-在视图函数之间使用redirect进行路由跳转"><span class="nav-number"></span> <span class="nav-text">3. 在视图函数之间使用redirect进行路由跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-什么是cookie"><span class="nav-number"></span> <span class="nav-text">4. 什么是cookie</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-使用Flask-Login插件管理登录"><span class="nav-number"></span> <span class="nav-text">5. 使用Flask-Login插件管理登录</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-实例化"><span class="nav-number">1.</span> <span class="nav-text">1. 实例化</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-使用login-user登录"><span class="nav-number">2.</span> <span class="nav-text">2. 使用login_user登录</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-访问权限控制"><span class="nav-number">3.</span> <span class="nav-text">3. 访问权限控制</span></a></li></ol></div>
             
 
           </div>
