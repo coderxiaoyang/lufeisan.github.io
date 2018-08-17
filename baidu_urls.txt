@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/14/Flask基础学习-第六篇/
+https://zhaobugs.com/2018/08/16/Flask基础学习-模型篇/

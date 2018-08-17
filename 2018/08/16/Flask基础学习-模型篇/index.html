@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flask," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="1. Python的@contextmanager装饰器我们使用sqlalchemy的ORM机制进行数据保存的时候默认是开启事务的。只有我们在commit之后数据才真正保存到数据库。但是，当commit出现故障就会导致数据导入失败，这时我们需要回滚事务。 12345678try:    gift = Gift()    gift.uid = current_user.id    db.sessio">
+<meta name="keywords" content="Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask基础学习-模型篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/08/16/Flask基础学习-模型篇/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="1. Python的@contextmanager装饰器我们使用sqlalchemy的ORM机制进行数据保存的时候默认是开启事务的。只有我们在commit之后数据才真正保存到数据库。但是，当commit出现故障就会导致数据导入失败，这时我们需要回滚事务。 12345678try:    gift = Gift()    gift.uid = current_user.id    db.sessio">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-17T00:01:58.871Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask基础学习-模型篇">
+<meta name="twitter:description" content="1. Python的@contextmanager装饰器我们使用sqlalchemy的ORM机制进行数据保存的时候默认是开启事务的。只有我们在commit之后数据才真正保存到数据库。但是，当commit出现故障就会导致数据导入失败，这时我们需要回滚事务。 12345678try:    gift = Gift()    gift.uid = current_user.id    db.sessio">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/08/16/Flask基础学习-模型篇/"/>
+
+
+
+
+
+  <title>Flask基础学习-模型篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/08/16/Flask基础学习-模型篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flask基础学习-模型篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T10:15:13+08:00">
+                2018-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/16/Flask基础学习-模型篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/16/Flask基础学习-模型篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/16/Flask基础学习-模型篇/" class="leancloud_visitors" data-flag-title="Flask基础学习-模型篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,407 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="1-Python的-contextmanager装饰器"><a href="#1-Python的-contextmanager装饰器" class="headerlink" title="1. Python的@contextmanager装饰器"></a>1. Python的@contextmanager装饰器</h5><p>我们使用<code>sqlalchemy</code>的<code>ORM</code>机制进行数据保存的时候默认是开启事务的。只有我们在<code>commit</code>之后数据才真正保存到数据库。但是，当<code>commit</code>出现故障就会导致数据导入失败，这时我们需要回滚事务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gift = Gift()</span><br><span class="line">    gift.uid = current_user.id</span><br><span class="line">    db.session.add(gift)</span><br><span class="line">    db.session.commit()</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    db.session.rollback()</span><br><span class="line">    <span class="keyword">raise</span> e</span><br></pre></td></tr></table></figure>
+<p>但是，我们每次都是这样使用<code>try..except</code>异常捕捉，很不高效。。</p>
+<p>我们知道使用上下文协议可以写出一个上下文管理器，除此之外我们也可以使用装饰器来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">book_mark</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'《'</span>, end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line">    print(<span class="string">'》'</span>, end=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> book_mark():</span><br><span class="line">    print(<span class="string">'红烧肉'</span>, end=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">《红烧肉》</span><br></pre></td></tr></table></figure>
+<p>上面就是使用装饰器写了一个上下文管理器，<code>yield</code>不一定需要返回什么，<code>yield</code>的返回就相当于<code>__enter__</code>的返回，作为<code>as</code>的指向。执行顺序是先执行<code>yield</code>之前的代码，然后再执行之后的代码。</p>
+<p><code>contextmanager</code>可以将一个不是上下文管理器的类（或方法）变成一个上下文管理器。</p>
+<p>我们简化上面一开始的代码，但是<code>db.session.commit()</code>是第三方类库的方法，我们可以通过继承第三方类来实现新增方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy <span class="keyword">as</span> _SQLAlchemy</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里一个小技巧 就是讲第三方类起个别名</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SQLAlchemy</span><span class="params">(_SQLAlchemy)</span>:</span></span><br><span class="line"><span class="meta">    @contextmanager</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">auto_commit</span><span class="params">(self, throw=True)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">yield</span></span><br><span class="line">            self.session.commit()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            self.session.rollback()</span><br><span class="line">            current_app.logger.exception(<span class="string">'%r'</span> % e)</span><br><span class="line">            <span class="keyword">if</span> throw:</span><br><span class="line">                <span class="keyword">raise</span> e</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里实例化的是我们继承过后的自己实现的类              </span></span><br><span class="line">db = SQLAlchemy()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用</span></span><br><span class="line"><span class="keyword">with</span> db.auto_commit():</span><br><span class="line">    gift = Gift()</span><br><span class="line">    gift.uid = current_user.id</span><br><span class="line">    db.session.add(gift)</span><br></pre></td></tr></table></figure>
+<p>我们看到<code>yield</code>之前也是可以为空的，执行的顺序是先执行<code>with</code>下方的代码，然后之前<code>yield</code>之前的代码，最后执行<code>yield</code>之后的代码。</p>
+<blockquote>
+<p>学习一个复杂的语法，我们先编写一个简单的例子，然后再使用复杂的用法</p>
+</blockquote>
+<h5 id="2-创建时间的默认值"><a href="#2-创建时间的默认值" class="headerlink" title="2. 创建时间的默认值"></a>2. 创建时间的默认值</h5><p>网上查了下创建时间的默认值问题，这里我是讲的是类的实例变量和类变量的区别，其实是调用问题。</p>
+<p>我们先看下老师的思想</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span><span class="params">(db.Model)</span>:</span></span><br><span class="line">    __abstract__ = <span class="keyword">True</span></span><br><span class="line">    create_time = Column(<span class="string">'create_time'</span>, Integer)</span><br><span class="line">    status = Column(SmallInteger, default=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.create_time = int(datetime.now().timestamp())</span><br></pre></td></tr></table></figure>
+<p>这里把时间赋值放在了实例方法中，在每次实例化类的时候都会自动赋值。</p>
+<p>其实我们是可以使用默认值的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update_time = db.Column(db.DateTime, default=datetime.now,onupdate=datetime.now)</span><br></pre></td></tr></table></figure>
+<p>这里我们输入的是方法<code>datetime.now</code>而不是方法的返回值<code>datetime.now()</code>。</p>
+<p>当我们输入的是返回值的时候，所有的时间都会是项目启动的那一刻，这就导致了实例化的时候，获取到的类变量是一个已经赋值了的，就不是一个实时的。</p>
+<p>模板渲染是最消耗服务器性能的。</p>
+<h5 id="3-重写filter-by函数"><a href="#3-重写filter-by函数" class="headerlink" title="3. 重写filter_by函数"></a>3. 重写filter_by函数</h5><p>为什么要重写<code>filter_by</code>方法呢？</p>
+<p>当我们在所有的查询中都要包含同一个条件的时候，这时候就可以重写<code>filter_by</code>来简化工作。</p>
+<p>如何重写呢？</p>
+<p>我们先看下继承关系</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span>  BaseQuery</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseQuery</span><span class="params">(orm.Query)</span>:</span></span><br><span class="line">    <span class="string">"""The default query object used for models, and exposed as</span></span><br><span class="line"><span class="string">    :attr:`~SQLAlchemy.Query`. This can be subclassed and</span></span><br><span class="line"><span class="string">    replaced for individual models by setting the :attr:`~Model.query_class`</span></span><br><span class="line"><span class="string">    attribute.  This is a subclass of a standard SQLAlchemy</span></span><br><span class="line"><span class="string">    :class:`~sqlalchemy.orm.query.Query` class and has all the methods of a</span></span><br><span class="line"><span class="string">    standard query as well.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""ORM-level SQL construction object.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :class:`.Query` is the source of all SELECT statements generated by the</span></span><br><span class="line"><span class="string">    ORM, both those formulated by end-user query operations as well as by</span></span><br><span class="line"><span class="string">    high level internal operations such as related collection loading.  It</span></span><br><span class="line"><span class="string">    features a generative interface whereby successive calls return a new</span></span><br><span class="line"><span class="string">    :class:`.Query` object, a copy of the former with additional</span></span><br><span class="line"><span class="string">    criteria and options associated with it.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :class:`.Query` objects are normally initially generated using the</span></span><br><span class="line"><span class="string">    :meth:`~.Session.query` method of :class:`.Session`, and in</span></span><br><span class="line"><span class="string">    less common cases by instantiating the :class:`.Query` directly and</span></span><br><span class="line"><span class="string">    associating with a :class:`.Session` using the :meth:`.Query.with_session`</span></span><br><span class="line"><span class="string">    method.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    For a full walkthrough of :class:`.Query` usage, see the</span></span><br><span class="line"><span class="string">    :ref:`ormtutorial_toplevel`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter_by</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">r"""apply the given filtering criterion to a copy</span></span><br><span class="line"><span class="string">        of this :class:`.Query`, using keyword expressions.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        e.g.::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            session.query(MyClass).filter_by(name = 'some name')</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Multiple criteria may be specified as comma separated; the effect</span></span><br><span class="line"><span class="string">        is that they will be joined together using the :func:`.and_`</span></span><br><span class="line"><span class="string">        function::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            session.query(MyClass).\</span></span><br><span class="line"><span class="string">                filter_by(name = 'some name', id = 5)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        The keyword expressions are extracted from the primary</span></span><br><span class="line"><span class="string">        entity of the query, or the last entity that was the</span></span><br><span class="line"><span class="string">        target of a call to :meth:`.Query.join`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. seealso::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            :meth:`.Query.filter` - filter on SQL expressions.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        clauses = [_entity_descriptor(self._joinpoint_zero(), key) == value</span><br><span class="line">                   <span class="keyword">for</span> key, value <span class="keyword">in</span> kwargs.items()]</span><br><span class="line">        <span class="keyword">return</span> self.filter(sql.and_(*clauses))</span><br></pre></td></tr></table></figure>
+<p>我们使用的<code>flask_sqlalchemy</code>导入查询类<code>BaseQuery</code>继承的最终是<code>sqlalchemy</code>的<code>Query</code>。</p>
+<p>我们看到<code>filter_by</code>是存在于<code>sqlalchemy</code>中的，不过我们重写的时候，只要继承<code>flask_sqlalchemy</code>的<code>BaseQuery</code>就好了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query</span><span class="params">(BaseQuery)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter_by</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'status'</span> <span class="keyword">not</span> <span class="keyword">in</span> kwargs.keys():</span><br><span class="line">            kwargs[<span class="string">'status'</span>] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 完成原有的，通过调用基类方法</span></span><br><span class="line">        <span class="keyword">return</span> super(Query, self).filter_by(**kwargs)</span><br></pre></td></tr></table></figure>
+<p>上面我们就为每个查询增加一个状态为1的判断。</p>
+<p>重写好的查询类如何使用呢？</p>
+<p>我们只需要在实例化<code>SQLAlchemy</code>的时候指定查询类就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db = SQLAlchemy(query_class=Query)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>思想：当我们不能直接修改源码的时候，我们可以通过继承，重写父类方法来完成我们的需求</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i>Flask</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/14/Flask基础学习-第六篇/" rel="next" title="Flask基础学习-flask-login篇">
+                <i class="fa fa-chevron-left"></i> Flask基础学习-flask-login篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Python的-contextmanager装饰器"><span class="nav-number">1.</span> <span class="nav-text">1. Python的@contextmanager装饰器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-创建时间的默认值"><span class="nav-number">2.</span> <span class="nav-text">2. 创建时间的默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-重写filter-by函数"><span class="nav-number">3.</span> <span class="nav-text">3. 重写filter_by函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
