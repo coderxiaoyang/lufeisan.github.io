@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="1. Python的@contextmanager装饰器我们使用sqlalchemy的ORM机制进行数据保存的时候默认是开启事务的。只有我们在commit之后数据才真正保存到数据库。但是，当commit出现故障就会导致数据导入失败，这时我们需要回滚事务。 12345678try:    gift = Gift()    gift.uid = current_user.id    db.sessio">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-17T00:01:58.871Z">
+<meta property="og:updated_time" content="2018-08-20T08:19:14.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-模型篇">
 <meta name="twitter:description" content="1. Python的@contextmanager装饰器我们使用sqlalchemy的ORM机制进行数据保存的时候默认是开启事务的。只有我们在commit之后数据才真正保存到数据库。但是，当commit出现故障就会导致数据导入失败，这时我们需要回滚事务。 12345678try:    gift = Gift()    gift.uid = current_user.id    db.sessio">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,407 字
+                  1,754 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -485,6 +485,20 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db = SQLAlchemy(query_class=Query)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>思想：当我们不能直接修改源码的时候，我们可以通过继承，重写父类方法来完成我们的需求</p>
+</blockquote>
+<blockquote>
+<p>链式调用：链式调用我们暂时理解为没有结束的查询。有一个主体Query，不确定个查询过滤函数，最终遇到<code>first</code>或者<code>all</code>等函数才算结束链式调用。个人觉得很有用，针对一个链式调用，我们可以加上不同的查询判断分开成很多个链式调用。</p>
+</blockquote>
+<h5 id="4-业务逻辑的编写方案"><a href="#4-业务逻辑的编写方案" class="headerlink" title="4. 业务逻辑的编写方案"></a>4. 业务逻辑的编写方案</h5><p>之前学习的时候老师也探讨过这个问题，建议是将可以抽象出来的，能够公用的业务逻辑尽量写在模型类中。</p>
+<p>例如获取最近赠送礼物的一段业务逻辑（以老师鱼书代码为例）代码，老师的建议是放在模型类中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">recent</span><span class="params">(cls)</span>:</span></span><br><span class="line">    gift_list = cls.query.filter_by(launched=<span class="keyword">False</span>).order_by(</span><br><span class="line">        desc(Gift.create_time)).group_by(Gift.book_id).limit(</span><br><span class="line">        current_app.config[<span class="string">'RECENT_BOOK_PER_PAGE'</span>]).all()</span><br><span class="line">    <span class="keyword">return</span> gift_list</span><br></pre></td></tr></table></figure>
+<p>这里我大致总结一下老师的思想：</p>
+<p>对于业务逻辑，一般建议编写在视图函数和模型对象中（以类方法，实例方法，静态方法的形式）。对于不可抽象的业务逻辑一般写在视图函数中，对于可抽象的业务逻辑一般写在模型对象中。</p>
+<blockquote>
+<p>良好的封装是优秀代码的基础。</p>
+</blockquote>
+<blockquote>
+<p>对于函数返回，我们尽量返回有提示的结果，例如字典返回。</p>
 </blockquote>
 
       
@@ -731,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Python的-contextmanager装饰器"><span class="nav-number">1.</span> <span class="nav-text">1. Python的@contextmanager装饰器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-创建时间的默认值"><span class="nav-number">2.</span> <span class="nav-text">2. 创建时间的默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-重写filter-by函数"><span class="nav-number">3.</span> <span class="nav-text">3. 重写filter_by函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Python的-contextmanager装饰器"><span class="nav-number">1.</span> <span class="nav-text">1. Python的@contextmanager装饰器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-创建时间的默认值"><span class="nav-number">2.</span> <span class="nav-text">2. 创建时间的默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-重写filter-by函数"><span class="nav-number">3.</span> <span class="nav-text">3. 重写filter_by函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-业务逻辑的编写方案"><span class="nav-number">4.</span> <span class="nav-text">4. 业务逻辑的编写方案</span></a></li></ol></div>
             
 
           </div>

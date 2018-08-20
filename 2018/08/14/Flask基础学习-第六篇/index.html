@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="由fliter引发的思考对于Python内置的一些函数例如：filter,map,reduce这些在代码中使用较少。这些高效的函数有时可以简化很多代码，以后注意要多使用。 关于SQLAlchemy的一个基类问题 我们可以创建一个基类，里面定义一些需要所有模型都要有的一些字段 12345class Base(db.Model):    # 将该类设置为抽象基类 才不会被创建为表    __abstr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-16T06:53:39.753Z">
+<meta property="og:updated_time" content="2018-08-20T08:13:31.288Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-flask-login篇">
 <meta name="twitter:description" content="由fliter引发的思考对于Python内置的一些函数例如：filter,map,reduce这些在代码中使用较少。这些高效的函数有时可以简化很多代码，以后注意要多使用。 关于SQLAlchemy的一个基类问题 我们可以创建一个基类，里面定义一些需要所有模型都要有的一些字段 12345class Base(db.Model):    # 将该类设置为抽象基类 才不会被创建为表    __abstr">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,749 字
+                  1,758 字
                 </span>
               
 
@@ -507,6 +507,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask_login插件会记录为登录页面的url 登录后直接重定向到之前的页面</span></span><br><span class="line"><span class="comment"># url保存是以args参数next=url</span></span><br><span class="line">next = request.args.get(<span class="string">'next'</span>)</span><br><span class="line"><span class="comment"># 为了防止重定向攻击，这里加入判断startswith('/')</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> next <span class="keyword">or</span> <span class="keyword">not</span> next.startswith(<span class="string">'/'</span>):</span><br><span class="line">    next = url_for(<span class="string">'web.index'</span>)</span><br><span class="line"><span class="keyword">return</span> redirect(next)</span><br></pre></td></tr></table></figure>
 <p>判断一个用户是否登录</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">current_user.is_authenticated</span><br><span class="line"><span class="comment"># 返回值是一个布尔值</span></span><br></pre></td></tr></table></figure>
+<p>登出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> logout_user</span><br><span class="line">logout_user()</span><br></pre></td></tr></table></figure>
 
       
     </div>
