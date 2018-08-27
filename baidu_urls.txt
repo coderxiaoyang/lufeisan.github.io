@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/27/几个不错分Flask学习资源/
+https://zhaobugs.com/2018/08/27/使用Pipenv来创建虚拟环境/
