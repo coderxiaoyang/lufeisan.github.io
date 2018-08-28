@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/27/使用Pipenv来创建虚拟环境/
+https://zhaobugs.com/2018/08/28/如何创建一个自己的蓝图/
