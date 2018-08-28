@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Docker," />
+  <meta name="keywords" content="Flask," />
 
 
 
@@ -81,21 +81,18 @@
 
 
 
-<meta name="description" content="如何创建MySQL的PXC集群下载PXC集群镜像文件下载1docker pull percona/percona-xtradb-cluster 重命名1[root@hongshaorou ~]# docker tag docker.io/percona/percona-xtradb-cluster pxc 创建内部网络处于安全考虑，需要给PXC集群实例创建Docker内部网络 创建网段：12[ro">
-<meta name="keywords" content="Docker">
+<meta name="description" content="1. 处理多客户端登录注册当存在多种类型的客户端的时候，我们就要编写多个验证Form，这时候继承是最好的选择。 对于api接口来说，一般传的数据格式都是json格式。这时我们要验证数据的时候，验证方式为 123456data = request.json# 这里相比于通过form提交 需要制定data参数 form = someForm(data=data)if for.validate():">
+<meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker搭建PXC集群">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/06/Docker搭建PXC集群/index.html">
+<meta property="og:title" content="自定义异常对象">
+<meta property="og:url" content="https://zhaobugs.com/2018/08/28/自定义异常对象/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="如何创建MySQL的PXC集群下载PXC集群镜像文件下载1docker pull percona/percona-xtradb-cluster 重命名1[root@hongshaorou ~]# docker tag docker.io/percona/percona-xtradb-cluster pxc 创建内部网络处于安全考虑，需要给PXC集群实例创建Docker内部网络 创建网段：12[ro">
+<meta property="og:description" content="1. 处理多客户端登录注册当存在多种类型的客户端的时候，我们就要编写多个验证Form，这时候继承是最好的选择。 对于api接口来说，一般传的数据格式都是json格式。这时我们要验证数据的时候，验证方式为 123456data = request.json# 这里相比于通过form提交 需要制定data参数 form = someForm(data=data)if for.validate():">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1gdw9fvoj31080wgk0l.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1am32w97j30o0096js7.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:32:59.490Z">
+<meta property="og:updated_time" content="2018-08-28T09:54:54.554Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Docker搭建PXC集群">
-<meta name="twitter:description" content="如何创建MySQL的PXC集群下载PXC集群镜像文件下载1docker pull percona/percona-xtradb-cluster 重命名1[root@hongshaorou ~]# docker tag docker.io/percona/percona-xtradb-cluster pxc 创建内部网络处于安全考虑，需要给PXC集群实例创建Docker内部网络 创建网段：12[ro">
-<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1gdw9fvoj31080wgk0l.jpg">
+<meta name="twitter:title" content="自定义异常对象">
+<meta name="twitter:description" content="1. 处理多客户端登录注册当存在多种类型的客户端的时候，我们就要编写多个验证Form，这时候继承是最好的选择。 对于api接口来说，一般传的数据格式都是json格式。这时我们要验证数据的时候，验证方式为 123456data = request.json# 这里相比于通过form提交 需要制定data参数 form = someForm(data=data)if for.validate():">
 
 
 
@@ -125,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/06/Docker搭建PXC集群/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/08/28/自定义异常对象/"/>
 
 
 
 
 
-  <title>Docker搭建PXC集群 | 红烧肉</title>
+  <title>自定义异常对象 | 红烧肉</title>
   
 
 
@@ -306,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/06/Docker搭建PXC集群/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/08/28/自定义异常对象/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -323,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Docker搭建PXC集群</h1>
+          <h1 class="post-title" itemprop="name headline">自定义异常对象</h1>
         
 
         <div class="post-meta">
@@ -335,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-06T09:51:57+08:00">
-                2018-06-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T15:56:47+08:00">
+                2018-08-28
               </time>
             
 
@@ -358,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
                   </a>
                 </span>
 
@@ -376,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/06/Docker搭建PXC集群/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/06/Docker搭建PXC集群/" itemprop="commentCount"></span>
+                <a href="/2018/08/28/自定义异常对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/28/自定义异常对象/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,7 +382,7 @@
 
           
           
-             <span id="/2018/06/06/Docker搭建PXC集群/" class="leancloud_visitors" data-flag-title="Docker搭建PXC集群">
+             <span id="/2018/08/28/自定义异常对象/" class="leancloud_visitors" data-flag-title="自定义异常对象">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -415,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,130 字
+                  768 字
                 </span>
               
 
@@ -431,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -452,28 +449,37 @@
       
 
       
-        <h4 id="如何创建MySQL的PXC集群"><a href="#如何创建MySQL的PXC集群" class="headerlink" title="如何创建MySQL的PXC集群"></a>如何创建MySQL的PXC集群</h4><h5 id="下载PXC集群镜像文件"><a href="#下载PXC集群镜像文件" class="headerlink" title="下载PXC集群镜像文件"></a>下载PXC集群镜像文件</h5><h6 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull percona/percona-xtradb-cluster</span><br></pre></td></tr></table></figure>
-<h6 id="重命名"><a href="#重命名" class="headerlink" title="重命名"></a>重命名</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker tag docker.io/percona/percona-xtradb-cluster pxc</span><br></pre></td></tr></table></figure>
-<h5 id="创建内部网络"><a href="#创建内部网络" class="headerlink" title="创建内部网络"></a>创建内部网络</h5><p>处于安全考虑，需要给PXC集群实例创建Docker内部网络</p>
-<h6 id="创建网段："><a href="#创建网段：" class="headerlink" title="创建网段："></a>创建网段：</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker network create --subnet=172.18.0.0/24 net1</span><br><span class="line">ad5c096baebe656f530576344ecde9a3674b907134aced66df27a8d72feefc63</span><br></pre></td></tr></table></figure>
-<h6 id="查看网段"><a href="#查看网段" class="headerlink" title="查看网段"></a>查看网段</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker network inspect net1</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        "Name": "net1",</span><br><span class="line">        "Id": "ad5c096baebe656f530576344ecde9a3674b907134aced66df27a8d72feefc63",</span><br><span class="line">        "Created": "2018-06-06T10:06:28.55654238+08:00",</span><br><span class="line">        "Scope": "local",</span><br><span class="line">        "Driver": "bridge",</span><br><span class="line">        "EnableIPv6": false,</span><br><span class="line">        "IPAM": &#123;</span><br><span class="line">            "Driver": "default",</span><br><span class="line">            "Options": &#123;&#125;,</span><br><span class="line">            "Config": [</span><br><span class="line">                &#123;</span><br><span class="line">                    "Subnet": "172.18.0.0/24"</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        "Internal": false,</span><br><span class="line">        "Attachable": false,</span><br><span class="line">        "Containers": &#123;&#125;,</span><br><span class="line">        "Options": &#123;&#125;,</span><br><span class="line">        "Labels": &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h6 id="删除网段"><a href="#删除网段" class="headerlink" title="删除网段"></a>删除网段</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker network rm net1</span><br></pre></td></tr></table></figure>
-<h5 id="创建Docker卷"><a href="#创建Docker卷" class="headerlink" title="创建Docker卷"></a>创建Docker卷</h5><p>Docker容器使用原则：一旦创建出容器，尽量不要在容器中保存数据。一般通过目录映射将数据保存在宿主机里面（我们把宿主机的一个目录映射到容器内，然后容器的数据都保存到映射目录，这样就保存到了宿主机，即使容器损坏，宿主机也有数据保存）。但是，PXC技术在使用Docker的时候无法直接使用映射目录，需要另外一种映射技术—Docker卷。</p>
-<h6 id="容器中的PXC节点映射数据目录的解决办法"><a href="#容器中的PXC节点映射数据目录的解决办法" class="headerlink" title="容器中的PXC节点映射数据目录的解决办法"></a>容器中的PXC节点映射数据目录的解决办法</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建Docker卷：[root@hongshaorou ~]# docker volume create --name v1 </span><br><span class="line">--name：设置卷名 可以不写</span><br></pre></td></tr></table></figure>
-<h6 id="我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录"><a href="#我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录" class="headerlink" title="我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录"></a>我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker inspect v1</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        "Driver": "local",</span><br><span class="line">        "Labels": &#123;&#125;,</span><br><span class="line">        "Mountpoint": "/var/lib/docker/volumes/v1/_data",</span><br><span class="line">        "Name": "v1",</span><br><span class="line">        "Options": &#123;&#125;,</span><br><span class="line">        "Scope": "local"</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">我们看到Docker卷v1映射到了/var/lib/docker/volumes/v1/_data</span><br></pre></td></tr></table></figure>
-<h6 id="删除Docker卷"><a href="#删除Docker卷" class="headerlink" title="删除Docker卷"></a>删除Docker卷</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker volume rm v1</span><br></pre></td></tr></table></figure>
-<h5 id="创建PXC容器"><a href="#创建PXC容器" class="headerlink" title="创建PXC容器"></a>创建PXC容器</h5><h6 id="只需要向PXC镜像传入运行参数就能创建出PXC容器"><a href="#只需要向PXC镜像传入运行参数就能创建出PXC容器" class="headerlink" title="只需要向PXC镜像传入运行参数就能创建出PXC容器"></a>只需要向PXC镜像传入运行参数就能创建出PXC容器</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker run -d -p 3307:3306 -v v1:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 --privileged --name=node1 --net=net1 --ip 172.18.0.2 pxc</span><br><span class="line">1da51c2b8817f414ad825ba48f69a46c176f0b5ba7539e3b31e9ac54de056877</span><br><span class="line"></span><br><span class="line">参数解释：</span><br><span class="line">-d：表示后台运行</span><br><span class="line">-v：映射Docker卷到容器的mysql数据目录</span><br><span class="line">MYSQL_ROOT_PASSWORD：表示创建的数据库密码</span><br><span class="line">CLUSTER_NAME： 表示创建出的集群名字</span><br><span class="line">XTRABACKUP_PASSWORD：表示集群通信密码</span><br><span class="line">--privileged：表示分配最高权限</span><br><span class="line">--net：指定网段</span><br><span class="line">--ip：指定IP</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                   NAMES</span><br><span class="line">1da51c2b8817        pxc                 "/entrypoint.sh "   7 seconds ago       Up 5 seconds        4567-4568/tcp, 0.0.0.0:3307-&gt;3306/tcp   node1</span><br></pre></td></tr></table></figure>
-<p>这样我们就创建了第一个PXC节点</p>
-<p>下面依次创建剩余四个节点</p>
-<h6 id="创建Docker卷-1"><a href="#创建Docker卷-1" class="headerlink" title="创建Docker卷"></a>创建Docker卷</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker volume create --name v2</span><br><span class="line">v2</span><br><span class="line">[root@hongshaorou ~]# docker volume create --name v3</span><br><span class="line">v3</span><br><span class="line">[root@hongshaorou ~]# docker volume create --name v4</span><br><span class="line">v4</span><br><span class="line">[root@hongshaorou ~]# docker volume create --name v5</span><br><span class="line">v5</span><br></pre></td></tr></table></figure>
-<h6 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">创建node2:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3308:3306 -v v2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node2 --net=net1 --ip 172.18.0.3 pxc</span><br><span class="line"></span><br><span class="line">创建node3:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3309:3306 -v v3:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node3 --net=net1 --ip 172.18.0.4 pxc</span><br><span class="line"></span><br><span class="line">创建node4:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3310:3306 -v v4:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node4 --net=net1 --ip 172.18.0.5 pxc</span><br><span class="line"></span><br><span class="line">创建node5:</span><br><span class="line">[root@hongshaorou ~]# docker run -d -p 3311:3306 -v v5:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 --privileged --name=node5 --net=net1 --ip 172.18.0.6 pxc</span><br><span class="line"></span><br><span class="line">查看当前有哪些运行容器:</span><br><span class="line">[root@hongshaorou ~]# docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                                   NAMES</span><br><span class="line">f7638daaa09b        pxc                 "/entrypoint.sh "   7 seconds ago        Up 4 seconds        4567-4568/tcp, 0.0.0.0:3311-&gt;3306/tcp   node5</span><br><span class="line">909261673fac        pxc                 "/entrypoint.sh "   25 seconds ago       Up 24 seconds       4567-4568/tcp, 0.0.0.0:3310-&gt;3306/tcp   node4</span><br><span class="line">763dca13edcd        pxc                 "/entrypoint.sh "   43 seconds ago       Up 42 seconds       4567-4568/tcp, 0.0.0.0:3309-&gt;3306/tcp   node3</span><br><span class="line">9a3f92074ad0        pxc                 "/entrypoint.sh "   About a minute ago   Up About a minute   4567-4568/tcp, 0.0.0.0:3308-&gt;3306/tcp   node2</span><br><span class="line">1da51c2b8817        pxc                 "/entrypoint.sh "   15 minutes ago       Up 15 minutes       4567-4568/tcp, 0.0.0.0:3307-&gt;3306/tcp   node1</span><br></pre></td></tr></table></figure>
-<p>在创建剩余容器的时候需要注意的是网络和端口的映射不同，以及多了<code>-e CLUSTER_JOIN=node1</code> 表示加入node1节点。</p>
-<p>注意：第一个节点创建时间较长，必须等待两分钟左右再创建剩余节点。</p>
-<p>创建好之后我们就可以使用客户端连接数据库</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1gdw9fvoj31080wgk0l.jpg" alt="image-20180606144223957"></p>
-<p>依次配置连接 得到五个连接</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fs1am32w97j30o0096js7.jpg" alt="image-20180606112241564"></p>
-<p>完成以上配置之后，我们的PXC集群就已经搭建完毕（数据同步我已验证，完全可行）。</p>
+        <h5 id="1-处理多客户端登录注册"><a href="#1-处理多客户端登录注册" class="headerlink" title="1. 处理多客户端登录注册"></a>1. 处理多客户端登录注册</h5><p>当存在多种类型的客户端的时候，我们就要编写多个验证<code>Form</code>，这时候继承是最好的选择。</p>
+<p>对于<code>api</code>接口来说，一般传的数据格式都是<code>json</code>格式。这时我们要验证数据的时候，验证方式为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data = request.json</span><br><span class="line"><span class="comment"># 这里相比于通过form提交 需要制定data参数 </span></span><br><span class="line">form = someForm(data=data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">for</span>.validate():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>REST细节特性：输入输出都需要是json格式的</p>
+</blockquote>
+<p>这里说的<code>json</code>格式不仅是数据返回的时候，还包括报错和提醒。</p>
+<p>只有我们考虑编码的细节和逻辑，我们的编码能力才能提高！</p>
+<h5 id="2-自定义异常对象"><a href="#2-自定义异常对象" class="headerlink" title="2. 自定义异常对象"></a>2. 自定义异常对象</h5><p>我们之前知道很多异常对象和状态码绑定，但是我们想要实现自己的异常对象应该如何实现呢？</p>
+<p>我们看一下一些状态码的含义：</p>
+<ol>
+<li>400 请求参数有误</li>
+<li>401 未授权</li>
+<li>403 禁止访问</li>
+<li>404 没有找到</li>
+<li>500 服务器报错</li>
+<li>200 查询成功</li>
+<li>201 创建更新成功</li>
+<li>204 删除成功</li>
+<li>301 重定向</li>
+</ol>
+<p>默认情况下的异常返回都是<code>HTML</code>格式的，为什呢？看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@implements_to_string</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HTTPException</span><span class="params">(Exception)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_body</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        <span class="string">"""Get the HTML body."""</span></span><br><span class="line">        <span class="keyword">return</span> text_type((</span><br><span class="line">            <span class="string">u'&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"&gt;\n'</span></span><br><span class="line">            <span class="string">u'&lt;title&gt;%(code)s %(name)s&lt;/title&gt;\n'</span></span><br><span class="line">            <span class="string">u'&lt;h1&gt;%(name)s&lt;/h1&gt;\n'</span></span><br><span class="line">            <span class="string">u'%(description)s\n'</span></span><br><span class="line">        ) % &#123;</span><br><span class="line">            <span class="string">'code'</span>:         self.code,</span><br><span class="line">            <span class="string">'name'</span>:         escape(self.name),</span><br><span class="line">            <span class="string">'description'</span>:  self.get_description(environ)</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_headers</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        <span class="string">"""Get a list of headers."""</span></span><br><span class="line">        <span class="keyword">return</span> [(<span class="string">'Content-Type'</span>, <span class="string">'text/html'</span>)]</span><br></pre></td></tr></table></figure>
+<p>正是上面两个人方法指定了默认返回值都是网页的方式。</p>
+<p>我们可以通过重写上面这些方法来将返回值变成<code>json</code>格式。</p>
+<p>我们编写一个异常类<code>APIException</code>继承<code>HTTPException</code>来作为异常基类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request, json</span><br><span class="line"><span class="keyword">from</span> werkzeug.exceptions <span class="keyword">import</span> HTTPException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIException</span><span class="params">(HTTPException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">'sorry, we made a mistake (*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, msg=None, code=None, error_code=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                 headers=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> code:</span><br><span class="line">            self.code = code</span><br><span class="line">        <span class="keyword">if</span> error_code:</span><br><span class="line">            self.error_code = error_code</span><br><span class="line">        <span class="keyword">if</span> msg:</span><br><span class="line">            self.msg = msg</span><br><span class="line">        <span class="comment"># 调用一下父类的初始化函数</span></span><br><span class="line">        super(APIException, self).__init__(msg, <span class="keyword">None</span>)</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 这个函数指定返回内容</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_body</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        body = dict(</span><br><span class="line">            msg=self.msg,</span><br><span class="line">            error_code=self.error_code,</span><br><span class="line">            <span class="comment"># 这里返回的是请求的方法和url 例如： post /some/url</span></span><br><span class="line">            request=request.method + <span class="string">' '</span> + self.get_url_no_param()</span><br><span class="line">        )</span><br><span class="line">        text = json.dumps(body)</span><br><span class="line">        <span class="comment"># 返回json格式</span></span><br><span class="line">        <span class="keyword">return</span> text</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 这个函数指定返回格式</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_headers</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        <span class="string">"""Get a list of headers."""</span></span><br><span class="line">        <span class="comment"># 真的想返回json格式数据 需要制定为 application/json</span></span><br><span class="line">        <span class="keyword">return</span> [(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>)]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_url_no_param</span><span class="params">()</span>:</span></span><br><span class="line">        full_path = str(request.full_path)</span><br><span class="line">        main_path = full_path.split(<span class="string">'?'</span>)</span><br><span class="line">        <span class="keyword">return</span> main_path[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>完成基类创建后，我们就可以创建很多自己定义的异常类了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClientTypeError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'client is invalid'</span></span><br><span class="line">    error_code = <span class="number">1006</span></span><br></pre></td></tr></table></figure>
+<p>定义好之后就可以直接返回或者抛出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ClientTypeError()</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> ClientTypeError()</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -532,7 +538,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+            <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i>Flask</a>
           
         </div>
       
@@ -545,8 +551,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/05/Docker学习笔记/" rel="next" title="Docker学习笔记">
-                <i class="fa fa-chevron-left"></i> Docker学习笔记
+              <a href="/2018/08/28/如何创建一个自己的蓝图/" rel="next" title="如何创建一个自己的蓝图">
+                <i class="fa fa-chevron-left"></i> 如何创建一个自己的蓝图
               </a>
             
           </div>
@@ -554,10 +560,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/06/PXC集群的负载均衡/" rel="prev" title="PXC集群的负载均衡">
-                PXC集群的负载均衡 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -719,7 +721,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何创建MySQL的PXC集群"><span class="nav-number">1.</span> <span class="nav-text">如何创建MySQL的PXC集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载PXC集群镜像文件"><span class="nav-number">1.1.</span> <span class="nav-text">下载PXC集群镜像文件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载"><span class="nav-number">1.1.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#重命名"><span class="nav-number">1.1.2.</span> <span class="nav-text">重命名</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建内部网络"><span class="nav-number">1.2.</span> <span class="nav-text">创建内部网络</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#创建网段："><span class="nav-number">1.2.1.</span> <span class="nav-text">创建网段：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#查看网段"><span class="nav-number">1.2.2.</span> <span class="nav-text">查看网段</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除网段"><span class="nav-number">1.2.3.</span> <span class="nav-text">删除网段</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建Docker卷"><span class="nav-number">1.3.</span> <span class="nav-text">创建Docker卷</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#容器中的PXC节点映射数据目录的解决办法"><span class="nav-number">1.3.1.</span> <span class="nav-text">容器中的PXC节点映射数据目录的解决办法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录"><span class="nav-number">1.3.2.</span> <span class="nav-text">我们创建的Docker卷是在宿主机上可以看到的具体映射真实目录</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除Docker卷"><span class="nav-number">1.3.3.</span> <span class="nav-text">删除Docker卷</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建PXC容器"><span class="nav-number">1.4.</span> <span class="nav-text">创建PXC容器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#只需要向PXC镜像传入运行参数就能创建出PXC容器"><span class="nav-number">1.4.1.</span> <span class="nav-text">只需要向PXC镜像传入运行参数就能创建出PXC容器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建Docker卷-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">创建Docker卷</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建容器"><span class="nav-number">1.4.3.</span> <span class="nav-text">创建容器</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-处理多客户端登录注册"><span class="nav-number">1.</span> <span class="nav-text">1. 处理多客户端登录注册</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-自定义异常对象"><span class="nav-number">2.</span> <span class="nav-text">2. 自定义异常对象</span></a></li></ol></div>
             
 
           </div>

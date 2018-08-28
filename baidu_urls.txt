@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/28/如何创建一个自己的蓝图/
+https://zhaobugs.com/2018/08/28/自定义异常对象/
