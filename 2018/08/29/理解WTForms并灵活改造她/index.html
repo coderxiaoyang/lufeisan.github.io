@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="MySQL," />
+  <meta name="keywords" content="Flask," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="这篇文章主要记录SQL基础教程读书笔记，从头系统再学习一遍SQL  字符串和日期常数需要使用单引号（’）括起来   数据库名字，表名，字段名只能有字母，数字下划线组成。并且只能以字母开头。   SQL语句中使用AS可以为字段设置中文别名，不过需要使用双引号（”）括起来  SELECT product_id AS “商品编号” FROM product;   DISTINCT 作用在NULL上的时候">
-<meta name="keywords" content="MySQL">
+<meta name="description" content="WTForms其实是非常强大的验证插件。但很多同学对WTForms的理解仅仅停留在“验证表单”上。那WTForms可以用来做API的参数验证码？完全可以，但这需要你灵活的使用它，对它做出一些“改变”。 默认情况下的form验证出现异常的时候是不直接抛出的，存在于form的errors中，如果我们想直接抛出，就需要更改重写。 1234567891011121314151617181920212223">
+<meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SQL基础教程读书笔记">
-<meta property="og:url" content="https://zhaobugs.com/2018/08/15/SQL基础教程读书笔记/index.html">
+<meta property="og:title" content="理解WTForms并灵活改造她">
+<meta property="og:url" content="https://zhaobugs.com/2018/08/29/理解WTForms并灵活改造她/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="这篇文章主要记录SQL基础教程读书笔记，从头系统再学习一遍SQL  字符串和日期常数需要使用单引号（’）括起来   数据库名字，表名，字段名只能有字母，数字下划线组成。并且只能以字母开头。   SQL语句中使用AS可以为字段设置中文别名，不过需要使用双引号（”）括起来  SELECT product_id AS “商品编号” FROM product;   DISTINCT 作用在NULL上的时候">
+<meta property="og:description" content="WTForms其实是非常强大的验证插件。但很多同学对WTForms的理解仅仅停留在“验证表单”上。那WTForms可以用来做API的参数验证码？完全可以，但这需要你灵活的使用它，对它做出一些“改变”。 默认情况下的form验证出现异常的时候是不直接抛出的，存在于form的errors中，如果我们想直接抛出，就需要更改重写。 1234567891011121314151617181920212223">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-21T09:49:28.760Z">
+<meta property="og:updated_time" content="2018-08-29T03:44:34.701Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SQL基础教程读书笔记">
-<meta name="twitter:description" content="这篇文章主要记录SQL基础教程读书笔记，从头系统再学习一遍SQL  字符串和日期常数需要使用单引号（’）括起来   数据库名字，表名，字段名只能有字母，数字下划线组成。并且只能以字母开头。   SQL语句中使用AS可以为字段设置中文别名，不过需要使用双引号（”）括起来  SELECT product_id AS “商品编号” FROM product;   DISTINCT 作用在NULL上的时候">
+<meta name="twitter:title" content="理解WTForms并灵活改造她">
+<meta name="twitter:description" content="WTForms其实是非常强大的验证插件。但很多同学对WTForms的理解仅仅停留在“验证表单”上。那WTForms可以用来做API的参数验证码？完全可以，但这需要你灵活的使用它，对它做出一些“改变”。 默认情况下的form验证出现异常的时候是不直接抛出的，存在于form的errors中，如果我们想直接抛出，就需要更改重写。 1234567891011121314151617181920212223">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/08/15/SQL基础教程读书笔记/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/08/29/理解WTForms并灵活改造她/"/>
 
 
 
 
 
-  <title>SQL基础教程读书笔记 | 红烧肉</title>
+  <title>理解WTForms并灵活改造她 | 红烧肉</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/08/15/SQL基础教程读书笔记/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/08/29/理解WTForms并灵活改造她/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SQL基础教程读书笔记</h1>
+          <h1 class="post-title" itemprop="name headline">理解WTForms并灵活改造她</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T16:14:43+08:00">
-                2018-08-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T10:20:54+08:00">
+                2018-08-29
               </time>
             
 
@@ -355,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
                   </a>
                 </span>
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/15/SQL基础教程读书笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/15/SQL基础教程读书笔记/" itemprop="commentCount"></span>
+                <a href="/2018/08/29/理解WTForms并灵活改造她/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/29/理解WTForms并灵活改造她/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/08/15/SQL基础教程读书笔记/" class="leancloud_visitors" data-flag-title="SQL基础教程读书笔记">
+             <span id="/2018/08/29/理解WTForms并灵活改造她/" class="leancloud_visitors" data-flag-title="理解WTForms并灵活改造她">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  155 字
+                  934 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -449,23 +449,33 @@
       
 
       
-        <p>这篇文章主要记录SQL基础教程读书笔记，从头系统再学习一遍SQL</p>
+        <p>WTForms其实是非常强大的验证插件。但很多同学对WTForms的理解仅仅停留在“验证表单”上。那WTForms可以用来做API的参数验证码？完全可以，但这需要你灵活的使用它，对它做出一些“改变”。</p>
+<p>默认情况下的<code>form</code>验证出现异常的时候是不直接抛出的，存在于<code>form</code>的<code>errors</code>中，如果我们想直接抛出，就需要更改重写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">from</span> wtforms <span class="keyword">import</span> Form</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> app.libs.error_code <span class="keyword">import</span> ParameterException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 这里将silent设置为True表示出现异常抛出</span></span><br><span class="line">        data = request.get_json(silent=<span class="keyword">True</span>)</span><br><span class="line">        args = request.args.to_dict()</span><br><span class="line">        super(BaseForm, self).__init__(data=data, **args)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 我们保留原有的validate方法，自己重写一个validate_for_api</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_for_api</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 这个方法我们要实现原有的 validate方法的功能，因此要调用一下父类validate</span></span><br><span class="line">        valid = super(BaseForm, self).validate()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> valid:</span><br><span class="line">            <span class="comment"># 如果验证出错 所有的错误都存在于form 的errors属性中</span></span><br><span class="line">            <span class="keyword">raise</span> ParameterException(msg=self.errors)</span><br><span class="line">        <span class="comment"># 返回form本身</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+<p>其中的<code>ParameterException</code>就是前一篇我们学习的自定义异常类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterException</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'invalid parameter'</span></span><br><span class="line">    error_code = <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+<p>我们在自定义参数异常类的时候给<code>msg</code>设定了一个默认值。当有具体的错误异常时候，直接传入该值即可。</p>
+<p>完成上面的配置之后，我们的自定义<code>Form</code>就完成了，然后在使用到<code>WTForms</code>的地方进行更换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> app.validators.base <span class="keyword">import</span> BaseForm <span class="keyword">as</span> Form</span><br><span class="line"><span class="comment"># 这里的Form 就是我们的自己定义的Form了</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClientForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>), length(</span><br><span class="line">        min=<span class="number">5</span>, max=<span class="number">32</span></span><br><span class="line">    )])</span><br></pre></td></tr></table></figure>
+<p>在视图函数中使用方式也有所改变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/register', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_client</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 这里直接使用validate_for_api 即可 如果有报错就会抛出  没有报错返回form实例本身</span></span><br><span class="line">    form = ClientForm().validate_for_api()</span><br><span class="line">    <span class="keyword">return</span> Success()</span><br></pre></td></tr></table></figure>
+<p>其中的<code>Success()</code>也是我们自定义的一个返回。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Success</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">201</span></span><br><span class="line">    msg = <span class="string">'ok'</span></span><br><span class="line">    error_code = <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>字符串和日期常数需要使用单引号（’）括起来</p>
+<p>我们可以接受定义时候的复杂，但是不能接收调用时的复杂。 – 七月老师</p>
 </blockquote>
-<blockquote>
-<p>数据库名字，表名，字段名只能有字母，数字下划线组成。并且只能以字母开头。</p>
-</blockquote>
-<blockquote>
-<p>SQL语句中使用<code>AS</code>可以为字段设置中文别名，不过需要使用双引号（”）括起来 </p>
-<p>SELECT product_id AS “商品编号” FROM product;</p>
-</blockquote>
-<blockquote>
-<p>DISTINCT 作用在NULL上的时候，多个NULL会显示一个</p>
-</blockquote>
-<blockquote>
-<p>所有包含<code>NULL</code>的计算，结果肯定是<code>NULL</code>，即使是<code>NULL / 0</code>这样的运算</p>
-</blockquote>
+<p>因为定义是一次性的，调用是多次性的。</p>
+<p>我们在写代码的时候，对于可重用的代码尽量进行封装。</p>
+<p>现在我们的代码中有两类异常：可以预知的已知异常，不可预知的未知异常。</p>
+<p>对于已知异常我们可以进行指定格式的异常返回，但是对于未知异常怎么办呢？</p>
+<p><code>AOP</code>思想：<a href="https://baike.baidu.com/item/AOP/1332219" target="_blank" rel="noopener">https://baike.baidu.com/item/AOP/1332219</a></p>
+<p>我们在异常的最终抛出的地方进行拦截未知异常。</p>
+<p>我们知道所有的异常类最终继承的都是<code>Exception</code>类。</p>
+<p>我们在入口文件进行最终异常捕捉。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> werkzeug.exceptions <span class="keyword">import</span> HTTPException</span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> create_app</span><br><span class="line"><span class="keyword">from</span> app.libs.error <span class="keyword">import</span> APIException</span><br><span class="line"><span class="keyword">from</span> app.libs.error_code <span class="keyword">import</span> ServerError</span><br><span class="line"></span><br><span class="line">app = create_app()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.errorhandler(Exception)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">framework_error</span><span class="params">(e)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(e, APIException):</span><br><span class="line">        <span class="comment"># 首先进行 APIException 判断 </span></span><br><span class="line">        <span class="keyword">return</span> e</span><br><span class="line">    <span class="keyword">if</span> isinstance(e, HTTPException):</span><br><span class="line">        <span class="comment"># 如果不是 APIException 而是 HTTPException 将异常转化为 APIException</span></span><br><span class="line">        code = e.code</span><br><span class="line">        msg = e.description</span><br><span class="line">        error_code = <span class="number">1007</span></span><br><span class="line">        <span class="keyword">return</span> APIException(msg, code, error_code)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">		<span class="comment"># 我们在调试模式下的时候将异常全部打印，而生产环境抛出我们定义的异常类</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> app.config[<span class="string">'DEBUG'</span>]:</span><br><span class="line">            <span class="keyword">return</span> ServerError()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> e</span><br></pre></td></tr></table></figure>
+<p>其中的 <code>ServerError</code>为我们自定义的异常类。</p>
+<p>经过我们自定义异常类，我们系统里面的异常大致分为三类<code>APIException</code>，<code>HTTPException</code>，<code>Exception</code>。</p>
+<p>我们最想抛出的是<code>APIException</code>，因此我们首先进行<code>APIException</code>判断。</p>
 
       
     </div>
@@ -524,7 +534,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+            <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i>Flask</a>
           
         </div>
       
@@ -537,8 +547,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/14/Flask基础学习-第六篇/" rel="next" title="Flask基础学习-flask-login篇">
-                <i class="fa fa-chevron-left"></i> Flask基础学习-flask-login篇
+              <a href="/2018/08/28/自定义异常对象/" rel="next" title="Flask中自定义异常对象">
+                <i class="fa fa-chevron-left"></i> Flask中自定义异常对象
               </a>
             
           </div>
@@ -546,10 +556,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/16/Flask基础学习-模型篇/" rel="prev" title="Flask基础学习-模型篇">
-                Flask基础学习-模型篇 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

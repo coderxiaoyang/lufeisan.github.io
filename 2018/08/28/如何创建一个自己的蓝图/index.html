@@ -84,14 +84,14 @@
 <meta name="description" content="我们之前学习过蓝图的使用，能够方便的将我们的业务逻辑进行切分成各个模块，这样逻辑相似的功能放在一个目录，很实用。那我们如何实现一个自己的蓝图呢？ 先看一个路由 1@api.route(&apos;/v1/user/&amp;lt;int:uid&amp;gt;&apos;, methods=[&apos;GET&apos;]) 这样一个路由我们可以拆分成三个部分v1,user,&amp;lt;int:uid&amp;gt;。 这里我们使用两层蓝图注册来实现上面的路由，">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何创建一个自己的蓝图">
+<meta property="og:title" content="Flask中如何创建一个自己的蓝图">
 <meta property="og:url" content="https://zhaobugs.com/2018/08/28/如何创建一个自己的蓝图/index.html">
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="我们之前学习过蓝图的使用，能够方便的将我们的业务逻辑进行切分成各个模块，这样逻辑相似的功能放在一个目录，很实用。那我们如何实现一个自己的蓝图呢？ 先看一个路由 1@api.route(&apos;/v1/user/&amp;lt;int:uid&amp;gt;&apos;, methods=[&apos;GET&apos;]) 这样一个路由我们可以拆分成三个部分v1,user,&amp;lt;int:uid&amp;gt;。 这里我们使用两层蓝图注册来实现上面的路由，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-28T06:31:26.197Z">
+<meta property="og:updated_time" content="2018-08-29T01:37:30.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何创建一个自己的蓝图">
+<meta name="twitter:title" content="Flask中如何创建一个自己的蓝图">
 <meta name="twitter:description" content="我们之前学习过蓝图的使用，能够方便的将我们的业务逻辑进行切分成各个模块，这样逻辑相似的功能放在一个目录，很实用。那我们如何实现一个自己的蓝图呢？ 先看一个路由 1@api.route(&apos;/v1/user/&amp;lt;int:uid&amp;gt;&apos;, methods=[&apos;GET&apos;]) 这样一个路由我们可以拆分成三个部分v1,user,&amp;lt;int:uid&amp;gt;。 这里我们使用两层蓝图注册来实现上面的路由，">
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>如何创建一个自己的蓝图 | 红烧肉</title>
+  <title>Flask中如何创建一个自己的蓝图 | 红烧肉</title>
   
 
 
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何创建一个自己的蓝图</h1>
+          <h1 class="post-title" itemprop="name headline">Flask中如何创建一个自己的蓝图</h1>
         
 
         <div class="post-meta">
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/08/28/如何创建一个自己的蓝图/" class="leancloud_visitors" data-flag-title="如何创建一个自己的蓝图">
+             <span id="/2018/08/28/如何创建一个自己的蓝图/" class="leancloud_visitors" data-flag-title="Flask中如何创建一个自己的蓝图">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  833 字
+                  852 字
                 </span>
               
 
@@ -454,22 +454,24 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/v1/user/&lt;int:uid&gt;', methods=['GET'])</span></span><br></pre></td></tr></table></figure>
 <p>这样一个路由我们可以拆分成三个部分<code>v1</code>,<code>user</code>,<code>&lt;int:uid&gt;</code>。</p>
 <p>这里我们使用两层蓝图注册来实现上面的路由，第一层蓝图使用我们自己定义的红图来实现。</p>
-<p>先看下实现逻辑</p>
+<p>先看下实现</p>
 <h6 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h6><p>创建我们自己的红图</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Redprint</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="comment"># 红图的名字</span></span><br><span class="line">        self.name = name</span><br><span class="line">        <span class="comment"># 创建一个列表对象用于保存传入的值</span></span><br><span class="line">        self.mound = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">route</span><span class="params">(self, rule, **options)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(f)</span>:</span></span><br><span class="line">            <span class="comment"># 这个装饰器就是单纯保存传入的值，不进行注册路由操作</span></span><br><span class="line">            self.mound.append((f, rule, options))</span><br><span class="line">            <span class="keyword">return</span> f</span><br><span class="line">        <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, bp, url_prefix=None)</span>:</span></span><br><span class="line">        <span class="comment"># 如果不穿url_prefix 直接将红图的名字当做url_prefix</span></span><br><span class="line">        <span class="keyword">if</span> url_prefix <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            url_prefix = <span class="string">'/'</span> + self.name</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 将保存的参数解包出来</span></span><br><span class="line">        <span class="keyword">for</span> f, rule, options <span class="keyword">in</span> self.mound:</span><br><span class="line">            endpoint = self.name + <span class="string">'+'</span> options.pop(<span class="string">"endpoint"</span>, f.__name__)</span><br><span class="line">            <span class="comment"># 将上述参数参数add_url_rule 中</span></span><br><span class="line">            bp.add_url_rule(url_prefix + rule, endpoint, f, **options)</span><br></pre></td></tr></table></figure>
 <p>看下实现逻辑：</p>
-<p>我们知道蓝图有路由机制是通过<code>route</code>装饰器实现的，先看下<code>route</code>的源码</p>
+<p>我们知道蓝图的路由机制是通过<code>route</code>装饰器实现的，先看下<code>route</code>的源码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">route</span><span class="params">(self, rule, **options)</span>:</span></span><br><span class="line">    <span class="string">"""Like :meth:`Flask.route` but for a blueprint.  The endpoint for the</span></span><br><span class="line"><span class="string">    :func:`url_for` function is prefixed with the name of the blueprint.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(f)</span>:</span></span><br><span class="line">        endpoint = options.pop(<span class="string">"endpoint"</span>, f.__name__)</span><br><span class="line">        self.add_url_rule(rule, endpoint, f, **options)</span><br><span class="line">        <span class="keyword">return</span> f</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br></pre></td></tr></table></figure>
 <p>看下参数：</p>
 <p><code>rule</code>就是路由，<code>options</code>就是一些关键字参数，如<code>methods</code>等。</p>
 <p>这里的<code>route</code>方法的主要作用就是接收一组参数传入到蓝图<code>add_url_rule</code>中，实现视图函数到蓝图的注册。</p>
-<p>我们在红图中一样需要把视图函数注册到蓝图中，这里我们直接调用蓝图的<code>add_url_rule</code>。因为我们要用红图的<code>route</code>来代替蓝图的<code>route</code>。</p>
+<p>我们在红图中一样要把视图函数注册到蓝图中，即调用蓝图的<code>add_url_rule</code>。</p>
+<p>因为我们要用红图的<code>route</code>来代替蓝图的<code>route</code>。</p>
 <p>在源码中，我们可以直接使用<code>self.add_url_rule</code>调用，我们怎么调用呢？</p>
 <p>我们可以先将传入的参数保存进来，然后传入一个蓝图对象。在注册的时候调用<code>add_url_rule</code>。</p>
 <h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><p>在各个业务逻辑模块调用红图</p>
+<p>下面是在<code>user.py</code>模块</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">api = Redprint(<span class="string">'user'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@api.route('/&lt;int:uid&gt;', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">super_get_user</span><span class="params">(uid)</span>:</span></span><br><span class="line">    user = User.query.filter_by(id=uid).first_or_404()</span><br><span class="line">    <span class="keyword">return</span> jsonify(user)</span><br></pre></td></tr></table></figure>
 <h6 id="红图注册"><a href="#红图注册" class="headerlink" title="红图注册"></a>红图注册</h6><p>在业务逻辑所属包的初始化模块<code>__init__.py</code>中注册</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Blueprint</span><br><span class="line"><span class="keyword">from</span> app.api.v1 <span class="keyword">import</span> user</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_blueprint_v1</span><span class="params">()</span>:</span></span><br><span class="line">    bp_v1 = Blueprint(<span class="string">'v1'</span>, __name__)</span><br><span class="line">	<span class="comment"># 注册时候增加 user前缀</span></span><br><span class="line">    user.api.register(bp_v1, url_prefix=<span class="string">'/user'</span>)</span><br><span class="line">    <span class="keyword">return</span> bp_v1</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Blueprint</span><br><span class="line"><span class="keyword">from</span> app.api.v1 <span class="keyword">import</span> user</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_blueprint_v1</span><span class="params">()</span>:</span></span><br><span class="line">    bp_v1 = Blueprint(<span class="string">'v1'</span>, __name__)</span><br><span class="line">	<span class="comment"># 注册时候增加 user前缀</span></span><br><span class="line">    user.api.register(bp_v1, url_prefix=<span class="string">'/user'</span>)</span><br><span class="line">    <span class="comment"># 当存在多个业务逻辑模块的时候，依次注册</span></span><br><span class="line">    <span class="keyword">return</span> bp_v1</span><br></pre></td></tr></table></figure>
 <p>这里我们将自己实现的红图注册到<code>Flask</code>的蓝图中。</p>
 <h6 id="蓝图注册"><a href="#蓝图注册" class="headerlink" title="蓝图注册"></a>蓝图注册</h6><p>实现了红图到蓝图的注册后，我们需要将蓝图注册到<code>Flask</code>的核心对象上去</p>
 <p>在工厂函数中注册</p>
@@ -643,7 +645,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

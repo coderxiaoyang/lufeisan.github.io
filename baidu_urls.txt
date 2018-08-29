@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/28/自定义异常对象/
+https://zhaobugs.com/2018/08/29/理解WTForms并灵活改造她/

@@ -454,7 +454,7 @@
         <p>这一篇文章我们来实现安装一些RabbitMQ，为后续学习做准备。</p>
 <h6 id="安装erlang"><a href="#安装erlang" class="headerlink" title="安装erlang"></a>安装erlang</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https://mirrors.ustc.edu.cn/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm</span><br><span class="line">yum install erlang</span><br></pre></td></tr></table></figure>
 <p>安装完成以后，执行erl看是否能打开eshell，用’halt().’退出，注意后面的点号，那是erlang的结束符。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# erl</span><br><span class="line">Erlang R16B03-1 (erts-5.10.4) [source] [64-bit] [async-threads:10] [hipe] [kernel-poll:false]</span><br><span class="line"></span><br><span class="line">Eshell V5.10.4  (abort with ^G)</span><br><span class="line"><span class="meta">1&gt;</span><span class="bash"> halt().</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# erl</span><br><span class="line">Erlang R16B03-1 (erts-5.10.4) [source] [64-bit] [async-threads:10] [hipe] [kernel-poll:false]</span><br><span class="line"></span><br><span class="line">Eshell V5.10.4  (abort with ^G)</span><br><span class="line"><span class="meta">1&gt;</span> halt().</span><br></pre></td></tr></table></figure>
 <h6 id="安装-RabbitMQ"><a href="#安装-RabbitMQ" class="headerlink" title="安装 RabbitMQ"></a>安装 RabbitMQ</h6><p>官网下载安装包 ：<a href="https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/" target="_blank" rel="noopener">https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh rabbitmq-server-3.6.15-1.el7.noarch.rpm</span><br></pre></td></tr></table></figure>
 <p>直接安装会报错</p>
@@ -466,7 +466,7 @@
 <p>开启管理界面插件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# rabbitmq-plugins enable rabbitmq_management </span><br><span class="line">The following plugins have been enabled:</span><br><span class="line">  amqp_client</span><br><span class="line">  cowlib</span><br><span class="line">  cowboy</span><br><span class="line">  rabbitmq_web_dispatch</span><br><span class="line">  rabbitmq_management_agent</span><br><span class="line">  rabbitmq_management</span><br><span class="line"></span><br><span class="line">Applying plugin configuration to rabbit@hongshaorou... started 6 plugins.</span><br></pre></td></tr></table></figure>
 <p>添加一个用户</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 命令</span></span><br><span class="line">rabbitmqctl add_user Username Password</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加一个 admin</span></span><br><span class="line">[root@hongshaorou ~]# rabbitmqctl add_user admin admin</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 命令</span><br><span class="line">rabbitmqctl add_user Username Password</span><br><span class="line"><span class="meta">#</span> 添加一个 admin</span><br><span class="line">[root@hongshaorou ~]# rabbitmqctl add_user admin admin</span><br></pre></td></tr></table></figure>
 <p>赋予用户权限</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# rabbitmqctl set_permissions -p "/" admin '.*' '.*' '.*'</span><br></pre></td></tr></table></figure>
 <p>赋予用户角色</p>
@@ -644,7 +644,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
