@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/29/理解WTForms并灵活改造她/
+https://zhaobugs.com/2018/08/30/使用Token与HTTPBasic验证/
