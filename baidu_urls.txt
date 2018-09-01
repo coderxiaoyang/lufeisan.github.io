@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/08/31/MySQL中的时间戳和字符串/
+https://zhaobugs.com/2018/09/01/MySQL错误集/
