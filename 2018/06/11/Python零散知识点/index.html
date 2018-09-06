@@ -89,10 +89,13 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="如何保留小数点两位对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法 123456789101112131415161718192021In [1]: a = 1In [2]: b = 3In [3]: print(a/b)0.3333333333333333In [4]: print(a//b)0方法一：使用roundIn [5]: print(round(a/b, 2))0.33方法二">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T02:34:35.404Z">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/0069RVTdgy1fuzw99f8c6j30m905wwga.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fuzw9iqsjtj318e0iuaj6.jpg">
+<meta property="og:updated_time" content="2018-09-06T08:38:11.047Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python零散知识点">
 <meta name="twitter:description" content="如何保留小数点两位对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法 123456789101112131415161718192021In [1]: a = 1In [2]: b = 3In [3]: print(a/b)0.3333333333333333In [4]: print(a//b)0方法一：使用roundIn [5]: print(round(a/b, 2))0.33方法二">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/0069RVTdgy1fuzw99f8c6j30m905wwga.jpg">
 
 
 
@@ -412,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  125 字
+                  1,195 字
                 </span>
               
 
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -451,6 +454,36 @@
       
         <h5 id="如何保留小数点两位"><a href="#如何保留小数点两位" class="headerlink" title="如何保留小数点两位"></a>如何保留小数点两位</h5><p>对于除法或者浮点数我们如果想保留小数点两位可以使用下面方法</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: b = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: print(a/b)</span><br><span class="line"><span class="number">0.3333333333333333</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: print(a//b)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"></span><br><span class="line">方法一：使用round</span><br><span class="line">In [<span class="number">5</span>]: print(round(a/b, <span class="number">2</span>))</span><br><span class="line"><span class="number">0.33</span></span><br><span class="line"></span><br><span class="line">方法二：使用format</span><br><span class="line">In [<span class="number">7</span>]: print(format(float(a)/float(b), <span class="string">'.2f'</span>))</span><br><span class="line"><span class="number">0.33</span></span><br><span class="line"></span><br><span class="line">方法三：使用 %</span><br><span class="line">In [<span class="number">8</span>]: print(<span class="string">'%.2f'</span> %(a/b))</span><br><span class="line"><span class="number">0.33</span></span><br></pre></td></tr></table></figure>
+<h5 id="and和or的取值顺序"><a href="#and和or的取值顺序" class="headerlink" title="and和or的取值顺序"></a>and和or的取值顺序</h5><p>and 和 or 是我们再熟悉不过的两个逻辑运算符。而我们通常只用它来做判断，很少用它来取值。</p>
+<p>如果一个or表达式中所有值都为真，Python会选择第一个值，而and表达式则会选择第二个。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: ( <span class="number">3</span> <span class="keyword">or</span> <span class="number">4</span>) * ( <span class="number">5</span> <span class="keyword">and</span> <span class="number">6</span>)</span><br><span class="line">Out[<span class="number">1</span>]: <span class="number">18</span></span><br></pre></td></tr></table></figure>
+<h5 id="类首字母不一定是大写"><a href="#类首字母不一定是大写" class="headerlink" title="类首字母不一定是大写"></a>类首字母不一定是大写</h5><p>在正常情况下，我们所编写的所见到的代码，好像都默许了类名首字母大写，而实例用小写的这一准则。但这并不是强制性的，即使你反过来的也没有关系。</p>
+<p>但有一些内置的类，首字母都是小写，而实例都是大写。</p>
+<p>比如 bool 是类名，而 True，False 是其实例； 比如 ellipsis是类名，Ellipsis是实例； 还有 int，string，float，list，tuple，dict等一系列数据类型都是类名，它们都是小写。</p>
+<h5 id="两次-return"><a href="#两次-return" class="headerlink" title="两次 return"></a>两次 return</h5><p>我们都知道，try…finally… 语句的用法，不管try里面是正常执行还是报异常，最终都能保证finally能够执行。</p>
+<p>同时，我们又知道，一个函数里只要遇到 return 函数就会立马结束。</p>
+<p>基于以上这两点，我们来看看这个例子，到底运行过程是怎么样的？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">7</span>]: <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     <span class="keyword">try</span>:</span><br><span class="line">   ...:         <span class="keyword">return</span> <span class="string">"try"</span></span><br><span class="line">   ...:     <span class="keyword">finally</span>:</span><br><span class="line">   ...:         <span class="keyword">return</span> <span class="string">"finally"</span> </span><br><span class="line">   ...:     </span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: func()</span><br><span class="line">Out[<span class="number">8</span>]: <span class="string">'finally'</span></span><br></pre></td></tr></table></figure>
+<p>惊奇的发现，在<code>try</code> 里的return居然不起作用。</p>
+<p>原因是，在try…finally…语句中，try中的return会被直接忽视，因为要保证 finally 能够执行。</p>
+<h5 id="for死循环"><a href="#for死循环" class="headerlink" title="for死循环"></a>for死循环</h5><p>for 循环可以说是 基础得不能再基础的知识点了。</p>
+<p>但是如果让你用 for 写一个死循环，你会写吗？（问题来自群友 陈**）</p>
+<p>这是个开放性的问题，在往下看之前，建议你先尝试自己思考，你会如何解答。</p>
+<p>好了，如果你还没有思路，那就来看一下 一个海外 MIT 群友的回答:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> iter(int, <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>是不是懵逼了。iter 还有这种用法？这为啥是个死循环？</p>
+<p>这真的是个冷知识，关于这个知识点，你如果看中文网站，可能找不到相关资料。</p>
+<p>还好你可以通过 IDE 看py源码里的注释内容，介绍了很详细的使用方法。</p>
+<p>原来iter有两种使用方法，通常我们的认知是第一种，将一个列表转化为一个迭代器。</p>
+<p>而第二种方法，它收到一个<code>callable</code>对象，和一个<code>sentinel</code>参数。第一个对象会一直运行，知道它返回<code>sentinel</code>值才结束。</p>
+<p><img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fuzw99f8c6j30m905wwga.jpg" alt="image-20180906162122715"></p>
+<p>那<code>int</code> 呢，这又是一个知识点，int 是一个内建方法。通过看注释，可以看出它是有默认值0的。你可以在终端上输入<code>int()</code> 看看是不是返回0。</p>
+<p><img src="https://ws4.sinaimg.cn/large/0069RVTdgy1fuzw9iqsjtj318e0iuaj6.jpg" alt="image-20180906162140098"></p>
+<p>所以这个<code>for</code>循环会没有终点，一直运行下去。</p>
+<h5 id="intern机制"><a href="#intern机制" class="headerlink" title="intern机制"></a>intern机制</h5><p>字符串类型作为Python中最常用的数据类型之一，Python解释器为了提高字符串使用的效率和使用性能，做了很多优化.</p>
+<p>例如：Python解释器中使用了 intern（字符串驻留）的技术来提高字符串效率，什么是intern机制？就是同样的字符串对象仅仅会保存一份，放在一个字符串储蓄池中，是共用的，当然，肯定不能改变，这也决定了字符串必须是不可变对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">10</span>]: s1=<span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]:  s2=<span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: s1 <span class="keyword">is</span> s2</span><br><span class="line">Out[<span class="number">12</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果有空格 不启用itern</span></span><br><span class="line">In [<span class="number">13</span>]: s1=<span class="string">"hell o"</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: s2=<span class="string">"hell o"</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: s1 <span class="keyword">is</span> s2</span><br><span class="line">Out[<span class="number">15</span>]: <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: s1 = <span class="string">"a"</span> * <span class="number">20</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: s2 = <span class="string">"a"</span> * <span class="number">20</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: s1 <span class="keyword">is</span> s2</span><br><span class="line">Out[<span class="number">18</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果一个字符串长度超过20个字符，不启动intern机制</span></span><br><span class="line">In [<span class="number">19</span>]: s1 = <span class="string">"a"</span> * <span class="number">21</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">20</span>]: s2 = <span class="string">"a"</span> * <span class="number">21</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">21</span>]: s1 <span class="keyword">is</span> s2</span><br><span class="line">Out[<span class="number">21</span>]: <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">22</span>]: s1 = <span class="string">"ab"</span> * <span class="number">10</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">23</span>]: s2 = <span class="string">"ab"</span> * <span class="number">10</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">24</span>]: s1 <span class="keyword">is</span> s2</span><br><span class="line">Out[<span class="number">24</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">25</span>]: s1 = <span class="string">"ab"</span> * <span class="number">11</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">26</span>]: s2 = <span class="string">"ab"</span> * <span class="number">11</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">27</span>]:  s1 <span class="keyword">is</span> s2</span><br><span class="line">Out[<span class="number">27</span>]: <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>参考文章：<a href="https://juejin.im/post/5b8d4f7651882542d14dab2b?utm_source=gold_browser_extension" target="_blank" rel="noopener">https://juejin.im/post/5b8d4f7651882542d14dab2b?utm_source=gold_browser_extension</a></p>
 
       
     </div>
@@ -696,7 +729,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何保留小数点两位"><span class="nav-number">1.</span> <span class="nav-text">如何保留小数点两位</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何保留小数点两位"><span class="nav-number">1.</span> <span class="nav-text">如何保留小数点两位</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#and和or的取值顺序"><span class="nav-number">2.</span> <span class="nav-text">and和or的取值顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类首字母不一定是大写"><span class="nav-number">3.</span> <span class="nav-text">类首字母不一定是大写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两次-return"><span class="nav-number">4.</span> <span class="nav-text">两次 return</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#for死循环"><span class="nav-number">5.</span> <span class="nav-text">for死循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#intern机制"><span class="nav-number">6.</span> <span class="nav-text">intern机制</span></a></li></ol></div>
             
 
           </div>
