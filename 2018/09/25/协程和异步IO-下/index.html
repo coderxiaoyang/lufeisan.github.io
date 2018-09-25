@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="​    🐴上我们就要进入到真正的协程概念学习了，这之前我们先了解一下C10M问题。 C10M：如何利用8核心CPU，64G内存，在10gbps的网络上保持1000万并发连接。 通过协程就能解决这类问题。 在我们正式学习协程含义之前，我们先看下面临的问题：  回调模式编码复杂度高 同步编程的并发性不高 多线程编程需要线程间同步（线程间同步我们使用锁Lock机制，但是锁机制会降低并发性能）  如果">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="协程和异步IO-下">
+<meta property="og:url" content="https://zhaobugs.com/2018/09/25/协程和异步IO-下/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="​    🐴上我们就要进入到真正的协程概念学习了，这之前我们先了解一下C10M问题。 C10M：如何利用8核心CPU，64G内存，在10gbps的网络上保持1000万并发连接。 通过协程就能解决这类问题。 在我们正式学习协程含义之前，我们先看下面临的问题：  回调模式编码复杂度高 同步编程的并发性不高 多线程编程需要线程间同步（线程间同步我们使用锁Lock机制，但是锁机制会降低并发性能）  如果">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-25T09:40:33.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="协程和异步IO-下">
+<meta name="twitter:description" content="​    🐴上我们就要进入到真正的协程概念学习了，这之前我们先了解一下C10M问题。 C10M：如何利用8核心CPU，64G内存，在10gbps的网络上保持1000万并发连接。 通过协程就能解决这类问题。 在我们正式学习协程含义之前，我们先看下面临的问题：  回调模式编码复杂度高 同步编程的并发性不高 多线程编程需要线程间同步（线程间同步我们使用锁Lock机制，但是锁机制会降低并发性能）  如果">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/09/25/协程和异步IO-下/"/>
+
+
+
+
+
+  <title>协程和异步IO-下 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/09/25/协程和异步IO-下/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">协程和异步IO-下</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T14:40:48+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/25/协程和异步IO-下/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/25/协程和异步IO-下/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/25/协程和异步IO-下/" class="leancloud_visitors" data-flag-title="协程和异步IO-下">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,243 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>​    🐴上我们就要进入到真正的协程概念学习了，这之前我们先了解一下<code>C10M</code>问题。</p>
+<p><code>C10M</code>：如何利用8核心CPU，64G内存，在10gbps的网络上保持1000万并发连接。</p>
+<p>通过协程就能解决这类问题。</p>
+<p>在我们正式学习协程含义之前，我们先看下面临的问题：</p>
+<ol>
+<li>回调模式编码复杂度高</li>
+<li>同步编程的并发性不高</li>
+<li>多线程编程需要线程间同步（线程间同步我们使用锁<code>Lock</code>机制，但是锁机制会降低并发性能）</li>
+</ol>
+<p>如果我们想解决👆的问题，我们应该需要做的是：</p>
+<ol>
+<li><p>采用同步的方式编写异步的代码</p>
+</li>
+<li><p>使用单线程去切换任务</p>
+<p>如何使用单线程切换任务呢，解决这个问题我们又有👇的挑战：</p>
+<ol>
+<li>线程是由操作系统切换的，如何我们声明一个线程操作系统会帮我们自动切换。如果我们想在单线程中切换，就需要我们自己去调度任务。</li>
+<li>实现了单线程中切换是不需要锁🔐机制的，并且并发性高。我们类比线程内切换为函数切换，单线程内切换函数性能远高于线程切换，并发性更高。</li>
+</ol>
+</li>
+</ol>
+<p>在传统模式下的函数调用中<code>A-&gt;B-&gt;C</code>：</p>
+<p>函数只要执行一次就不会再执行了（即不会再进入函数了），因此是无法进行在函数之间切换。</p>
+<p>当我们在单线程中想进行函数切换的时候，需要面临的一个挑战就是：如何实现一个可以暂停的函数，并且在适当的时候恢复该函数的继续执行。</p>
+<p>为了解决上面的问题，就出现了协程。</p>
+<p><code>协程</code>：的概念很多。我们可以理解为有多个入口的函数，可以暂停的函数(可以向暂停的地方传入值)。</p>
+<h5 id="生成器进阶-send、close和throw方法"><a href="#生成器进阶-send、close和throw方法" class="headerlink" title="生成器进阶-send、close和throw方法"></a>生成器进阶-<code>send</code>、<code>close</code>和<code>throw</code>方法</h5><p>我们知道协程是一个可以暂停的函数，而生成器就是可以暂停的。如何将生成器和协程关联起来呢？</p>
+<p>我们先学一下生成器的高级知识吧!</p>
+<h6 id="生成器的send方法"><a href="#生成器的send方法" class="headerlink" title="生成器的send方法"></a>生成器的send方法</h6><p>我们要学习的第一个知识点就是：</p>
+<blockquote>
+<p>生成器不仅可以产出值，还可以接收值</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 1. 可以产出值(= 右侧就是产出值)</span></span><br><span class="line">    <span class="comment"># 2. 可以接收值(调用方传递进来的值)(= 左侧就是接收值)</span></span><br><span class="line">    html = <span class="keyword">yield</span> <span class="string">"http://projectsedu.com"</span></span><br><span class="line">    print(html)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>第二个知识点：</p>
+<blockquote>
+<p>启动生成器有两种方式：调用next()或者send()</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#1. 可以产出值， 2. 可以接收值(调用方传递进来的值)</span></span><br><span class="line">    html = <span class="keyword">yield</span> <span class="string">"http://projectsedu.com"</span></span><br><span class="line">    print(html)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    gen = gen_func()</span><br><span class="line">    <span class="comment"># 在调用send发送非none值之前，我们必须启动一次生成器</span></span><br><span class="line">    <span class="comment"># 方式有两种 1. gen.send(None), 2. next(gen)</span></span><br><span class="line">    url = gen.send(<span class="keyword">None</span>)</span><br><span class="line">    <span class="comment"># download url</span></span><br><span class="line">    print(url)</span><br><span class="line">    html = <span class="string">"红烧肉"</span></span><br><span class="line">    print(gen.send(html)) </span><br><span class="line">    </span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">http://projectsedu.com</span><br><span class="line">红烧肉</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意<code>send</code>方法的作用：<code>send</code>方法可以传递值进入生成器内部，同时还可以重启生成器执行到下一个<code>yield</code>位置</p>
+</blockquote>
+<p>正是生成器的<code>send</code>方法使暂停了的方法能够重新运行起来，这是生成器变成协程的基础。 </p>
+<h6 id="生成器的close方法"><a href="#生成器的close方法" class="headerlink" title="生成器的close方法"></a>生成器的close方法</h6><p>我们可以使用<code>close</code>方法关闭生成器，关闭之后再次调用生成器就会报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">"http://projectsedu.com"</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"红烧肉"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    gen = gen_func()</span><br><span class="line">    print(next(gen))</span><br><span class="line">    gen.close()</span><br><span class="line">    print(next(gen))</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">http://projectsedu.com</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"gen_close.py"</span>, line <span class="number">14</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(next(gen))</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+<p>为什么会出现上面的报错呢？</p>
+<p>这就是<code>close</code>方法导致的了，<code>close</code>方法会在调用的<code>yield</code>语句地方抛出一个异常<code>GeneratorExit</code>。而异常<code>GeneratorExit</code>是继承<code>BaseException</code>不是<code>Exception</code>。</p>
+<p>这个方法我们只要知道会关闭已经创建好的生成器即可。</p>
+<h6 id="生成器的throw方法"><a href="#生成器的throw方法" class="headerlink" title="生成器的throw方法"></a>生成器的throw方法</h6><p>生成器的<code>throw</code>方法是能够向生成器内部扔进去一个异常的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"http://projectsedu.com"</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    gen = gen_func()</span><br><span class="line">    print(next(gen))</span><br><span class="line">    gen.throw(Exception, <span class="string">"download error"</span>)</span><br><span class="line">    print(next(gen))</span><br></pre></td></tr></table></figure>
+<p>扔进去的异常产生的位置是调用<code>throw</code>方法之前的<code>yield</code>位置处。</p>
+<h5 id="生成器进阶-yield-from"><a href="#生成器进阶-yield-from" class="headerlink" title="生成器进阶-yield from"></a>生成器进阶-yield from</h5><p>我们通过<code>yield from</code>来实现链式连接的功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">my_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">my_dict = &#123;</span><br><span class="line">    <span class="string">"bobby1"</span>: <span class="string">"http://projectsedu.com"</span>,</span><br><span class="line">    <span class="string">"bobby2"</span>: <span class="string">"http://www.imooc.com"</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_chain</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> my_iterable <span class="keyword">in</span> args:</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> my_iterable</span><br><span class="line">        <span class="comment"># for value in my_iterable:</span></span><br><span class="line">        <span class="comment">#     yield value</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> my_chain(my_list, my_dict, range(<span class="number">5</span>, <span class="number">10</span>)):</span><br><span class="line">    print(value)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">bobby1</span><br><span class="line">bobby2</span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p><code>yield from</code>并不是简单地<code>yield</code>而是，如果后面是可迭代对象，会依次<code>yield</code>出可迭代对象里面的内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g1</span><span class="params">(iterable)</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> iterable</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g2</span><span class="params">(iterable)</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> iterable</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> g1(range(<span class="number">10</span>)):</span><br><span class="line">    print(value)</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> g2(range(<span class="number">10</span>)):</span><br><span class="line">    print(value)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"></span><br><span class="line">range(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>下面我们看下<code>yield from</code>的真正作用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g1</span><span class="params">(gen)</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> gen</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    g = g1()</span><br><span class="line">    g.send(<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>我们看下上面代码的关系：</p>
+<p><code>main</code>为调用方，<code>g1</code>为委托生成器，<code>gen</code>为子生成器</p>
+<p><code>yield from</code>会在调用方与子生成器之间建立一个双向通道，两者之间可以直接通信（调用方可以直接唤醒或传递信息给子生成器）</p>
+<p>有了这个点，我们在将同步的思维运用到协程里面的时候才有可能。</p>
+<p>我们看下老师写的一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">final_result = &#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sales_sum</span><span class="params">(pro_name)</span>:</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    nums = []</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        x = <span class="keyword">yield</span></span><br><span class="line">        print(pro_name + <span class="string">"销量: "</span>, x)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> x:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += x</span><br><span class="line">        nums.append(x)</span><br><span class="line">    <span class="keyword">return</span> total, nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">middle</span><span class="params">(key)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        final_result[key] = <span class="keyword">yield</span> <span class="keyword">from</span> sales_sum(key)</span><br><span class="line">        print(key + <span class="string">"销量统计完成！！."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    data_sets = &#123;</span><br><span class="line">        <span class="string">"bobby牌面膜"</span>: [<span class="number">1200</span>, <span class="number">1500</span>, <span class="number">3000</span>],</span><br><span class="line">        <span class="string">"bobby牌手机"</span>: [<span class="number">28</span>, <span class="number">55</span>, <span class="number">98</span>, <span class="number">108</span>],</span><br><span class="line">        <span class="string">"bobby牌大衣"</span>: [<span class="number">280</span>, <span class="number">560</span>, <span class="number">778</span>, <span class="number">70</span>],</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> key, data_set <span class="keyword">in</span> data_sets.items():</span><br><span class="line">        print(<span class="string">"start key:"</span>, key)</span><br><span class="line">        m = middle(key)</span><br><span class="line">        m.send(<span class="keyword">None</span>)  <span class="comment"># 预激middle协程</span></span><br><span class="line">        <span class="keyword">for</span> value <span class="keyword">in</span> data_set:</span><br><span class="line">            m.send(value)  <span class="comment"># 给协程传递每一组的值</span></span><br><span class="line">        m.send(<span class="keyword">None</span>)</span><br><span class="line">    print(<span class="string">"final_result:"</span>, final_result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>为什么要使用<code>yield from</code>呢，为什么不直接在委托生成器中直接使用迭代器呢？</p>
+<p>我们看下子生成器单独使用的时候会发生什么：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sales_sum</span><span class="params">(pro_name)</span>:</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    nums = []</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        x = <span class="keyword">yield</span></span><br><span class="line">        print(pro_name + <span class="string">"销量: "</span>, x)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> x:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += x</span><br><span class="line">        nums.append(x)</span><br><span class="line">    <span class="keyword">return</span> total, nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    my_gen = sales_sum(<span class="string">"bobby牌手机"</span>)</span><br><span class="line">    my_gen.send(<span class="keyword">None</span>)</span><br><span class="line">    my_gen.send(<span class="number">1200</span>)</span><br><span class="line">    my_gen.send(<span class="number">1500</span>)</span><br><span class="line">    my_gen.send(<span class="number">3000</span>)</span><br><span class="line">    my_gen.send(<span class="keyword">None</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"></span><br><span class="line">    my_gen.send(<span class="keyword">None</span>)</span><br><span class="line">StopIteration: (<span class="number">5700</span>, [<span class="number">1200</span>, <span class="number">1500</span>, <span class="number">3000</span>])</span><br></pre></td></tr></table></figure>
+<p>在我们最后发送<code>None</code>的时候报异常但是还是把数据返回了 。</p>
+<p>如果我们不想展示出异常而是正常返回数据，需要处理一下异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sales_sum</span><span class="params">(pro_name)</span>:</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    nums = []</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        x = <span class="keyword">yield</span></span><br><span class="line">        print(pro_name + <span class="string">"销量: "</span>, x)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> x:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += x</span><br><span class="line">        nums.append(x)</span><br><span class="line">    <span class="keyword">return</span> total, nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    my_gen = sales_sum(<span class="string">"bobby牌手机"</span>)</span><br><span class="line">    my_gen.send(<span class="keyword">None</span>)</span><br><span class="line">    my_gen.send(<span class="number">1200</span>)</span><br><span class="line">    my_gen.send(<span class="number">1500</span>)</span><br><span class="line">    my_gen.send(<span class="number">3000</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        my_gen.send(<span class="keyword">None</span>)</span><br><span class="line">    <span class="keyword">except</span> StopIteration <span class="keyword">as</span> e:</span><br><span class="line">        result = e.value</span><br><span class="line">        print(result)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">bobby牌手机销量:  <span class="number">1200</span></span><br><span class="line">bobby牌手机销量:  <span class="number">1500</span></span><br><span class="line">bobby牌手机销量:  <span class="number">3000</span></span><br><span class="line">bobby牌手机销量:  <span class="keyword">None</span></span><br><span class="line">(<span class="number">5700</span>, [<span class="number">1200</span>, <span class="number">1500</span>, <span class="number">3000</span>])</span><br></pre></td></tr></table></figure>
+<p>我们看到，当我们使用<code>yield from</code>的时候，会自动帮我们处理好异常。</p>
+<p>下面我们看下<code>yield from</code>的具体实现原理:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pep380</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. RESULT = yield from EXPR可以简化成下面这样</span></span><br><span class="line"><span class="comment"># 一些说明</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">_i：子生成器，同时也是一个迭代器</span></span><br><span class="line"><span class="string">_y：子生成器生产的值</span></span><br><span class="line"><span class="string">_r：yield from 表达式最终的值</span></span><br><span class="line"><span class="string">_s：调用方通过send()发送的值</span></span><br><span class="line"><span class="string">_e：异常对象</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">_i = iter(EXPR)  <span class="comment"># EXPR是一个可迭代对象，_i其实是子生成器；</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    _y = next(_i)  <span class="comment"># 预激子生成器，把产出的第一个值存在_y中；</span></span><br><span class="line"><span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">    _r = _e.value  <span class="comment"># 如果抛出了`StopIteration`异常，那么就将异常对象的`value`属性保存到_r，这是最简单的情况的返回值；</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:  <span class="comment"># 尝试执行这个循环，委托生成器会阻塞；</span></span><br><span class="line">        _s = <span class="keyword">yield</span> _y  <span class="comment"># 生产子生成器的值，等待调用方`send()`值，发送过来的值将保存在_s中；</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            _y = _i.send(_s)  <span class="comment"># 转发_s，并且尝试向下执行；</span></span><br><span class="line">        <span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">            _r = _e.value  <span class="comment"># 如果子生成器抛出异常，那么就获取异常对象的`value`属性存到_r，退出循环，恢复委托生成器的运行；</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">RESULT = _r  <span class="comment"># _r就是整个yield from表达式返回的值。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 👆就是阐明了yield from是如何解决StopIteration异常的</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 上面只是子生成器是一个理想的生成器的单一情况，当情况是下面的任一情况的时候，👆的逻辑就会有问题了。</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">1. 子生成器可能只是一个迭代器，并不是一个作为协程的生成器，所以它不支持.throw()和.close()方法；</span></span><br><span class="line"><span class="string">2. 如果子生成器支持.throw()和.close()方法，但是在子生成器内部，这两个方法都会抛出异常；</span></span><br><span class="line"><span class="string">3. 调用方让子生成器自己抛出异常</span></span><br><span class="line"><span class="string">4. 当调用方使用next()或者.send(None)时，都要在子生成器上调用next()函数，当调用方使用.send()发送非 None 值时，才调用子生成器的.send()方法；</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">_i = iter(EXPR)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    _y = next(_i)</span><br><span class="line"><span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">    _r = _e.value</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            _s = <span class="keyword">yield</span> _y</span><br><span class="line">        <span class="keyword">except</span> GeneratorExit <span class="keyword">as</span> _e:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                _m = _i.close</span><br><span class="line">            <span class="keyword">except</span> AttributeError:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                _m()</span><br><span class="line">            <span class="keyword">raise</span> _e</span><br><span class="line">        <span class="keyword">except</span> BaseException <span class="keyword">as</span> _e:</span><br><span class="line">            _x = sys.exc_info()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                _m = _i.throw</span><br><span class="line">            <span class="keyword">except</span> AttributeError:</span><br><span class="line">                <span class="keyword">raise</span> _e</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    _y = _m(*_x)</span><br><span class="line">                <span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">                    _r = _e.value</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="keyword">if</span> _s <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                    _y = next(_i)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    _y = _i.send(_s)</span><br><span class="line">            <span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">                _r = _e.value</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">RESULT = _r</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">看完代码，我们总结一下关键点：</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 子生成器生产的值，都是直接传给调用方的；调用方通过.send()发送的值都是直接传递给子生成器的；如果发送的是 <span class="keyword">None</span>，会调用子生成器的__next__()方法，如果不是 <span class="keyword">None</span>，会调用子生成器的.send()方法；</span><br><span class="line"><span class="number">2.</span> 子生成器退出的时候，最后的<span class="keyword">return</span> EXPR，会触发一个StopIteration(EXPR)异常；</span><br><span class="line"><span class="number">3.</span> <span class="keyword">yield</span> <span class="keyword">from</span>表达式的值，是子生成器终止时，传递给StopIteration异常的第一个参数；</span><br><span class="line"><span class="number">4.</span> 如果调用的时候出现StopIteration异常，委托生成器会恢复运行，同时其他的异常会向上 <span class="string">"冒泡"</span>；</span><br><span class="line"><span class="number">5.</span> 传入委托生成器的异常里，除了GeneratorExit之外，其他的所有异常全部传递给子生成器的.throw()方法；如果调用.throw()的时候出现了StopIteration异常，那么就恢复委托生成器的运行，其他的异常全部向上 <span class="string">"冒泡"</span>；</span><br><span class="line"><span class="number">6.</span> 如果在委托生成器上调用.close()或传入GeneratorExit异常，会调用子生成器的.close()方法，没有的话就不调用。如果在调用.close()的时候抛出了异常，那么就向上 <span class="string">"冒泡"</span>，否则的话委托生成器会抛出GeneratorExit异常。</span><br></pre></td></tr></table></figure>
+<p>看完这个觉得<code>yield from</code>真的是个好东西啊！</p>
+<h5 id="async和await"><a href="#async和await" class="headerlink" title="async和await"></a>async和await</h5><p>在3.5之前都是通过生成器来实现协程的。</p>
+<p><code>python</code>为了使语义更加明确，就引入了async和await关键词用于定义原生的协程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">downloader</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"bobby"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">download_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment"># dosomethings</span></span><br><span class="line">    html = <span class="keyword">await</span> downloader(url)</span><br><span class="line">    <span class="keyword">return</span> html</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    coro = download_url(<span class="string">"http://www.imooc.com"</span>)</span><br><span class="line">    <span class="comment"># next(None)</span></span><br><span class="line">    coro.send(<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>我们通过<code>async</code>和<code>await</code>实现的协程是不能使用<code>next</code>激活的。</p>
+<blockquote>
+<p>注意：<code>async</code>和<code>await</code>是成对出现的，这<code>async</code>中是不能使用<code>yield</code>的。</p>
+</blockquote>
+<p>我们可以把<code>await</code>理解成<code>yield from</code>。</p>
+<p>在<code>await</code>语句后面的对象其实是一个<code>Awaitable</code>对象。</p>
+<p>我们可以使用装饰器，将一个普通函数改变为<code>Awaitable</code>对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">downloader</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"bobby"</span></span><br><span class="line"><span class="keyword">import</span> types</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@types.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">downloader</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">"bobby"</span></span><br></pre></td></tr></table></figure>
+<p>协程是需要运用到事件循环中的，下一小节我们就开始真正使用了。💪</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/24/协程和异步IO-中/" rel="next" title="协程和异步IO-中">
+                <i class="fa fa-chevron-left"></i> 协程和异步IO-中
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#生成器进阶-send、close和throw方法"><span class="nav-number">1.</span> <span class="nav-text">生成器进阶-send、close和throw方法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#生成器的send方法"><span class="nav-number">1.1.</span> <span class="nav-text">生成器的send方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#生成器的close方法"><span class="nav-number">1.2.</span> <span class="nav-text">生成器的close方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#生成器的throw方法"><span class="nav-number">1.3.</span> <span class="nav-text">生成器的throw方法</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#生成器进阶-yield-from"><span class="nav-number">2.</span> <span class="nav-text">生成器进阶-yield from</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#async和await"><span class="nav-number">3.</span> <span class="nav-text">async和await</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
