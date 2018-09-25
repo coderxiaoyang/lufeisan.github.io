@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvco5mkeadj31kw0pc48o.jpg">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fvcovkpkouj30v20em0u8.jpg">
-<meta property="og:updated_time" content="2018-09-18T03:24:35.216Z">
+<meta property="og:updated_time" content="2018-09-21T03:29:30.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="API返回数据的序列化问题">
 <meta name="twitter:description" content="我们在API接口返回的时候一般都是返回json格式的，当我们直接返回一个实例化对象的时候就会报错，我们可以编写一个字典格式的返回，但是这样有点low。 现在我们跟着老师的思路，慢慢提示编码的艺术吧！ヾ(◍°∇°◍)ﾉﾞ 如何直接返回一个对象如果我们想在视图函数中直接使用jsonify的情况下应该如何做呢？ 123456from flask import jsonify, gdef get_user">
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,181 字
+                  1,673 字
                 </span>
               
 
@@ -431,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -485,6 +485,17 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span><span class="params">(db.Model)</span>:</span></span><br><span class="line">    __abstract__ = <span class="keyword">True</span></span><br><span class="line">    create_time = Column(Integer)</span><br><span class="line">    status = Column(SmallInteger, default=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> getattr(self, item)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    email = Column(String(<span class="number">24</span>), unique=<span class="keyword">True</span>, nullable=<span class="keyword">False</span>)</span><br><span class="line">    nickname = Column(String(<span class="number">24</span>), unique=<span class="keyword">True</span>)</span><br><span class="line">    auth = Column(SmallInteger, default=<span class="number">1</span>)</span><br><span class="line">    _password = Column(<span class="string">'password'</span>, String(<span class="number">100</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">keys</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="string">'id'</span>, <span class="string">'email'</span>, <span class="string">'nickname'</span>, <span class="string">'auth'</span>]</span><br></pre></td></tr></table></figure>
 <p>我们想要序列化模型的话需要两个函数，一个<code>keys</code>指定要序列化的键，一个<code>__getitem__</code>获取值。</p>
 <p>对于<code>SQLAlchemy</code>来说，我们将<code>__getitem__</code>放在公共继承的基类中。</p>
+<p>新增知识点：如何动态改变<code>keys</code>的内容呢？</p>
+<p>我们要先清楚一点，对于大多数<code>ORM</code>而言，创建模型的时候都是通过元类来创建的。而通过元类创建的模型是不会执行<code>__init__</code>方法的。那我们想在创建模型的时候执行<code>__init__</code>方法怎么办？</p>
+<p>可以看下官方文档：<a href="http://docs.sqlalchemy.org/en/latest/orm/constructors.html?highlight=constructor" target="_blank" rel="noopener">http://docs.sqlalchemy.org/en/latest/orm/constructors.html?highlight=constructor</a></p>
+<p>从官方文档中我们看到 只需要在<code>__init__</code>方法上加上<code>orm.reconstructor()</code>装饰器就行了，当我们实例化一个数据模型的时候，<code>SQLAlchemy</code>就会去执行打上装饰器的方法。</p>
+<p>这样我们改一下上面定义的<code>keys</code>方法，将其改为实例方法而不是类方法（否则会出现不同实例修改同一份数据，导致数据异常）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> Column, String, Integer, orm</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> app.models.base <span class="keyword">import</span> Base</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(Base)</span>:</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>, autoincrement=<span class="keyword">True</span>)</span><br><span class="line">    title = Column(String(<span class="number">50</span>), nullable=<span class="keyword">False</span>)</span><br><span class="line">    author = Column(String(<span class="number">30</span>), default=<span class="string">'未名'</span>)</span><br><span class="line">    binding = Column(String(<span class="number">20</span>))</span><br><span class="line">    publisher = Column(String(<span class="number">50</span>))</span><br><span class="line">    price = Column(String(<span class="number">20</span>))</span><br><span class="line">    pages = Column(Integer)</span><br><span class="line">    pubdate = Column(String(<span class="number">20</span>))</span><br><span class="line">    isbn = Column(String(<span class="number">15</span>), nullable=<span class="keyword">False</span>, unique=<span class="keyword">True</span>)</span><br><span class="line">    summary = Column(String(<span class="number">1000</span>))</span><br><span class="line">    image = Column(String(<span class="number">50</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @orm.reconstructor</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.fields = [<span class="string">'id'</span>, <span class="string">'title'</span>, <span class="string">'author'</span>, <span class="string">'binding'</span>,</span><br><span class="line">                       <span class="string">'publisher'</span>,</span><br><span class="line">                       <span class="string">'price'</span>,<span class="string">'pages'</span>, <span class="string">'pubdate'</span>, <span class="string">'isbn'</span>,</span><br><span class="line">                       <span class="string">'summary'</span>,</span><br><span class="line">                       <span class="string">'image'</span>]</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 我们可以把下面方法放到基类中 省的每个类都写</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">keys</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.fields</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hide</span><span class="params">(self, *keys)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> keys:</span><br><span class="line">            self.fields.remove(key)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, *keys)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> keys:</span><br><span class="line">            self.fields.append(key)</span><br><span class="line">        <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们也可以加上<code>append</code>方法，来增加要格式化的字段</p>
+</blockquote>
+<p>上面代码使得每个实例对象都有一个指定返回字段的副本，当我们想要对返回字段进行修剪的时候，直接调用<code>hide</code>方法即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">books = Book.query.filter(</span><br><span class="line">    or_(Book.title.like(q), Book.publisher.like(q))).all()</span><br><span class="line">books = [book.hide(<span class="string">'summary'</span>) <span class="keyword">for</span> book <span class="keyword">in</span> books]</span><br></pre></td></tr></table></figure>
 <p>这里的序列化只是对单个<code>model</code>而言，当我们要对模型里的数据进行操作后再返回给前端或者返回的数据须要多个模型糅合的时候，就需要之前七月老师讲过的<code>view_model</code>层的概念了，即我们单独根据须要返回的数据格式写好一个类，这样不会污染视图函数（保证视图函数代码逻辑清晰简洁），还能被多处调用。</p>
 <p>好像我就是在视图函数写一大堆代码  ( ´◔ ‸◔`)</p>
 
@@ -568,6 +579,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/09/18/Flask构建API的权限控制/" rel="prev" title="Flask构建API的权限控制">
+                Flask构建API的权限控制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -650,7 +665,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

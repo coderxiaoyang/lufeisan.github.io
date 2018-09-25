@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="终于要学习Python中的重头戏—协程了。💪 并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？并发：是指一个时间段内（是一段时间），有几个程序在同一个CPU上运行，但是任意时刻（是一个时间点）只有一个程序在CPU上运行。 这是因为CPU的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。 并行：是指">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="协程和异步IO-上">
+<meta property="og:url" content="https://zhaobugs.com/2018/09/24/协程和异步IO-上/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="终于要学习Python中的重头戏—协程了。💪 并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？并发：是指一个时间段内（是一段时间），有几个程序在同一个CPU上运行，但是任意时刻（是一个时间点）只有一个程序在CPU上运行。 这是因为CPU的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。 并行：是指">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fvkm86bwwwj31kw0uqtpb.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkmcvblrfj31kw0tltkg.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fvkmtkiifzj31kw0wwh3n.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn4jxyr5j31kw0zl194.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn8p8vb6j31c40qe10v.jpg">
+<meta property="og:updated_time" content="2018-09-24T07:26:37.809Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="协程和异步IO-上">
+<meta name="twitter:description" content="终于要学习Python中的重头戏—协程了。💪 并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？并发：是指一个时间段内（是一段时间），有几个程序在同一个CPU上运行，但是任意时刻（是一个时间点）只有一个程序在CPU上运行。 这是因为CPU的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。 并行：是指">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fvkm86bwwwj31kw0uqtpb.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/09/24/协程和异步IO-上/"/>
+
+
+
+
+
+  <title>协程和异步IO-上 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/09/24/协程和异步IO-上/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">协程和异步IO-上</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-24T13:54:04+08:00">
+                2018-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/24/协程和异步IO-上/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/24/协程和异步IO-上/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/24/协程和异步IO-上/" class="leancloud_visitors" data-flag-title="协程和异步IO-上">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,972 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>终于要学习<code>Python</code>中的重头戏—协程了。💪</p>
+<h5 id="并发、并行、同步、异步、阻塞、非阻塞"><a href="#并发、并行、同步、异步、阻塞、非阻塞" class="headerlink" title="并发、并行、同步、异步、阻塞、非阻塞"></a>并发、并行、同步、异步、阻塞、非阻塞</h5><p>这一小节我们就要弄懂上面的这几个名词概念。</p>
+<h6 id="什么是并发和并行呢？"><a href="#什么是并发和并行呢？" class="headerlink" title="什么是并发和并行呢？"></a>什么是并发和并行呢？</h6><p><code>并发</code>：是指一个时间段内（是一段时间），有几个程序在同一个<code>CPU</code>上运行，但是任意时刻（是一个时间点）只有一个程序在<code>CPU</code>上运行。</p>
+<p>这是因为<code>CPU</code>的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。</p>
+<p><code>并行</code>：是指任意时刻点（是一个时间点）上，有多个程序同时运行在多个<code>CPU</code>上。</p>
+<p>并行是不同程序运行在不同的<code>CPU</code>上，和<code>CPU</code>的核心数有关。</p>
+<h6 id="什么是同步和异步呢？"><a href="#什么是同步和异步呢？" class="headerlink" title="什么是同步和异步呢？"></a>什么是同步和异步呢？</h6><p>明确一点：我们在涉及到<code>IO</code>操作的时候才会涉及到同步，异步，阻塞和非阻塞。</p>
+<p><code>同步</code>是指代码调用<code>IO</code>操作时，必须等待<code>IO</code>操作完成才返回的调用方式。</p>
+<p><code>异步</code>是指代码调用<code>IO</code>操作时，不必等<code>IO</code>操作完成就返回的调用方式。</p>
+<p>对于多线程就是典型的异步方式。</p>
+<h6 id="什么是阻塞和非阻塞呢？"><a href="#什么是阻塞和非阻塞呢？" class="headerlink" title="什么是阻塞和非阻塞呢？"></a>什么是阻塞和非阻塞呢？</h6><p><code>阻塞</code>是指调用函数时候当前线程被挂起。</p>
+<p><code>非阻塞</code>是指调用函数的时候当前线程不会被挂起，而是立即返回。</p>
+<p>同步和异步是消息通信的一种机制，可以把操作当成一个消息发送给另一个线程或者协程（多线程的<code>future</code>）执行某些操作。</p>
+<p>阻塞和非阻塞是函数调用的一种机制。</p>
+<h5 id="IO多路复用（select、poll、epoll）"><a href="#IO多路复用（select、poll、epoll）" class="headerlink" title="IO多路复用（select、poll、epoll）"></a><code>IO</code>多路复用（select、poll、epoll）</h5><p>学习这小节前我们先抛出一个问题，如何解决多<code>C10k</code>问题（多用户多并发低配置）？</p>
+<h6 id="Unix下五种I-O模型"><a href="#Unix下五种I-O模型" class="headerlink" title="Unix下五种I/O模型"></a>Unix下五种I/O模型</h6><p>我们接下来看下五种常用的<code>I/O</code>模型。</p>
+<ol>
+<li>阻塞式I/O</li>
+<li>非阻塞式I/O</li>
+<li>I/O复用</li>
+<li>信号驱动式I/O</li>
+<li>异步I/O（POSIX的aio_系列函数）</li>
+</ol>
+<p>  我们首先看下阻塞式I/O：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fvkm86bwwwj31kw0uqtpb.jpg" alt="image-20180924143108480"></p>
+<p>对于阻塞式I/O，我们编写代码很方便。但是，我们看到阻塞式I/O有很长的时间去等待数据的准备，严重浪费了<code>CPU</code>的性能。</p>
+<blockquote>
+<p>阻塞是不会消耗CPU的</p>
+</blockquote>
+<p>​                                                             </p>
+<p>我们再看下非阻塞式I/O：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkmcvblrfj31kw0tltkg.jpg" alt="image-20180924143544454"></p>
+<p>从图中我们看出不再阻塞等待，但是需要不断去访问是否准备好数据，这个过程是消耗<code>CPU</code>时间的。</p>
+<p>对于一个操作是非阻塞式I/O来说，当下面代码不依赖上线返回结果而言，是省时的操作，但是，当依赖返回的话，就需要不断轮询去看是否有返回。</p>
+<p>一个小知识点：内核空间和用户空间</p>
+<p>操作系统会将内存分为两块，低地址的为内核空间，高地址的为用户空间。平时我们写的程序都是运行在用户空间上，真正和外界比如进行数据交流的是内核空间，因此我们进行数据请求的过程是必须经过内核空间的，从内核空间拷贝数据到用户空间，同样是耗<code>CPU</code>和时间的操作。</p>
+<p>有没有一种机制就是当操作系统已经准备好数据放到内核空间之后，再去通知我们的程序去拷数据呢？</p>
+<p>这种机制就是–I/O复用：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fvkmtkiifzj31kw0wwh3n.jpg" alt="image-20180924145143527"></p>
+<p>我们从图中看出，应用进程调用<code>select</code>,<code>poll</code>,<code>epoll</code>等待指定时间，从批量被监控的描述符中，获取可以操作的描述符（即数据准备好的描述符），然后对这些描述符进行操作，因为有数据所以不会出现阻塞。</p>
+<p>I/O多路复用，应用于大量文件描述符的场景，不适用于单个文件描述符的场景（和阻塞一样了）。</p>
+<p>I/O复用同样存在将内核数据拷贝到用户空间的操作，这个操作是耗时的，怎么解决这个问题呢？</p>
+<p>我们看下信号驱动式I/O:</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn4jxyr5j31kw0zl194.jpg" alt="image-20180924150221575"></p>
+<p>对于驱动式I/O，我们建立一个信号处理程序， 然后操作系统在数据准备好之后，主动发一个信号给我们的信号处理程序，处理程序收到信号之后就会通知应用进程调用<code>recvfrom</code>。</p>
+<p>我们最后看下异步I/O：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn8p8vb6j31c40qe10v.jpg" alt="image-20180924150618293"></p>
+<p>我们看到异步I/O是在将数据复制好之后再通知信号处理程序。</p>
+<p>相比较I/O复用，性能提升不是很大。</p>
+<h6 id="什么是select、epoll、poll呢？"><a href="#什么是select、epoll、poll呢？" class="headerlink" title="什么是select、epoll、poll呢？"></a>什么是select、epoll、poll呢？</h6><p>select，poll，epoll都是IO多路复用的机制。I/O多路复用就通过一种机制，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。<strong>但select，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写（就是讲数据由内核空间拷到用户空间），也就是说这个读写过程是阻塞的</strong>，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。</p>
+<p>关于<code>select</code>：</p>
+<p>​    <code>select</code> 函数监视的文件描述符分3类，分别是<code>writefds</code>、<code>readfds</code>、和<code>exceptfds</code>。调用后<code>select</code>函数会阻塞，直到有描述副就绪（有数据 可读、可写、或者有<code>except</code>），或者超时（<code>timeout</code>指定等待时间，如果立即返回设为<code>null</code>即可），函数返回。当<code>select</code>函数返回后，可以 通过遍历<code>fdset</code>，来找到就绪的描述符。</p>
+<p>​    <code>select</code>目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。<code>select</code>的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。</p>
+<p>关于<code>poll</code>：</p>
+<p>​    不同与select使用三个位图来表示三个fdset的方式，poll使用一个 pollfd的指针实现。</p>
+<p>​    pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。同时，pollfd并没有最大数量限制（但是数量过大后性能也是会下降）。 和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符。</p>
+<p>​    从上面看，select和poll都需要在返回后，<code>通过遍历文件描述符来获取已经就绪的socket</code>。事实上，同时连接的大量客户端在一时刻可能只有很少的处于就绪状态，因此随着监视的描述符数量的增长，其效率也会线性下降。</p>
+<p>关于<code>epoll</code>：</p>
+<p>​    epoll是在2.6内核中提出的，是之前的select和poll的增强版本。相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
+<p>参考文章：<a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="noopener">https://segmentfault.com/a/1190000003063859</a></p>
+<p>小节结束我们来看一个问题，<code>epoll</code>并不代表一定比<code>select</code>好：</p>
+<p>​    在高并发的情况下，连接活跃度不是很高（是指连接后可能随时关闭，比如浏览网页），<code>epoll</code>比<code>select</code>好。</p>
+<p>​    并发性不高，同时连接很活跃（比如游戏），<code>select</code>比<code>epoll</code>好。</p>
+<p>抽象的知识。。。。。。💪</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/21/一个用Python做图表的库-pyecharts/" rel="next" title="一个用Python做图表的库-pyecharts">
+                <i class="fa fa-chevron-left"></i> 一个用Python做图表的库-pyecharts
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/24/协程和异步IO-中/" rel="prev" title="协程和异步IO-中">
+                协程和异步IO-中 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#并发、并行、同步、异步、阻塞、非阻塞"><span class="nav-number">1.</span> <span class="nav-text">并发、并行、同步、异步、阻塞、非阻塞</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是并发和并行呢？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是并发和并行呢？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是同步和异步呢？"><span class="nav-number">1.2.</span> <span class="nav-text">什么是同步和异步呢？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是阻塞和非阻塞呢？"><span class="nav-number">1.3.</span> <span class="nav-text">什么是阻塞和非阻塞呢？</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IO多路复用（select、poll、epoll）"><span class="nav-number">2.</span> <span class="nav-text">IO多路复用（select、poll、epoll）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Unix下五种I-O模型"><span class="nav-number">2.1.</span> <span class="nav-text">Unix下五种I/O模型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是select、epoll、poll呢？"><span class="nav-number">2.2.</span> <span class="nav-text">什么是select、epoll、poll呢？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
