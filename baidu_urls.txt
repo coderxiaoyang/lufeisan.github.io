@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/09/26/asyncio并发编程/
+https://zhaobugs.com/2018/10/08/别人的优秀笔记/

@@ -89,10 +89,14 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="这一篇是高级编程的最后一篇了，学完整套课程之后对Python的知识很多地方有了豁然开朗的感觉。如果你看到了这个系列的文章觉得不错的话，可以购买老师的原版视频文件，进行学习哦！购买链接：https://coding.imooc.com/class/200.html asyncio是Python中解决异步I/O高并发的一个模块，在3.4版本之后引入。 asyncio的事件循环我们先看下asyncio有">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-26T08:58:17.044Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fvo2lxtsw0j31kw0rkwq8.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c518973bgy1fvo3i71vzfj21n20d242g.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c518973bgy1fvo3tan7ccj21n00siqnt.jpg">
+<meta property="og:updated_time" content="2018-09-27T07:24:27.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="asyncio并发编程-上">
 <meta name="twitter:description" content="这一篇是高级编程的最后一篇了，学完整套课程之后对Python的知识很多地方有了豁然开朗的感觉。如果你看到了这个系列的文章觉得不错的话，可以购买老师的原版视频文件，进行学习哦！购买链接：https://coding.imooc.com/class/200.html asyncio是Python中解决异步I/O高并发的一个模块，在3.4版本之后引入。 asyncio的事件循环我们先看下asyncio有">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fvo2lxtsw0j31kw0rkwq8.jpg">
 
 
 
@@ -412,7 +416,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,176 字
+                  2,944 字
                 </span>
               
 
@@ -428,7 +432,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10 分钟
+                  13 分钟
                 </span>
               
             </div>
@@ -510,7 +514,37 @@
 <li><code>gather</code>可以将协程分组</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">group1 = [get_html(<span class="string">"http://projectsedu.com"</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>)]</span><br><span class="line">group2 = [get_html(<span class="string">"http://www.imooc.com"</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们可以分组传递</span></span><br><span class="line">loop.run_until_complete(asyncio.gather(*group1, *group2))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们可以将先进行gather操作</span></span><br><span class="line">group1 = asyncio.gather(*group1)</span><br><span class="line">group2 = asyncio.gather(*group2)</span><br><span class="line">loop.run_until_complete(asyncio.gather(group1, group2))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们可以批量取消某个分组</span></span><br><span class="line">group1 = asyncio.gather(*group1)</span><br><span class="line">group2 = asyncio.gather(*group2)</span><br><span class="line"></span><br><span class="line">group2.cancel()</span><br></pre></td></tr></table></figure>
-<h5 id="task取消和子协程调用原理"><a href="#task取消和子协程调用原理" class="headerlink" title="task取消和子协程调用原理"></a>task取消和子协程调用原理</h5>
+<h5 id="task取消和子协程调用原理"><a href="#task取消和子协程调用原理" class="headerlink" title="task取消和子协程调用原理"></a>task取消和子协程调用原理</h5><p>我们先看下<code>run_until_complete</code>和<code>run_forever</code>两个函数的区别。</p>
+<p><code>run_until_complete</code>在运行完指定的协程之后就会停止，而<code>run_forever</code>则会一直运行。</p>
+<p>看下源码：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fvo2lxtsw0j31kw0rkwq8.jpg" alt="image-20180927141443200"></p>
+<p>在图片中我们看到<code>run_until_complete</code>里面同样使用了<code>run_forever</code>。但是，增加了一个回调<code>_run_until_complete_cb</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_run_until_complete_cb</span><span class="params">(fut)</span>:</span></span><br><span class="line">    exc = fut._exception</span><br><span class="line">    <span class="keyword">if</span> (isinstance(exc, BaseException)</span><br><span class="line">    <span class="keyword">and</span> <span class="keyword">not</span> isinstance(exc, Exception)):</span><br><span class="line">        <span class="comment"># Issue #22429: run_forever() already finished, no need to</span></span><br><span class="line">        <span class="comment"># stop it.</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    fut._loop.stop()</span><br></pre></td></tr></table></figure>
+<p>在回调函数中当没有协程运行的时候会将<code>loop</code>即事件循环直接暂停。</p>
+<blockquote>
+<p><code>asyncio</code>会将<code>loop</code>放到<code>future</code>中，而<code>future</code>同样会被放到<code>loop</code>中。</p>
+</blockquote>
+<h6 id="如何取消协程中的task"><a href="#如何取消协程中的task" class="headerlink" title="如何取消协程中的task"></a>如何取消协程中的task</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_html</span><span class="params">(sleep_times)</span>:</span></span><br><span class="line">    print(<span class="string">"waiting"</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(sleep_times)</span><br><span class="line">    print(<span class="string">"done after &#123;&#125;s"</span>.format(sleep_times))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    task1 = get_html(<span class="number">2</span>)</span><br><span class="line">    task2 = get_html(<span class="number">3</span>)</span><br><span class="line">    task3 = get_html(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    tasks = [task1, task2, task3]</span><br><span class="line"></span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        loop.run_until_complete(asyncio.wait(tasks))</span><br><span class="line">    <span class="comment"># 我们发送一个 controle + c 异常</span></span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt <span class="keyword">as</span> e:</span><br><span class="line">        <span class="comment"># 获得所有的task</span></span><br><span class="line">        all_tasks = asyncio.Task.all_tasks()</span><br><span class="line">        <span class="keyword">for</span> task <span class="keyword">in</span> all_tasks:</span><br><span class="line">            print(<span class="string">"cancel task"</span>)</span><br><span class="line">            <span class="comment"># 将task 取消 返回布尔值</span></span><br><span class="line">            print(task.cancel())</span><br><span class="line">        </span><br><span class="line">		<span class="comment"># 先将 loop 暂停</span></span><br><span class="line">        loop.stop()</span><br><span class="line">        <span class="comment"># 记得将 loop 再次运行 run_forever</span></span><br><span class="line">        loop.run_forever()</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="comment"># 最后 关闭 loop</span></span><br><span class="line">        loop.close()</span><br></pre></td></tr></table></figure>
+<p>有咩有小伙伴对<code>all_tasks = asyncio.Task.all_tasks()</code>这句代码疑惑？</p>
+<p><img src="http://ww1.sinaimg.cn/large/c518973bgy1fvo3i71vzfj21n20d242g.jpg" alt="image-20180927144138030"></p>
+<p>我们看了源码就知道了 因为全局只有一个<code>loop</code>，所以能够在人和位置轻松获得<code>loop</code>相关的信息。</p>
+<h6 id="如何在协程中插入子协程"><a href="#如何在协程中插入子协程" class="headerlink" title="如何在协程中插入子协程"></a>如何在协程中插入子协程</h6><p>我们看一段官方文档的代码：</p>
+<p>官方文档叫<code>chain coroutines</code>链式协程？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    result = <span class="keyword">await</span> compute(x, y)</span><br><span class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(print_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">loop.close()</span><br></pre></td></tr></table></figure>
+<p><code>compute()</code> is chained to <code>print_sum()</code>: <code>print_sum()</code> coroutine waits until <code>compute()</code> is completed before returning its result.</p>
+<p>序列图：</p>
+<p><img src="http://ww1.sinaimg.cn/large/c518973bgy1fvo3tan7ccj21n00siqnt.jpg" alt="image-20180927145609440"></p>
+<p>图中展示大致意思：当我们运行一个协程的时候，立即创建一个<code>Task</code>，由<code>EventLoop</code>驱动<code>Task</code>，然后<code>Task</code>驱动<code>print_sum</code>。当协程中调用了另外一个子协程的时候，是直接由<code>Task</code>和子协程通信的直至子协程运行完毕抛出<code>StopIteration</code>异常，然后父协程会捕捉到异常并提取出结果，父协程运行完毕，同样抛出异常，逐层往上抛出然后终止<code>Task</code>。重点在于<code>Task</code>和子协程<code>compute</code>之间的通道，以及异常抛出拦截。</p>
+<blockquote>
+<p>The “Task” is created by the <a href="https://docs.python.org/3.6/library/asyncio-eventloop.html#asyncio.AbstractEventLoop.run_until_complete" target="_blank" rel="noopener"><code>AbstractEventLoop.run_until_complete()</code></a> method when it gets a coroutine object instead of a task.</p>
+</blockquote>
+<p>意思是，图中的<code>Task</code>并不是一个任务而是一个协程对象。</p>
+<blockquote>
+<p>The diagram shows the control flow, it does not describe exactly how things work internally. For example, the sleep coroutine creates an internal future which uses <a href="https://docs.python.org/3.6/library/asyncio-eventloop.html#asyncio.AbstractEventLoop.call_later" target="_blank" rel="noopener"><code>AbstractEventLoop.call_later()</code></a> to wake up the task in 1 second.</p>
+</blockquote>
+<p>意思是，图大致讲了如何在协程中调用子协程，但是内部实现没有体现出来。</p>
+<p>例如：当调用<code>asyncio.sleep(1.0)</code>的时候会创建一个内部的<code>future</code>对象然后使用 <a href="https://docs.python.org/3.6/library/asyncio-eventloop.html#asyncio.AbstractEventLoop.call_later" target="_blank" rel="noopener"><code>AbstractEventLoop.call_later()</code></a> 在一秒后唤醒任务。</p>
+<h5 id="asyncio中的其他函数"><a href="#asyncio中的其他函数" class="headerlink" title="asyncio中的其他函数"></a>asyncio中的其他函数</h5>
       
     </div>
     
@@ -590,6 +624,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/28/《Flask-Web开发实战》读书笔记/" rel="prev" title="《Flask-Web开发实战》读书笔记">
+                《Flask-Web开发实战》读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -673,7 +711,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -751,7 +789,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#asyncio的事件循环"><span class="nav-number">1.</span> <span class="nav-text">asyncio的事件循环</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#asyncio的简单使用："><span class="nav-number">1.1.</span> <span class="nav-text">asyncio的简单使用：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#如何获得协程的返回值呢？"><span class="nav-number">1.2.</span> <span class="nav-text">如何获得协程的返回值呢？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#wait和gather"><span class="nav-number">1.3.</span> <span class="nav-text">wait和gather</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#task取消和子协程调用原理"><span class="nav-number">2.</span> <span class="nav-text">task取消和子协程调用原理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#asyncio的事件循环"><span class="nav-number">1.</span> <span class="nav-text">asyncio的事件循环</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#asyncio的简单使用："><span class="nav-number">1.1.</span> <span class="nav-text">asyncio的简单使用：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#如何获得协程的返回值呢？"><span class="nav-number">1.2.</span> <span class="nav-text">如何获得协程的返回值呢？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#wait和gather"><span class="nav-number">1.3.</span> <span class="nav-text">wait和gather</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#task取消和子协程调用原理"><span class="nav-number">2.</span> <span class="nav-text">task取消和子协程调用原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#如何取消协程中的task"><span class="nav-number">2.1.</span> <span class="nav-text">如何取消协程中的task</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#如何在协程中插入子协程"><span class="nav-number">2.2.</span> <span class="nav-text">如何在协程中插入子协程</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#asyncio中的其他函数"><span class="nav-number">3.</span> <span class="nav-text">asyncio中的其他函数</span></a></li></ol></div>
             
 
           </div>
