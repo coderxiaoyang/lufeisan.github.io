@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1ft4u8tpsx0j30w20ihdq6.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1ft4uw2nihvj30oj0iudia.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1ft5pybednwj30rp07aq4s.jpg">
-<meta property="og:updated_time" content="2018-07-13T03:28:38.986Z">
+<meta property="og:updated_time" content="2018-10-12T10:10:56.641Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中Socket编程">
 <meta name="twitter:description" content="本系列Python进阶高级编程为我购买慕课网实战课程的笔记，墙裂推荐大家购买原课程观看，课程地址： https://coding.imooc.com/class/200.html 这一篇我们学习下Python的socket编程。 弄懂HTTP、Socket、TCP这几个概念我们先看下网络的七层结构模型。  下面是五层网络模型：  上层的协议依赖于下层的协议（DNS依赖于UDP） 当我们应用层满足不">
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,499 字
+                  1,527 字
                 </span>
               
 
@@ -433,7 +433,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -489,6 +489,7 @@
 <p>我们先看下网页上的HTTP请求长什么样子：</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1ft5pybednwj30rp07aq4s.jpg" alt="image-20180711103557899"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlparse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment"># 通过socket请求html</span></span><br><span class="line">    <span class="comment"># 使用urlparse解析请求URL</span></span><br><span class="line">    url = urlparse(url)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获得解析的域名</span></span><br><span class="line">    host = url.netloc</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获得解析的路径</span></span><br><span class="line">    path = url.path</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 如果请求路径为空则需要将path设置为 / (域名请求方式)</span></span><br><span class="line">    <span class="comment"># https://www.baidu.com/</span></span><br><span class="line">    <span class="keyword">if</span> path == <span class="string">""</span>:</span><br><span class="line">        path = <span class="string">"/"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立socket连接</span></span><br><span class="line">    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    <span class="comment"># client.setblocking(False)</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># connect 连接不仅能够制定IP还能制定域名</span></span><br><span class="line">    <span class="comment"># 建立连接是一个耗时的过程</span></span><br><span class="line">    client.connect((host, <span class="number">80</span>))  <span class="comment"># 阻塞不会消耗cpu</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 下面发送请求，数据格式非常重要 不同的网站需要的请求信息不同</span></span><br><span class="line">    client.send(<span class="string">"GET &#123;&#125; HTTP/1.1\r\nHost:&#123;&#125;\r\nConnection:close\r\n\r\n"</span>.format(path, host).encode(<span class="string">"utf8"</span>))</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 解决数据大于1024</span></span><br><span class="line">    data = <span class="string">b""</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        d = client.recv(<span class="number">1024</span>)</span><br><span class="line">        <span class="keyword">if</span> d:</span><br><span class="line">            data += d</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    data = data.decode(<span class="string">"utf8"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 去除请求头 只保留返回的网页</span></span><br><span class="line">    <span class="comment"># 请求头和网页内容之间是两个回车换行</span></span><br><span class="line">    html_data = data.split(<span class="string">"\r\n\r\n"</span>)[<span class="number">1</span>]</span><br><span class="line">    print(html_data)</span><br><span class="line">    client.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line"></span><br><span class="line">    url = <span class="string">"https://www.baidu.com/"</span></span><br><span class="line">    get_url(url)</span><br></pre></td></tr></table></figure>
+<p>一篇不错的参考文章：<a href="https://keelii.com/2018/09/24/socket-programming-in-python/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="noopener">https://keelii.com/2018/09/24/socket-programming-in-python/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io</a></p>
 
       
     </div>
@@ -656,7 +657,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
