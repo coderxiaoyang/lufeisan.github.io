@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="今天开始要真正全面系统学习Docker了 💪 学习资源依然为慕课网实战课程，购买链接：https://coding.imooc.com/class/189.html 我们学习Docker之前，先了解下什么是容器呢？  我们从上图左侧可以看到 在一个物理主机上我们通过共享Kernel创建不同的容器，在不同的容器中运行不同的应用。 官方下载网站：https://docs.docker.com/ins">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习笔记第一篇--安装">
+<meta property="og:url" content="https://zhaobugs.com/2018/10/19/Docker学习笔记第一篇-安装/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="今天开始要真正全面系统学习Docker了 💪 学习资源依然为慕课网实战课程，购买链接：https://coding.imooc.com/class/189.html 我们学习Docker之前，先了解下什么是容器呢？  我们从上图左侧可以看到 在一个物理主机上我们通过共享Kernel创建不同的容器，在不同的容器中运行不同的应用。 官方下载网站：https://docs.docker.com/ins">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwdlcmfdxsj31260hg48a.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fwehbcbgl0j31400pm7e5.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fwer7kzec9j311o0m8qe5.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fwesattsofj31960s249e.jpg">
+<meta property="og:updated_time" content="2018-10-20T09:17:40.845Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker学习笔记第一篇--安装">
+<meta name="twitter:description" content="今天开始要真正全面系统学习Docker了 💪 学习资源依然为慕课网实战课程，购买链接：https://coding.imooc.com/class/189.html 我们学习Docker之前，先了解下什么是容器呢？  我们从上图左侧可以看到 在一个物理主机上我们通过共享Kernel创建不同的容器，在不同的容器中运行不同的应用。 官方下载网站：https://docs.docker.com/ins">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwdlcmfdxsj31260hg48a.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/10/19/Docker学习笔记第一篇-安装/"/>
+
+
+
+
+
+  <title>Docker学习笔记第一篇--安装 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/10/19/Docker学习笔记第一篇-安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker学习笔记第一篇--安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-19T15:48:24+08:00">
+                2018-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/19/Docker学习笔记第一篇-安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/19/Docker学习笔记第一篇-安装/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/19/Docker学习笔记第一篇-安装/" class="leancloud_visitors" data-flag-title="Docker学习笔记第一篇--安装">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,865 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天开始要真正全面系统学习<code>Docker</code>了 💪</p>
+<p>学习资源依然为慕课网实战课程，购买链接：<a href="https://coding.imooc.com/class/189.html" target="_blank" rel="noopener">https://coding.imooc.com/class/189.html</a></p>
+<p>我们学习<code>Docker</code>之前，先了解下什么是容器呢？</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwdlcmfdxsj31260hg48a.jpg" alt="image-20181019160216227"></p>
+<p>我们从上图左侧可以看到 在一个物理主机上我们通过共享<code>Kernel</code>创建不同的容器，在不同的容器中运行不同的应用。</p>
+<p>官方下载网站：<a href="https://docs.docker.com/install/" target="_blank" rel="noopener">https://docs.docker.com/install/</a></p>
+<h6 id="在Mac上安装Docker"><a href="#在Mac上安装Docker" class="headerlink" title="在Mac上安装Docker"></a>在Mac上安装Docker</h6><p>安装很简单只需要按照官方文档来就可以了：<a href="https://docs.docker.com/docker-for-mac/install/" target="_blank" rel="noopener">https://docs.docker.com/docker-for-mac/install/</a></p>
+<p>安装成功后我们可以在命令行下查看安装版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ docker --version</span><br><span class="line">Docker version 18.06.1-ce, build e68fc7a</span><br><span class="line"></span><br><span class="line">➜  ~ docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:           18.06.1-ce</span><br><span class="line"> API version:       1.38</span><br><span class="line"> Go version:        go1.10.3</span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug 21 17:21:31 2018</span><br><span class="line"> OS/Arch:           darwin/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          18.06.1-ce</span><br><span class="line">  API version:      1.38 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.10.3</span><br><span class="line">  Git commit:       e68fc7a</span><br><span class="line">  Built:            Tue Aug 21 17:29:02 2018</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     true</span><br></pre></td></tr></table></figure>
+<p>我们通过这种方式安装 直接包含了很多工具：</p>
+<blockquote>
+<p><strong>What the install includes</strong>: The installation provides <a href="https://docs.docker.com/engine/userguide/" target="_blank" rel="noopener">Docker Engine</a>, Docker CLI client, <a href="https://docs.docker.com/compose/overview/" target="_blank" rel="noopener">Docker Compose</a>, &gt;<a href="https://docs.docker.com/machine/overview/" target="_blank" rel="noopener">Docker Machine</a>, and <a href="https://docs.docker.com/kitematic/userguide/" target="_blank" rel="noopener">Kitematic</a>.</p>
+</blockquote>
+<p>其中的<code>Kitematic</code>是一个图形化管理工具，我们可以通过点击上面链接直接下载。</p>
+<h6 id="安装使用-Vagrant-、VirtualBox"><a href="#安装使用-Vagrant-、VirtualBox" class="headerlink" title="安装使用 Vagrant 、VirtualBox"></a>安装使用 Vagrant 、VirtualBox</h6><p>Vagrant 安装参考文件：<a href="https://www.vagrantup.com/downloads.html" target="_blank" rel="noopener">https://www.vagrantup.com/downloads.html</a></p>
+<p>VirtualBox 安装参考文件：<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="noopener">https://www.virtualbox.org/wiki/Downloads</a></p>
+<p><code>VirtualBox</code>是一个虚拟机管理工具，我们可以只用<code>VirtualBox</code>直接创建管理虚拟机。</p>
+<p><code>Vagrant</code>是一款更加方便的虚拟机管理工具。</p>
+<p>安装成功之后，我们可以在命令行模式下进行验证：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  centos vagrant --help</span><br><span class="line">WARNING: This command has been deprecated <span class="keyword">in</span> favor of `vagrant cloud auth login`</span><br><span class="line">Usage: vagrant [options] &lt;command&gt; [&lt;args&gt;]</span><br><span class="line"></span><br><span class="line">    -v, --version                    Print the version and exit.</span><br><span class="line">    -h, --help                       Print this help.</span><br></pre></td></tr></table></figure>
+<p>我们新建一个空目录<code>centos</code>，然后执行初始化虚拟机命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  centos vagrant init centos/<span class="number">7</span></span><br><span class="line">A `Vagrantfile` has been placed <span class="keyword">in</span> this directory. You are now</span><br><span class="line">ready to `vagrant up` your first virtual environment! Please read</span><br><span class="line">the comments <span class="keyword">in</span> the Vagrantfile as well as documentation on</span><br><span class="line">`vagrantup.com` <span class="keyword">for</span> more information on using Vagrant.</span><br></pre></td></tr></table></figure>
+<p>执行完上面命令之后会生成一个<code>Vagrantfile</code>文件，这个文件描述了我们将要创建一个什么样的虚拟机。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  centos cat Vagrantfile | grep -v <span class="string">'#'</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>文件内容描述出我们要安装的是一个<code>centos7</code>的虚拟机。</p>
+<p>下面我们执行真正的安装命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">➜  centos vagrant up</span><br><span class="line">Bringing machine <span class="string">'default'</span> up with <span class="string">'virtualbox'</span> provider...</span><br><span class="line">==&gt; default: Box <span class="string">'centos/7'</span> could not be found. Attempting to find and install...</span><br><span class="line">    default: Box Provider: virtualbox</span><br><span class="line">    default: Box Version: &gt;= <span class="number">0</span></span><br><span class="line">==&gt; default: Loading metadata <span class="keyword">for</span> box <span class="string">'centos/7'</span></span><br><span class="line">    default: URL: https://vagrantcloud.com/centos/<span class="number">7</span></span><br><span class="line">==&gt; default: Adding box <span class="string">'centos/7'</span> (v1809.<span class="number">01</span>) <span class="keyword">for</span> provider: virtualbox</span><br><span class="line">    default: Downloading: https://vagrantcloud.com/centos/boxes/<span class="number">7</span>/versions/<span class="number">1809.01</span>/providers/virtualbox.box</span><br><span class="line">==&gt; default: Box download is resuming from prior download progress</span><br><span class="line">    default: Download redirected to host: cloud.centos.org</span><br><span class="line">==&gt; default: Successfully added box <span class="string">'centos/7'</span> (v1809.<span class="number">01</span>) <span class="keyword">for</span> <span class="string">'virtualbox'</span>!</span><br><span class="line">==&gt; default: Importing base box <span class="string">'centos/7'</span>...</span><br><span class="line">==&gt; default: Matching MAC address <span class="keyword">for</span> NAT networking...</span><br><span class="line">==&gt; default: Checking <span class="keyword">if</span> box <span class="string">'centos/7'</span> is up to date...</span><br><span class="line">==&gt; default: Setting the name of the VM: centos_default_1540002362574_56438</span><br></pre></td></tr></table></figure>
+<p><code>up</code>命令会检查本地是够存在<code>Box</code>，如果存在就使用本地的创建，如果不存在就从远程下载创建。</p>
+<p>从上面我们看到创建了一个名为<code>centos_default_1540002362574_56438</code>的虚拟机，我们可以使用<code>VirtualBox</code>查看一下</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwehbcbgl0j31400pm7e5.jpg" alt="image-20181020102811726"></p>
+<p>会发现已经的确存在一个名为<code>centos_default_1540002362574_56438</code>正在运行。</p>
+<p>我们主机已经创建好，那怎么使用呢？</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  centos  vagrant ssh</span><br><span class="line">[vagrant@localhost ~]$ sudo yum update</span><br><span class="line">[vagrant@localhost ~]$ <span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
+<p>我们可以使用<code>vagrant ssh</code>进入虚拟机，执行<code>exit</code>退出虚拟机。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">➜  centos vagrant status</span><br><span class="line">Current machine states:</span><br><span class="line"></span><br><span class="line">default                   running (virtualbox)</span><br><span class="line"></span><br><span class="line">The VM is running. To stop this VM, you can run `vagrant halt` to</span><br><span class="line">shut it down forcefully, or you can run `vagrant suspend` to simply</span><br><span class="line">suspend the virtual machine. <span class="keyword">In</span> either case, to restart it again,</span><br><span class="line">simply run `vagrant up`.</span><br></pre></td></tr></table></figure>
+<p>我们可以使用<code>vagrant status</code>查看虚拟机的状态，上面展示了更多的命令。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 暂停主机 可以使用 up 唤醒</span></span><br><span class="line">➜  centos vagrant halt</span><br><span class="line">==&gt; default: Attempting graceful shutdown of VM...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看主机状态为 poweroff</span></span><br><span class="line">➜  centos vagrant status</span><br><span class="line">Current machine states:</span><br><span class="line"></span><br><span class="line">default                   poweroff (virtualbox)</span><br><span class="line"></span><br><span class="line">The VM is powered off. To restart the VM, simply run `vagrant up`</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除主机</span></span><br><span class="line">➜  centos vagrant destroy</span><br><span class="line">    default: Are you sure you want to destroy the <span class="string">'default'</span> VM? [y/N] y</span><br><span class="line">==&gt; default: Destroying VM and associated drives...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次查看存在主机有哪些 </span></span><br><span class="line">➜  centos vagrant status</span><br><span class="line">Current machine states:</span><br><span class="line"></span><br><span class="line">default                   not created (virtualbox)</span><br><span class="line"></span><br><span class="line">The environment has not yet been created. Run `vagrant up` to</span><br><span class="line">create the environment. <span class="keyword">If</span> a machine is not created, only the</span><br><span class="line">default provider will be shown. So <span class="keyword">if</span> a provider is not listed,</span><br><span class="line">then the machine is not created <span class="keyword">for</span> that environment.</span><br></pre></td></tr></table></figure>
+<p>上面的一系列操作都是基于<code>Vagrantfile</code>的，我们可以根据不同的<code>Vagrantfile</code>创建不同的虚拟主机。</p>
+<p>可以在官方查找到对应的<code>Vagrantfile</code>：<a href="https://app.vagrantup.com/centos/boxes/7" target="_blank" rel="noopener">https://app.vagrantup.com/centos/boxes/7</a></p>
+<h6 id="Centos安装Docker"><a href="#Centos安装Docker" class="headerlink" title="Centos安装Docker"></a>Centos安装Docker</h6><p>同样安装官方文档安装 ：<a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/centos/</a></p>
+<p>删除旧版本：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-selinux \</span><br><span class="line">                  docker-engine-selinux \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<p>Install required packages</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<p>下载repo</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<p>安装<code>docker</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+<p>启动<code>docker</code>服务</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+<p>查看<code>docker</code>版本</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># docker version</span></span><br><span class="line">Client:</span><br><span class="line"> Version:           <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line"> API version:       <span class="number">1.38</span></span><br><span class="line"> Go version:        go1.<span class="number">10.3</span></span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">23</span>:<span class="number">03</span> <span class="number">2018</span></span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line">  API version:      <span class="number">1.38</span> (minimum version <span class="number">1.12</span>)</span><br><span class="line">  Go version:       go1.<span class="number">10.3</span></span><br><span class="line">  Git commit:       e68fc7a</span><br><span class="line">  Built:            Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">25</span>:<span class="number">29</span> <span class="number">2018</span></span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br></pre></td></tr></table></figure>
+<p>运行一个测试<code>docker</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># sudo docker run hello-world</span></span><br><span class="line"><span class="keyword">For</span> more examples and ideas, visit:</span><br><span class="line"> https://docs.docker.com/get-started/</span><br></pre></td></tr></table></figure>
+<p>上面就是一个完整的安装步骤。</p>
+<h6 id="Docker-Machine的本地使用"><a href="#Docker-Machine的本地使用" class="headerlink" title="Docker Machine的本地使用"></a>Docker Machine的本地使用</h6><p>什么是<code>Docker Machine</code>呢？</p>
+<p>我们看下文档：<a href="https://docs.docker.com/machine/overview/" target="_blank" rel="noopener">https://docs.docker.com/machine/overview/</a></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwer7kzec9j311o0m8qe5.jpg" alt="image-20181020160950591"></p>
+<p>之前我们在Mac上安装<code>Docker</code>的时候 <code>Docker Machine</code>也是同步安装好的。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker-machine version</span><br><span class="line">docker-machine version <span class="number">0.15</span>.<span class="number">0</span>, build b48dc28d</span><br></pre></td></tr></table></figure>
+<p>使用 <code>Docker Machine</code>可以直接创建一个安装好了<code>Docker</code>的虚拟机。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker-machine create demo</span><br><span class="line">Creating CA: /Users/yanglianzeng/.docker/machine/certs/ca.pem</span><br><span class="line">Creating client certificate: /Users/yanglianzeng/.docker/machine/certs/cert.pem</span><br><span class="line">Running pre-create checks...</span><br><span class="line">(demo) Image cache directory does not exist, creating it at /Users/yanglianzeng/.docker/machine/cache...</span><br><span class="line">(demo) No default Boot2Docker ISO found locally, downloading the latest release...</span><br><span class="line"></span><br><span class="line">Docker is up and running!</span><br><span class="line">To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env demo</span><br></pre></td></tr></table></figure>
+<p><code>Boot2Docker ISO</code>是一个安装好<code>Docker</code>的<code>ISO</code>文件，就是根据这个<code>ISO</code>去创建虚拟机的。</p>
+<p>如果你直接执行上面的命令，会等好久。。。</p>
+<p>将<code>IOS</code>文件下载好放到<code>/Users/xxx/.docker/machine/cache</code>目录下再次执行上面的命令就很快了。</p>
+<p>和<code>Vagrant</code>一样我们可以查看创建了哪些虚拟机。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker-machine ls</span><br><span class="line">NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">demo   -        virtualbox   Running   tcp://<span class="number">192.168</span>.<span class="number">99.100</span>:<span class="number">2376</span>           v18.<span class="number">06.1</span>-ce</span><br></pre></td></tr></table></figure>
+<p>同样我们可以在<code>VirtualBox</code>看到有一个名为<code>demo</code>的虚拟机</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwesattsofj31960s249e.jpg" alt="image-20181020164818102"></p>
+<p>如何进去新建的虚拟机呢？</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker-machine ssh demo</span><br><span class="line">                        <span class="comment">##         .</span></span><br><span class="line">                  <span class="comment">## ## ##        ==</span></span><br><span class="line">               <span class="comment">## ## ## ## ##    ===</span></span><br><span class="line">           /<span class="string">""</span><span class="string">""</span><span class="string">""</span><span class="string">""</span><span class="string">""</span><span class="string">""</span><span class="string">""</span><span class="string">""</span><span class="string">"\___/ ===</span></span><br><span class="line"><span class="string">      ~~~ &#123;~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~</span></span><br><span class="line"><span class="string">           \______ o           __/</span></span><br><span class="line"><span class="string">             \    \         __/</span></span><br><span class="line"><span class="string">              \____\_______/</span></span><br><span class="line"><span class="string"> _                 _   ____     _            _</span></span><br><span class="line"><span class="string">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __</span></span><br><span class="line"><span class="string">| '_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ '__|</span></span><br><span class="line"><span class="string">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |</span></span><br><span class="line"><span class="string">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|</span></span><br><span class="line"><span class="string">Boot2Docker version 18.06.1-ce, build HEAD : c7e5c3e - Wed Aug 22 16:27:42 UTC 2018</span></span><br><span class="line"><span class="string">Docker version 18.06.1-ce, build e68fc7a</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 查看是否安装了docker</span></span><br><span class="line"><span class="string">docker@demo:~$ docker version</span></span><br><span class="line"><span class="string">Client:</span></span><br><span class="line"><span class="string"> Version:           18.06.1-ce</span></span><br><span class="line"><span class="string"> API version:       1.38</span></span><br><span class="line"><span class="string"> Go version:        go1.10.3</span></span><br><span class="line"><span class="string"> Git commit:        e68fc7a</span></span><br><span class="line"><span class="string"> Built:             Tue Aug 21 17:20:43 2018</span></span><br><span class="line"><span class="string"> OS/Arch:           linux/amd64</span></span><br><span class="line"><span class="string"> Experimental:      false</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Server:</span></span><br><span class="line"><span class="string"> Engine:</span></span><br><span class="line"><span class="string">  Version:          18.06.1-ce</span></span><br><span class="line"><span class="string">  API version:      1.38 (minimum version 1.12)</span></span><br><span class="line"><span class="string">  Go version:       go1.10.3</span></span><br><span class="line"><span class="string">  Git commit:       e68fc7a</span></span><br><span class="line"><span class="string">  Built:            Tue Aug 21 17:28:38 2018</span></span><br><span class="line"><span class="string">  OS/Arch:          linux/amd64</span></span><br><span class="line"><span class="string">  Experimental:     false</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 退出</span></span><br><span class="line"><span class="string">docker@demo:~$ exit</span></span><br></pre></td></tr></table></figure>
+<p>我们看下<code>Docker Machine</code>有哪些命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Commands:</span><br><span class="line">  active		Print which machine is active</span><br><span class="line">  config		Print the connection config <span class="keyword">for</span> machine</span><br><span class="line">  create		Create a machine</span><br><span class="line">  env			Display the commands to set up the environment <span class="keyword">for</span> the Docker client</span><br><span class="line">  inspect		Inspect information about a machine</span><br><span class="line">  ip			Get the IP address of a machine</span><br><span class="line">  kill			Kill a machine</span><br><span class="line">  ls			List machines</span><br><span class="line">  provision		Re-provision existing machines</span><br><span class="line">  regenerate-certs	Regenerate TLS Certificates <span class="keyword">for</span> a machine</span><br><span class="line">  restart		Restart a machine</span><br><span class="line">  rm			Remove a machine</span><br><span class="line">  ssh			Log into or run a command on a machine with SSH.</span><br><span class="line">  scp			Copy files between machines</span><br><span class="line">  mount			Mount or unmount a directory from a machine with SSHFS.</span><br><span class="line">  start			Start a machine</span><br><span class="line">  status		Get the status of a machine</span><br><span class="line">  stop			Stop a machine</span><br><span class="line">  upgrade		Upgrade a machine to the latest version of Docker</span><br><span class="line">  url			Get the URL of a machine</span><br><span class="line">  version		Show the Docker Machine version or a machine docker version</span><br><span class="line">  help			Shows a list of commands or help <span class="keyword">for</span> one command</span><br></pre></td></tr></table></figure>
+<p>下面我们学习下<code>Docker Machine</code>的其他知识</p>
+<p>当我们在本机运行<code>Docker version</code>的时候</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:           <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line"> API version:       <span class="number">1.38</span></span><br><span class="line"> Go version:        go1.<span class="number">10.3</span></span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">31</span> <span class="number">2018</span></span><br><span class="line"> OS/Arch:           darwin/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line">  API version:      <span class="number">1.38</span> (minimum version <span class="number">1.12</span>)</span><br><span class="line">  Go version:       go1.<span class="number">10.3</span></span><br><span class="line">  Git commit:       e68fc7a</span><br><span class="line">  Built:            Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">29</span>:<span class="number">02</span> <span class="number">2018</span></span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     true</span><br></pre></td></tr></table></figure>
+<p>我们看到本地的<code>Client</code>和<code>Server</code>对应的系统版本号。</p>
+<p>当我们退出本地<code>Docker</code>服务的时候再次看下</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:           <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line"> API version:       <span class="number">1.38</span></span><br><span class="line"> Go version:        go1.<span class="number">10.3</span></span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">31</span> <span class="number">2018</span></span><br><span class="line"> OS/Arch:           darwin/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line">Error response from daemon: Bad response from Docker engine</span><br></pre></td></tr></table></figure>
+<p>因为我们把本地的<code>Docker</code>服务停掉，因此连接不上本地的<code>Server</code>端。</p>
+<p>现在我们把服务停掉之后无法连接服务端了，但是我们可以使用刚才使用<code>Docker Machine</code>创建的虚拟机作为服务端。</p>
+<p>我们登上<code>demo</code>看下信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">➜  docker_learn docker-machine ssh demo</span><br><span class="line"></span><br><span class="line">docker@demo:~$ docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:           <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line"> API version:       <span class="number">1.38</span></span><br><span class="line"> Go version:        go1.<span class="number">10.3</span></span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">20</span>:<span class="number">43</span> <span class="number">2018</span></span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line">  API version:      <span class="number">1.38</span> (minimum version <span class="number">1.12</span>)</span><br><span class="line">  Go version:       go1.<span class="number">10.3</span></span><br><span class="line">  Git commit:       e68fc7a</span><br><span class="line">  Built:            Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">28</span>:<span class="number">38</span> <span class="number">2018</span></span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br></pre></td></tr></table></figure>
+<p>将<code>demo</code>环境变量拷到本地</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 拷贝环境变量到本地</span></span><br><span class="line">➜  docker_learn docker-machine env demo</span><br><span class="line">export DOCKER_TLS_VERIFY=<span class="string">"1"</span></span><br><span class="line">export DOCKER_HOST=<span class="string">"tcp://192.168.99.100:2376"</span></span><br><span class="line">export DOCKER_CERT_PATH=<span class="string">"/Users/yanglianzeng/.docker/machine/machines/demo"</span></span><br><span class="line">export DOCKER_MACHINE_NAME=<span class="string">"demo"</span></span><br><span class="line"><span class="comment"># Run this command to configure your shell:</span></span><br><span class="line"><span class="comment"># eval $(docker-machine env demo)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行设置变量</span></span><br><span class="line">➜  docker_learn eval $(docker-machine env demo)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看版本</span></span><br><span class="line">➜  docker_learn docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:           <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line"> API version:       <span class="number">1.38</span></span><br><span class="line"> Go version:        go1.<span class="number">10.3</span></span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">31</span> <span class="number">2018</span></span><br><span class="line"> OS/Arch:           darwin/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          <span class="number">18.06</span>.<span class="number">1</span>-ce</span><br><span class="line">  API version:      <span class="number">1.38</span> (minimum version <span class="number">1.12</span>)</span><br><span class="line">  Go version:       go1.<span class="number">10.3</span></span><br><span class="line">  Git commit:       e68fc7a</span><br><span class="line">  Built:            Tue Aug <span class="number">21</span> <span class="number">17</span>:<span class="number">28</span>:<span class="number">38</span> <span class="number">2018</span></span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br></pre></td></tr></table></figure>
+<p>这样，我们可以通过<code>Docker Machine</code>在本地只装一个客户端，连接到远程的服务端就行了。</p>
+<p>我们也可以在本地直接在远程 主机上创建一个安装好<code>Docker</code>的机器。</p>
+<p>如果想要在云端创建就需要各种<code>driver</code>了，参考官方文档：<a href="https://docs.docker.com/machine/get-started-cloud/#examples" target="_blank" rel="noopener">https://docs.docker.com/machine/get-started-cloud/#examples</a> </p>
+<p>可以在这个网站直接体验<code>Docker</code>：<a href="https://labs.play-with-docker.com/" target="_blank" rel="noopener">https://labs.play-with-docker.com/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/17/如何在Flask项目中配置使用logging/" rel="next" title="如何在Flask项目中配置使用logging">
+                <i class="fa fa-chevron-left"></i> 如何在Flask项目中配置使用logging
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#在Mac上安装Docker"><span class="nav-number">1.</span> <span class="nav-text">在Mac上安装Docker</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安装使用-Vagrant-、VirtualBox"><span class="nav-number">2.</span> <span class="nav-text">安装使用 Vagrant 、VirtualBox</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Centos安装Docker"><span class="nav-number">3.</span> <span class="nav-text">Centos安装Docker</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Docker-Machine的本地使用"><span class="nav-number">4.</span> <span class="nav-text">Docker Machine的本地使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
