@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="这篇我们将学习Docker里面的网络了！！！ Docker里面的网络一般分为单机网络多机网络。单机网络主要包括（Bridge Network, Host Network, None Network），多机网络主要是Overlay Network。 环境准备根据老师准备的文件创建好两个虚拟机 12345➜  chapter4 vagrant  statusCurrent machine states">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习第三篇-网络上篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="这篇我们将学习Docker里面的网络了！！！ Docker里面的网络一般分为单机网络多机网络。单机网络主要包括（Bridge Network, Host Network, None Network），多机网络主要是Overlay Network。 环境准备根据老师准备的文件创建好两个虚拟机 12345➜  chapter4 vagrant  statusCurrent machine states">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwkhqq46qpj30y20nmaf0.jpg">
+<meta property="og:updated_time" content="2018-10-25T08:10:07.894Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker学习第三篇-网络上篇">
+<meta name="twitter:description" content="这篇我们将学习Docker里面的网络了！！！ Docker里面的网络一般分为单机网络多机网络。单机网络主要包括（Bridge Network, Host Network, None Network），多机网络主要是Overlay Network。 环境准备根据老师准备的文件创建好两个虚拟机 12345➜  chapter4 vagrant  statusCurrent machine states">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwkhqq46qpj30y20nmaf0.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络/"/>
+
+
+
+
+
+  <title>Docker学习第三篇-网络上篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker学习第三篇-网络上篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T10:50:25+08:00">
+                2018-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/25/Docker学习笔记第三篇-网络/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/25/Docker学习笔记第三篇-网络/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Docker学习笔记第三篇-网络/" class="leancloud_visitors" data-flag-title="Docker学习第三篇-网络上篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,293 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇我们将学习<code>Docker</code>里面的网络了！！！</p>
+<p><code>Docker</code>里面的网络一般分为单机网络多机网络。单机网络主要包括（<code>Bridge Network</code>, <code>Host Network</code>, <code>None Network</code>），多机网络主要是<code>Overlay Network</code>。</p>
+<h5 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h5><p>根据老师准备的文件创建好两个虚拟机</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  chapter4 vagrant  status</span><br><span class="line">Current machine states:</span><br><span class="line"></span><br><span class="line">docker-node1              running (virtualbox)</span><br><span class="line">docker-node2              running (virtualbox)</span><br></pre></td></tr></table></figure>
+<h5 id="Linux网络命名空间"><a href="#Linux网络命名空间" class="headerlink" title="Linux网络命名空间"></a>Linux网络命名空间</h5><p>使用linux的<code>network network namespace</code>实现<code>Docker</code>容器网络的隔离。</p>
+<p>我们在<code>node1</code>主机上创建一个容器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker run -d --name test1 busybox /bin/sh -c <span class="string">"while true; do sleep 3600; done"</span></span><br><span class="line"><span class="number">2</span>ac19f6c6c53646df7f444e8ead3ef7a7da673de40f9ea04907a0c62edb37cc6</span><br><span class="line">[vagrant@docker-node1 ~]$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line"><span class="number">2</span>ac19f6c6c53        busybox             <span class="string">"/bin/sh -c 'while t…"</span>   <span class="number">11</span> seconds ago      Up <span class="number">11</span> seconds                           test1</span><br><span class="line">[vagrant@docker-node1 ~]$ docker exec -it <span class="number">2</span>ac19f6c6c53 /bin/sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看网络接口</span></span><br><span class="line">/ <span class="comment"># ip a</span></span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    inet <span class="number">127.0</span>.<span class="number">0.1</span>/<span class="number">8</span> scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">5</span>: eth0@<span class="keyword">if</span>6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu <span class="number">1500</span> qdisc noqueue</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:ac:<span class="number">11</span>:<span class="number">00</span>:<span class="number">02</span> brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">172.17</span>.<span class="number">0.2</span>/<span class="number">16</span> brd <span class="number">172.17</span>.<span class="number">255.255</span> scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">/ <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ ip a</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    inet <span class="number">127.0</span>.<span class="number">0.1</span>/<span class="number">8</span> scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::<span class="number">1</span>/<span class="number">128</span> scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>容器内部的网络与主机的网络是相互隔离的。</p>
+<p>我们再新建一个容器，查看新的容器的网络命名空间。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker run -d --name test2 busybox /bin/sh -c <span class="string">"while true; do sleep 3600; done"</span></span><br><span class="line"><span class="number">24</span>a9bfa70e6abc11093c75a67361bb412be269026c7241efc0c4b6d994e7663e</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line"><span class="number">24</span>a9bfa70e6a        busybox             <span class="string">"/bin/sh -c 'while t…"</span>   <span class="number">13</span> seconds ago      Up <span class="number">12</span> seconds                           test2</span><br><span class="line"><span class="number">2</span>ac19f6c6c53        busybox             <span class="string">"/bin/sh -c 'while t…"</span>   <span class="number">8</span> minutes ago       Up <span class="number">8</span> minutes                            test1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新的容器的网络命名空间</span></span><br><span class="line">[vagrant@docker-node1 ~]$ docker exec <span class="number">24</span>a9bfa70e6a ip a</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    inet <span class="number">127.0</span>.<span class="number">0.1</span>/<span class="number">8</span> scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">7</span>: eth0@<span class="keyword">if</span>8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu <span class="number">1500</span> qdisc noqueue</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:ac:<span class="number">11</span>:<span class="number">00</span>:<span class="number">03</span> brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">172.17</span>.<span class="number">0.3</span>/<span class="number">16</span> brd <span class="number">172.17</span>.<span class="number">255.255</span> scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>两个容器的网络命名空间是不一样的，并且两个容器之间可以相互通信。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker exec -it  <span class="number">24</span>a9bfa70e6a  /bin/sh</span><br><span class="line">/ <span class="comment"># ping 172.17.0.2</span></span><br><span class="line">PING <span class="number">172.17</span>.<span class="number">0.2</span> (<span class="number">172.17</span>.<span class="number">0.2</span>): <span class="number">56</span> <span class="keyword">data</span> bytes</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">0</span> ttl=<span class="number">64</span> time=<span class="number">0.105</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">1</span> ttl=<span class="number">64</span> time=<span class="number">0.079</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">2</span> ttl=<span class="number">64</span> time=<span class="number">0.092</span> ms</span><br><span class="line">^C</span><br><span class="line">--- <span class="number">172.17</span>.<span class="number">0.2</span> ping statistics ---</span><br><span class="line"><span class="number">3</span> packets transmitted, <span class="number">3</span> packets received, <span class="number">0</span>% packet loss</span><br><span class="line">round-trip min/avg/max = <span class="number">0.079</span>/<span class="number">0.092</span>/<span class="number">0.105</span> ms</span><br><span class="line">/ <span class="comment"># exit</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们在linux 主机上创建了两个容器，每个容器都有自己独立的 netns</p>
+</blockquote>
+<p>我们可以在<code>Linux</code>主机上直接通过命令行创建出<code>netns</code>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns add test1</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns list</span><br><span class="line">test1</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns delete test1</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns list</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns add test1</span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns add test2</span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns list</span><br><span class="line">test2</span><br><span class="line">test1</span><br></pre></td></tr></table></figure>
+<p>方法一：直接使用命名空间执行 <code>ip a</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip a</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br></pre></td></tr></table></figure>
+<p>从上面看出 通过命令行创建的命名空间是没有<code>IP</code>地址的，并且状态为<code>DOWN</code>。</p>
+<p>方法二：直接本机运行<code>ip link</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">52</span>:<span class="number">54</span>:<span class="number">00</span>:c0:<span class="number">42</span>:d5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">3</span>: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">08</span>:<span class="number">00</span>:<span class="number">27</span>:fa:f3:<span class="number">9</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">4</span>: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu <span class="number">1500</span> qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:b2:b1:<span class="number">26</span>:<span class="number">8</span>a brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure>
+<p>我们看到状态是<code>DOWN</code>现在我们使用命令将其<code>UP</code>起来。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    </span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link set dev lo up</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br></pre></td></tr></table></figure>
+<p>状态并没有<code>UP</code>起来是<code>UNKNOWN</code>的状态。只是因为端口要<code>UP</code>起来需要两端都要<code>UP</code>起来的。像本机的<code>eth0</code>会和<code>MAC</code>的虚拟化端口连起来才为<code>UP</code>的状态。单个端口是没法<code>UP</code>起来的，必须是一对。</p>
+<h6 id="一个小实验"><a href="#一个小实验" class="headerlink" title="一个小实验"></a>一个小实验</h6><p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwkhqq46qpj30y20nmaf0.jpg" alt="image-20181025151623802"></p>
+<p>我们通过创建容器的时候创建的命名空间之间是可以相互通信的，但是通过命令行创建的是无法通信的。现在我们创建一对<code>Veth</code>将两个命名空间连起来。分别将一对的两端放到两个命名空间上（配上ip地址），这样两个命名空间就连接起来了。和我们创建两个容器之后可以相互通信的原理是一样的。</p>
+<p>流程：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看本机的 link 有哪些</span></span><br><span class="line">[vagrant@docker-node1 ~]$ ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">52</span>:<span class="number">54</span>:<span class="number">00</span>:c0:<span class="number">42</span>:d5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">3</span>: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">08</span>:<span class="number">00</span>:<span class="number">27</span>:fa:f3:<span class="number">9</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">4</span>: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu <span class="number">1500</span> qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:b2:b1:<span class="number">26</span>:<span class="number">8</span>a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 创建一对 VETH</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip link add veth-test1 type veth peer name veth-test2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次查看 本机的 link</span></span><br><span class="line">[vagrant@docker-node1 ~]$ ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">52</span>:<span class="number">54</span>:<span class="number">00</span>:c0:<span class="number">42</span>:d5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">3</span>: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">08</span>:<span class="number">00</span>:<span class="number">27</span>:fa:f3:<span class="number">9</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">4</span>: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu <span class="number">1500</span> qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:b2:b1:<span class="number">26</span>:<span class="number">8</span>a brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">9</span>: veth-test2@veth-test1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether ce:<span class="number">26</span>:<span class="number">3</span>e:<span class="number">11</span>:<span class="number">95</span>:<span class="number">37</span> brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">10</span>: veth-test1@veth-test2: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">0</span>e:<span class="number">5</span>a:<span class="number">2</span>f:ce:<span class="number">74</span>:<span class="number">0</span>d brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 添加两个命名空间</span></span><br><span class="line">[vagrant@docker-node1 ~]$   sudo ip netns add test1</span><br><span class="line">[vagrant@docker-node1 ~]$   sudo ip netns add test2</span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns list</span><br><span class="line">test2</span><br><span class="line">test1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看test1的命名空间</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 添加 veth-test1 到 命名空间 test1</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip link set veth-test1 netns test1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 已经将端口号 if9 加入</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">10</span>: veth-test1@<span class="keyword">if</span>9: &lt;BROADCAST,MULTICAST&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">0</span>e:<span class="number">5</span>a:<span class="number">2</span>f:ce:<span class="number">74</span>:<span class="number">0</span>d brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 本机少了一个 link</span></span><br><span class="line">[vagrant@docker-node1 ~]$ ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">52</span>:<span class="number">54</span>:<span class="number">00</span>:c0:<span class="number">42</span>:d5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">3</span>: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">08</span>:<span class="number">00</span>:<span class="number">27</span>:fa:f3:<span class="number">9</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">4</span>: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu <span class="number">1500</span> qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:b2:b1:<span class="number">26</span>:<span class="number">8</span>a brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">9</span>: veth-test2@<span class="keyword">if</span>10: &lt;BROADCAST,MULTICAST&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether ce:<span class="number">26</span>:<span class="number">3</span>e:<span class="number">11</span>:<span class="number">95</span>:<span class="number">37</span> brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 同样操作</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip link set veth-test2 netns test2</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">52</span>:<span class="number">54</span>:<span class="number">00</span>:c0:<span class="number">42</span>:d5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">3</span>: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">08</span>:<span class="number">00</span>:<span class="number">27</span>:fa:f3:<span class="number">9</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"><span class="number">4</span>: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu <span class="number">1500</span> qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:b2:b1:<span class="number">26</span>:<span class="number">8</span>a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    </span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">9</span>: veth-test2@<span class="keyword">if</span>10: &lt;BROADCAST,MULTICAST&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether ce:<span class="number">26</span>:<span class="number">3</span>e:<span class="number">11</span>:<span class="number">95</span>:<span class="number">37</span> brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>虽然我们已经将创建的一对<code>VETH</code>分别绑定到了两个命名空间上，但是没有分配<code>IP</code>命名空间之间还是不能相互通信的。</p>
+<p>赋予<code>IP</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 给test1赋值IP</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip addr add <span class="number">192.168</span>.<span class="number">1.1</span>/<span class="number">24</span> dev veth-test1</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ip addr add <span class="number">192.168</span>.<span class="number">1.2</span>/<span class="number">24</span> dev veth-test2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还是DOWN得状态</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">10</span>: veth-test1@<span class="keyword">if</span>9: &lt;BROADCAST,MULTICAST&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">0</span>e:<span class="number">5</span>a:<span class="number">2</span>f:ce:<span class="number">74</span>:<span class="number">0</span>d brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">1</span></span><br><span class="line">  </span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">9</span>: veth-test2@<span class="keyword">if</span>10: &lt;BROADCAST,MULTICAST&gt; mtu <span class="number">1500</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether ce:<span class="number">26</span>:<span class="number">3</span>e:<span class="number">11</span>:<span class="number">95</span>:<span class="number">37</span> brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 将端口开启来</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link set dev veth-test1 up</span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ip link set dev veth-test2 up</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">9</span>: veth-test2@<span class="keyword">if</span>10: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc noqueue state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether ce:<span class="number">26</span>:<span class="number">3</span>e:<span class="number">11</span>:<span class="number">95</span>:<span class="number">37</span> brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip link</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">10</span>: veth-test1@<span class="keyword">if</span>9: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc noqueue state UP mode DEFAULT group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">0</span>e:<span class="number">5</span>a:<span class="number">2</span>f:ce:<span class="number">74</span>:<span class="number">0</span>d brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment"># 查看IP</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test1 ip a</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">10</span>: veth-test1@<span class="keyword">if</span>9: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc noqueue state UP group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">0</span>e:<span class="number">5</span>a:<span class="number">2</span>f:ce:<span class="number">74</span>:<span class="number">0</span>d brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">1</span></span><br><span class="line">    inet <span class="number">192.168</span>.<span class="number">1.1</span>/<span class="number">24</span> scope global veth-test1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::c5a:<span class="number">2</span>fff:fece:<span class="number">740</span>d/<span class="number">64</span> scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">       </span><br><span class="line"><span class="comment"># 查看IP</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ip a</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">9</span>: veth-test2@<span class="keyword">if</span>10: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc noqueue state UP group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether ce:<span class="number">26</span>:<span class="number">3</span>e:<span class="number">11</span>:<span class="number">95</span>:<span class="number">37</span> brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br><span class="line">    inet <span class="number">192.168</span>.<span class="number">1.2</span>/<span class="number">24</span> scope global veth-test2</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::cc26:<span class="number">3</span>eff:fe11:<span class="number">9537</span>/<span class="number">64</span> scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">       </span><br><span class="line"><span class="comment"># 可以检测两个命名空间的连通性</span></span><br><span class="line">[vagrant@docker-node1 ~]$ sudo ip netns exec test2 ping <span class="number">192.168</span>.<span class="number">1.1</span></span><br><span class="line">PING <span class="number">192.168</span>.<span class="number">1.1</span> (<span class="number">192.168</span>.<span class="number">1.1</span>) <span class="number">56</span>(<span class="number">84</span>) bytes of data.</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">192.168</span>.<span class="number">1.1</span>: icmp_seq=<span class="number">1</span> ttl=<span class="number">64</span> time=<span class="number">0.057</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">192.168</span>.<span class="number">1.1</span>: icmp_seq=<span class="number">2</span> ttl=<span class="number">64</span> time=<span class="number">0.063</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">192.168</span>.<span class="number">1.1</span>: icmp_seq=<span class="number">3</span> ttl=<span class="number">64</span> time=<span class="number">0.050</span> ms</span><br><span class="line">^C</span><br><span class="line">--- <span class="number">192.168</span>.<span class="number">1.1</span> ping statistics ---</span><br><span class="line"><span class="number">3</span> packets transmitted, <span class="number">3</span> received, <span class="number">0</span>% packet loss, time <span class="number">2000</span>ms</span><br><span class="line">rtt min/avg/max/mdev = <span class="number">0.050</span>/<span class="number">0.056</span>/<span class="number">0.063</span>/<span class="number">0.010</span> ms</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/21/Docker学习笔记第二篇-镜像和容器/" rel="next" title="Docker学习笔记第二篇--镜像和容器">
+                <i class="fa fa-chevron-left"></i> Docker学习笔记第二篇--镜像和容器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Linux网络命名空间"><span class="nav-number">2.</span> <span class="nav-text">Linux网络命名空间</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#一个小实验"><span class="nav-number">2.1.</span> <span class="nav-text">一个小实验</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
