@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="在网络的上篇中我们了解了命名空间是什么，已经如果让两个命名空间能够通信。 我们通过手动创建两个命名空间，然后创建一对VETH将两个命名空间连接起来，然后再分别赋予IP这样完成了命名空间之间的通信。 那直接创建的两个容器之间是为何能够直接通信的呢，为什么创建的容器内部可以连通外网呢？ 让我们带着两个问题继续学习吧！！！！ Docker bridge详解1234567891011[vagrant@do">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习笔记第三篇-网络下篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络下篇/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="在网络的上篇中我们了解了命名空间是什么，已经如果让两个命名空间能够通信。 我们通过手动创建两个命名空间，然后创建一对VETH将两个命名空间连接起来，然后再分别赋予IP这样完成了命名空间之间的通信。 那直接创建的两个容器之间是为何能够直接通信的呢，为什么创建的容器内部可以连通外网呢？ 让我们带着两个问题继续学习吧！！！！ Docker bridge详解1234567891011[vagrant@do">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fwkmhlgip7j31c40moq9k.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwkmtweq6ej31c20zm120.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fwkmwg1o0kj314o0puwlh.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwllgt85alj31kw09gacz.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwllpvse9sj30zo0lsgpu.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fwlm8rnu5ej30xc0ke42d.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwlmcde8juj31kw0bmdje.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fwlmhzoyioj30xm0kwdjw.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwlosj0d3ij30zy0qs42k.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwloy8kgz2j31a20gw0vl.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwlpb6gyikj31700wewj0.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwlph8gqffj31kw0x1wk4.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwlpi7kf85j31240ue45j.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fwlrbsu6kzj31gw0eodjg.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwlrmlhwaqj31jy0yiai7.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwlrr31ih3j31k20f8gpr.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwlrw8koiwj31ia0nmdmt.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwlswkz4nyj31fi0oyqfj.jpg">
+<meta property="og:updated_time" content="2018-10-27T02:14:27.707Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker学习笔记第三篇-网络下篇">
+<meta name="twitter:description" content="在网络的上篇中我们了解了命名空间是什么，已经如果让两个命名空间能够通信。 我们通过手动创建两个命名空间，然后创建一对VETH将两个命名空间连接起来，然后再分别赋予IP这样完成了命名空间之间的通信。 那直接创建的两个容器之间是为何能够直接通信的呢，为什么创建的容器内部可以连通外网呢？ 让我们带着两个问题继续学习吧！！！！ Docker bridge详解1234567891011[vagrant@do">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fwkmhlgip7j31c40moq9k.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络下篇/"/>
+
+
+
+
+
+  <title>Docker学习笔记第三篇-网络下篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络下篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker学习笔记第三篇-网络下篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T16:11:35+08:00">
+                2018-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/25/Docker学习笔记第三篇-网络下篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/25/Docker学习笔记第三篇-网络下篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Docker学习笔记第三篇-网络下篇/" class="leancloud_visitors" data-flag-title="Docker学习笔记第三篇-网络下篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,903 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在网络的上篇中我们了解了命名空间是什么，已经如果让两个命名空间能够通信。</p>
+<p>我们通过手动创建两个命名空间，然后创建一对<code>VETH</code>将两个命名空间连接起来，然后再分别赋予<code>IP</code>这样完成了命名空间之间的通信。</p>
+<p>那直接创建的两个容器之间是为何能够直接通信的呢，为什么创建的容器内部可以连通外网呢？</p>
+<p>让我们带着两个问题继续学习吧！！！！</p>
+<h5 id="Docker-bridge详解"><a href="#Docker-bridge详解" class="headerlink" title="Docker bridge详解"></a>Docker bridge详解</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker exec -it <span class="number">2</span>ac19f6c6c53 /bin/sh</span><br><span class="line">/ <span class="comment"># ping www.baidu.com</span></span><br><span class="line">PING www.baidu.com (<span class="number">115.239</span>.<span class="number">211.112</span>): <span class="number">56</span> <span class="keyword">data</span> bytes</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">115.239</span>.<span class="number">211.112</span>: seq=<span class="number">0</span> ttl=<span class="number">61</span> time=<span class="number">6.018</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">115.239</span>.<span class="number">211.112</span>: seq=<span class="number">1</span> ttl=<span class="number">61</span> time=<span class="number">6.283</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">115.239</span>.<span class="number">211.112</span>: seq=<span class="number">2</span> ttl=<span class="number">61</span> time=<span class="number">5.720</span> ms</span><br><span class="line">^C</span><br><span class="line">--- www.baidu.com ping statistics ---</span><br><span class="line"><span class="number">3</span> packets transmitted, <span class="number">3</span> packets received, <span class="number">0</span>% packet loss</span><br><span class="line">round-trip min/avg/max = <span class="number">5.720</span>/<span class="number">6.007</span>/<span class="number">6.283</span> ms</span><br><span class="line">/ <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>先介绍一个命令<code>docker network ls</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker network ls</span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">f3e37efd5e71        bridge              bridge              local</span><br><span class="line">b1947e6b2d78        host                host                local</span><br><span class="line"><span class="number">14</span>d86ca05d8f        none                null                local</span><br></pre></td></tr></table></figure>
+<p>这个命令会将主机支持的网络类型列举出来。</p>
+<p>我现在开着一个上节建的容器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line"><span class="number">2</span>ac19f6c6c53        busybox             <span class="string">"/bin/sh -c 'while t…"</span>   <span class="number">3</span> hours ago         Up <span class="number">10</span> minutes                           test1</span><br></pre></td></tr></table></figure>
+<p>这个容器的网络是连到<code>bridge</code>上面的，通过<code>docker network inspect NETWORKID</code>查看</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker network inspect f3e37efd5e71</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"Containers"</span>: &#123;</span><br><span class="line">       </span><br><span class="line">            <span class="string">"2ac19f6c6c53646df7f444e8ead3ef7a7da673de40f9ea04907a0c62edb37cc6"</span>: &#123;</span><br><span class="line">                <span class="string">"Name"</span>: <span class="string">"test1"</span>,</span><br><span class="line">                <span class="string">"EndpointID"</span>: <span class="string">"392e6349a6c2aac0ece27bb870287f9031a1b6b87c08308ded7c9180137c4437"</span>,</span><br><span class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:11:00:02"</span>,</span><br><span class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.17.0.2/16"</span>,</span><br><span class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>我们看到在<code>Containers</code>中包含我们创建的容器<code>test1</code>。</p>
+<p>说明我们的容器链接到了<code>bridge</code>网络上，这个<code>bridge</code>到底是什么呢？</p>
+<p>我们看下本地网络:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ ip a</span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue state UNKNOWN group default qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    inet <span class="number">127.0</span>.<span class="number">0.1</span>/<span class="number">8</span> scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::<span class="number">1</span>/<span class="number">128</span> scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">52</span>:<span class="number">54</span>:<span class="number">00</span>:c0:<span class="number">42</span>:d5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">10.0</span>.<span class="number">2.15</span>/<span class="number">24</span> brd <span class="number">10.0</span>.<span class="number">2.255</span> scope global noprefixroute dynamic eth0</span><br><span class="line">       valid_lft <span class="number">63201</span>sec preferred_lft <span class="number">63201</span>sec</span><br><span class="line">    inet6 fe80::<span class="number">5054</span>:ff:fec0:<span class="number">42</span>d5/<span class="number">64</span> scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">3</span>: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP group default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">08</span>:<span class="number">00</span>:<span class="number">27</span>:fa:f3:<span class="number">9</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">192.168</span>.<span class="number">205.10</span>/<span class="number">24</span> brd <span class="number">192.168</span>.<span class="number">205.255</span> scope global noprefixroute eth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::a00:<span class="number">27</span>ff:fefa:f39c/<span class="number">64</span> scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">4</span>: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc noqueue state UP group default</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:b2:b1:<span class="number">26</span>:<span class="number">8</span>a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">172.17</span>.<span class="number">0.1</span>/<span class="number">16</span> brd <span class="number">172.17</span>.<span class="number">255.255</span> scope global docker0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::<span class="number">42</span>:b2ff:feb1:<span class="number">268</span>a/<span class="number">64</span> scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">12</span>: vethfff2d55@<span class="keyword">if</span>11: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc noqueue master docker0 state UP group default</span><br><span class="line">    link/ether <span class="number">5</span>a:ae:<span class="number">7</span>f:<span class="number">6</span>a:<span class="number">6</span>a:<span class="number">83</span> brd ff:ff:ff:ff:ff:ff link-netnsid <span class="number">0</span></span><br><span class="line">    inet6 fe80::<span class="number">58</span>ae:<span class="number">7</span>fff:fe6a:<span class="number">6</span>a83/<span class="number">64</span> scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>我们看下最后两个接口，其中的<code>docker0</code>就是本机的网络命名空间。<code>vethfff2d55@if11</code>就是一个<code>VETH</code>的一个端口。</p>
+<p>那我们新建的容器是如何链接到<code>docker0</code>上的呢？</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwkmhlgip7j31c40moq9k.jpg" alt="image-20181025180037895"></p>
+<p>其中的<code>vethfff2d55@if11</code>是链接到<code>docker0</code>，<code>eth0@if12</code>是链接到<code>Docker</code>的命名空间。</p>
+<p>我们再新建一个容器test2：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker network inspect f3e37efd5e71</span><br><span class="line">		<span class="string">"Containers"</span>: &#123;</span><br><span class="line">            <span class="string">"2ac19f6c6c53646df7f444e8ead3ef7a7da673de40f9ea04907a0c62edb37cc6"</span>: &#123;</span><br><span class="line">                <span class="string">"Name"</span>: <span class="string">"test1"</span>,</span><br><span class="line">                <span class="string">"EndpointID"</span>: <span class="string">"392e6349a6c2aac0ece27bb870287f9031a1b6b87c08308ded7c9180137c4437"</span>,</span><br><span class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:11:00:02"</span>,</span><br><span class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.17.0.2/16"</span>,</span><br><span class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">"820fc3fb33ddb9e45c6beafdf2728ba93efd835229be4c90e13e9f1d1e4fb251"</span>: &#123;</span><br><span class="line">                <span class="string">"Name"</span>: <span class="string">"test2"</span>,</span><br><span class="line">                <span class="string">"EndpointID"</span>: <span class="string">"c7a5df3931b1757aba9e96c52bd1fa951d741641de9f9d8519bbc37617b427d6"</span>,</span><br><span class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:11:00:03"</span>,</span><br><span class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.17.0.3/16"</span>,</span><br><span class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+<p>新建容器之后我们看到容器test2也加入到了<code>bridge</code>中。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwkmtweq6ej31c20zm120.jpg" alt="image-20181025181225988"></p>
+<p>我们看下总得拓扑图：<img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwkmwg1o0kj314o0puwlh.jpg" alt="image-20181025181452488"></p>
+<p>我们先看第一个问题，不同容器如何通信的：</p>
+<p>从图中我们看到不同的容器都会和本地的命名空间<code>docker0</code>关联起来，<code>docker0</code>起到了一个中间作用。</p>
+<p>第二个问题，容器内部是如何与外网通信的：</p>
+<p>我们通过一个网络地址转换<code>NAT</code>（iptables实现）将容器发送到<code>docker0</code>的数据通过地址转换发送到<code>eth0</code>进而发送到外网。</p>
+<h5 id="容器之间的link"><a href="#容器之间的link" class="headerlink" title="容器之间的link"></a>容器之间的link</h5><p>我们之前创建两个容器，在容器内部可以相互<code>ping</code>通，前提是使用<code>IP</code>地址。我们可以使用<code>link</code>机制在创建第二个容器的时候<code>link</code>到第一个容器上，这样我们就可以在第二个容器中直接使用容器的名字而不是<code>IP</code>进行通信了。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwllgt85alj31kw09gacz.jpg" alt="image-20181026141049149"></p>
+<p>相比之前创建容器的时候指定要链接的容器。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker exec -it abdcec200555 /bin/sh</span><br><span class="line">/ <span class="comment"># ip a</span></span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    inet <span class="number">127.0</span>.<span class="number">0.1</span>/<span class="number">8</span> scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"><span class="number">7</span>: eth0@<span class="keyword">if</span>8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu <span class="number">1500</span> qdisc noqueue</span><br><span class="line">    link/ether <span class="number">02</span>:<span class="number">42</span>:ac:<span class="number">11</span>:<span class="number">00</span>:<span class="number">03</span> brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">172.17</span>.<span class="number">0.3</span>/<span class="number">16</span> brd <span class="number">172.17</span>.<span class="number">255.255</span> scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在容器内部可以使用ip通信</span></span><br><span class="line">/ <span class="comment"># ping 172.17.0.2</span></span><br><span class="line">PING <span class="number">172.17</span>.<span class="number">0.2</span> (<span class="number">172.17</span>.<span class="number">0.2</span>): <span class="number">56</span> <span class="keyword">data</span> bytes</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">0</span> ttl=<span class="number">64</span> time=<span class="number">0.106</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">1</span> ttl=<span class="number">64</span> time=<span class="number">0.079</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">2</span> ttl=<span class="number">64</span> time=<span class="number">0.079</span> ms</span><br><span class="line">^C</span><br><span class="line">--- <span class="number">172.17</span>.<span class="number">0.2</span> ping statistics ---</span><br><span class="line"><span class="number">3</span> packets transmitted, <span class="number">3</span> packets received, <span class="number">0</span>% packet loss</span><br><span class="line">round-trip min/avg/max = <span class="number">0.079</span>/<span class="number">0.088</span>/<span class="number">0.106</span> ms</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在容器内部可以使用容器名字通信</span></span><br><span class="line">/ <span class="comment"># ping test1</span></span><br><span class="line">PING test1 (<span class="number">172.17</span>.<span class="number">0.2</span>): <span class="number">56</span> <span class="keyword">data</span> bytes</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">0</span> ttl=<span class="number">64</span> time=<span class="number">0.079</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">1</span> ttl=<span class="number">64</span> time=<span class="number">0.119</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.17</span>.<span class="number">0.2</span>: seq=<span class="number">2</span> ttl=<span class="number">64</span> time=<span class="number">0.090</span> ms</span><br><span class="line">^C</span><br><span class="line">--- test1 ping statistics ---</span><br><span class="line"><span class="number">3</span> packets transmitted, <span class="number">3</span> packets received, <span class="number">0</span>% packet loss</span><br><span class="line">round-trip min/avg/max = <span class="number">0.079</span>/<span class="number">0.096</span>/<span class="number">0.119</span> ms</span><br></pre></td></tr></table></figure>
+<p>从上面看出 我们在容器<code>test2</code>中可以直接使用容器<code>test1</code>的容器名进行通信，（相当于增加了一个DNS解析）那在容器<code>test1</code>中可以吗？</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwllpvse9sj30zo0lsgpu.jpg" alt="image-20181026141933107"></p>
+<p>事实证明是不行，为什么会这样呢？</p>
+<p>这是因为<code>link</code>是单向的，我们创建容器的<code>test2</code>的时候<code>link</code>到了<code>test1</code>，因此我们只能在<code>test2</code>里使用<code>test1</code>容器名通信。</p>
+<blockquote>
+<p><code>link</code>实际工作中不多</p>
+</blockquote>
+<p>我们在创建容器的时候是可以指定网络类型的，如果没有指定则是默认的<code>bridge</code>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker  network  ls</span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line"><span class="number">81</span>dc995d2c59        bridge              bridge              local</span><br><span class="line">b1947e6b2d78        host                host                local</span><br><span class="line"><span class="number">14</span>d86ca05d8f        none                null                local</span><br></pre></td></tr></table></figure>
+<p>我们可以自己建个网络，然后创建容器的时候将网络指定为我们自己创建的。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwlm8rnu5ej30xc0ke42d.jpg" alt="image-20181026143741619"></p>
+<p>现在新增一个容器，指定网络为我们自己创建的。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlmcde8juj31kw0bmdje.jpg" alt="image-20181026144109660"></p>
+<p>新的网络已经有了接口。</p>
+<p>我们不仅可以在创建容器的时候指定网络，还可以再运行的时候更改网络。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将容器 test2 的网络改为 my-bridge </span></span><br><span class="line">[vagrant@docker-node1 ~]$  docker network connect my-bridge test2</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 ~]$ docker network inspect my-bridge</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"Containers"</span>: &#123;</span><br><span class="line">            <span class="string">"92465e9468ab7afb02f2d4c0e2fb72d7bee2fc77504d6cb3ea0feeb63b2adc45"</span>: &#123;</span><br><span class="line">                <span class="string">"Name"</span>: <span class="string">"test3"</span>,</span><br><span class="line">                <span class="string">"EndpointID"</span>: <span class="string">"81cec594daec5a586d0013d27884b704a6afbb4275042b6ec10add8f69aa349d"</span>,</span><br><span class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:12:00:02"</span>,</span><br><span class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.18.0.2/16"</span>,</span><br><span class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">"abdcec2005554f8ff4b951e28a4793b92556e68d24ceb850e86e2d3bc8853de4"</span>: &#123;</span><br><span class="line">                <span class="string">"Name"</span>: <span class="string">"test2"</span>,</span><br><span class="line">                <span class="string">"EndpointID"</span>: <span class="string">"76b9f0cd75411bf5f5dd9cb9a4722536a034fcf2ccb0e716a19e8140d5e5d402"</span>,</span><br><span class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:12:00:03"</span>,</span><br><span class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.18.0.3/16"</span>,</span><br><span class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>我们登上<code>test3</code>进行以下操作：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwlmhzoyioj30xm0kwdjw.jpg" alt="image-20181026144633855"></p>
+<p>我们发现可以在<code>test3</code>中直接使用<code>test2</code>的容器名进行通信。这是因为当容器加入到我们自己创建的网络而不是默认的网络的时候，会自动建立好双向的<code>link</code>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker exec -it test2 ping test3</span><br><span class="line">PING test3 (<span class="number">172.18</span>.<span class="number">0.2</span>): <span class="number">56</span> <span class="keyword">data</span> bytes</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.18</span>.<span class="number">0.2</span>: seq=<span class="number">0</span> ttl=<span class="number">64</span> time=<span class="number">0.057</span> ms</span><br><span class="line"><span class="number">64</span> bytes from <span class="number">172.18</span>.<span class="number">0.2</span>: seq=<span class="number">1</span> ttl=<span class="number">64</span> time=<span class="number">0.091</span> ms</span><br><span class="line">^C</span><br><span class="line">--- test3 ping statistics ---</span><br><span class="line"><span class="number">2</span> packets transmitted, <span class="number">2</span> packets received, <span class="number">0</span>% packet loss</span><br><span class="line">round-trip min/avg/max = <span class="number">0.057</span>/<span class="number">0.074</span>/<span class="number">0.091</span> ms</span><br></pre></td></tr></table></figure>
+<h5 id="容器的端口映射"><a href="#容器的端口映射" class="headerlink" title="容器的端口映射"></a>容器的端口映射</h5><p>之所以需要端口映射是因为在容器中启动的某些服务如果不做端口映射我们在外网是无法访问使用的。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwlosj0d3ij30zy0qs42k.jpg" alt="image-20181026160552787"></p>
+<p>我们将<code>docker</code>的端口80映射到<code>docker</code>主机的80端口。在<code>docker</code>主机上进行访问。</p>
+<p>因为我们是使用<code>vagrant</code>创建的虚拟机，在<code>Vagrantfile</code>中我们指定了当前容器的<code>IP</code>为<code>192.168.205.10</code>。</p>
+<p>直接在本机<code>mac</code>上浏览器访问<code>IP</code>地址即可：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwloy8kgz2j31a20gw0vl.jpg" alt="image-20181026161122994"></p>
+<p>如果是云主机，直接访问云主机对应的公网<code>IP</code>即可。</p>
+<h5 id="容器网络的-host-和-none"><a href="#容器网络的-host-和-none" class="headerlink" title="容器网络的 host 和 none"></a>容器网络的 host 和 none</h5><p>这个小节我们看下<code>host</code>和<code>none</code>这两个网络。</p>
+<p>关于<code>host</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker run -d --name test1 --network none  busybox /bin/sh -c <span class="string">"while true; do sleep 3600; done"</span></span><br><span class="line">d52d4e5f1b6749457622c42da616f432d8221da8c50e53d2430940444e06573f</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlpb6gyikj31700wewj0.jpg" alt="image-20181026162348913"></p>
+<p>我们看到😀<code>MacAddress</code>等都是为空。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 ~]$ docker  exec -it test1 /bin/sh</span><br><span class="line">/ <span class="comment"># ip a</span></span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="number">65536</span> qdisc noqueue qlen <span class="number">1000</span></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">    inet <span class="number">127.0</span>.<span class="number">0.1</span>/<span class="number">8</span> scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">/ <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>容器内部的网络接口也只有本地回环。没有网络接口证明这容器<code>test1</code>是一个孤立的容器，只能通过<code>exec</code>进入。</p>
+<p>关于<code>host</code>：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlph8gqffj31kw0x1wk4.jpg" alt="image-20181026162939145"></p>
+<p>我们看到<code>MacAddress</code>等地址也是为空。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlpi7kf85j31240ue45j.jpg" alt="image-20181026163035215"></p>
+<p>但是进入到容器内部之后看到的网络接口是外层<code>docker</code>主机的。</p>
+<p>通过这种方式创建的容器有一个问题是会和<code>docker</code>主机竞争端口，因为离外层用的是同一套命名空间。</p>
+<h5 id="一个多容器的应用部署示栗"><a href="#一个多容器的应用部署示栗" class="headerlink" title="一个多容器的应用部署示栗"></a>一个多容器的应用部署示栗</h5><p>首先看下我们要部署的程序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> redis <span class="keyword">import</span> Redis</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">redis = Redis(host=os.environ.get(<span class="string">'REDIS_HOST'</span>, <span class="string">'127.0.0.1'</span>), port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    redis.incr(<span class="string">'hits'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello Container World! I have been seen %s times and my hostname is %s.\n'</span> % (redis.get(<span class="string">'hits'</span>),socket.gethostname())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>, port=<span class="number">5000</span>, debug=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>这个程序需要使用<code>redis</code>服务，我们将<code>redis</code>使用一个容器提供服务，<code>flask</code>应用使用一个容器进行部署。</p>
+<p>首先我们创建一个<code>redis</code>容器</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwlrbsu6kzj31gw0eodjg.jpg" alt="image-20181026173337506"></p>
+<p>根据<code>Dockerfile</code>创建一个应用程序容器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 labs]$ ls</span><br><span class="line">app.py  Dockerfile</span><br><span class="line">[vagrant@docker-node1 labs]$ cat Dockerfile</span><br><span class="line">FROM python:<span class="number">3.7</span></span><br><span class="line">LABEL maintaner=<span class="string">"hongshaorou"</span></span><br><span class="line">COPY . /app</span><br><span class="line">WORKDIR /app</span><br><span class="line">RUN pip install flask redis</span><br><span class="line">EXPOSE <span class="number">5000</span></span><br><span class="line">CMD [ <span class="string">"python"</span>, <span class="string">"app.py"</span> ]</span><br><span class="line">[vagrant@docker-node1 labs]$ docker build -t hongshaorou/flask-redis .</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 labs]$ docker images</span><br><span class="line">REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">hongshaorou/flask-redis   latest              <span class="number">466</span>f8679b8a5        <span class="number">52</span> seconds ago      <span class="number">934</span>MB</span><br><span class="line">python                    <span class="number">3.7</span>                 <span class="number">2</span>cc378c061f7        <span class="number">35</span> hours ago        <span class="number">923</span>MB</span><br><span class="line">busybox                   latest              <span class="number">59788</span>edf1f3e        <span class="number">3</span> weeks ago         <span class="number">1.15</span>MB</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwlrmlhwaqj31jy0yiai7.jpg" alt="image-20181026174359651"></p>
+<p>上面使用<code>-e</code>参数在运行容器的时候设定环境变量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> curl 127.0.0.1:5000</span><br><span class="line">Hello Container World! I have been seen b'1' times and my hostname is 0290aa8efccf.</span><br><span class="line"><span class="meta">#</span>  curl 127.0.0.1:5000</span><br><span class="line">Hello Container World! I have been seen b'2' times and my hostname is 0290aa8efccf.</span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<p>在容器内访问我们的程序已经生效了。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlrr31ih3j31k20f8gpr.jpg" alt="image-20181026174818476"></p>
+<p>我们将5000端口映射到<code>docker</code>主机，这样可以在<code>docker</code>主机进行访问部署在容器中的程序。</p>
+<h5 id="docker的多机器通信"><a href="#docker的多机器通信" class="headerlink" title="docker的多机器通信"></a>docker的多机器通信</h5><p>我们这个小节学习下不同机器的容器是如何通信的</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlrw8koiwj31ia0nmdmt.jpg" alt="image-20181026175315150"></p>
+<p>我们的实现方式是将容器发送的数据当成一个数据包放到外层的通信层中，因为<code>10</code>和<code>11</code>之间是可以相互通信的。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwlswkz4nyj31fi0oyqfj.jpg" alt="image-20181026182811465"></p>
+<p>具体实现细节原理为<code>VXLAN</code>：<a href="https://cizixs.com/2017/09/25/vxlan-protocol-introduction/" target="_blank" rel="noopener">https://cizixs.com/2017/09/25/vxlan-protocol-introduction/</a></p>
+<p>原理大致了解下就好，重在知道怎么用！</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/25/Docker学习笔记第三篇-网络上篇/" rel="next" title="Docker学习第三篇-网络上篇">
+                <i class="fa fa-chevron-left"></i> Docker学习第三篇-网络上篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-bridge详解"><span class="nav-number">1.</span> <span class="nav-text">Docker bridge详解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#容器之间的link"><span class="nav-number">2.</span> <span class="nav-text">容器之间的link</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#容器的端口映射"><span class="nav-number">3.</span> <span class="nav-text">容器的端口映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#容器网络的-host-和-none"><span class="nav-number">4.</span> <span class="nav-text">容器网络的 host 和 none</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个多容器的应用部署示栗"><span class="nav-number">5.</span> <span class="nav-text">一个多容器的应用部署示栗</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker的多机器通信"><span class="nav-number">6.</span> <span class="nav-text">docker的多机器通信</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
