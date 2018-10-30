@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="Docker," />
 
 
 
@@ -81,16 +81,22 @@
 
 
 
-<meta name="description" content="小码农一只">
-<meta property="og:type" content="website">
-<meta property="og:title" content="红烧肉">
-<meta property="og:url" content="https://zhaobugs.com/tags/Python/index.html">
+<meta name="description" content="这篇我们要学习Docker的持久化存储和数据共享。 我们知道相比于镜像而言，容器是可进行读写的。但是当我们删除了容器之后，之前的读写数据也会被清空。 Docker通过一种机制将数据写的时候map的Docker主机或者某个存储。这样即使Docker容器删了，数据源还会保留。  Docker持久化数据的方案  基于本地文件系统的Volume。可以在执行Docker create或者Docker run">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习笔记第四篇-存储篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/10/29/Docker学习笔记第四篇-存储篇/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="这篇我们要学习Docker的持久化存储和数据共享。 我们知道相比于镜像而言，容器是可进行读写的。但是当我们删除了容器之后，之前的读写数据也会被清空。 Docker通过一种机制将数据写的时候map的Docker主机或者某个存储。这样即使Docker容器删了，数据源还会保留。  Docker持久化数据的方案  基于本地文件系统的Volume。可以在执行Docker create或者Docker run">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fwp7v7r6h0j31e40kuwl7.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fwp8lq4q24j31g80k2wiz.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fwp8t3amvmj31ju0l0wjg.jpg">
+<meta property="og:updated_time" content="2018-10-30T02:23:17.077Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="红烧肉">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:title" content="Docker学习笔记第四篇-存储篇">
+<meta name="twitter:description" content="这篇我们要学习Docker的持久化存储和数据共享。 我们知道相比于镜像而言，容器是可进行读写的。但是当我们删除了容器之后，之前的读写数据也会被清空。 Docker通过一种机制将数据写的时候map的Docker主机或者某个存储。这样即使Docker容器删了，数据源还会保留。  Docker持久化数据的方案  基于本地文件系统的Volume。可以在执行Docker create或者Docker run">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fwp7v7r6h0j31e40kuwl7.jpg">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/tags/Python/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/10/29/Docker学习笔记第四篇-存储篇/"/>
 
 
 
 
 
-  <title>标签: Python | 红烧肉</title>
+  <title>Docker学习笔记第四篇-存储篇 | 红烧肉</title>
   
 
 
@@ -145,7 +151,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -287,310 +293,299 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Python<small>标签</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/10/29/Docker学习笔记第四篇-存储篇/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/09/26/asyncio并发编程/" itemprop="url">
-              
-                <span itemprop="name">asyncio并发编程-上</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Docker学习笔记第四篇-存储篇</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-26T14:08:02+08:00"
-              content="2018-09-26" >
-          09-26
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T17:18:22+08:00">
+                2018-10-29
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/29/Docker学习笔记第四篇-存储篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/29/Docker学习笔记第四篇-存储篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/29/Docker学习笔记第四篇-存储篇/" class="leancloud_visitors" data-flag-title="Docker学习笔记第四篇-存储篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  700 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/09/25/协程和异步IO-下/" itemprop="url">
-              
-                <span itemprop="name">协程和异步IO-下</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-25T14:40:48+08:00"
-              content="2018-09-25" >
-          09-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/09/24/协程和异步IO-中/" itemprop="url">
-              
-                <span itemprop="name">协程和异步IO-中</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-24T15:55:16+08:00"
-              content="2018-09-24" >
-          09-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/09/24/协程和异步IO-上/" itemprop="url">
-              
-                <span itemprop="name">协程和异步IO-上</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-24T13:54:04+08:00"
-              content="2018-09-24" >
-          09-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/09/21/一个用Python做图表的库-pyecharts/" itemprop="url">
-              
-                <span itemprop="name">一个用Python做图表的库-pyecharts</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-21T16:00:33+08:00"
-              content="2018-09-21" >
-          09-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/27/使用Pipenv来创建虚拟环境/" itemprop="url">
-              
-                <span itemprop="name">使用Pipenv来创建虚拟环境</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-27T17:54:50+08:00"
-              content="2018-08-27" >
-          08-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/17/使用pyppeteer进行页面抓取/" itemprop="url">
-              
-                <span itemprop="name">使用pyppeteer进行页面抓取</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-17T16:19:20+08:00"
-              content="2018-08-17" >
-          08-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/07/13/Python中Socket编程/" itemprop="url">
-              
-                <span itemprop="name">Python中Socket编程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-07-13T10:46:05+08:00"
-              content="2018-07-13" >
-          07-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/07/12/python多线程/" itemprop="url">
-              
-                <span itemprop="name">python多线程多进程和线程池编程-下</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-07-12T17:58:42+08:00"
-              content="2018-07-12" >
-          07-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/07/11/Python的多线程多进程和线程池编程（一）/" itemprop="url">
-              
-                <span itemprop="name">Python的多线程多进程和线程池编程-上</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-07-11T11:15:37+08:00"
-              content="2018-07-11" >
-          07-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <p>这篇我们要学习<code>Docker</code>的持久化存储和数据共享。</p>
+<p>我们知道相比于镜像而言，容器是可进行读写的。但是当我们删除了容器之后，之前的读写数据也会被清空。</p>
+<p><code>Docker</code>通过一种机制将数据写的时候<code>map</code>的<code>Docker</code>主机或者某个存储。这样即使<code>Docker</code>容器删了，数据源还会保留。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwp7v7r6h0j31e40kuwl7.jpg" alt="image-20181029172230225"></p>
+<p><code>Docker</code>持久化数据的方案</p>
+<ol>
+<li>基于本地文件系统的<code>Volume</code>。可以在执行<code>Docker create</code>或者<code>Docker run</code>时，通过<code>-v</code>参数将主机的目录作为容器的数据卷。这部分功能便是基于本地文件系统的<code>volume</code>管理。</li>
+<li>基于<code>plugin</code>的<code>Volume</code>，支持第三方的存储方案，比如<code>NAS</code>，<code>aws</code>。</li>
+</ol>
+<p><code>Volume</code>的类型</p>
+<ol>
+<li>受管理的<code>data Volume</code>，由<code>docker</code>后台自动创建。</li>
+<li>绑定挂在的<code>Volume</code>，具体挂载位置可以由用户指定。 </li>
+</ol>
+<h5 id="数据持久化：Data-Volume"><a href="#数据持久化：Data-Volume" class="headerlink" title="数据持久化：Data Volume"></a>数据持久化：Data Volume</h5><p>场景：想保存容器中的一些数据。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwp8lq4q24j31g80k2wiz.jpg" alt="image-20181029174801504"></p>
+<p>我们再建个<code>mysql2</code>。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwp8t3amvmj31ju0l0wjg.jpg" alt="image-20181029175506921"></p>
+<p>我们将容器删除看看卷组还在不：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host ~]$ docker stop mysql1 mysql2</span><br><span class="line">mysql1</span><br><span class="line">mysql2</span><br><span class="line">[vagrant@docker-host ~]$ docker rm mysql1 mysql2</span><br><span class="line">mysql1</span><br><span class="line">mysql2</span><br><span class="line">[vagrant@docker-host ~]$ docker volume ls</span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               <span class="number">716</span>b55775a4cc3109f108500bd8788a89969096a890ce76d190a3b329cb2d372</span><br><span class="line">local               cee5e18509f45c7e9229bd2bab87bb9a0d0b9bda12c2eb3b480ab03cd034fd2a</span><br></pre></td></tr></table></figure>
+<p>上面的<code>volume</code>名字不是很友好，我们可以为<code>volume</code>指定一个好记得名字。</p>
+<p>我们现在新建一个容器指定<code>volume</code>的名字。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host ~]$ docker run -d -v mysql:/var/lib/mysql --name mysql1 -e MYSQL_ALLOW_EMPTY_PASSWORD=true  mysql</span><br><span class="line"></span><br><span class="line">[vagrant@docker-host ~]$ docker volume ls</span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               mysql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制删除正在运行的容器</span></span><br><span class="line">[vagrant@docker-host ~]$ docker rm -f mysql1</span><br><span class="line">mysql1</span><br></pre></td></tr></table></figure>
+<p>将第一个容器删除我们可以使用保留下来的容器。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host ~]$ docker run -d -v mysql:/var/lib/mysql --name mysql2 -e MYSQL_ALLOW_EMPTY_PASSWORD=true  mysql</span><br></pre></td></tr></table></figure>
+<p>这种持久化是将容器的数据文件映射到<code>volume</code>，通过<code>volume</code>进行数据的存储。</p>
+<p>需要持久化的文件在<code>Dockerfile</code>中指定：<code>VOLUME /var/lib/mysql</code>。</p>
+<p>适用场景一般是容器本身是数据产生的地方。</p>
+<h5 id="数据持久化之Bind-Mouting"><a href="#数据持久化之Bind-Mouting" class="headerlink" title="数据持久化之Bind Mouting"></a>数据持久化之Bind Mouting</h5><p>这个小节我们学习目录映射方式持久化存储数据。</p>
+<p>相比于<code>volume</code>方式的持久化<code>Bind Mouting</code>的持久化不需要再<code>Dockerfile</code>中指定<code>volume</code>对应的文件目录，只需要在运行容器的时候指定相互映射的文件或目录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /home/aaa:/root/aaa</span><br></pre></td></tr></table></figure>
+<p>这种方式相互映射的文件或者目录是同步修改的即当我们无论是修改容器内文件还是<code>docker</code>主机对应的文件，映射的文件都会改变。</p>
+<p>这个方式对我们开发人员很实用，可以将对应的项目文件映射到容器，只需要修改<code>docker</code>主机的目录文件即可修改。</p>
 
       
     </div>
+    
+    
+    
 
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/25/Docker学习笔记第三篇-网络下篇/" rel="next" title="Docker学习笔记第三篇-网络下篇">
+                <i class="fa fa-chevron-left"></i> Docker学习笔记第三篇-网络下篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/tags/Python/page/2/">2</a><a class="page-number" href="/tags/Python/page/3/">3</a><a class="extend next" rel="next" href="/tags/Python/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -598,6 +593,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -618,8 +620,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -706,6 +717,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#数据持久化：Data-Volume"><span class="nav-number">1.</span> <span class="nav-text">数据持久化：Data Volume</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据持久化之Bind-Mouting"><span class="nav-number">2.</span> <span class="nav-text">数据持久化之Bind Mouting</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -870,6 +897,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
