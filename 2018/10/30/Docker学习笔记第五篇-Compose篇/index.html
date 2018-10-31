@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="这篇我们学习下Docker的Compose。 部署一个wordpress首先准备好两个镜像： 1234[vagrant@docker-host ~]$ docker imagesREPOSITORY          TAG                 IMAGE ID            CREATED             SIZEmysql               latest">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习笔记第五篇-Compose篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/10/30/Docker学习笔记第五篇-Compose篇/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="这篇我们学习下Docker的Compose。 部署一个wordpress首先准备好两个镜像： 1234[vagrant@docker-host ~]$ docker imagesREPOSITORY          TAG                 IMAGE ID            CREATED             SIZEmysql               latest">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwqc83e061j31kg086tai.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwrike0p42j312q05cq4h.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwrj5f9q2qj317i0i0q85.jpg">
+<meta property="og:updated_time" content="2018-10-31T10:00:14.246Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker学习笔记第五篇-Compose篇">
+<meta name="twitter:description" content="这篇我们学习下Docker的Compose。 部署一个wordpress首先准备好两个镜像： 1234[vagrant@docker-host ~]$ docker imagesREPOSITORY          TAG                 IMAGE ID            CREATED             SIZEmysql               latest">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwqc83e061j31kg086tai.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/10/30/Docker学习笔记第五篇-Compose篇/"/>
+
+
+
+
+
+  <title>Docker学习笔记第五篇-Compose篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/10/30/Docker学习笔记第五篇-Compose篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker学习笔记第五篇-Compose篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T10:38:32+08:00">
+                2018-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/30/Docker学习笔记第五篇-Compose篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/30/Docker学习笔记第五篇-Compose篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/30/Docker学习笔记第五篇-Compose篇/" class="leancloud_visitors" data-flag-title="Docker学习笔记第五篇-Compose篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,710 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇我们学习下<code>Docker</code>的<code>Compose</code>。</p>
+<h5 id="部署一个wordpress"><a href="#部署一个wordpress" class="headerlink" title="部署一个wordpress"></a>部署一个wordpress</h5><p>首先准备好两个镜像：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host ~]$ docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">mysql               latest              <span class="number">2</span>dd01afbe8df        <span class="number">5</span> days ago          <span class="number">485</span>MB</span><br><span class="line">wordpress           latest              <span class="number">9451</span>d745d1dd        <span class="number">13</span> days ago         <span class="number">408</span>MB</span><br></pre></td></tr></table></figure>
+<p>我们需要搭建的<code>wordpress</code>由两部分组成，一个是<code>web</code>服务，一个是对应的数据服务。</p>
+<p>先创建一个<code>MySQL</code>的容器</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwqc83e061j31kg086tai.jpg" alt="image-20181030163853073"></p>
+<p>创建<code>MySQL</code>容器的时候指定数据的<code>root</code>账户密码和数据库名字。</p>
+<p>这里我们不用把<code>3306</code>端口映射出来的原因是我们并不想外面访问，在同一个<code>Docker</code>主机上的容器在同一个网络上是可以直接访问该容器的端口的。</p>
+<p>创建<code>wordpress</code>的容器</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host ~]$  docker run -d -e WORDPRESS_DB_HOST=mysql:<span class="number">3306</span> --link mysql -p <span class="number">8080</span>:<span class="number">80</span> wordpress</span><br><span class="line"><span class="number">89</span>dd8a8cb34d27c2eb9563838ffe176e51a54ccafa06dd1079529a2a7b02afd7</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-e WORDPRESS_DB_PASSWORD=...</code> (defaults to the value of the <code>MYSQL_ROOT_PASSWORD</code>environment variable from the linked <code>mysql</code> container)</li>
+</ul>
+<p>这样直接访问本地<code>8080</code>端口即可。</p>
+<p>这样我们使用了两个容器启动了一个<code>wordpress</code>。</p>
+<p>对于一个服务需要多个容器的话我们需要分别管理各个容器，有些麻烦。</p>
+<p>我们可以将这些容器当成一个组，可以统一管理（启动，删除等），这就是<code>Docker Compose</code>。</p>
+<h5 id="Docker-Compo到底是什么？"><a href="#Docker-Compo到底是什么？" class="headerlink" title="Docker Compo到底是什么？"></a>Docker Compo到底是什么？</h5><ul>
+<li><code>Docker Compo</code>是一个命令行工具，可以批处理容器。</li>
+<li>这个工具可以通过一个<code>yml</code>文件定义多容器的<code>docker</code>应用。</li>
+<li>通过一个命令就可以根据<code>yml</code>文件的定义去创建或者管理这多个容器</li>
+</ul>
+<p>官方文档：<a href="https://docs.docker.com/compose/compose-file/#reference-and-guidelines" target="_blank" rel="noopener">https://docs.docker.com/compose/compose-file/#reference-and-guidelines</a></p>
+<p>这个关键的<code>yml</code>文件有一个默认的名字<code>docker-compose.yml</code>，我们是可以修改这个名字的。</p>
+<p>不同版本的<code>Compose</code>的功能是稍微不同的：对于<code>version 3</code>来说是支持多机的，<code>version 2</code>是不支持多机的。</p>
+<p>现在一般都是使用<code>version 3</code>，我们看下一个师范的<code>yml</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis:alpine</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;6379&quot;</span><br><span class="line">    networks:</span><br><span class="line">      - frontend</span><br><span class="line">    deploy:</span><br><span class="line">      replicas: 2</span><br><span class="line">      update_config:</span><br><span class="line">        parallelism: 2</span><br><span class="line">        delay: 10s</span><br><span class="line">      restart_policy:</span><br><span class="line">        condition: on-failure</span><br><span class="line"></span><br><span class="line">  db:</span><br><span class="line">    image: postgres:9.4</span><br><span class="line">    volumes:</span><br><span class="line">      - db-data:/var/lib/postgresql/data</span><br><span class="line">    networks:</span><br><span class="line">      - backend</span><br><span class="line">    deploy:</span><br><span class="line">      placement:</span><br><span class="line">        constraints: [node.role == manager]</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  frontend:</span><br><span class="line">  backend:</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  db-data:</span><br></pre></td></tr></table></figure>
+<p><code>Compose</code>的<code>yml</code>文件中有三个主要的组成：<code>Services</code>,<code>Networks</code>,<code>Volumes</code>。</p>
+<h6 id="service"><a href="#service" class="headerlink" title="service"></a>service</h6><p>一个<code>service</code>代表一个<code>container</code>，这个<code>container</code>可以从<code>dockerhub</code>的<code>image</code>来创建，或者从本地的<code>Dockerfile build</code>出来的<code>image</code>来创建。</p>
+<p><code>Service</code>的启动类似<code>docker run</code>，我们可以给其指定<code>network</code>和<code>volume</code>,所以可以给<code>service</code>指定<code>network</code>和<code>Volume</code>的引用。</p>
+<p>我们看个栗子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  db:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">postgres:9.4</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"db-data:/var/lib/postgresql/data"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">back-tier</span></span><br></pre></td></tr></table></figure>
+<p>上面的<code>yaml</code>文件功能和下面的一样：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --network back-tier -v db-data:/var/lib/postgresql/<span class="keyword">data</span> postgres:<span class="number">9.4</span></span><br></pre></td></tr></table></figure>
+<p>我们还可以直接指定<code>Dockerfile</code>文件，<code>build</code>出对应的镜像。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">service:</span></span><br><span class="line"><span class="attr">  worker:</span></span><br><span class="line"><span class="attr">    build:</span> <span class="string">./worker</span></span><br><span class="line"><span class="attr">    links:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">db</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">back-tier</span></span><br></pre></td></tr></table></figure>
+<h6 id="Volumes"><a href="#Volumes" class="headerlink" title="Volumes"></a>Volumes</h6><p>我们看到上面的<code>yaml</code>文件中有使用<code>volumes</code>:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">      - <span class="string">"db-data:/var/lib/postgresql/data"</span></span><br></pre></td></tr></table></figure>
+<p>这么引用是因为我们需要在和<code>services</code>同级的地方定义一下这个<code>volumes</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="attr">  db-data:</span></span><br></pre></td></tr></table></figure>
+<p>上面相当于创建了一个<code>volumes</code>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create db-data</span><br></pre></td></tr></table></figure>
+<h6 id="Networks"><a href="#Networks" class="headerlink" title="Networks"></a>Networks</h6><p>我们看到上面的<code>yaml</code>文件中有使用<code>networks</code>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">back-tier</span></span><br></pre></td></tr></table></figure>
+<p>这么引用是因为我们需要在和<code>services</code>同级的地方定义一下这个<code>networks</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  back-tier:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+<p>上面的相当于使用<code>bridge</code>当驱动创建了一个名为<code>back-tier</code>的网络。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create -d bridge back-tier</span><br></pre></td></tr></table></figure>
+<p>我们看下如何将第一个小节部署的<code>wordpress</code>服务通过<code>Docker Compose</code>的<code>yaml</code>抒写：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span>	<span class="comment"># 表示使用版本</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  wordpress:</span>	<span class="comment"># 容器名字</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">wordpress</span>	<span class="comment"># 使用的镜像</span></span><br><span class="line"><span class="attr">    ports:</span>	<span class="comment"># 端口映射</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">8080</span><span class="string">:80</span></span><br><span class="line"><span class="attr">    environment:</span>	<span class="comment"># 设置环境变量 相当于命令行下的 -e 参数</span></span><br><span class="line"><span class="attr">      WORDPRESS_DB_HOST:</span> <span class="string">mysql</span></span><br><span class="line"><span class="attr">      WORDPRESS_DB_PASSWORD:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">    networks:</span>	<span class="comment"># 指定网络</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">my-bridge</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  mysql:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">mysql</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="attr">      MYSQL_ROOT_PASSWORD:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">      MYSQL_DATABASE:</span> <span class="string">wordpress</span></span><br><span class="line"><span class="attr">    volumes:</span>	<span class="comment"># 指定使用容器</span></span><br><span class="line"><span class="attr">      - mysql-data:</span><span class="string">/var/lib/mysql</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">my-bridge</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span>	<span class="comment"># 创建容器</span></span><br><span class="line"><span class="attr">  mysql-data:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span>	<span class="comment"># 创建网络</span></span><br><span class="line"><span class="attr">  my-bridge:</span>	<span class="comment"># 指定使用驱动</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+<h5 id="Docker-Compose的安装和基本使用"><a href="#Docker-Compose的安装和基本使用" class="headerlink" title="Docker Compose的安装和基本使用"></a>Docker Compose的安装和基本使用</h5><h6 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h6><p>我们看下<code>Linux</code>环境下如何安装</p>
+<p>官方文档：<a href="https://docs.docker.com/compose/install/#install-compose" target="_blank" rel="noopener">https://docs.docker.com/compose/install/#install-compose</a></p>
+<p>直接执行下面命令安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+<p>赋予可执行权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+<p>验证版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# docker-compose --version</span><br><span class="line">docker-compose version 1.22.0, build f46880fe</span><br></pre></td></tr></table></figure>
+<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><p>我们看看如何使用</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  wordpress ls</span><br><span class="line">docker-compose.yml</span><br><span class="line">➜  wordpress docker-compose -f docker-compose.yml up</span><br><span class="line">Creating network <span class="string">"wordpress_my-bridge"</span> with driver <span class="string">"bridge"</span></span><br><span class="line">Creating volume <span class="string">"wordpress_mysql-data"</span> with default driver</span><br><span class="line">Creating wordpress_mysql_1     ... done</span><br><span class="line">Creating wordpress_wordpress_1 ... done</span><br></pre></td></tr></table></figure>
+<p>当我们使用<code>docker-compose up</code>的时候会默认执行当前目录下名为<code>docker-compose.yml</code>的文件，我们同样可以使用<code>-f</code>参数指定文件。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  wordpress docker-compose -f docker-compose.yml up -d</span><br><span class="line">Creating wordpress_wordpress_1 ... done</span><br><span class="line">Creating wordpress_mysql_1     ... done</span><br></pre></td></tr></table></figure>
+<p>我们看下命令有哪些</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Commands:</span><br><span class="line">  build              Build or rebuild services</span><br><span class="line">  bundle             Generate a Docker bundle from the Compose file</span><br><span class="line">  config             Validate and view the Compose file</span><br><span class="line">  create             Create services</span><br><span class="line">  down               Stop and remove containers, networks, images, and volumes</span><br><span class="line">  events             Receive real time events from containers</span><br><span class="line">  exec               Execute a command <span class="keyword">in</span> a running container</span><br><span class="line">  help               Get help on a command</span><br><span class="line">  images             List images</span><br><span class="line">  kill               Kill containers</span><br><span class="line">  logs               View output from containers</span><br><span class="line">  pause              Pause services</span><br><span class="line">  port               Print the public port <span class="keyword">for</span> a port binding</span><br><span class="line">  ps                 List containers</span><br><span class="line">  pull               Pull service images</span><br><span class="line">  push               Push service images</span><br><span class="line">  restart            Restart services</span><br><span class="line">  rm                 Remove stopped containers</span><br><span class="line">  run                Run a one-off command</span><br><span class="line">  scale              Set number of containers <span class="keyword">for</span> a service</span><br><span class="line">  start              Start services</span><br><span class="line">  stop               Stop services</span><br><span class="line">  top                Display the running processes</span><br><span class="line">  unpause            Unpause services</span><br><span class="line">  up                 Create and start containers</span><br><span class="line">  version            Show the Docker-Compose version information</span><br></pre></td></tr></table></figure>
+<p>使用<code>ps</code>列出创建的容器。</p>
+<p>上面说错了一点，<code>services</code>名字并不是容器的名字。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  wordpress docker-compose ps</span><br><span class="line">        Name                       Command               State          Ports</span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line">wordpress_mysql_1       docker-entrypoint.sh mysqld      Up      <span class="number">3306</span>/tcp, <span class="number">33060</span>/tcp</span><br><span class="line">wordpress_wordpress_1   docker-entrypoint.sh apach ...   Up      <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8080</span>-&gt;<span class="number">80</span>/tcp</span><br></pre></td></tr></table></figure>
+<p>使用<code>stop</code>停止，使用<code>start</code>开启，使用<code>down</code>停止并删除</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  wordpress docker-compose stop</span><br><span class="line">Stopping wordpress_mysql_1 ... done</span><br><span class="line"></span><br><span class="line">➜  wordpress docker-compose down</span><br><span class="line">Removing wordpress_mysql_1     ... done</span><br><span class="line">Removing wordpress_wordpress_1 ... done</span><br><span class="line">Removing network wordpress_my-bridge</span><br></pre></td></tr></table></figure>
+<p>使用<code>images</code>可以查看创建的容器及其使用镜像</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  wordpress docker-compose images</span><br><span class="line">      Container         Repository    Tag       Image Id      Size</span><br><span class="line">-------------------------------------------------------------------</span><br><span class="line">wordpress_mysql_1       mysql        latest   <span class="number">2</span>dd01afbe8df   <span class="number">463</span> MB</span><br><span class="line">wordpress_wordpress_1   wordpress    latest   <span class="number">9451</span>d745d1dd   <span class="number">389</span> MB</span><br></pre></td></tr></table></figure>
+<p>使用<code>exec</code>进入到容器中</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  wordpress docker-compose exec mysql bash</span><br><span class="line">root@<span class="number">292</span>a8a89eba0:/<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>上面我们使用的<code>yaml</code>文件是直接从远程拉取镜像，下面我们看一个<code>Flask</code>程序，镜像是通过<code>Dockerfile</code>创建而来的。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">➜  flask-redis ls</span><br><span class="line">Dockerfile         app.py             docker-compose.yml</span><br><span class="line">➜  flask-redis cat docker-compose.yml</span><br><span class="line">version: <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line"></span><br><span class="line">  web:</span><br><span class="line">    build:</span><br><span class="line">      context: .	<span class="comment"># 上下文环境当前目录 指定 Dockerfile 的位置</span></span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">8080</span>:<span class="number">5000</span></span><br><span class="line">    environment:</span><br><span class="line">      REDIS_HOST: redis</span><br></pre></td></tr></table></figure>
+<p>直接使用<code>compose</code>进行创建容器</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  flask-redis docker-compose up -d</span><br><span class="line">Creating network <span class="string">"flask-redis_default"</span> with the default driver</span><br><span class="line">Building web</span><br></pre></td></tr></table></figure>
+<p>运行完成后 查看浏览器</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwrike0p42j312q05cq4h.jpg" alt="image-20181031170351728"></p>
+<p>这样我们就使用<code>compose</code>通过<code>Dockerfile</code>创建了一个完成的容器应用。</p>
+<h5 id="水平扩展和负载均衡"><a href="#水平扩展和负载均衡" class="headerlink" title="水平扩展和负载均衡"></a>水平扩展和负载均衡</h5><p>上面我们已经成功运行起来了<code>web</code>服务，但是是单一的服务，当存在高并发的时候可用性较差。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwrj5f9q2qj317i0i0q85.jpg" alt="image-20181031172404411"></p>
+<p>这个小节，我们将完成上面的一个具有负载均衡的多服务的一个配置。</p>
+<p>实现的主要技术点是使用<code>scale</code>，将容器扩展到指定数目。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--scale SERVICE=NUM        Scale SERVICE to NUM instances. Overrides the</span><br><span class="line">                           `scale` setting <span class="keyword">in</span> the Compose file <span class="keyword">if</span> present.</span><br></pre></td></tr></table></figure>
+<p>现在我们使用上节的<code>yaml</code>文件做实验，不过需要修改调端口映射，防止报错。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line"></span><br><span class="line">  web:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    environment:</span><br><span class="line">      REDIS_HOST: redis</span><br></pre></td></tr></table></figure>
+<p>我们先运行起整个服务</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">➜  flask-redis docker-compose up -d</span><br><span class="line">Creating network <span class="string">"flask-redis_default"</span> with the default driver</span><br><span class="line">Creating flask-redis_redis_1 ... done</span><br><span class="line">Creating flask-redis_web_1   ... done</span><br><span class="line"></span><br><span class="line">➜  flask-redis docker-compose ps</span><br><span class="line">       Name                      Command               State    Ports</span><br><span class="line">-----------------------------------------------------------------------</span><br><span class="line">flask-redis_redis_1   docker-entrypoint.sh redis ...   Up      <span class="number">6379</span>/tcp</span><br><span class="line">flask-redis_web_1     python app.py                    Up      <span class="number">5000</span>/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 web 服务扩展至 3 个</span></span><br><span class="line">➜  flask-redis docker-compose up --scale web=<span class="number">3</span> -d</span><br><span class="line">flask-redis_redis_1 is up-to-date</span><br><span class="line">Starting flask-redis_web_1 ... done</span><br><span class="line">Creating flask-redis_web_2 ... done</span><br><span class="line">Creating flask-redis_web_3 ... done</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们可以看到 web 服务已经扩展到 3 个</span></span><br><span class="line">➜  flask-redis docker-compose ps</span><br><span class="line">       Name                      Command               State    Ports</span><br><span class="line">-----------------------------------------------------------------------</span><br><span class="line">flask-redis_redis_1   docker-entrypoint.sh redis ...   Up      <span class="number">6379</span>/tcp</span><br><span class="line">flask-redis_web_1     python app.py                    Up      <span class="number">5000</span>/tcp</span><br><span class="line">flask-redis_web_2     python app.py                    Up      <span class="number">5000</span>/tcp</span><br><span class="line">flask-redis_web_3     python app.py                    Up      <span class="number">5000</span>/tcp</span><br></pre></td></tr></table></figure>
+<p>上面三个<code>web</code>服务监听的事容器的5000端口，并没有端口映射，这三个web服务都会访问redis服务。</p>
+<p>这时候虽然服务多了起来，但是还是需要一个负载均衡将访问均分到每个web服务。</p>
+<p>现在我们根据老师提供的文件，增加上负载均衡。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">➜  lb-scale ls</span><br><span class="line">Dockerfile         app.py             docker-compose.yml</span><br><span class="line">➜  lb-scale cat docker-compose.yml</span><br><span class="line">version: <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line"></span><br><span class="line">  web:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    environment:</span><br><span class="line">      REDIS_HOST: redis</span><br><span class="line"></span><br><span class="line">  lb:</span><br><span class="line">    image: dockercloud/haproxy</span><br><span class="line">    links:</span><br><span class="line">      - web</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">8080</span>:<span class="number">80</span>	<span class="comment"># 将监听的 80 转发到 8080</span></span><br><span class="line">    volumes:</span><br><span class="line">      - /var/run/docker.sock:/var/run/docker.sock</span><br></pre></td></tr></table></figure>
+<p>首先我们创建服务：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">➜  lb-scale ls</span><br><span class="line">Dockerfile         app.py             docker-compose.yml</span><br><span class="line">➜  lb-scale docker-compose up -d</span><br><span class="line">Creating network <span class="string">"lb-scale_default"</span> with the default driver</span><br><span class="line"></span><br><span class="line">➜  lb-scale docker-compose ps</span><br><span class="line">      Name                    Command               State                    Ports</span><br><span class="line">---------------------------------------------------------------------------------------------------</span><br><span class="line">lb-scale_lb_1      /sbin/tini -- dockercloud- ...   Up      <span class="number">1936</span>/tcp, <span class="number">443</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8080</span>-&gt;<span class="number">80</span>/tcp</span><br><span class="line">lb-scale_redis_1   docker-entrypoint.sh redis ...   Up      <span class="number">6379</span>/tcp</span><br><span class="line">lb-scale_web_1     python app.py                    Up      <span class="number">80</span>/tcp</span><br></pre></td></tr></table></figure>
+<p>看看有哪些容器</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  lb-scale docker ps</span><br><span class="line">CONTAINER ID        IMAGE                 COMMAND                  CREATED              STATUS              PORTS                                     NAMES</span><br><span class="line">ebd82d6299df        dockercloud/haproxy   <span class="string">"/sbin/tini -- docke…"</span>   About a minute ago   Up About a minute   <span class="number">443</span>/tcp, <span class="number">1936</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8080</span>-&gt;<span class="number">80</span>/tcp   lb-scale_lb_1</span><br><span class="line"><span class="number">9853</span>af9f950d        redis                 <span class="string">"docker-entrypoint.s…"</span>   About a minute ago   Up About a minute   <span class="number">6379</span>/tcp                                  lb-scale_redis_1</span><br><span class="line"><span class="number">69117</span>a34ca80        lb-scale_web          <span class="string">"python app.py"</span>          About a minute ago   Up About a minute   <span class="number">80</span>/tcp                                    lb-scale_web_1</span><br></pre></td></tr></table></figure>
+<p>访问我们创建的服务</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  lb-scale curl <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></span><br><span class="line">Hello Container World! I have been seen <span class="number">1</span> times and my hostname is <span class="number">69117</span>a34ca80.</span><br></pre></td></tr></table></figure>
+<p>最后的<code>69117a34ca80</code>是容容器的ID。</p>
+<p>我们将<code>wbe</code>服务扩展为三个然后再访问服务。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">➜  lb-scale docker-compose up --scale web=<span class="number">3</span> -d</span><br><span class="line">Starting lb-scale_web_1 ...</span><br><span class="line">Starting lb-scale_web_1 ... done</span><br><span class="line">Creating lb-scale_web_2 ... done</span><br><span class="line">Creating lb-scale_web_3 ... done</span><br><span class="line">lb-scale_lb_1 is up-to-date</span><br><span class="line">➜  lb-scale curl <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></span><br><span class="line">Hello Container World! I have been seen <span class="number">2</span> times and my hostname is <span class="number">69117</span>a34ca80.</span><br><span class="line">➜  lb-scale curl <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></span><br><span class="line">Hello Container World! I have been seen <span class="number">3</span> times and my hostname is b5be3d9d4418.</span><br><span class="line">➜  lb-scale curl <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></span><br><span class="line">Hello Container World! I have been seen <span class="number">4</span> times and my hostname is <span class="number">86</span>bbf0c65c3d.</span><br><span class="line">➜  lb-scale curl <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></span><br><span class="line">Hello Container World! I have been seen <span class="number">5</span> times and my hostname is <span class="number">69117</span>a34ca80.</span><br></pre></td></tr></table></figure>
+<p>通过最后打印的容器ID，我们可以看到通过负载均衡轮询分配。</p>
+<blockquote>
+<p>scale不仅可以往大的方向扩展，还可以往小的方向收缩</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i>Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/29/Docker学习笔记第四篇-存储篇/" rel="next" title="Docker学习笔记第四篇-存储篇">
+                <i class="fa fa-chevron-left"></i> Docker学习笔记第四篇-存储篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#部署一个wordpress"><span class="nav-number">1.</span> <span class="nav-text">部署一个wordpress</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Compo到底是什么？"><span class="nav-number">2.</span> <span class="nav-text">Docker Compo到底是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#service"><span class="nav-number">2.1.</span> <span class="nav-text">service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Volumes"><span class="nav-number">2.2.</span> <span class="nav-text">Volumes</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Networks"><span class="nav-number">2.3.</span> <span class="nav-text">Networks</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Compose的安装和基本使用"><span class="nav-number">3.</span> <span class="nav-text">Docker Compose的安装和基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#安装"><span class="nav-number">3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用"><span class="nav-number">3.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#水平扩展和负载均衡"><span class="nav-number">4.</span> <span class="nav-text">水平扩展和负载均衡</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
