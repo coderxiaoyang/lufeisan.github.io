@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Tornado," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="这篇我们将学习Tornado的web基础。 用tornado写个hello world我们使用tornado编写一个简单的web页面。 1234567891011121314151617181920212223242526272829from tornado import webimport tornado# 这里的类名随意起，用于和路由一一对应# 类要继承 RequestHandler 来实现">
+<meta name="keywords" content="Tornado">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tornado学习笔记第三篇-tornado的web基础上篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/11/02/Tornado学习笔记第三篇-tornado的web基础上篇/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="这篇我们将学习Tornado的web基础。 用tornado写个hello world我们使用tornado编写一个简单的web页面。 1234567891011121314151617181920212223242526272829from tornado import webimport tornado# 这里的类名随意起，用于和路由一一对应# 类要继承 RequestHandler 来实现">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwtrk3rwd9j311o0r4te4.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwtrlac8zkj311o0r4q8e.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwts8oxwl2j30su08ygou.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fwtsszffeqj31e808udho.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwup4vvco7j30wk0b6wfm.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuvvytrppj31ck0tyakj.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuw4skauoj310k04qjs8.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwcl1b56j31da04i403.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fwuwir2263j31dk06g769.jpg">
+<meta property="og:updated_time" content="2018-11-03T08:06:48.487Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tornado学习笔记第三篇-tornado的web基础上篇">
+<meta name="twitter:description" content="这篇我们将学习Tornado的web基础。 用tornado写个hello world我们使用tornado编写一个简单的web页面。 1234567891011121314151617181920212223242526272829from tornado import webimport tornado# 这里的类名随意起，用于和路由一一对应# 类要继承 RequestHandler 来实现">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwtrk3rwd9j311o0r4te4.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/11/02/Tornado学习笔记第三篇-tornado的web基础上篇/"/>
+
+
+
+
+
+  <title>Tornado学习笔记第三篇-tornado的web基础上篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/11/02/Tornado学习笔记第三篇-tornado的web基础上篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tornado学习笔记第三篇-tornado的web基础上篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-02T15:01:44+08:00">
+                2018-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">Tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/02/Tornado学习笔记第三篇-tornado的web基础上篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/11/02/Tornado学习笔记第三篇-tornado的web基础上篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/02/Tornado学习笔记第三篇-tornado的web基础上篇/" class="leancloud_visitors" data-flag-title="Tornado学习笔记第三篇-tornado的web基础上篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,794 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇我们将学习<code>Tornado</code>的web基础。</p>
+<h5 id="用tornado写个hello-world"><a href="#用tornado写个hello-world" class="headerlink" title="用tornado写个hello world"></a>用tornado写个hello world</h5><p>我们使用<code>tornado</code>编写一个简单的web页面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> web</span><br><span class="line"><span class="keyword">import</span> tornado</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里的类名随意起，用于和路由一一对应</span></span><br><span class="line"><span class="comment"># 类要继承 RequestHandler 来实现 web请求</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="comment"># 当客户端发起不同的http方法的时候， 只需要重载handler中的对应的方法即可</span></span><br><span class="line">    <span class="comment"># 下面的 async 写的话将其变成一个协程</span></span><br><span class="line">    <span class="comment"># 当不存在await 的情况下是可以不写 async 的</span></span><br><span class="line">    <span class="comment"># tornado的核心是一个单线程的模式 尽量不要在方法中写一些阻塞代码</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># write 将字符串回写到客户端或者 socket</span></span><br><span class="line">        self.write(<span class="string">"hello world"</span>)</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment"># 我们真正启动的是这个 app </span></span><br><span class="line">    <span class="comment"># 创建实例的时候将路由和对应的Handler输出进去 </span></span><br><span class="line">    <span class="comment"># 传入的是一个 list</span></span><br><span class="line">    <span class="comment"># 设置 debug 为 True 开启调试模式</span></span><br><span class="line">    app = web.Application([</span><br><span class="line">        (<span class="string">"/"</span>, MainHandler)</span><br><span class="line">    ], debug=<span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 监听的端口</span></span><br><span class="line">    app.listen(<span class="number">8888</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 核心是 ioloop</span></span><br><span class="line">    tornado.ioloop.IOLoop.current().start()</span><br></pre></td></tr></table></figure>
+<p>这段简洁的代码特别想<code>Flask</code>的。</p>
+<h5 id="tornado中为什么不能写同步的方法"><a href="#tornado中为什么不能写同步的方法" class="headerlink" title="tornado中为什么不能写同步的方法"></a>tornado中为什么不能写同步的方法</h5><p>这是因为<code>tornado</code>核心是一个单线程，当我们在一个请求中使用了同步代码的时候，会阻塞其他请求的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> web</span><br><span class="line"><span class="keyword">import</span> tornado</span><br><span class="line"></span><br><span class="line"><span class="comment"># web.URLSpec</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        time.sleep(<span class="number">5</span>)</span><br><span class="line">        self.write(<span class="string">"hello world1"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler2</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        self.write(<span class="string">"hello world2"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app = web.Application([</span><br><span class="line">        (<span class="string">"/"</span>, MainHandler),</span><br><span class="line">        (<span class="string">"/2/"</span>, MainHandler2)</span><br><span class="line">    ], debug=<span class="keyword">True</span>)</span><br><span class="line">    app.listen(<span class="number">8888</span>)</span><br><span class="line">    tornado.ioloop.IOLoop.current().start()</span><br></pre></td></tr></table></figure>
+<p>上面是两个<code>url</code>，我们在第一个请求中做了一个延时的<code>io</code>操作，现在我们看下直接访问第二个<code>url</code>的耗时。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwtrk3rwd9j311o0r4te4.jpg" alt="image-20181102154607193"></p>
+<p>当我们先访问第一个阻塞<code>url</code>的时候，再看下耗时：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwtrlac8zkj311o0r4q8e.jpg" alt="image-20181102154714643"></p>
+<h5 id="tornado中的url配置"><a href="#tornado中的url配置" class="headerlink" title="tornado中的url配置"></a>tornado中的url配置</h5><p>上面我们已经配置了<code>url</code>，对于包含变量的<code>url</code>我们可以使用下面的方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeopleInfoHandler</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, name, age, gender, *args, **kwargs)</span>:</span></span><br><span class="line">        self.write(<span class="string">"用户姓名:&#123;&#125;,用户年龄:&#123;&#125;,用户性别:&#123;&#125;,"</span>.format(name, age, gender))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后的 ? 可以确保访问的时候不加 / 的时候自动跳转到加了 / 的url</span></span><br><span class="line">urls = [</span><br><span class="line">    (<span class="string">"/people/(\w+)/(\d+)/(\w+)/?"</span>, PeopleInfoHandler),</span><br><span class="line"></span><br><span class="line">]</span><br><span class="line"><span class="comment"># 通过正则表达式的形式来指代变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app = web.Application(urls, debug=<span class="keyword">True</span>)</span><br><span class="line">    app.listen(<span class="number">8888</span>)</span><br><span class="line">    tornado.ioloop.IOLoop.current().start()</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwts8oxwl2j30su08ygou.jpg" alt="image-20181102160944357"></p>
+<p>使用<code>URLSpec</code>进行一些配置，我们先看下源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">URLSpec</span><span class="params">(Rule)</span>:</span></span><br><span class="line">    <span class="string">"""Specifies mappings between URLs and handlers.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionchanged: 4.5</span></span><br><span class="line"><span class="string">       `URLSpec` is now a subclass of a `Rule` with `PathMatches` matcher and is preserved for</span></span><br><span class="line"><span class="string">       backwards compatibility.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, pattern, handler, kwargs=None, name=None)</span>:</span></span><br><span class="line">        <span class="string">"""Parameters:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        * ``pattern``: Regular expression to be matched. Any capturing</span></span><br><span class="line"><span class="string">          groups in the regex will be passed in to the handler's</span></span><br><span class="line"><span class="string">          get/post/etc methods as arguments (by keyword if named, by</span></span><br><span class="line"><span class="string">          position if unnamed. Named and unnamed capturing groups</span></span><br><span class="line"><span class="string">          may not be mixed in the same rule).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        * ``handler``: `~.web.RequestHandler` subclass to be invoked.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        * ``kwargs`` (optional): A dictionary of additional arguments</span></span><br><span class="line"><span class="string">          to be passed to the handler's constructor.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        * ``name`` (optional): A name for this handler.  Used by</span></span><br><span class="line"><span class="string">          `~.web.Application.reverse_url`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br></pre></td></tr></table></figure>
+<p>我们可以为每个<code>url</code>配置一个名字，方便内部访问。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">urls = [</span><br><span class="line">    <span class="comment"># 下面这种方式可以给每个变量命名 增加可读性 不够参数名字要和上面Handler的一致</span></span><br><span class="line">    tornado.web.URLSpec(<span class="string">"/people/(?P&lt;name&gt;\w+)/(?P&lt;age&gt;\d+)/(?P&lt;gender&gt;\w+)/?"</span>, PeopleInfoHandler, name=<span class="string">"people_info"</span>),</span><br><span class="line">    <span class="comment"># 配置如/people/name/age/gender/</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>比如我们可以在访问一个<code>url</code>的时候直接进行跳转</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># self.write("hello world")</span></span><br><span class="line">        <span class="comment"># 跳转到名字为 people_name 的url 如果存在可变参数 依次传入可变参数</span></span><br><span class="line">        self.redirect(self.reverse_url(<span class="string">"people_name"</span>, <span class="string">"bobby"</span>))</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeopleNameHandler</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, name, *args, **kwargs)</span>:</span></span><br><span class="line">        self.write(<span class="string">"用户姓名:&#123;&#125;"</span>.format(name))</span><br><span class="line"></span><br><span class="line">urls = [</span><br><span class="line">    tornado.web.URLSpec(<span class="string">"/"</span>, MainHandler, name=<span class="string">"index"</span>),</span><br><span class="line">    tornado.web.URLSpec(<span class="string">"/people/(\w+)/?"</span>, PeopleNameHandler, name=<span class="string">"people_name"</span>),  </span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>我们可以在<code>url</code>请求的时候传入一些初始化参数，再处理请求之前获得这些初始化参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeopleIdHandler</span><span class="params">(web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="comment"># 这里参数名要和下面传进去的数据一致</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self, name, key)</span>:</span></span><br><span class="line">        self.db_name = name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, id, *args, **kwargs)</span>:</span></span><br><span class="line">        self.write(<span class="string">"用户id:&#123;&#125;"</span>.format(id))</span><br><span class="line">        </span><br><span class="line">people_db = &#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"people"</span>,</span><br><span class="line">    <span class="string">"key"</span>: <span class="string">"value"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">urls = [</span><br><span class="line">    tornado.web.URLSpec(<span class="string">"/people/(\d+)/?"</span>, PeopleIdHandler, people_db, name=<span class="string">"people_id"</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>我们在配置路由的时候传入初始化数据<code>people_db</code>。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwtsszffeqj31e808udho.jpg" alt="image-20181102162914368"></p>
+<p>这种访问初始化的一个应用场景：针对不同的<code>url</code>访问不同的数据库。</p>
+<p>小节知识点：</p>
+<ol>
+<li>使用<code>reverse_url</code>通过参数名获得内部<code>url</code>可以进行可变参数拼接，类比<code>flask</code>的<code>url_for</code>。</li>
+<li>使用<code>redirect</code>重定向</li>
+<li>可以给<code>Handler</code>传一个初始值</li>
+</ol>
+<h5 id="关于-define-options-parse-comand-line"><a href="#关于-define-options-parse-comand-line" class="headerlink" title="关于 define,options,parse_comand_line"></a>关于 <code>define</code>,<code>options</code>,<code>parse_comand_line</code></h5><p>这个小节我们学习下如何在启动<code>python</code>模块的时候通过<code>tornado</code>的<code>option</code>模块传递一些参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tornado.options <span class="keyword">import</span> define, options, parse_command_line</span><br></pre></td></tr></table></figure>
+<p>看下<code>define</code>的作用：</p>
+<p>定义一些可以在命令行中传递的参数以及类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="string">'port'</span>, default=<span class="number">8008</span>, help=<span class="string">"run on the given port"</span>, type=int)</span><br><span class="line">define(<span class="string">'debug'</span>, default=<span class="keyword">True</span>, help=<span class="string">"set tornado debug mode"</span>, type=bool)</span><br></pre></td></tr></table></figure>
+<p>完成上面配置之后，需要调用<code>parse_command_line</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options.parse_command_line()</span><br></pre></td></tr></table></figure>
+<p>将运行<code>python</code>模块的命令进行解析，获得<code>define</code>中定义的各个参数，以属性值的形式放到<code>options</code>中。</p>
+<blockquote>
+<p>注意：<code>options</code>是一个类，全局只有一个</p>
+</blockquote>
+<p>直接通过属性值获得参数值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app = web.Application([</span><br><span class="line">        (<span class="string">"/"</span>, MainHandler),</span><br><span class="line">    ], debug=options.debug)</span><br><span class="line">    app.listen(options.port)</span><br><span class="line">    tornado.ioloop.IOLoop.current().start()</span><br></pre></td></tr></table></figure>
+<p>完成上面配置可以直接运行脚本，访问服务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python options_test.py --port=<span class="number">8002</span> --debug=<span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>除了从命令行获取到参数值，还可以通过<code>parse_config_file</code>从文件中获得：</p>
+<p>我们新建一个文件<code>conf.fg</code>，输入我们要传递的参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">port=<span class="number">8002</span></span><br><span class="line">debug=<span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>通过<code>parse_config_file</code>指定文件名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options.parse_config_file(<span class="string">"conf.cfg"</span>)</span><br></pre></td></tr></table></figure>
+<p>这样直接运行脚本即可访问服务。</p>
+<h5 id="RequestHandler常用方法"><a href="#RequestHandler常用方法" class="headerlink" title="RequestHandler常用方法"></a>RequestHandler常用方法</h5><p>我们看下官方文档已经将常用方法进行了分类：<a href="https://www.tornadoweb.org/en/stable/webframework.html" target="_blank" rel="noopener">常用方法分类</a></p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwup4vvco7j30wk0b6wfm.jpg" alt="image-20181103110750513"></p>
+<p>我们先看下入口方法：<a href="https://www.tornadoweb.org/en/stable/web.html#entry-points" target="_blank" rel="noopener">官方文档</a></p>
+<p>第一个是<code>initialize</code>方法，是初始化<code>Handler</code>类的时候定义的方法，用于接受定义<code>url</code>传入的参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProfileHandler</span><span class="params">(RequestHandler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self, database)</span>:</span></span><br><span class="line">        self.database = database</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, username)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">app = Application([</span><br><span class="line">    (<span class="string">r'/user/(.*)'</span>, ProfileHandler, dict(database=database)),</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+<p>通过这个初始化方法之后将一些数据保存起来，供其他方法使用。</p>
+<p>第二个方法是<code>prepare</code>，是在所有真正请求处理方法调用之前调用的方法，<code>initialize</code>是在<code>prepare</code>之前调用的。我们可以在<code>prepare</code>方法中打印日志，打开文件等操作。</p>
+<blockquote>
+<p>Decorate this method with <a href="https://www.tornadoweb.org/en/stable/gen.html#tornado.gen.coroutine" target="_blank" rel="noopener"><code>gen.coroutine</code></a> or use <code>async def</code> to make it asynchronous</p>
+</blockquote>
+<p>第三个方法是<code>on_finish</code>，这个方法和<code>prepare</code>是相反的，是所有请求结束之后调用的。我们可以在方法中进行关闭句柄，清理缓存等操作。</p>
+<p>上面两个方法可以理解为<code>Flask</code>的请求钩子。</p>
+<p>还有就是一些 HTTP方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">patch</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>看下输入方法有哪些：<a href="https://www.tornadoweb.org/en/stable/web.html#input" target="_blank" rel="noopener">官方文档</a></p>
+<p>输入方法主要处理传入的一些参数。</p>
+<p>先看下<code>get_query_argument</code>和<code>get_query_arguments</code>两个方法。</p>
+<p><code>get_query_argument</code>:</p>
+<p>从请求的<code>query string</code>返回给定name的参数的值.</p>
+<p>如果没有提供默认值, 这个参数将被视为必须的, 并且当找不到这个 参数的时候我们会抛出一个 <a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#tornado.web.MissingArgumentError" target="_blank" rel="noopener"><code>MissingArgumentError</code></a> 异常.</p>
+<p>如果这个参数在url中多次出现, 我们将返回最后一次的值.</p>
+<p>返回值永远是<code>unicode</code>.</p>
+<p><code>get_query_arguments</code>：</p>
+<p>返回指定name的参数列表.</p>
+<p>如果参数不存在, 将返回空列表.</p>
+<p>返回值永远是<code>unicode</code>.</p>
+<blockquote>
+<p> 这两个方法获得的都是通过<code>url</code>传参。</p>
+</blockquote>
+<p>接着我们看下<code>get_argument</code>和<code>get_arguments</code>两个方法。</p>
+<p>这两个方法和上面两个类似，不过除了能够获得通过<code>url</code>传递的参数外，还能获得<code>post</code>方式的传参。</p>
+<p><code>get_argument</code>：</p>
+<p>返回指定的name参数的值.</p>
+<p>如果没有提供默认值, 那么这个参数将被视为是必须的, 并且当 找不到这个参数的时候我们会抛出一个 <a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#tornado.web.MissingArgumentError" target="_blank" rel="noopener"><code>MissingArgumentError</code></a>.</p>
+<p>如果一个参数在url上出现多次, 我们返回最后一个值.</p>
+<p>返回值永远是unicode.</p>
+<p><code>get_arguments</code>：</p>
+<p>返回指定name的参数列表.</p>
+<p>如果<code>url</code>传参外还通过<code>post</code>方式传参，都会将参数放到列表。</p>
+<p>如果参数不存在, 返回一个空列表.</p>
+<p>返回值永远是unicode.</p>
+<blockquote>
+<p>我们可以直接获取到所有的参数通过 <code>self.request.arguments</code></p>
+</blockquote>
+<p>想要获得参数我们还可以使用<code>get_body_argument</code>和<code>get_body_arguments</code>:</p>
+<p>下面我们发送一个带有<code>json</code>数据的<code>post</code>请求：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">requests.post(<span class="string">"http://127.0.0.1:8888/?name=tornado"</span>, json=&#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"hongshaorou"</span>,</span><br><span class="line">    <span class="string">"age"</span>: <span class="number">26</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuvvytrppj31ck0tyakj.jpg" alt="image-20181103150128077"></p>
+<p>我们通过<code>url</code>传递的参数是在<code>arguments</code>,<code>query</code>中，<code>body</code>存的是<code>byte</code>类型而<code>body_arguments</code>为空。</p>
+<p>这时候直接通过<code>get_body_argument</code>会获得：<img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuw4skauoj310k04qjs8.jpg" alt="image-20181103150956448"></p>
+<p>我们看下<code>get_body_argument</code>的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_body_argument</span><span class="params">(self, name, default=_ARG_DEFAULT, strip=True)</span>:</span></span><br><span class="line">    <span class="string">"""Returns the value of the argument with the given name</span></span><br><span class="line"><span class="string">    from the request body.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> self._get_argument(name, default, self.request.body_arguments, strip)</span><br></pre></td></tr></table></figure>
+<p>从源码看到是从<code>request.body_arguments</code>获得参数。</p>
+<p>但是我们从上面图中看到在传递<code>json</code>数据的时候并没有将数据放到<code>body_arguments</code>中，而是放到<code>body</code>中。</p>
+<p>我们现在从<code>request.body</code>中获得数据。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwcl1b56j31da04i403.jpg" alt="image-20181103151727189"></p>
+<p>那我们怎么使用<code>get_body_argument</code>方法获得数据呢？</p>
+<p>我们需要指定传输数据的<code>form</code>类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"Content-Type"</span>: <span class="string">"application/x-www-form-urlencoded;"</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">requests.post(<span class="string">"http://127.0.0.1:8888/?name=tornado"</span>, headers=headers, data=&#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"hongshaorou"</span>,</span><br><span class="line">    <span class="string">"age"</span>: <span class="number">26</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwuwir2263j31dk06g769.jpg" alt="image-20181103152322710"></p>
+<p>输出方法：<a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#output" target="_blank" rel="noopener">官方文档</a></p>
+<p>使用<code>set_status</code>方法设置返回的状态码：</p>
+<ul>
+<li><strong>status_code</strong> (<a href="https://docs.python.org/3.4/library/functions.html#int" target="_blank" rel="noopener"><em>int</em></a>) – 响应状态码. 如果 <code>reason</code> 是 <code>None</code>, 它必须存在于 <a href="https://docs.python.org/3.4/library/http.client.html#http.client.responses" target="_blank" rel="noopener"><code>httplib.responses</code></a>.</li>
+<li><strong>reason</strong> (<a href="https://docs.python.org/3.4/library/string.html#module-string" target="_blank" rel="noopener"><em>string</em></a>) – 用人类可读的原因短语来描述状态码. 如果是 <code>None</code>, 它会由来自<a href="https://docs.python.org/3.4/library/http.client.html#http.client.responses" target="_blank" rel="noopener"><code>httplib.responses</code></a> 的reason填满.</li>
+</ul>
+<p>使用<code>write</code>返回数据：</p>
+<p> 我们可以调用多个<code>write</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.write(<span class="string">"hello"</span>)</span><br><span class="line">self.write(<span class="string">"world"</span>)</span><br></pre></td></tr></table></figure>
+<p>返回的数据将是<code>helloworld</code>。这是因为<code>RequestHandler</code>是一个长连接如果不关闭会一直写。每调用一次将数据写入到缓冲区，最后将数据统一发送出去。 </p>
+<p>使用<code>finish</code>方法结束<code>HTTP</code>请求，结束响应：</p>
+<p>我们在调用<code>finish</code>方法之后就不能再使用<code>write</code>了。因为连接已经被关闭了。</p>
+<p>我们可以在<code>finish</code>中传入一个字典  ，将会自动返回一个<code>json</code>数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.finish(&#123;</span><br><span class="line">    <span class="string">"name"</span>:<span class="string">"hongshaorou"</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>我们使用<code>redirect</code>进行重定向：</p>
+<p>重定向到给定的URL(可以选择相对路径).</p>
+<p>如果指定了 <code>status</code> 参数, 这个值将作为HTTP状态码; 否则 将通过 <code>permanent</code> 参数选择301 (永久) 或者 302 (临时). 默认是 302 (临时重定向).</p>
+<p>我们使用<code>write_error</code>进行错误页面的重写：</p>
+<p><code>write_error</code> 可能调用 <a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#tornado.web.RequestHandler.write" target="_blank" rel="noopener"><code>write</code></a>, <a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#tornado.web.RequestHandler.render" target="_blank" rel="noopener"><code>render</code></a>, <a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#tornado.web.RequestHandler.set_header" target="_blank" rel="noopener"><code>set_header</code></a>,等 来产生一般的输出.</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tornado/" rel="tag"><i class="fa fa-tag"></i>Tornado</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/01/Tornado学习笔记第二篇-异步和非阻塞篇/" rel="next" title="Tornado学习笔记第二篇-异步和非阻塞篇">
+                <i class="fa fa-chevron-left"></i> Tornado学习笔记第二篇-异步和非阻塞篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/03/Tornado学习笔记第三篇-tornado的web基础下篇/" rel="prev" title="Tornado学习笔记第三篇-tornado的web基础下篇">
+                Tornado学习笔记第三篇-tornado的web基础下篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#用tornado写个hello-world"><span class="nav-number">1.</span> <span class="nav-text">用tornado写个hello world</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado中为什么不能写同步的方法"><span class="nav-number">2.</span> <span class="nav-text">tornado中为什么不能写同步的方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado中的url配置"><span class="nav-number">3.</span> <span class="nav-text">tornado中的url配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于-define-options-parse-comand-line"><span class="nav-number">4.</span> <span class="nav-text">关于 define,options,parse_comand_line</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RequestHandler常用方法"><span class="nav-number">5.</span> <span class="nav-text">RequestHandler常用方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

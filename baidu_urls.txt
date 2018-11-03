@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/11/01/Tornado学习笔记第一篇-了解篇/
+https://zhaobugs.com/2018/11/03/Tornado学习笔记第三篇-tornado的web基础下篇/
