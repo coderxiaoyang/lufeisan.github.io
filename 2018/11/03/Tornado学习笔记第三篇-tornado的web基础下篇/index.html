@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="Tornado," />
 
 
 
@@ -81,17 +81,18 @@
 
 
 
-<meta name="description" content="小码农一只">
+<meta name="description" content="RequestHandler的两个子类StaticFileHandler,RedirectHandler这个小节我们学习下RequestHandler的两个子类。 首先学习下RedirectHandler： 进行重定向 一般是在实例化app的时候将一个不再使用的路由永久重定向到另一个路由。 1234app = web.Application([    (&quot;/&quot;, MainHandler),">
+<meta name="keywords" content="Tornado">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tornado学习笔记第三篇-tornado的web基础下篇">
 <meta property="og:url" content="https://zhaobugs.com/2018/11/03/Tornado学习笔记第三篇-tornado的web基础下篇/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="RequestHandler的两个子类StaticFileHandler,RedirectHandler这个小节我们学习下RequestHandler的两个子类。 首先学习下RedirectHandler： 进行重定向 一般是在实例化app的时候将一个不再使用的路由永久重定向到另一个路由。 1234app = web.Application([    (&quot;/&quot;, MainHandler),">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-03T08:07:58.390Z">
+<meta property="og:updated_time" content="2018-11-03T10:06:21.563Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado学习笔记第三篇-tornado的web基础下篇">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:description" content="RequestHandler的两个子类StaticFileHandler,RedirectHandler这个小节我们学习下RequestHandler的两个子类。 首先学习下RedirectHandler： 进行重定向 一般是在实例化app的时候将一个不再使用的路由永久重定向到另一个路由。 1234app = web.Application([    (&quot;/&quot;, MainHandler),">
 
 
 
@@ -342,6 +343,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">Tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -389,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  429 字
                 </span>
               
 
@@ -405,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -426,7 +449,29 @@
       
 
       
-        
+        <h5 id="RequestHandler的两个子类StaticFileHandler-RedirectHandler"><a href="#RequestHandler的两个子类StaticFileHandler-RedirectHandler" class="headerlink" title="RequestHandler的两个子类StaticFileHandler,RedirectHandler"></a><code>RequestHandler</code>的两个子类<code>StaticFileHandler</code>,<code>RedirectHandler</code></h5><p>这个小节我们学习下<code>RequestHandler</code>的两个子类。</p>
+<p>首先学习下<code>RedirectHandler</code>：</p>
+<p>进行重定向</p>
+<p>一般是在实例化<code>app</code>的时候将一个不再使用的路由永久重定向到另一个路由。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app = web.Application([</span><br><span class="line">    (<span class="string">"/"</span>, MainHandler),</span><br><span class="line">    (<span class="string">"/2/"</span>, RedirectHandler, &#123;<span class="string">"url"</span>:<span class="string">"/"</span>&#125;),</span><br><span class="line">], debug=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>这里我们将<code>/2/</code>的路由永久重定向到<code>/</code>路由下。</p>
+<p>看下<code>RedirectHandler</code>的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RedirectHandler</span><span class="params">(RequestHandler)</span>:</span></span><br><span class="line">    <span class="string">"""Redirects the client to the given URL for all GET requests.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    You should provide the keyword argument ``url`` to the handler, e.g.::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        application = web.Application([</span></span><br><span class="line"><span class="string">            (r"/oldpath", web.RedirectHandler, &#123;"url": "/newpath"&#125;),</span></span><br><span class="line"><span class="string">        ])</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self, url, permanent=True)</span>:</span></span><br><span class="line">        self._url = url</span><br><span class="line">        self._permanent = permanent</span><br></pre></td></tr></table></figure>
+<p>我们看到默认情况下的<code>permanent</code>设置为<code>True</code>。</p>
+<p>我们知道在<code>RequestHandler</code>中也有一个重定向方法<code>redirect</code>。</p>
+<p>我们看下<code>redirect</code>的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">redirect</span><span class="params">(self, url, permanent=False, status=None)</span>:</span></span><br><span class="line">    <span class="string">"""Sends a redirect to the given (optionally relative) URL.</span></span><br><span class="line"><span class="string">    If the ``status`` argument is specified, that value is used as the</span></span><br><span class="line"><span class="string">    HTTP status code; otherwise either 301 (permanent) or 302</span></span><br><span class="line"><span class="string">    (temporary) is chosen based on the ``permanent`` argument.</span></span><br><span class="line"><span class="string">    The default is 302 (temporary).</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+<p><code>redirect</code>主要是代码内部做临时重定向，如访问未登录的接口重定向到登录接口。</p>
+<p>两者的区别：</p>
+<p>一般<code>RedirectHandler</code>的用在<code>url</code>配置的时候做永久重定向。</p>
+<p><code>redirect</code>一般写在业务逻辑中，根据业务逻辑决定是否需要重定向。</p>
+<p>再看下<code>StaticFileHandler</code>：</p>
+<p>这个主要代理静态文件：<code>html</code>,<code>css</code>,<code>js</code>,图片等。</p>
+<p>我们可以使用初始化<code>app</code>的时候修改配置来指定静态文件的访问格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">settings = &#123;</span><br><span class="line">    &quot;static_path&quot;: &quot;tornado_overview/chapter02/static&quot;,</span><br><span class="line">    &quot;static_url_prefix&quot;: &quot;/static/&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    app = web.Application([</span><br><span class="line">        (&quot;/&quot;, MainHandler),</span><br><span class="line">    ], debug=True, **settings)</span><br></pre></td></tr></table></figure>
+<p>或者直接使用<code>StaticFileHandler</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">application = web.Application([</span><br><span class="line">            (<span class="string">r"/static/(.*)"</span>, web.StaticFileHandler, &#123;<span class="string">"path"</span>: <span class="string">"/var/www"</span>&#125;),</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+<h5 id="tornado的template"><a href="#tornado的template" class="headerlink" title="tornado的template"></a>tornado的template</h5>
       
     </div>
     
@@ -481,6 +526,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tornado/" rel="tag"><i class="fa fa-tag"></i>Tornado</a>
+          
+        </div>
       
 
       
@@ -554,8 +605,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -642,6 +702,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#RequestHandler的两个子类StaticFileHandler-RedirectHandler"><span class="nav-number">1.</span> <span class="nav-text">RequestHandler的两个子类StaticFileHandler,RedirectHandler</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado的template"><span class="nav-number">2.</span> <span class="nav-text">tornado的template</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
