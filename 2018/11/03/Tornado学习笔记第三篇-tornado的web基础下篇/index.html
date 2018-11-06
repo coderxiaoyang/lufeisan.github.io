@@ -89,10 +89,12 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="RequestHandler的两个子类StaticFileHandler,RedirectHandler这个小节我们学习下RequestHandler的两个子类。 首先学习下RedirectHandler： 进行重定向 一般是在实例化app的时候将一个不再使用的路由永久重定向到另一个路由。 1234app = web.Application([    (&quot;/&quot;, MainHandler),">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-03T10:06:21.563Z">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwxa7yl4pwj31kw0ngq70.jpg">
+<meta property="og:updated_time" content="2018-11-06T04:28:44.557Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado学习笔记第三篇-tornado的web基础下篇">
 <meta name="twitter:description" content="RequestHandler的两个子类StaticFileHandler,RedirectHandler这个小节我们学习下RequestHandler的两个子类。 首先学习下RedirectHandler： 进行重定向 一般是在实例化app的时候将一个不再使用的路由永久重定向到另一个路由。 1234app = web.Application([    (&quot;/&quot;, MainHandler),">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwxa7yl4pwj31kw0ngq70.jpg">
 
 
 
@@ -412,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  429 字
+                  1,370 字
                 </span>
               
 
@@ -428,7 +430,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -468,10 +470,65 @@
 <p>再看下<code>StaticFileHandler</code>：</p>
 <p>这个主要代理静态文件：<code>html</code>,<code>css</code>,<code>js</code>,图片等。</p>
 <p>我们可以使用初始化<code>app</code>的时候修改配置来指定静态文件的访问格式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">settings = &#123;</span><br><span class="line">    &quot;static_path&quot;: &quot;tornado_overview/chapter02/static&quot;,</span><br><span class="line">    &quot;static_url_prefix&quot;: &quot;/static/&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    app = web.Application([</span><br><span class="line">        (&quot;/&quot;, MainHandler),</span><br><span class="line">    ], debug=True, **settings)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">settings = &#123;</span><br><span class="line">    <span class="string">"static_path"</span>: <span class="string">"tornado_overview/chapter02/static"</span>,</span><br><span class="line">    <span class="string">"static_url_prefix"</span>: <span class="string">"/static/"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    app = web.Application([</span><br><span class="line">        (<span class="string">"/"</span>, MainHandler),</span><br><span class="line">    ], debug=<span class="keyword">True</span>, **settings)</span><br></pre></td></tr></table></figure>
 <p>或者直接使用<code>StaticFileHandler</code>:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">application = web.Application([</span><br><span class="line">            (<span class="string">r"/static/(.*)"</span>, web.StaticFileHandler, &#123;<span class="string">"path"</span>: <span class="string">"/var/www"</span>&#125;),</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
-<h5 id="tornado的template"><a href="#tornado的template" class="headerlink" title="tornado的template"></a>tornado的template</h5>
+<h5 id="tornado的template"><a href="#tornado的template" class="headerlink" title="tornado的template"></a>tornado的template</h5><p><code>tornado</code> 的模板渲染我们可以类比其他框架的，例如<code>Flask</code>。</p>
+<p>我们是可以直接返回一段<code>html</code>文本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.finish(<span class="string">"&lt;h1&gt;tornado&lt;/h1&gt;"</span>)</span><br></pre></td></tr></table></figure>
+<p>文本中可以传入变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">word = <span class="string">"tornado"</span></span><br><span class="line">self.finish(<span class="string">f"&lt;h1&gt;<span class="subst">&#123;word&#125;</span>&lt;/h1&gt;"</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Web 框架都有模板功能</p>
+</blockquote>
+<p>我们看下<code>tornado</code>中的模板功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tornado.web <span class="keyword">import</span> template</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">word = <span class="string">"tornado"</span></span><br><span class="line"><span class="comment"># 这里和 jinja2 的类似</span></span><br><span class="line">t = template.Template(<span class="string">"&lt;h1&gt;&#123;&#123; word &#125;&#125;&lt;/h1&gt;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将上面设置的变量 word 放到模板中</span></span><br><span class="line">self.finish(t.generate(word=word))</span><br></pre></td></tr></table></figure>
+<p>如果想渲染整个<code>html</code>文件，需要使用<code>render</code>函数、</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.render(<span class="string">"index.html"</span>, orders=orders)</span><br></pre></td></tr></table></figure>
+<p>我们调用完<code>render</code>就不要再调用<code>writer</code>了，因为该函数最后调用了<code>finish</code></p>
+<p>上面的功能可以类比<code>Flask</code>的模板渲染</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> render_template(<span class="string">"index.html"</span>, orders=orders)</span><br></pre></td></tr></table></figure>
+<p>和<code>Flask</code>一样我们需要指定模板文件夹所在位置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">settings = &#123;</span><br><span class="line">    <span class="string">"template_path"</span>: <span class="string">"templates"</span>  <span class="comment"># 相对于配置文件所在的相对位置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="由购物车列表页学习-template常用功能"><a href="#由购物车列表页学习-template常用功能" class="headerlink" title="由购物车列表页学习 template常用功能"></a>由购物车列表页学习 <code>template</code>常用功能</h5><ol>
+<li><p>首先看下模板中的静态文件的引用</p>
+<p>我们通过配置<code>static_path</code>指定了静态文件的位置，<code>static_url_prefix</code>指定静态文件的前缀。在模板文件中，我们可以方便的引用静态文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span> href=<span class="string">"&#123;&#123; static_url('css/base.css') &#125;&#125;"</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>使用<code>static_url</code>函数将相对于我们指定的<code>static_path</code>文件位置作为参数。</p>
+<p>这个类似比下<code>Flask</code>中的<code>url_for</code>：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src="&#123;&#123; url_for('static', filename='js/jquery.min.js') &#125;&#125;"&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在模板中使用后台传过来的数据，这个和<code>jinja2</code>基本一致</p>
+<p>我们实现这样一个页面渲染</p>
+<p>   <img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwxa7yl4pwj31kw0ngq70.jpg" alt="image-20181105164830823"></p>
+<p>   渲染循环</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for order in orders %&#125;</span><br><span class="line">    &lt;dd class=&quot;item clearfix&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;item-row&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;col col-1&quot;&gt;</span><br><span class="line">                &lt;div class=&quot;g-pic&quot;&gt;</span><br><span class="line">                    &lt;img src=&quot;&#123;&#123; order[&apos;image&apos;] &#125;&#125;&quot; srcset=&quot;&#123;&#123; order[&apos;image&apos;] &#125;&#125; 2x&quot; width=&quot;40&quot; height=&quot;40&quot;&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div class=&quot;g-info&quot;&gt;&#123;&#123; order[&apos;name&apos;] &#125;&#125;&lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; order[&apos;price&apos;] &#125;&#125;元&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; order[&apos;nums&apos;] &#125;&#125;&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; order[&apos;price&apos;]*order[&apos;nums&apos;] &#125;&#125;元&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;% raw order[&apos;detail&apos;] %&#125; &lt;/div&gt;#&#125;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/dd&gt;</span><br><span class="line">&#123;% end %&#125;</span><br></pre></td></tr></table></figure>
+<p>   这个和<code>jinja2</code>类似，直接计算两个变量乘法</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; order[<span class="string">'price'</span>]*order[<span class="string">'nums'</span>] &#125;&#125;</span><br><span class="line">   </span><br><span class="line">引用原生的`html`元素`&#123;% raw order[<span class="string">'detail'</span>] %&#125;`（其中`detail`为：`<span class="string">"detail"</span>: <span class="string">"&lt;a href='http://www.baidu.com'&gt;查看详情&lt;/a&gt;"</span>`）进行字符转义。</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code>上面的乘法可以由后台传入一个计算方法。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cal_total</span><span class="params">(price, nums)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> price*nums</span><br></pre></td></tr></table></figure>
+</code></pre><p>   将方法的引用传入到模板中可以直接使用方法。</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% from chapter02.utils import cal_total %&#125;</span><br><span class="line">&lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; cal_total(order[&apos;price&apos;],order[&apos;nums&apos;]) &#125;&#125;元&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>   设置变量</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set total = 0 %&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="template的页面继承和重载"><a href="#template的页面继承和重载" class="headerlink" title="template的页面继承和重载"></a>template的页面继承和重载</h5><p><code>tornado</code>的模板继承和重载机制和<code>jinja2</code>基本一致，暂时不详细记录笔记。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &apos;base.html&apos; %&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="tornado模板中UIModule"><a href="#tornado模板中UIModule" class="headerlink" title="tornado模板中UIModule"></a>tornado模板中UIModule</h5><p><code>tornado</code>的模板文件可以像<code>vue</code>等前端框架一样进行组件化开发。</p>
+<p>首先我们创建一个<code>Module</code>复用类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderModule</span><span class="params">(tornado.web.UIModule)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_total</span><span class="params">(self, price, nums)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> price * nums</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">render</span><span class="params">(self, order, *args, **kwargs)</span>:</span></span><br><span class="line">        self.render_string(<span class="string">"ui_modules/order-list.html"</span>)</span><br></pre></td></tr></table></figure>
+<p>其中<code>order-list.html</code>为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;dd class=&quot;item clearfix&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;item-row&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;col col-1&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;g-pic&quot;&gt;</span><br><span class="line">                &lt;img src=&quot;&#123;&#123; order[&apos;image&apos;] &#125;&#125;&quot; srcset=&quot;&#123;&#123; order[&apos;image&apos;] &#125;&#125; 2x&quot; width=&quot;40&quot; height=&quot;40&quot;&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;g-info&quot;&gt;&#123;&#123; order[&apos;name&apos;] &#125;&#125;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; order[&apos;price&apos;] &#125;&#125;元&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; order[&apos;nums&apos;] &#125;&#125;&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;&#123; order[&apos;price&apos;]*order[&apos;nums&apos;] &#125;&#125;元&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;col col-2&quot;&gt;&#123;% raw order[&apos;detail&apos;] %&#125; &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/dd&gt;</span><br></pre></td></tr></table></figure>
+<p>在<code>settings</code>中设置<code>ui_modules</code>，值为键值对。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">settings = &#123;</span><br><span class="line">    <span class="string">"static_path"</span>:<span class="string">"static"</span>,</span><br><span class="line">    <span class="string">"static_url_prefix"</span>:<span class="string">"/static/"</span>,</span><br><span class="line">    <span class="string">"template_path"</span>: <span class="string">"templates"</span>,</span><br><span class="line">    <span class="string">"ui_modules"</span>: &#123;</span><br><span class="line">        <span class="string">"OrderModule"</span>:OrderModule</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在模板中引用我们抒写的模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% module OrderModule(order) %&#125;</span><br></pre></td></tr></table></figure>
+<p>除了可以复用<code>html</code>外还可以复用<code>css</code>,<code>js</code>文件。</p>
+<h5 id="tornado的settings"><a href="#tornado的settings" class="headerlink" title="tornado的settings"></a>tornado的settings</h5><p>这个小节我们看下<code>settings</code>有哪些值是可以配置的。</p>
+<p>我们看下官方文档：<a href="https://tornado-zh.readthedocs.io/zh/latest/web.html#tornado.web.Application.settings" target="_blank" rel="noopener">tornado的settings有哪些</a></p>
+
       
     </div>
     
@@ -712,7 +769,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#RequestHandler的两个子类StaticFileHandler-RedirectHandler"><span class="nav-number">1.</span> <span class="nav-text">RequestHandler的两个子类StaticFileHandler,RedirectHandler</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado的template"><span class="nav-number">2.</span> <span class="nav-text">tornado的template</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#RequestHandler的两个子类StaticFileHandler-RedirectHandler"><span class="nav-number">1.</span> <span class="nav-text">RequestHandler的两个子类StaticFileHandler,RedirectHandler</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado的template"><span class="nav-number">2.</span> <span class="nav-text">tornado的template</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#由购物车列表页学习-template常用功能"><span class="nav-number">3.</span> <span class="nav-text">由购物车列表页学习 template常用功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#template的页面继承和重载"><span class="nav-number">4.</span> <span class="nav-text">template的页面继承和重载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado模板中UIModule"><span class="nav-number">5.</span> <span class="nav-text">tornado模板中UIModule</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tornado的settings"><span class="nav-number">6.</span> <span class="nav-text">tornado的settings</span></a></li></ol></div>
             
 
           </div>
