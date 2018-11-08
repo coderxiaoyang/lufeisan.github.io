@@ -344,6 +344,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">Tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -386,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  2,362 字
                 </span>
               
 
@@ -402,7 +424,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -425,8 +447,17 @@
       
         
           
-          
-          
+          上篇我们使用原生的SQL进行更新数据库，这篇我们学习下使用ORM。
+我们看下使用ORM的一些好处：
+
+隔离数据库之间的差异（不在乎数据库驱动和数据类型，接口一致）
+便于维护
+orm会提供防止sql注入等功能
+变量传递式的调用更加简单
+
+这节我们学习的ORM框架是peewee。peewee简单，灵活，申明方式和django的orm接近。
+其中async-peewee是基于asyncio和peewee
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/11/06/Tornado学习笔记第五篇-peewee功能介绍/#more" rel="contents">

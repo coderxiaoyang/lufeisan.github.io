@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="Tornado," />
 
 
 
@@ -81,17 +81,23 @@
 
 
 
-<meta name="description" content="小码农一只">
+<meta name="description" content="上篇我们使用原生的SQL进行更新数据库，这篇我们学习下使用ORM。 我们看下使用ORM的一些好处：  隔离数据库之间的差异（不在乎数据库驱动和数据类型，接口一致） 便于维护 orm会提供防止sql注入等功能 变量传递式的调用更加简单  这节我们学习的ORM框架是peewee。peewee简单，灵活，申明方式和django的orm接近。 其中async-peewee是基于asyncio和peewee">
+<meta name="keywords" content="Tornado">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tornado学习笔记第五篇-peewee功能介绍">
 <meta property="og:url" content="https://zhaobugs.com/2018/11/06/Tornado学习笔记第五篇-peewee功能介绍/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="上篇我们使用原生的SQL进行更新数据库，这篇我们学习下使用ORM。 我们看下使用ORM的一些好处：  隔离数据库之间的差异（不在乎数据库驱动和数据类型，接口一致） 便于维护 orm会提供防止sql注入等功能 变量传递式的调用更加简单  这节我们学习的ORM框架是peewee。peewee简单，灵活，申明方式和django的orm接近。 其中async-peewee是基于asyncio和peewee">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-06T09:28:01.522Z">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fwyico8y1rj31520a4ac6.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwyilqko73j314q0aiacg.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fwzwtk6m6uj30n803ct9m.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fx0g66rgunj30lc0l877j.jpg">
+<meta property="og:updated_time" content="2018-11-08T03:47:46.872Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado学习笔记第五篇-peewee功能介绍">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:description" content="上篇我们使用原生的SQL进行更新数据库，这篇我们学习下使用ORM。 我们看下使用ORM的一些好处：  隔离数据库之间的差异（不在乎数据库驱动和数据类型，接口一致） 便于维护 orm会提供防止sql注入等功能 变量传递式的调用更加简单  这节我们学习的ORM框架是peewee。peewee简单，灵活，申明方式和django的orm接近。 其中async-peewee是基于asyncio和peewee">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fwyico8y1rj31520a4ac6.jpg">
 
 
 
@@ -342,6 +348,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">Tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -389,7 +417,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  2,362 字
                 </span>
               
 
@@ -405,7 +433,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -426,7 +454,103 @@
       
 
       
-        
+        <p>上篇我们使用原生的<code>SQL</code>进行更新数据库，这篇我们学习下使用<code>ORM</code>。</p>
+<p>我们看下使用<code>ORM</code>的一些好处：</p>
+<ol>
+<li>隔离数据库之间的差异（不在乎数据库驱动和数据类型，接口一致）</li>
+<li>便于维护</li>
+<li><code>orm</code>会提供防止<code>sql</code>注入等功能</li>
+<li>变量传递式的调用更加简单</li>
+</ol>
+<p>这节我们学习的<code>ORM</code>框架是<code>peewee</code>。<code>peewee</code>简单，灵活，申明方式和<code>django</code>的<code>orm</code>接近。</p>
+<p>其中<code>async-peewee</code>是基于<code>asyncio</code>和<code>peewee</code>的异步IO库。</p>
+<p><code>peewee</code>的<a href="https://github.com/coleifer/peewee" target="_blank" rel="noopener">github</a>地址<a href="http://docs.peewee-orm.com/en/latest/" target="_blank" rel="noopener">文档</a></p>
+<h5 id="model的定义和表的自动生成"><a href="#model的定义和表的自动生成" class="headerlink" title="model的定义和表的自动生成"></a>model的定义和表的自动生成</h5><p>这个小节我们将会学习如何想使用<code>Django ORM</code>一样由类创建成表。</p>
+<p>如何创建一个<code>model</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> peewee <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定数据库连接 一个参数是数据库名</span></span><br><span class="line">db = MySQLDatabase(<span class="string">'message'</span>, host=<span class="string">"127.0.0.1"</span>, port=<span class="number">3306</span>, user=<span class="string">"root"</span>, password=<span class="string">"root"</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Goods</span><span class="params">(Model)</span>:</span></span><br><span class="line">    <span class="comment"># 所有的模型都需要集成自 peewee 的 Model</span></span><br><span class="line">    name = CharField(max_length=<span class="number">100</span>, verbose_name=<span class="string">"商品名称"</span>, index=<span class="keyword">True</span>)</span><br><span class="line">    click_num = IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">"点击数"</span>)</span><br><span class="line">    goods_num = IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">"库存数"</span>)</span><br><span class="line">    price = FloatField(default=<span class="number">0.0</span>, verbose_name=<span class="string">"价格"</span>)</span><br><span class="line">    brief = TextField(verbose_name=<span class="string">"商品简介"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        database = db <span class="comment"># 指定数据库对象</span></span><br><span class="line">        table_name = <span class="string">"goods"</span> <span class="comment"># 指定表名</span></span><br></pre></td></tr></table></figure>
+<p><code>CharField</code>需要指定最大长度<code>max_length</code>.使用<code>ForeignKeyField</code>建立外键关系。里面很多字段含义和<code>django orm</code>类似。</p>
+<p>上面完成之后我们就可以直接创建数据表了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_table</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 直接调用 db 对象的 create_tables 传入的是个可迭代对象(不一定是列表) 内容是需要创建的模型类</span></span><br><span class="line">    db.create_tables([Goods])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    init_table()</span><br></pre></td></tr></table></figure>
+<p>我们看下生成的数据表</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwyico8y1rj31520a4ac6.jpg" alt="image-20181106181519883"></p>
+<p>虽然我们没有自己定义<code>id</code>为主键，<code>peewee</code>为我们自动添加了一个值为<code>id</code>的主键。而<code>SQLAlchemy</code>则是必须指定主键的。</p>
+<p>我们可以创建一个基类将指定数据库连接对象放到基类中，这样其他需要指定数据库连接的只需要继承基类即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseModel</span><span class="params">(Model)</span>:</span></span><br><span class="line">    add_time = DateTimeField(default=datetime.now, verbose_name=<span class="string">"添加时间"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        <span class="comment"># 子类不需要设置数据库连接对象了</span></span><br><span class="line">        database = db</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Goods</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>下面我们创建具有关联关系的两个模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Supplier</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    name = CharField(max_length=<span class="number">100</span>, verbose_name=<span class="string">"名称"</span>, index=<span class="keyword">True</span>)</span><br><span class="line">    address = CharField(max_length=<span class="number">100</span>, verbose_name=<span class="string">"联系地址"</span>)</span><br><span class="line">    phone = CharField(max_length=<span class="number">11</span>, verbose_name=<span class="string">"联系方式"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        database = db</span><br><span class="line">        table_name = <span class="string">"supplier"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Goods</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    supplier = ForeignKeyField(Supplier, verbose_name=<span class="string">"商家"</span>, backref=<span class="string">"goods"</span>)</span><br><span class="line">    name = CharField(max_length=<span class="number">100</span>, verbose_name=<span class="string">"商品名称"</span>, index=<span class="keyword">True</span>)</span><br><span class="line">    click_num = IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">"点击数"</span>)</span><br><span class="line">    goods_num = IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">"库存数"</span>)</span><br><span class="line">    price = FloatField(default=<span class="number">0.0</span>, verbose_name=<span class="string">"价格"</span>)</span><br><span class="line">    brief = TextField(verbose_name=<span class="string">"商品简介"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        table_name = <span class="string">"goods"</span></span><br></pre></td></tr></table></figure>
+<p>创建数据表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_table</span><span class="params">()</span>:</span></span><br><span class="line">    db.create_tables((Goods, Supplier))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    init_table()</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwyilqko73j314q0aiacg.jpg" alt="image-20181106182401310"></p>
+<p>我们看到在数据表里保存的是<code>supplier_id</code>而不是<code>supplier</code>。我们在查询的时候如果使用<code>supplier</code>传入的是一个实例对象，使用<code>supplier_id</code>则是一个数值。这个和<code>django</code>的一致。</p>
+<h5 id="model的数据保存"><a href="#model的数据保存" class="headerlink" title="model的数据保存"></a>model的数据保存</h5><p>在上面我们创建数据表的时候，使用了<code>IntegerField</code>等字段类型来指定数据类型，那<code>peewee</code>都有哪些字段数据类型呢，每个字段类型又有哪些属性呢？</p>
+<p>我们可以通过查看官方文档得知：<a href="http://docs.peewee-orm.com/en/latest/peewee/models.html" target="_blank" rel="noopener">Models and Fields</a></p>
+<p>通过类的实例化形式来保存数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_model</span><span class="params">()</span>:</span></span><br><span class="line">    supplier = Supplier()</span><br><span class="line">    supplier.name = <span class="string">"华为"</span></span><br><span class="line">    supplier.address = <span class="string">"杭州"</span></span><br><span class="line">    supplier.phone = <span class="string">"13788745321"</span></span><br><span class="line">    supplier.save()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    save_model()</span><br></pre></td></tr></table></figure>
+<p>直接使用<code>save</code>方法即可保存到数据库。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwzwtk6m6uj30n803ct9m.jpg" alt="image-20181107232133826"></p>
+<p>我们看到数据库自己为我们新增了一个主键<code>id</code>值。</p>
+<blockquote>
+<p>我们在调用<code>save</code>方法之前 实例 <code>supplier</code>的<code>id</code>值是为空的，只有调用<code>save</code>之后才有值。这一点和其他<code>ORM</code>框架类似。</p>
+</blockquote>
+<p>如果数据是字典类型，我们可以直接使用解包功能创建类实例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">goods_list = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"supplier"</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"52度茅台集团国隆双喜酒500mlx6"</span>,</span><br><span class="line">        <span class="string">"click_num"</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="string">"goods_num"</span>: <span class="number">666</span>,</span><br><span class="line">        <span class="string">"price"</span>: <span class="number">128</span>,</span><br><span class="line">        <span class="string">"brief"</span>: <span class="string">"贵州茅台酒厂（集团）保健酒业有限公司生产，是以“龙”字打头的酒水。中国龙文化上下8000年，源远而流长，龙的形象是一种符号、一种意绪、一种血肉相联的情感。"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"supplier"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"52度水井坊臻酿八號500ml"</span>,</span><br><span class="line">        <span class="string">"click_num"</span>: <span class="number">585</span>,</span><br><span class="line">        <span class="string">"goods_num"</span>: <span class="number">288</span>,</span><br><span class="line">        <span class="string">"price"</span>: <span class="number">36</span>,</span><br><span class="line">        <span class="string">"brief"</span>: <span class="string">"贵州茅台酒厂（集团）保健酒业有限公司生产，是以“龙”字打头的酒水。中国龙文化上下8000年，源远而流长，龙的形象是一种符号、一种意绪、一种血肉相联的情感。"</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> data <span class="keyword">in</span> goods_list:</span><br><span class="line">    good = Goods(**data)</span><br><span class="line">    good.save()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意字典的键要和模型的字段值相同。</p>
+</blockquote>
+<h5 id="peewee查询数据"><a href="#peewee查询数据" class="headerlink" title="peewee查询数据"></a>peewee查询数据</h5><p>查询的官方文档：<a href="http://docs.peewee-orm.com/en/latest/peewee/querying.html#" target="_blank" rel="noopener">Querying</a></p>
+<h6 id="查询获取一条数据"><a href="#查询获取一条数据" class="headerlink" title="查询获取一条数据"></a>查询获取一条数据</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过 id 获取数据</span></span><br><span class="line">good = Goods.get(Goods.id == <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">good = Goods.get_by_id(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面同样是通过 id 获得</span></span><br><span class="line">good = Goods[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果数据不存在，将会抛出异常</p>
+</blockquote>
+<h6 id="获得所有数据"><a href="#获得所有数据" class="headerlink" title="获得所有数据"></a>获得所有数据</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">goods = Goods.select()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> good <span class="keyword">in</span> goods:</span><br><span class="line">    print(good.name)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面<code>get_by_id</code>和<code>select</code>的返回值是不一样的,前者返回的数据库实例对象，是直接拼凑好<code>SQL</code>语句去数据库查询得到的结果。后者返回的是<code>ModelSelect</code>对象，不是真正数据库执行的结果。只有我们执行了下面的迭代查询之后才真正去数据库执行<code>SQL</code>。（底层原理是<code>python</code>的迭代协议）</p>
+</blockquote>
+<p>这点和<code>Django</code>的查询类似。</p>
+<h6 id="获取指定条件的数据"><a href="#获取指定条件的数据" class="headerlink" title="获取指定条件的数据"></a>获取指定条件的数据</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goods = Goods.select(Goods.name, Goods.price)</span><br></pre></td></tr></table></figure>
+<p>如果指定了某些字段，在遍历的时候获取没有指定字段数据的时候将返回<code>None</code>。</p>
+<h6 id="根据条件查询"><a href="#根据条件查询" class="headerlink" title="根据条件查询"></a>根据条件查询</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># select * from goods where price &gt; 100</span></span><br><span class="line">goods = Goods.select().where(Goods.price&gt;<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>很像原生的<code>SQL</code></p>
+<p><code>and</code>条件查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#select * from goods where price&gt;100 and click_num&gt;200</span></span><br><span class="line">goods = Goods.select().where((Goods.price&gt;<span class="number">100</span>)&amp;(Goods.click_num&gt;<span class="number">200</span>))</span><br></pre></td></tr></table></figure>
+<p><code>or</code>条件查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#select * from goods where price&gt;100 or  click_num&gt;200</span></span><br><span class="line">goods = Goods.select().where((Goods.price&gt;<span class="number">100</span>)|(Goods.click_num&gt;<span class="number">200</span>))</span><br></pre></td></tr></table></figure>
+<p><code>like</code>条件查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#select * from goods where name like "%飞天"</span></span><br><span class="line">goods = Goods.select().where(Goods.name.contains(<span class="string">"飞天"</span>))</span><br></pre></td></tr></table></figure>
+<p>这个很像<code>Django</code>的</p>
+<p><code>in</code>条件查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">goods = Goods.select().where(Goods.id&lt;&lt;[<span class="number">1</span>,<span class="number">3</span>])</span><br><span class="line">goods = Goods.select().where((Goods.id==<span class="number">1</span>)|(Goods.id==<span class="number">3</span>))</span><br><span class="line">goods = Goods.select().where((Goods.id.in_([<span class="number">1</span>,<span class="number">3</span>])))</span><br></pre></td></tr></table></figure>
+<p>使用<code>&lt;&lt;</code>代表<code>in_</code>操作。</p>
+<p>关于操作符的文档：<a href="http://docs.peewee-orm.com/en/latest/peewee/query_operators.html" target="_blank" rel="noopener">Query operators</a></p>
+<p>表内字段比较查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># select * from goods where price &gt; click_num</span></span><br><span class="line">goods = Goods.select().where(Goods.price&gt;Goods.click_num)</span><br></pre></td></tr></table></figure>
+<p>排序查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#排序 select * from goods order by price desc</span></span><br><span class="line"><span class="comment"># 显示指定排序</span></span><br><span class="line">goods = Goods.select().order_by(Goods.price.asc())</span><br><span class="line"><span class="comment"># 通过 + - 号</span></span><br><span class="line">goods = Goods.select().order_by(+Goods.price)</span><br><span class="line"><span class="comment"># 默认升序</span></span><br><span class="line">goods = Goods.select().order_by(Goods.price)</span><br></pre></td></tr></table></figure>
+<p>分页查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#分页</span></span><br><span class="line">goods = Goods.select().order_by(Goods.price).paginate(<span class="number">2</span>, <span class="number">2</span>) </span><br><span class="line"><span class="comment"># 第一个参数是从第几个数据开始 包含 从0开始计数 第二个参数表示取多少个</span></span><br></pre></td></tr></table></figure>
+<p>官方示例文档：<a href="http://docs.peewee-orm.com/en/latest/peewee/query_examples.html" target="_blank" rel="noopener">Query Examples</a></p>
+<h5 id="数据更新和删除"><a href="#数据更新和删除" class="headerlink" title="数据更新和删除"></a>数据更新和删除</h5><h6 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h6><p>获得对应数据，使用赋值方式更新</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">good = Goods.get_by_id(<span class="number">1</span>)</span><br><span class="line">good.click_num += <span class="number">1</span></span><br><span class="line">good.save()</span><br></pre></td></tr></table></figure>
+<p>使用更新语句</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># update click_num=100 where id =1</span></span><br><span class="line">Goods.update(click_num=Goods.click_num+<span class="number">1</span>).where(Goods.id==<span class="number">1</span>).execute()</span><br></pre></td></tr></table></figure>
+<p>这里需要我们再次调用<code>execute</code>去真正执行<code>SQL</code>,这个<code>execute</code>是同步操作，正是查询和拼接<code>SQL</code>是分离的，将<code>peewee</code>变成异步才有可能。</p>
+<blockquote>
+<p>使用<code>update</code>更新的字段不需要指定模型</p>
+</blockquote>
+<h6 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h6><p>获得想删除的数据对象,使用<code>delete_instance</code>删除。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">good = Goods.get_by_id(<span class="number">1</span>)</span><br><span class="line">good.delete_instance()</span><br></pre></td></tr></table></figure>
+<p>使用<code>delete</code>语句删除数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#delete from goods where price&gt;150</span></span><br><span class="line">Goods.delete().where(Goods.price&gt;<span class="number">150</span>).execute()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>delete</code>语句同样不是直接去数据库执行</p>
+</blockquote>
+<h5 id="通过peewee-async集成到tornado"><a href="#通过peewee-async集成到tornado" class="headerlink" title="通过peewee-async集成到tornado"></a>通过peewee-async集成到tornado</h5><p>上面学习的<code>peewee</code>是同步的<code>ORM</code>框架，如果我们想在<code>tornado</code>中使用，我们需要异步的<code>ORM</code>。</p>
+<p><a href="https://github.com/05bit/peewee-async" target="_blank" rel="noopener">peewee-async</a>是将<code>peewee</code>变成异步的一个库</p>
+<p>我们直接看下官方的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> peewee</span><br><span class="line"><span class="keyword">import</span> peewee_async</span><br><span class="line"></span><br><span class="line"><span class="comment"># Nothing special, just define model and database:</span></span><br><span class="line"><span class="comment"># 定义数据库连接和 peewee 一样</span></span><br><span class="line">database = peewee_async.MySQLDatabase(</span><br><span class="line">    <span class="string">'message'</span>, </span><br><span class="line">    host=<span class="string">"127.0.0.1"</span>, </span><br><span class="line">    port=<span class="number">3306</span>, </span><br><span class="line">    user=<span class="string">"root"</span>, </span><br><span class="line">    password=<span class="string">"root"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建模型和之前一样</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestModel</span><span class="params">(peewee.Model)</span>:</span></span><br><span class="line">    text = peewee.CharField()</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        database = database</span><br><span class="line"></span><br><span class="line"><span class="comment"># Look, sync code is working!</span></span><br><span class="line"><span class="comment"># 同步的方式创建数据库</span></span><br><span class="line">TestModel.create_table(<span class="keyword">True</span>)</span><br><span class="line">TestModel.create(text=<span class="string">"Yo, I can do it sync!"</span>)</span><br><span class="line">database.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create async models manager:</span></span><br><span class="line"><span class="comment"># 如果我们想异步使用 则是需要创建一个 Manager 以后执行 SQL 语句都是靠这个 Manager</span></span><br><span class="line">objects = peewee_async.Manager(database)</span><br><span class="line"></span><br><span class="line"><span class="comment"># No need for sync anymore!</span></span><br><span class="line"><span class="comment"># 将同步禁用</span></span><br><span class="line">database.set_allow_sync(<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 使用协程的方式来操作 进行数据库操作需要使用 我们创建的 Manager 实例</span></span><br><span class="line">    <span class="keyword">await</span> objects.create(TestModel, text=<span class="string">"Not bad. Watch this, I'm async!"</span>)</span><br><span class="line">    all_objects = <span class="keyword">await</span> objects.execute(TestModel.select())</span><br><span class="line">    <span class="comment"># objects 负责真正的执行 SQL objects.execute() 返回的是一个协程对象 一定要使用 await</span></span><br><span class="line">    <span class="keyword">for</span> obj <span class="keyword">in</span> all_objects:</span><br><span class="line">        print(obj.text)</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(handler())</span><br><span class="line"><span class="comment"># loop.close() </span></span><br><span class="line"><span class="comment"># run_until_complete 执行完之后自动调用 close</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Clean up, can do it sync again:</span></span><br><span class="line"><span class="keyword">with</span> objects.allow_sync():</span><br><span class="line">    TestModel.drop_table(<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Expected output:</span></span><br><span class="line"><span class="comment"># Yo, I can do it sync!</span></span><br><span class="line"><span class="comment"># Not bad. Watch this, I'm async!</span></span><br></pre></td></tr></table></figure>
+<p>我们之前<code>peewee</code>使用很多同步方法都被<code>peewee_async</code>做成了协程方式，可以看下源码结构知道哪些是协程方式了。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fx0g66rgunj30lc0l877j.jpg" alt="image-20181108103106393"></p>
+
       
     </div>
     
@@ -481,6 +605,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tornado/" rel="tag"><i class="fa fa-tag"></i>Tornado</a>
+          
+        </div>
       
 
       
@@ -554,8 +684,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -642,6 +781,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#model的定义和表的自动生成"><span class="nav-number">1.</span> <span class="nav-text">model的定义和表的自动生成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#model的数据保存"><span class="nav-number">2.</span> <span class="nav-text">model的数据保存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#peewee查询数据"><span class="nav-number">3.</span> <span class="nav-text">peewee查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#查询获取一条数据"><span class="nav-number">3.1.</span> <span class="nav-text">查询获取一条数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#获得所有数据"><span class="nav-number">3.2.</span> <span class="nav-text">获得所有数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#获取指定条件的数据"><span class="nav-number">3.3.</span> <span class="nav-text">获取指定条件的数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#根据条件查询"><span class="nav-number">3.4.</span> <span class="nav-text">根据条件查询</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据更新和删除"><span class="nav-number">4.</span> <span class="nav-text">数据更新和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#更新数据"><span class="nav-number">4.1.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除数据"><span class="nav-number">4.2.</span> <span class="nav-text">删除数据</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过peewee-async集成到tornado"><span class="nav-number">5.</span> <span class="nav-text">通过peewee-async集成到tornado</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
