@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Tornado," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我们在学习Flask的时候学习过flask-login库进行登录管理，在tornado同样存在类似的功能authenticated。我们可以使用这个装饰器进行登录权限验证。 Tornado的原生装饰器我们看下装饰器authenticated的源码，分析下工作原理。 12345678910111213141516171819202122232425262728def authenticated(me">
+<meta name="keywords" content="Tornado">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tornado学习笔记第七篇-tornado的authenticated装饰器">
+<meta property="og:url" content="https://zhaobugs.com/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="我们在学习Flask的时候学习过flask-login库进行登录管理，在tornado同样存在类似的功能authenticated。我们可以使用这个装饰器进行登录权限验证。 Tornado的原生装饰器我们看下装饰器authenticated的源码，分析下工作原理。 12345678910111213141516171819202122232425262728def authenticated(me">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-14T08:29:53.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tornado学习笔记第七篇-tornado的authenticated装饰器">
+<meta name="twitter:description" content="我们在学习Flask的时候学习过flask-login库进行登录管理，在tornado同样存在类似的功能authenticated。我们可以使用这个装饰器进行登录权限验证。 Tornado的原生装饰器我们看下装饰器authenticated的源码，分析下工作原理。 12345678910111213141516171819202122232425262728def authenticated(me">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/"/>
+
+
+
+
+
+  <title>Tornado学习笔记第七篇-tornado的authenticated装饰器 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tornado学习笔记第七篇-tornado的authenticated装饰器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T13:53:05+08:00">
+                2018-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">Tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/" class="leancloud_visitors" data-flag-title="Tornado学习笔记第七篇-tornado的authenticated装饰器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,009 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们在学习<code>Flask</code>的时候学习过<code>flask-login</code>库进行登录管理，在<code>tornado</code>同样存在类似的功能<code>authenticated</code>。我们可以使用这个装饰器进行登录权限验证。</p>
+<h5 id="Tornado的原生装饰器"><a href="#Tornado的原生装饰器" class="headerlink" title="Tornado的原生装饰器"></a>Tornado的原生装饰器</h5><p>我们看下装饰器<code>authenticated</code>的源码，分析下工作原理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">authenticated</span><span class="params">(method)</span>:</span></span><br><span class="line">    <span class="string">"""Decorate methods with this to require that the user be logged in.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If the user is not logged in, they will be redirected to the configured</span></span><br><span class="line"><span class="string">    `login url &lt;RequestHandler.get_login_url&gt;`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If you configure a login url with a query parameter, Tornado will</span></span><br><span class="line"><span class="string">    assume you know what you're doing and use it as-is.  If not, it</span></span><br><span class="line"><span class="string">    will add a `next` parameter so the login page knows where to send</span></span><br><span class="line"><span class="string">    you once you're logged in.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @functools.wraps(method)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.current_user:</span><br><span class="line">            <span class="keyword">if</span> self.request.method <span class="keyword">in</span> (<span class="string">"GET"</span>, <span class="string">"HEAD"</span>):</span><br><span class="line">                url = self.get_login_url()</span><br><span class="line">                <span class="keyword">if</span> <span class="string">"?"</span> <span class="keyword">not</span> <span class="keyword">in</span> url:</span><br><span class="line">                    <span class="keyword">if</span> urlparse.urlsplit(url).scheme:</span><br><span class="line">                        <span class="comment"># if login url is absolute, make next absolute too</span></span><br><span class="line">                        next_url = self.request.full_url()</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        next_url = self.request.uri</span><br><span class="line">                    url += <span class="string">"?"</span> + urlencode(dict(next=next_url))</span><br><span class="line">                self.redirect(url)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">raise</span> HTTPError(<span class="number">403</span>)</span><br><span class="line">        <span class="keyword">return</span> method(self, *args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>源码中我们看到当<code>self.current_user</code>为空的时候将会执行下面的页面跳转。</p>
+<p>我们再看下这个<code>self.current_user</code>的源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">current_user</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""The authenticated user for this request.</span></span><br><span class="line"><span class="string">    This is set in one of two ways:</span></span><br><span class="line"><span class="string">    * A subclass may override `get_current_user()`, which will be called</span></span><br><span class="line"><span class="string">      automatically the first time ``self.current_user`` is accessed.</span></span><br><span class="line"><span class="string">      `get_current_user()` will only be called once per request,</span></span><br><span class="line"><span class="string">      and is cached for future access::</span></span><br><span class="line"><span class="string">          def get_current_user(self):</span></span><br><span class="line"><span class="string">              user_cookie = self.get_secure_cookie("user")</span></span><br><span class="line"><span class="string">              if user_cookie:</span></span><br><span class="line"><span class="string">                  return json.loads(user_cookie)</span></span><br><span class="line"><span class="string">              return None</span></span><br><span class="line"><span class="string">    * It may be set as a normal variable, typically from an overridden</span></span><br><span class="line"><span class="string">      `prepare()`::</span></span><br><span class="line"><span class="string">          @gen.coroutine</span></span><br><span class="line"><span class="string">          def prepare(self):</span></span><br><span class="line"><span class="string">              user_id_cookie = self.get_secure_cookie("user_id")</span></span><br><span class="line"><span class="string">              if user_id_cookie:</span></span><br><span class="line"><span class="string">                  self.current_user = yield load_user(user_id_cookie)</span></span><br><span class="line"><span class="string">    Note that `prepare()` may be a coroutine while `get_current_user()`</span></span><br><span class="line"><span class="string">    may not, so the latter form is necessary if loading the user requires</span></span><br><span class="line"><span class="string">    asynchronous operations.</span></span><br><span class="line"><span class="string">    The user object may be any type of the application's choosing.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasattr(self, <span class="string">"_current_user"</span>):</span><br><span class="line">        self._current_user = self.get_current_user()</span><br><span class="line">    <span class="keyword">return</span> self._current_user</span><br></pre></td></tr></table></figure>
+<p>我们看到文档注释知道<code>current_user</code>为<code>RequestHandler</code>的动态属性有两种方式去赋予初值。</p>
+<p>我们再看下<code>get_current_user</code>的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_current_user</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Override to determine the current user from, e.g., a cookie.</span></span><br><span class="line"><span class="string">    This method may not be a coroutine.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<p>这是一个<code>RequestHandler</code>的方法，通过重写这个方法我们可以设置当前登录用户。</p>
+<p>注意：这个方法默认返回的是<code>None</code>，并且调用这个方法是同步的，如果重写的时候涉及到去查询数据库就会耗时。如果写成协程，上层调用是不支持的。</p>
+<p>我们接着看<code>authenticated</code>的源码部分，当用户为登录的时候回去调用<code>url = self.get_login_url()</code>。我们看下<code>get_login_url()</code>的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_login_url</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Override to customize the login URL based on the request.</span></span><br><span class="line"><span class="string">    By default, we use the ``login_url`` application setting.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    self.require_setting(<span class="string">"login_url"</span>, <span class="string">"@tornado.web.authenticated"</span>)</span><br><span class="line">    <span class="keyword">return</span> self.application.settings[<span class="string">"login_url"</span>]</span><br></pre></td></tr></table></figure>
+<p>会从配置中查找一个<code>login_url</code>进行返回。</p>
+<p>这样是符合前后端不分离的单体项目，但是我们要是前后端分离就很不友好了。我们重写改写这个装饰器来完成我们的要求。</p>
+<h5 id="我们自己编写的装饰器"><a href="#我们自己编写的装饰器" class="headerlink" title="我们自己编写的装饰器"></a>我们自己编写的装饰器</h5><p>我们为了在用户没有登陆的时候返回<code>json</code>串而不是页面。我们重新抒写一个基于<code>jwt</code>的装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">authenticated_async</span><span class="params">(method)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(method)</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        tsessionid = self.request.headers.get(<span class="string">"tsessionid"</span>, <span class="keyword">None</span>)</span><br><span class="line">        <span class="keyword">if</span> tsessionid:</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 对token过期进行异常捕捉</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 从 token 中获得我们之前存进 payload 的用户id</span></span><br><span class="line">                send_data = jwt.decode(tsessionid, self.settings[<span class="string">"secret_key"</span>], leeway=self.settings[<span class="string">"jwt_expire"</span>],</span><br><span class="line">                                       options=&#123;<span class="string">"verify_exp"</span>: <span class="keyword">True</span>&#125;)</span><br><span class="line">                user_id = send_data[<span class="string">"id"</span>]</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 从数据库中获取到user并设置给_current_user</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    user = <span class="keyword">await</span> self.application.objects.get(User, id=user_id)</span><br><span class="line">                    self._current_user = user</span><br><span class="line"></span><br><span class="line">                    <span class="comment"># 此处需要使用协程方式执行 因为需要装饰的是一个协程</span></span><br><span class="line">                    <span class="keyword">await</span> method(self, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">except</span> User.DoesNotExist <span class="keyword">as</span> e:</span><br><span class="line">                    self.set_status(<span class="number">401</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> jwt.ExpiredSignatureError <span class="keyword">as</span> e:</span><br><span class="line">                self.set_status(<span class="number">401</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.set_status(<span class="number">401</span>)</span><br><span class="line">        self.finish(&#123;&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>这样只要我们在需要权限的地方加上权限装饰器即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupHandler</span><span class="params">(RedisHandler)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @authenticated_async</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tornado/" rel="tag"><i class="fa fa-tag"></i>Tornado</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/14/在Mac上搭建web服务器/" rel="next" title="在Mac上搭建web服务器">
+                <i class="fa fa-chevron-left"></i> 在Mac上搭建web服务器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tornado的原生装饰器"><span class="nav-number">1.</span> <span class="nav-text">Tornado的原生装饰器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#我们自己编写的装饰器"><span class="nav-number">2.</span> <span class="nav-text">我们自己编写的装饰器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

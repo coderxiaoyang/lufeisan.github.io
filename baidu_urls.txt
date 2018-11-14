@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/11/06/Tornado学习笔记第五篇-peewee功能介绍/
+https://zhaobugs.com/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/
