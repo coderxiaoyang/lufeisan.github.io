@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="红烧肉" />
+  <meta name="keywords" content="Tornado," />
 
 
 
@@ -81,17 +81,20 @@
 
 
 
-<meta name="description" content="小码农一只">
+<meta name="description" content="我们看下tornado 下的httpclient模块有哪些类。  这个小节我们主要学习下红框中的四个类。 HTTPClientHTTPClient是一个同步请求的方法类，我们可以直接类比于requests库。 我们看下官方文档的一个例子： 1234567891011121314151617from tornado import httpclienthttp_client = httpclient.">
+<meta name="keywords" content="Tornado">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tornado学习笔记第二篇-异步和非阻塞篇">
 <meta property="og:url" content="https://zhaobugs.com/2018/11/01/Tornado学习笔记第二篇-异步和非阻塞篇/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="小码农一只">
+<meta property="og:description" content="我们看下tornado 下的httpclient模块有哪些类。  这个小节我们主要学习下红框中的四个类。 HTTPClientHTTPClient是一个同步请求的方法类，我们可以直接类比于requests库。 我们看下官方文档的一个例子： 1234567891011121314151617from tornado import httpclienthttp_client = httpclient.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-01T13:34:37.404Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fxfomp6pjcj31ag0m6452.jpg">
+<meta property="og:updated_time" content="2018-11-21T09:25:32.715Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado学习笔记第二篇-异步和非阻塞篇">
-<meta name="twitter:description" content="小码农一只">
+<meta name="twitter:description" content="我们看下tornado 下的httpclient模块有哪些类。  这个小节我们主要学习下红框中的四个类。 HTTPClientHTTPClient是一个同步请求的方法类，我们可以直接类比于requests库。 我们看下官方文档的一个例子： 1234567891011121314151617from tornado import httpclienthttp_client = httpclient.">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fxfomp6pjcj31ag0m6452.jpg">
 
 
 
@@ -342,6 +345,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">Tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -389,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  448 字
                 </span>
               
 
@@ -405,7 +430,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -426,7 +451,24 @@
       
 
       
-        
+        <p>我们看下<code>tornado</code> 下的<code>httpclient</code>模块有哪些类。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxfomp6pjcj31ag0m6452.jpg" alt="image-20181121144711862"></p>
+<p>这个小节我们主要学习下红框中的四个类。</p>
+<h6 id="HTTPClient"><a href="#HTTPClient" class="headerlink" title="HTTPClient"></a>HTTPClient</h6><p><code>HTTPClient</code>是一个同步请求的方法类，我们可以直接类比于<code>requests</code>库。</p>
+<p>我们看下<a href="https://www.tornadoweb.org/en/stable/httpclient.html" target="_blank" rel="noopener">官方文档</a>的一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> httpclient</span><br><span class="line"></span><br><span class="line">http_client = httpclient.HTTPClient()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    response = http_client.fetch(<span class="string">"http://www.google.com/"</span>)</span><br><span class="line">    print(response.body.decode(<span class="string">"utf8"</span>))</span><br><span class="line">    </span><br><span class="line"><span class="keyword">except</span> httpclient.HTTPError <span class="keyword">as</span> e:</span><br><span class="line">    <span class="comment"># HTTPError is raised for non-200 responses; the response</span></span><br><span class="line">    <span class="comment"># can be found in e.response.</span></span><br><span class="line">    print(<span class="string">"Error: "</span> + str(e))</span><br><span class="line">    </span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="comment"># Other errors are possible, such as IOError.</span></span><br><span class="line">    print(<span class="string">"Error: "</span> + str(e))</span><br><span class="line">    </span><br><span class="line">http_client.close()</span><br></pre></td></tr></table></figure>
+<p>整个操作都是同步的操作。</p>
+<h6 id="AsyncHTTPClient"><a href="#AsyncHTTPClient" class="headerlink" title="AsyncHTTPClient"></a>AsyncHTTPClient</h6><p><code>AsyncHTTPClient</code>是异步式的请求方式，使用协程完成请求。</p>
+<p>我们看下<a href="https://www.tornadoweb.org/en/stable/httpclient.html#tornado.httpclient.AsyncHTTPClient" target="_blank" rel="noopener">官方文档</a>的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    http_client = AsyncHTTPClient()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = <span class="keyword">await</span> http_client.fetch(<span class="string">"http://www.google.com"</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">"Error: %s"</span> % e)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(response.body.decode(<span class="string">"utf8"</span>))</span><br><span class="line">        </span><br><span class="line"> <span class="comment"># 相比于使用 select 完成的非阻塞 这种方式必须等函数执行完 协程才算执行完</span></span><br></pre></td></tr></table></figure>
+<p>我们通过协程的方式来完成异步请求，不过想要完成协程的运行还是需要事件循环的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> tornado</span><br><span class="line">    <span class="comment"># 事件循环只能有一个线程去循环 这个io_loop是全局唯一的 （通过单例模式来实现）</span></span><br><span class="line">    io_loop = tornado.ioloop.IOLoop.current()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># run_sync方法可以在运行完某个协程之后停止事件循环</span></span><br><span class="line">    </span><br><span class="line">	<span class="comment"># 相比于 永远执行的 while 1 这种方式更高效</span></span><br><span class="line">    io_loop.run_sync(f)</span><br></pre></td></tr></table></figure>
+<p>除了使用<code>Tornado</code>来实现事件循环，我们还可以使用更加底层的<code>asyncio</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> asyncio</span><br><span class="line">    asyncio.get_event_loop().run_until_complete(f())</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>异步是依赖于事件循环的，需要在事件循环中来完成异步操作。</p>
+</blockquote>
+
       
     </div>
     
@@ -481,6 +523,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tornado/" rel="tag"><i class="fa fa-tag"></i>Tornado</a>
+          
+        </div>
       
 
       
@@ -558,8 +606,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -578,7 +635,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -646,6 +703,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTPClient"><span class="nav-number">1.</span> <span class="nav-text">HTTPClient</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#AsyncHTTPClient"><span class="nav-number">2.</span> <span class="nav-text">AsyncHTTPClient</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

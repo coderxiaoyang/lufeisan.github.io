@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="经过前几天的基础知识储备，下面开始真正的实战学习。实战课程知识点较多，不适合笔记记录。 现仅记录一些关键知识点。  使用WTForms作为参数校验，传递json数据的时候需要使用wtforms_json 参考文档wtforms_json 和直接使用tornado的获取参数函数(例如：message_from = MessageForm(self.request.arguments))不同，直接使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-13T02:26:46.030Z">
+<meta property="og:updated_time" content="2018-11-17T15:36:28.229Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado造论坛网站知识点-上">
 <meta name="twitter:description" content="经过前几天的基础知识储备，下面开始真正的实战学习。实战课程知识点较多，不适合笔记记录。 现仅记录一些关键知识点。  使用WTForms作为参数校验，传递json数据的时候需要使用wtforms_json 参考文档wtforms_json 和直接使用tornado的获取参数函数(例如：message_from = MessageForm(self.request.arguments))不同，直接使用">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  228 字
+                  629 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -462,7 +462,21 @@
 <p>通过猴子补丁将原有的类封装成一个具有<code>from_json</code>方法的新类</p>
 </blockquote>
 </li>
-<li></li>
+<li><p>通过<code>peewee</code>的<code>model_to_dict</code>可以将模型直接转为字典</p>
+<p>一般我们在从模型中提取数据返回给前端的时候一个个提取是有点麻烦的。我们可以直接使用<code>peewee</code>提供的<code>model_to_dict</code>将一个模型直接转为字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> playhouse.shortcuts <span class="keyword">import</span> model_to_dict</span><br><span class="line"></span><br><span class="line">group_dict = model_to_dict(group)</span><br></pre></td></tr></table></figure>
+<p>不过，当在协程中使用的时候，可能会出现一种情况就是模型存在外键关联的时候回报错。</p>
+<p>是因为这个<code>model_to_dict</code>方法是同步的，在协程中不能进行模型间的<code>join</code>操作。</p>
+<p>我们可以在模型中写一个类方法，解决这个问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extend</span><span class="params">(cls)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> cls.select(cls, User.id, User.nick_name).join(User)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>peewee</code>中的多表<code>join</code>和多字段映射同一个<code>model</code>问题</p>
+<p>我们看下下面的<code>model</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostComment</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    <span class="comment"># 评论和回复</span></span><br><span class="line">    user = ForeignKeyField(User, verbose_name=<span class="string">"用户"</span>, related_name=<span class="string">"author"</span>)</span><br><span class="line">    post = ForeignKeyField(Post, verbose_name=<span class="string">"帖子"</span>)</span><br><span class="line">    parent_comment = ForeignKeyField(<span class="string">'self'</span>, null=<span class="keyword">True</span>, verbose_name=<span class="string">"评论"</span>, related_name=<span class="string">"comments_parent"</span>)</span><br><span class="line">    reply_user = ForeignKeyField(User, verbose_name=<span class="string">"用户"</span>, related_name=<span class="string">"replyed_author"</span>, null=<span class="keyword">True</span>)</span><br><span class="line">    content = CharField(max_length=<span class="number">1000</span>, verbose_name=<span class="string">"内容"</span>)</span><br><span class="line">    reply_nums = IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">"回复数"</span>)</span><br><span class="line">    like_nums = IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">"点赞数"</span>)</span><br></pre></td></tr></table></figure>
+<p>上面<code>model</code>存在多表关联和多个字段字段映射同一个模型。</p>
+<p>我们在查询的时候，应该如何解决上面两个问题呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extend</span><span class="params">(cls)</span>:</span></span><br><span class="line">    <span class="comment"># 1. 多表join</span></span><br><span class="line">    <span class="comment"># 2. 多字段映射同一个model</span></span><br><span class="line">    author = User.alias()</span><br><span class="line">    relyed_user = User.alias()</span><br><span class="line">    <span class="keyword">return</span> cls.select(cls, Post, relyed_user.id, relyed_user.nick_name, author.id, author.nick_name).join(</span><br><span class="line">        Post, join_type=JOIN.LEFT_OUTER, on=cls.post).switch(cls).join(author, join_type=JOIN.LEFT_OUTER,</span><br><span class="line">                                                                       on=cls.user).switch(cls).join(</span><br><span class="line">        relyed_user, join_type=JOIN.LEFT_OUTER, on=cls.reply_user</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 
       
@@ -622,7 +636,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

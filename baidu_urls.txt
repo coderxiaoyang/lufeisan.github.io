@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/11/14/Tornado学习笔记第七篇-tornado的authenticated装饰器/
+https://zhaobugs.com/2018/11/27/深入理解Flask-Login原理/

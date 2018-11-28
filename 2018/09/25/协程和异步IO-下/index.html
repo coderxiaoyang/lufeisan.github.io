@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="红烧肉">
 <meta property="og:description" content="​    🐴上我们就要进入到真正的协程概念学习了，这之前我们先了解一下C10M问题。 C10M：如何利用8核心CPU，64G内存，在10gbps的网络上保持1000万并发连接。 通过协程就能解决这类问题。 在我们正式学习协程含义之前，我们先看下面临的问题：  回调模式编码复杂度高 同步编程的并发性不高 多线程编程需要线程间同步（线程间同步我们使用锁Lock机制，但是锁机制会降低并发性能）  如果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-25T09:40:33.505Z">
+<meta property="og:updated_time" content="2018-11-21T03:42:28.175Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="协程和异步IO-下">
 <meta name="twitter:description" content="​    🐴上我们就要进入到真正的协程概念学习了，这之前我们先了解一下C10M问题。 C10M：如何利用8核心CPU，64G内存，在10gbps的网络上保持1000万并发连接。 通过协程就能解决这类问题。 在我们正式学习协程含义之前，我们先看下面临的问题：  回调模式编码复杂度高 同步编程的并发性不高 多线程编程需要线程间同步（线程间同步我们使用锁Lock机制，但是锁机制会降低并发性能）  如果">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,243 字
+                  3,244 字
                 </span>
               
 
@@ -535,6 +535,7 @@
 <p>我们可以使用装饰器，将一个普通函数改变为<code>Awaitable</code>对象。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">downloader</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"bobby"</span></span><br><span class="line"><span class="keyword">import</span> types</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@types.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">downloader</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">"bobby"</span></span><br></pre></td></tr></table></figure>
 <p>协程是需要运用到事件循环中的，下一小节我们就开始真正使用了。💪</p>
+<p>s</p>
 
       
     </div>
@@ -702,7 +703,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

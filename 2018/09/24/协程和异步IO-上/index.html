@@ -81,23 +81,23 @@
 
 
 
-<meta name="description" content="终于要学习Python中的重头戏—协程了。💪 并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？并发：是指一个时间段内（是一段时间），有几个程序在同一个CPU上运行，但是任意时刻（是一个时间点）只有一个程序在CPU上运行。 这是因为CPU的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。 并行：是指">
+<meta name="description" content="终于要学习Python中的重头戏—协程了。💪 学习之前我们先看下现在存在的问题：  CPU的速度远高于IO速度 IO包括网络访问和本地访问，比如requests,urllib等传统的网络库都是同步的IO 网络IO大部分的时间都是出于等待的状态，在等待的时候CPU是空闲的，但是又不能执行其他操作  并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="协程和异步IO-上">
 <meta property="og:url" content="https://zhaobugs.com/2018/09/24/协程和异步IO-上/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="终于要学习Python中的重头戏—协程了。💪 并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？并发：是指一个时间段内（是一段时间），有几个程序在同一个CPU上运行，但是任意时刻（是一个时间点）只有一个程序在CPU上运行。 这是因为CPU的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。 并行：是指">
+<meta property="og:description" content="终于要学习Python中的重头戏—协程了。💪 学习之前我们先看下现在存在的问题：  CPU的速度远高于IO速度 IO包括网络访问和本地访问，比如requests,urllib等传统的网络库都是同步的IO 网络IO大部分的时间都是出于等待的状态，在等待的时候CPU是空闲的，但是又不能执行其他操作  并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fvkm86bwwwj31kw0uqtpb.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkmcvblrfj31kw0tltkg.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fvkmtkiifzj31kw0wwh3n.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn4jxyr5j31kw0zl194.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn8p8vb6j31c40qe10v.jpg">
-<meta property="og:updated_time" content="2018-09-24T07:26:37.809Z">
+<meta property="og:updated_time" content="2018-11-21T02:17:58.712Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="协程和异步IO-上">
-<meta name="twitter:description" content="终于要学习Python中的重头戏—协程了。💪 并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？并发：是指一个时间段内（是一段时间），有几个程序在同一个CPU上运行，但是任意时刻（是一个时间点）只有一个程序在CPU上运行。 这是因为CPU的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。 并行：是指">
+<meta name="twitter:description" content="终于要学习Python中的重头戏—协程了。💪 学习之前我们先看下现在存在的问题：  CPU的速度远高于IO速度 IO包括网络访问和本地访问，比如requests,urllib等传统的网络库都是同步的IO 网络IO大部分的时间都是出于等待的状态，在等待的时候CPU是空闲的，但是又不能执行其他操作  并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？">
 <meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fvkm86bwwwj31kw0uqtpb.jpg">
 
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,972 字
+                  2,180 字
                 </span>
               
 
@@ -434,7 +434,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -456,6 +456,12 @@
 
       
         <p>终于要学习<code>Python</code>中的重头戏—协程了。💪</p>
+<p>学习之前我们先看下现在存在的问题：</p>
+<ol>
+<li>CPU的速度远高于IO速度</li>
+<li>IO包括网络访问和本地访问，比如<code>requests</code>,<code>urllib</code>等传统的网络库都是同步的IO</li>
+<li>网络IO大部分的时间都是出于等待的状态，在等待的时候CPU是空闲的，但是又不能执行其他操作</li>
+</ol>
 <h5 id="并发、并行、同步、异步、阻塞、非阻塞"><a href="#并发、并行、同步、异步、阻塞、非阻塞" class="headerlink" title="并发、并行、同步、异步、阻塞、非阻塞"></a>并发、并行、同步、异步、阻塞、非阻塞</h5><p>这一小节我们就要弄懂上面的这几个名词概念。</p>
 <h6 id="什么是并发和并行呢？"><a href="#什么是并发和并行呢？" class="headerlink" title="什么是并发和并行呢？"></a>什么是并发和并行呢？</h6><p><code>并发</code>：是指一个时间段内（是一段时间），有几个程序在同一个<code>CPU</code>上运行，但是任意时刻（是一个时间点）只有一个程序在<code>CPU</code>上运行。</p>
 <p>这是因为<code>CPU</code>的计算速度是很快的，在很多时间内能够完成多个程序间的迅速切换，给我们的感觉就是很多程序在同时运行。</p>
@@ -469,6 +475,9 @@
 <p><code>非阻塞</code>是指调用函数的时候当前线程不会被挂起，而是立即返回。</p>
 <p>同步和异步是消息通信的一种机制，可以把操作当成一个消息发送给另一个线程或者协程（多线程的<code>future</code>）执行某些操作。</p>
 <p>阻塞和非阻塞是函数调用的一种机制。</p>
+<p>阻塞式请求一个网页</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">html = requests.get(<span class="string">"http://www.baidu.com"</span>).text</span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<p>在我们请求网页的时候要三次握手建立tcp连接， 等待服务器响应这些都是阻塞操作，这段时间CPU是空闲着的。</p>
 <h5 id="IO多路复用（select、poll、epoll）"><a href="#IO多路复用（select、poll、epoll）" class="headerlink" title="IO多路复用（select、poll、epoll）"></a><code>IO</code>多路复用（select、poll、epoll）</h5><p>学习这小节前我们先抛出一个问题，如何解决多<code>C10k</code>问题（多用户多并发低配置）？</p>
 <h6 id="Unix下五种I-O模型"><a href="#Unix下五种I-O模型" class="headerlink" title="Unix下五种I/O模型"></a>Unix下五种I/O模型</h6><p>我们接下来看下五种常用的<code>I/O</code>模型。</p>
 <ol>
@@ -508,12 +517,18 @@
 <p>关于<code>select</code>：</p>
 <p>​    <code>select</code> 函数监视的文件描述符分3类，分别是<code>writefds</code>、<code>readfds</code>、和<code>exceptfds</code>。调用后<code>select</code>函数会阻塞，直到有描述副就绪（有数据 可读、可写、或者有<code>except</code>），或者超时（<code>timeout</code>指定等待时间，如果立即返回设为<code>null</code>即可），函数返回。当<code>select</code>函数返回后，可以 通过遍历<code>fdset</code>，来找到就绪的描述符。</p>
 <p>​    <code>select</code>目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。<code>select</code>的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。</p>
+<blockquote>
+<p>select 还有个缺点就是每次遍历都是要遍历监听的所有的描述符 有多少遍历多少</p>
+</blockquote>
 <p>关于<code>poll</code>：</p>
 <p>​    不同与select使用三个位图来表示三个fdset的方式，poll使用一个 pollfd的指针实现。</p>
 <p>​    pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。同时，pollfd并没有最大数量限制（但是数量过大后性能也是会下降）。 和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符。</p>
-<p>​    从上面看，select和poll都需要在返回后，<code>通过遍历文件描述符来获取已经就绪的socket</code>。事实上，同时连接的大量客户端在一时刻可能只有很少的处于就绪状态，因此随着监视的描述符数量的增长，其效率也会线性下降。</p>
+<p>​    从上面看，select和poll都需要在返回后，通过遍历文件描述符来获取已经就绪的<code>socket</code>。事实上，同时连接的大量客户端在一时刻可能只有很少的处于就绪状态，因此随着监视的描述符数量的增长，其效率也会线性下降。</p>
 <p>关于<code>epoll</code>：</p>
 <p>​    epoll是在2.6内核中提出的，是之前的select和poll的增强版本。相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
+<blockquote>
+<p>内部数据结构为红黑树</p>
+</blockquote>
 <p>参考文章：<a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="noopener">https://segmentfault.com/a/1190000003063859</a></p>
 <p>小节结束我们来看一个问题，<code>epoll</code>并不代表一定比<code>select</code>好：</p>
 <p>​    在高并发的情况下，连接活跃度不是很高（是指连接后可能随时关闭，比如浏览网页），<code>epoll</code>比<code>select</code>好。</p>
@@ -686,7 +701,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

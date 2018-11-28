@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flask," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="​    使用Flask作为工作的主要框架也快两年了，对于Flask-Login插件一直是似懂非懂，今天决定参考一些文章资料深入理解下原理。 Flask-Login官方文档：英文版, 中文版 在深入学习原理前我们需要知道如何在我们的Flask项目中集成Flask-Login插件，具体可以参考官方文档或者之前的一篇笔记Flask基础学习-flask-login篇 flask-login一些知识点：">
+<meta name="keywords" content="Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Flask-Login原理">
+<meta property="og:url" content="https://zhaobugs.com/2018/11/27/深入理解Flask-Login原理/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="​    使用Flask作为工作的主要框架也快两年了，对于Flask-Login插件一直是似懂非懂，今天决定参考一些文章资料深入理解下原理。 Flask-Login官方文档：英文版, 中文版 在深入学习原理前我们需要知道如何在我们的Flask项目中集成Flask-Login插件，具体可以参考官方文档或者之前的一篇笔记Flask基础学习-flask-login篇 flask-login一些知识点：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-28T08:47:23.126Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Flask-Login原理">
+<meta name="twitter:description" content="​    使用Flask作为工作的主要框架也快两年了，对于Flask-Login插件一直是似懂非懂，今天决定参考一些文章资料深入理解下原理。 Flask-Login官方文档：英文版, 中文版 在深入学习原理前我们需要知道如何在我们的Flask项目中集成Flask-Login插件，具体可以参考官方文档或者之前的一篇笔记Flask基础学习-flask-login篇 flask-login一些知识点：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/11/27/深入理解Flask-Login原理/"/>
+
+
+
+
+
+  <title>深入理解Flask-Login原理 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/11/27/深入理解Flask-Login原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解Flask-Login原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-27T13:56:12+08:00">
+                2018-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/27/深入理解Flask-Login原理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/11/27/深入理解Flask-Login原理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/27/深入理解Flask-Login原理/" class="leancloud_visitors" data-flag-title="深入理解Flask-Login原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,846 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>​    使用<code>Flask</code>作为工作的主要框架也快两年了，对于<code>Flask-Login</code>插件一直是似懂非懂，今天决定参考一些文章资料深入理解下原理。</p>
+<p><code>Flask-Login</code>官方文档：<a href="https://flask-login.readthedocs.io/en/latest/" target="_blank" rel="noopener">英文版</a>, <a href="http://docs.jinkan.org/docs/flask-login/" target="_blank" rel="noopener">中文版</a></p>
+<p>在深入学习原理前我们需要知道如何在我们的<code>Flask</code>项目中集成<code>Flask-Login</code>插件，具体可以参考官方文档或者之前的一篇笔记<a href="https://zhaobugs.com/2018/08/14/Flask%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%85%AD%E7%AF%87/">Flask基础学习-flask-login篇</a></p>
+<p><code>flask-login</code>一些知识点：</p>
+<h6 id="login-user-函数"><a href="#login-user-函数" class="headerlink" title="login_user 函数"></a>login_user 函数</h6><p>我们在使用<code>Flask-Login</code>插件的时候，登录使用的函数是<code>login_user</code>函数。我们先看下这个函数的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_user</span><span class="params">(user, remember=False, duration=None, force=False, fresh=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> force <span class="keyword">and</span> <span class="keyword">not</span> user.is_active:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">    user_id = getattr(user, current_app.login_manager.id_attribute)()</span><br><span class="line">    session[<span class="string">'user_id'</span>] = user_id</span><br><span class="line">    session[<span class="string">'_fresh'</span>] = fresh</span><br><span class="line">    session[<span class="string">'_id'</span>] = current_app.login_manager._session_identifier_generator()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> remember:</span><br><span class="line">        session[<span class="string">'remember'</span>] = <span class="string">'set'</span></span><br><span class="line">        <span class="keyword">if</span> duration <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># equal to timedelta.total_seconds() but works with Python 2.6</span></span><br><span class="line">                session[<span class="string">'remember_seconds'</span>] = (duration.microseconds +</span><br><span class="line">                                               (duration.seconds +</span><br><span class="line">                                                duration.days * <span class="number">24</span> * <span class="number">3600</span>) *</span><br><span class="line">                                               <span class="number">10</span>**<span class="number">6</span>) / <span class="number">10.0</span>**<span class="number">6</span></span><br><span class="line">            <span class="keyword">except</span> AttributeError:</span><br><span class="line">                <span class="keyword">raise</span> Exception(<span class="string">'duration must be a datetime.timedelta, '</span></span><br><span class="line">                                <span class="string">'instead got: &#123;0&#125;'</span>.format(duration))</span><br><span class="line"></span><br><span class="line">    _request_ctx_stack.top.user = user</span><br><span class="line">    user_logged_in.send(current_app._get_current_object(), user=_get_user())</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>我们分析一下这个函数具体做了什么。</p>
+<p>函数的第一个参数是用户模型<code>User</code>的实例。</p>
+<p>之前在配置使用<code>Flask-Login</code>的时候我们在用户模型上面继承了<code>UserMixin</code>。</p>
+<p>这样我们可以通过<code>get_id</code>方法获得到<code>user</code>实例的<code>id</code>。</p>
+<p>然后将获得<code>user_id</code>保存到<code>session</code>中，除此之外将更新<code>_fresh</code>重新生成会话<code>id</code>。</p>
+<p>如果我们设置了<code>remember</code>和<code>duration</code>则会进行相应的更新。</p>
+<p>然后将当前用户推入到一个线程隔离的请求栈的栈顶，这样使用<code>login_required</code>获得的就是这个栈顶的<code>user</code>。</p>
+<p>最后发出登录信号，调用了<code>_get_user</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> has_request_context() <span class="keyword">and</span> <span class="keyword">not</span> hasattr(_request_ctx_stack.top, <span class="string">'user'</span>):</span><br><span class="line">        current_app.login_manager._load_user()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> getattr(_request_ctx_stack.top, <span class="string">'user'</span>, <span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>在这个函数中判断<code>_request_ctx_stack</code>中是否存在<code>user</code>对象</p>
+<p>如果没有则调用<code>LoginManager</code>的<code>_load_user</code>方法。</p>
+<p>如果有则结束登录流程，然后进入到<code>_update_remember_cookie</code>函数中。</p>
+<p>为什么是这个函数呢？我看了下<code>LoginManager</code>的源码中的初始化方法中有指定请求钩子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_app</span><span class="params">(self, app, add_context_processor=True)</span>:</span></span><br><span class="line">    </span><br><span class="line">    app.login_manager = self</span><br><span class="line">    app.after_request(self._update_remember_cookie)</span><br><span class="line">    </span><br><span class="line">    self._login_disabled = app.config.get(<span class="string">'LOGIN_DISABLED'</span>, <span class="keyword">False</span>)</span><br><span class="line">    <span class="keyword">if</span> add_context_processor:</span><br><span class="line">        app.context_processor(_user_context_processor)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_update_remember_cookie</span><span class="params">(self, response)</span>:</span></span><br><span class="line">    <span class="comment"># Don't modify the session unless there's something to do.</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'remember'</span> <span class="keyword">not</span> <span class="keyword">in</span> session <span class="keyword">and</span> \</span><br><span class="line">            current_app.config.get(<span class="string">'REMEMBER_COOKIE_REFRESH_EACH_REQUEST'</span>):</span><br><span class="line">        session[<span class="string">'remember'</span>] = <span class="string">'set'</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'remember'</span> <span class="keyword">in</span> session:</span><br><span class="line">        operation = session.pop(<span class="string">'remember'</span>, <span class="keyword">None</span>)</span><br><span class="line">        <span class="keyword">if</span> operation == <span class="string">'set'</span> <span class="keyword">and</span> <span class="string">'user_id'</span> <span class="keyword">in</span> session:</span><br><span class="line">            self._set_cookie(response)</span><br><span class="line">        <span class="keyword">elif</span> operation == <span class="string">'clear'</span>:</span><br><span class="line">            self._clear_cookie(response)</span><br></pre></td></tr></table></figure>
+<p>在<code>_update_remember_cookie</code>函数中，如果设置了<code>remember</code>则会写入<code>cookie</code>否则不处理。</p>
+<p>注意：通过上面函数我们看到即使没有设置<code>remember</code>，浏览器也会被写入一段<code>cookie</code>。这个<code>cookie</code>其实是<code>flask</code>的<code>session</code>。<code>flask</code>的<code>session</code>实现很特殊，它不保存在服务器，它保存在浏览器的<code>cookie</code>中。</p>
+<h6 id="关于-current-user的原理"><a href="#关于-current-user的原理" class="headerlink" title="关于 current_user的原理"></a>关于 current_user的原理</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">current_user = LocalProxy(<span class="keyword">lambda</span>: _get_user())</span><br></pre></td></tr></table></figure>
+<p><code>current_user</code>是一个<code>local proxy</code>，被代理的函数是<code>_get_user</code>。当我们调用<code>current_user</code>的时候，会实时的调用<code>_get_user</code>方法。这个函数源码在上面，在方法内部会去查看<code>_request_ctx_stack</code>中是否有<code>user</code>对象，如果有则返回，如果没有则调用<code>_load_user</code>方法，这个返回回去<code>cookie</code>或者<code>session</code>中加载<code>user</code>对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">user_loader</span><span class="params">(self, callback)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    This sets the callback for reloading a user from the session. The</span></span><br><span class="line"><span class="string">    function you set should take a user ID (a ``unicode``) and return a</span></span><br><span class="line"><span class="string">    user object, or ``None`` if the user does not exist.</span></span><br><span class="line"><span class="string">    :param callback: The callback for retrieving a user object.</span></span><br><span class="line"><span class="string">    :type callback: callable</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    self.user_callback = callback</span><br><span class="line">    <span class="keyword">return</span> callback</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_load_user</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">'''Loads user from session or remember_me cookie as applicable'''</span></span><br><span class="line">    <span class="keyword">return</span> self.reload_user()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reload_user</span><span class="params">(self, user=None)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    This set the ctx.user with the user object loaded by your customized</span></span><br><span class="line"><span class="string">    user_loader callback function, which should retrieved the user object</span></span><br><span class="line"><span class="string">    with the user_id got from session.</span></span><br><span class="line"><span class="string">    Syntax example:</span></span><br><span class="line"><span class="string">    from flask_login import LoginManager</span></span><br><span class="line"><span class="string">    @login_manager.user_loader</span></span><br><span class="line"><span class="string">    def any_valid_func_name(user_id):</span></span><br><span class="line"><span class="string">        # get your user object using the given user_id,</span></span><br><span class="line"><span class="string">        # if you use SQLAlchemy, for example:</span></span><br><span class="line"><span class="string">        user_obj = User.query.get(int(user_id))</span></span><br><span class="line"><span class="string">        return user_obj</span></span><br><span class="line"><span class="string">    Reason to let YOU define this self.user_callback:</span></span><br><span class="line"><span class="string">        Because we won't know how/where you will load you user object.</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    ctx = _request_ctx_stack.top</span><br><span class="line">    <span class="keyword">if</span> user <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        user_id = session.get(<span class="string">'user_id'</span>)</span><br><span class="line">        <span class="keyword">if</span> user_id <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            ctx.user = self.anonymous_user()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> self.user_callback <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                <span class="keyword">raise</span> Exception(</span><br><span class="line">                    <span class="string">"No user_loader has been installed for this "</span></span><br><span class="line">                    <span class="string">"LoginManager. Refer to"</span></span><br><span class="line">                    <span class="string">"https://flask-login.readthedocs.io/"</span></span><br><span class="line">                    <span class="string">"en/latest/#how-it-works for more info."</span>)</span><br><span class="line">            user = self.user_callback(user_id)</span><br><span class="line">            <span class="keyword">if</span> user <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                ctx.user = self.anonymous_user()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ctx.user = user</span><br></pre></td></tr></table></figure>
+<p>我们看到<code>_load_user</code>最终调用的是<code>reload_user</code>的返回。这个函数才是真正获得用户对象的函数。我们一般重写这个函数，在我们集成<code>Flask-Login</code>的时候。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@login_manager.user_loader</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_user</span><span class="params">(user_id)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> User.query.get(int(user_id))</span><br></pre></td></tr></table></figure>
+<p>完成这个配置之后，源码里所有的<code>self.user_callback</code>都是指代我们配置的这个函数。</p>
+<h6 id="关于装饰器-login-require的实现"><a href="#关于装饰器-login-require的实现" class="headerlink" title="关于装饰器 login_require的实现"></a>关于装饰器 login_require的实现</h6><p>我们看下这个装饰器的源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_required</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    If you decorate a view with this, it will ensure that the current user is</span></span><br><span class="line"><span class="string">    logged in and authenticated before calling the actual view. (If they are</span></span><br><span class="line"><span class="string">    not, it calls the :attr:`LoginManager.unauthorized` callback.) For</span></span><br><span class="line"><span class="string">    example::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        @app.route('/post')</span></span><br><span class="line"><span class="string">        @login_required</span></span><br><span class="line"><span class="string">        def post():</span></span><br><span class="line"><span class="string">            pass</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If there are only certain times you need to require that your user is</span></span><br><span class="line"><span class="string">    logged in, you can do so with::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        if not current_user.is_authenticated:</span></span><br><span class="line"><span class="string">            return current_app.login_manager.unauthorized()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ...which is essentially the code that this function adds to your views.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    It can be convenient to globally turn off authentication when unit testing.</span></span><br><span class="line"><span class="string">    To enable this, if the application configuration variable `LOGIN_DISABLED`</span></span><br><span class="line"><span class="string">    is set to `True`, this decorator will be ignored.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param func: The view function to decorate.</span></span><br><span class="line"><span class="string">    :type func: function</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorated_view</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> request.method <span class="keyword">in</span> EXEMPT_METHODS:</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">elif</span> current_app.login_manager._login_disabled:</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">elif</span> <span class="keyword">not</span> current_user.is_authenticated:</span><br><span class="line">            <span class="keyword">return</span> current_app.login_manager.unauthorized()</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> decorated_view</span><br></pre></td></tr></table></figure>
+<p>我们看到装饰器中使用了<code>current_user</code>，一旦使用了<code>current_user</code>，就会触发<code>_get_user</code>方法，一旦触发这个方法后续流程就会和<code>current_user</code>的原理分析一样了。</p>
+<h6 id="最后看下-logout-user-函数"><a href="#最后看下-logout-user-函数" class="headerlink" title="最后看下 logout_user 函数"></a>最后看下 logout_user 函数</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logout_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Logs a user out. (You do not need to pass the actual user.) This will</span></span><br><span class="line"><span class="string">    also clean up the remember me cookie if it exists.</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line"></span><br><span class="line">    user = _get_user()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'user_id'</span> <span class="keyword">in</span> session:</span><br><span class="line">        session.pop(<span class="string">'user_id'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'_fresh'</span> <span class="keyword">in</span> session:</span><br><span class="line">        session.pop(<span class="string">'_fresh'</span>)</span><br><span class="line"></span><br><span class="line">    cookie_name = current_app.config.get(<span class="string">'REMEMBER_COOKIE_NAME'</span>, COOKIE_NAME)</span><br><span class="line">    <span class="keyword">if</span> cookie_name <span class="keyword">in</span> request.cookies:</span><br><span class="line">        session[<span class="string">'remember'</span>] = <span class="string">'clear'</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'remember_seconds'</span> <span class="keyword">in</span> session:</span><br><span class="line">            session.pop(<span class="string">'remember_seconds'</span>)</span><br><span class="line"></span><br><span class="line">    user_logged_out.send(current_app._get_current_object(), user=user)</span><br><span class="line"></span><br><span class="line">    current_app.login_manager.reload_user()</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p><code>logout_user</code>主要是清除了<code>session</code>和<code>cookie</code>中的关键参数。比如<code>login</code>时设置的<code>user_id</code>以及<code>remember</code>等，清除后又调用了<code>reload_user()</code>，根据之前的逻辑，当然不可能重载成功，因为<code>user_id</code>已经为<code>None</code>了，执行到<code>ctx.user = self.anonymous_user()</code>就已经结束了</p>
+<h6 id="关于session的问题"><a href="#关于session的问题" class="headerlink" title="关于session的问题"></a>关于session的问题</h6><p><code>flask</code>的<code>session</code>默认是<code>client side</code>的。也就是说<code>flask</code>的<code>session</code>是写入到浏览器<code>cookie</code>中的。当浏览器关闭后，默认情况下，这个<code>cookie</code>会丢失。</p>
+<h6 id="flask-login-的-remember-me-功能"><a href="#flask-login-的-remember-me-功能" class="headerlink" title="flask-login 的 remember me 功能"></a>flask-login 的 remember me 功能</h6><p>我们可以通过将<code>flask</code>的<code>session</code>设置为长期<code>session</code>来实现记住用户的功能。但是这样一来所有的<code>session</code>都将被设置为长期<code>session</code>。<code>flask-login</code>通过设置一个单独的<code>cookie</code>来实现记住我。但是这个单独的<code>cookie</code>并不会直接被使用，而是同样要搭配<code>flask</code>的<code>session</code>来实现。如果<code>session</code>中没有<code>userid</code>，那么<code>flask</code>会从<code>flask-login</code>设置的<code>cookie</code>中恢复<code>userid</code>并存储到<code>session</code>中。</p>
+<p>参考文章:</p>
+<p><a href="https://segmentfault.com/a/1190000015123733" target="_blank" rel="noopener">flask_login模块中user_loader装饰器引发的思考</a></p>
+<p><a href="https://www.jianshu.com/p/5ba6a956d504" target="_blank" rel="noopener">Flask-Login详解</a></p>
+<p><a href="https://ibaotu.com/tupian/nianzhongshuzhi/2.html" target="_blank" rel="noopener">flask中的session设置</a></p>
+<p><a href="http://www.bjhee.com/flask-ext8.html" target="_blank" rel="noopener">Flask扩展系列(八)–用户会话管理</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i>Flask</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/23/Nginx入门到实践-基础篇-上/" rel="next" title="Nginx入门到实践-基础篇-上">
+                <i class="fa fa-chevron-left"></i> Nginx入门到实践-基础篇-上
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#login-user-函数"><span class="nav-number">1.</span> <span class="nav-text">login_user 函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#关于-current-user的原理"><span class="nav-number">2.</span> <span class="nav-text">关于 current_user的原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#关于装饰器-login-require的实现"><span class="nav-number">3.</span> <span class="nav-text">关于装饰器 login_require的实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#最后看下-logout-user-函数"><span class="nav-number">4.</span> <span class="nav-text">最后看下 logout_user 函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#关于session的问题"><span class="nav-number">5.</span> <span class="nav-text">关于session的问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#flask-login-的-remember-me-功能"><span class="nav-number">6.</span> <span class="nav-text">flask-login 的 remember me 功能</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
