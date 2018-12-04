@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/11/27/深入理解Flask-Login原理/
+https://zhaobugs.com/2018/12/04/Nginx之旅-基础篇-上/
