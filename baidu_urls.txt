@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/12/04/Nginx之旅-基础篇-中/
+https://zhaobugs.com/2018/12/05/Nginx之旅-基础篇-下/

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="Nginx," />
 
 
 
@@ -81,18 +81,21 @@
 
 
 
-<meta name="description" content="今天发现一个echarts的python版本，暂时记下地址，以备后续需求出现的时候使用。 官方文档： http://pyecharts.org/#/zh-cn/prepare">
-<meta name="keywords" content="Python">
+<meta name="description" content="模块讲解nginx的模块有官方模块和第三方模块之分。 我们在终端中可以查看nginx加载的模块有哪些123456789101112131415161718192021222324--with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with">
+<meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一个用Python做图表的库-pyecharts">
-<meta property="og:url" content="https://zhaobugs.com/2018/09/21/一个用Python做图表的库-pyecharts/index.html">
+<meta property="og:title" content="Nginx之旅-基础篇-下">
+<meta property="og:url" content="https://zhaobugs.com/2018/12/05/Nginx之旅-基础篇-下/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="今天发现一个echarts的python版本，暂时记下地址，以备后续需求出现的时候使用。 官方文档： http://pyecharts.org/#/zh-cn/prepare">
+<meta property="og:description" content="模块讲解nginx的模块有官方模块和第三方模块之分。 我们在终端中可以查看nginx加载的模块有哪些123456789101112131415161718192021222324--with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-21T08:19:30.174Z">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxvxzkf15fj30q20f0q49.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxvy22tm4wj30l809uq3w.jpg">
+<meta property="og:updated_time" content="2018-12-05T09:05:10.733Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个用Python做图表的库-pyecharts">
-<meta name="twitter:description" content="今天发现一个echarts的python版本，暂时记下地址，以备后续需求出现的时候使用。 官方文档： http://pyecharts.org/#/zh-cn/prepare">
+<meta name="twitter:title" content="Nginx之旅-基础篇-下">
+<meta name="twitter:description" content="模块讲解nginx的模块有官方模块和第三方模块之分。 我们在终端中可以查看nginx加载的模块有哪些123456789101112131415161718192021222324--with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxvxzkf15fj30q20f0q49.jpg">
 
 
 
@@ -122,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/09/21/一个用Python做图表的库-pyecharts/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/12/05/Nginx之旅-基础篇-下/"/>
 
 
 
 
 
-  <title>一个用Python做图表的库-pyecharts | 红烧肉</title>
+  <title>Nginx之旅-基础篇-下 | 红烧肉</title>
   
 
 
@@ -303,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/09/21/一个用Python做图表的库-pyecharts/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/12/05/Nginx之旅-基础篇-下/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一个用Python做图表的库-pyecharts</h1>
+          <h1 class="post-title" itemprop="name headline">Nginx之旅-基础篇-下</h1>
         
 
         <div class="post-meta">
@@ -332,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-21T16:00:33+08:00">
-                2018-09-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T16:06:21+08:00">
+                2018-12-05
               </time>
             
 
@@ -355,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
                   </a>
                 </span>
 
@@ -373,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/09/21/一个用Python做图表的库-pyecharts/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/21/一个用Python做图表的库-pyecharts/" itemprop="commentCount"></span>
+                <a href="/2018/12/05/Nginx之旅-基础篇-下/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/05/Nginx之旅-基础篇-下/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +385,7 @@
 
           
           
-             <span id="/2018/09/21/一个用Python做图表的库-pyecharts/" class="leancloud_visitors" data-flag-title="一个用Python做图表的库-pyecharts">
+             <span id="/2018/12/05/Nginx之旅-基础篇-下/" class="leancloud_visitors" data-flag-title="Nginx之旅-基础篇-下">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  39 字
+                  750 字
                 </span>
               
 
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -449,9 +452,32 @@
       
 
       
-        <p>今天发现一个<code>echarts</code>的<code>python</code>版本，暂时记下地址，以备后续需求出现的时候使用。</p>
-<p>官方文档：</p>
-<p><a href="http://pyecharts.org/#/zh-cn/prepare" target="_blank" rel="noopener">http://pyecharts.org/#/zh-cn/prepare</a></p>
+        <h5 id="模块讲解"><a href="#模块讲解" class="headerlink" title="模块讲解"></a>模块讲解</h5><p>nginx的模块有官方模块和第三方模块之分。</p>
+<p>我们在终端中可以查看nginx加载的模块有哪些<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">--with-compat </span><br><span class="line">--with-file-aio </span><br><span class="line">--with-threads </span><br><span class="line">--with-http_addition_module </span><br><span class="line">--with-http_auth_request_module </span><br><span class="line">--with-http_dav_module </span><br><span class="line">--with-http_flv_module </span><br><span class="line">--with-http_gunzip_module </span><br><span class="line">--with-http_gzip_static_module </span><br><span class="line">--with-http_mp4_module </span><br><span class="line">--with-http_random_index_module </span><br><span class="line">--with-http_realip_module </span><br><span class="line">--with-http_secure_link_module </span><br><span class="line">--with-http_slice_module </span><br><span class="line">--with-http_ssl_module </span><br><span class="line">--with-http_stub_status_module </span><br><span class="line">--with-http_sub_module </span><br><span class="line">--with-http_v2_module </span><br><span class="line">--with-mail </span><br><span class="line">--with-mail_ssl_module </span><br><span class="line">--with-stream </span><br><span class="line">--with-stream_realip_module </span><br><span class="line">--with-stream_ssl_module </span><br><span class="line">--with-stream_ssl_preread_module</span><br></pre></td></tr></table></figure></p>
+<h6 id="http-stub-status-module模块："><a href="#http-stub-status-module模块：" class="headerlink" title="http_stub_status_module模块："></a>http_stub_status_module模块：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">编译选项：--with-http_stub_status_module </span><br><span class="line">作用：Nginx的客户端状态</span><br></pre></td></tr></table></figure>
+<p>主要用于展示当前处理链接的状态，用于监控链接信息</p>
+<p>配置语法：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax：stub_status;</span><br><span class="line">Default：——  <span class="comment"># 默认没有配置</span></span><br><span class="line">Context：server,location <span class="comment"># 配置的上下文</span></span><br></pre></td></tr></table></figure></p>
+<p>我们在默认配置文件中做如下配置</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxvxzkf15fj30q20f0q49.jpg" alt="image-20181205161951275"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host conf.d]$ sudo nginx -t</span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf test is successful</span><br><span class="line">[vagrant@docker-host conf.d]$ sudo nginx -s reload -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxvy22tm4wj30l809uq3w.jpg" alt="image-20181205162215974"></p>
+<p>第一行展示的是当前活跃连接数<br>第二行第一个数字表示nginx接受的握手的总次数，第二个表示nginx所处理的连接数，最后一个表示请求数。正常情况连接数和握手数是相等的，表示没有丢失。<br>最后一行分别表示读写等待的数量，最后一个等待表示开启长连接时(keep-alive)，客户端服务端既没有读也没有写仅仅建立连接的数量。</p>
+<h6 id="–with-http-random-index-module模块讲解"><a href="#–with-http-random-index-module模块讲解" class="headerlink" title="–with-http_random_index_module模块讲解"></a>–with-http_random_index_module模块讲解</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">编译选项：--with-http_random_index_module</span><br><span class="line">作用：主目录中选一个随机主页</span><br></pre></td></tr></table></figure>
+<p>配置语法：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax：random_index on | off;</span><br><span class="line">Default：random_index off;  <span class="comment"># 默认关闭</span></span><br><span class="line">Context：location</span><br></pre></td></tr></table></figure></p>
+<p>我们修改默认配置如下</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">random_index</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="comment"># index  index.html index.htm;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们可以在<code>/opt/app/code</code>目录下放几个页面作为首页。</p>
+<blockquote>
+<p>不会选择指定目录下以<code>.</code>开头的文件（隐藏文件）</p>
+</blockquote>
+<h5 id="–with-http-sub-module模块讲解"><a href="#–with-http-sub-module模块讲解" class="headerlink" title="–with-http_sub_module模块讲解"></a>–with-http_sub_module模块讲解</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">编译选项：--with-http_sub_module</span><br><span class="line">作用：HTTP内容替换</span><br></pre></td></tr></table></figure>
+<p>该模块是用于Nginx服务端在给客户端response内容的时候，进行HTTP内容更换。</p>
+<p>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: sub_filter string replacement; （string表示要替换的内容，replacement表示替换后的对象）</span><br><span class="line">Default: —</span><br><span class="line">Context: http, server, location</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">句法：	sub_filter_last_modified on | off;</span><br><span class="line">默认：	sub_filter_last_modified off;</span><br><span class="line">语境：	http，server，location</span><br></pre></td></tr></table></figure>
+<p>该模块用于判断每次请求的服务端内容是否发生变化，当发生变化的时候返回给客户端，当没有发生变化的时候，不再返回内容。重要用于缓存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">语法: sub_filter_once on | off;</span><br><span class="line">默认值: sub_filter_once on;</span><br><span class="line">配置段: http, server, location</span><br></pre></td></tr></table></figure>
+<p>字符串替换一次还是多次替换，默认替换一次，例如你要替换响应内容中的ttlsa为运维生存时间，如果有多个ttlsa出现，那么只会替换第一个，如果off，那么所有的ttlsa都会 被替换</p>
+<p>详细例子参考文章：<a href="http://www.ttlsa.com/linux/nginx-modules-ngx_http_sub_module/" target="_blank" rel="noopener">http://www.ttlsa.com/linux/nginx-modules-ngx_http_sub_module/</a></p>
 
       
     </div>
@@ -510,7 +536,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i>Nginx</a>
           
         </div>
       
@@ -523,8 +549,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/18/Flask构建API的权限控制/" rel="next" title="Flask构建API的权限控制">
-                <i class="fa fa-chevron-left"></i> Flask构建API的权限控制
+              <a href="/2018/12/04/Nginx之旅-基础篇-中/" rel="next" title="Nginx之旅-基础篇-中">
+                <i class="fa fa-chevron-left"></i> Nginx之旅-基础篇-中
               </a>
             
           </div>
@@ -532,10 +558,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/24/协程和异步IO-上/" rel="prev" title="协程和异步IO-上">
-                协程和异步IO-上 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -590,8 +612,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -678,6 +709,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#模块讲解"><span class="nav-number">1.</span> <span class="nav-text">模块讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#http-stub-status-module模块："><span class="nav-number">1.1.</span> <span class="nav-text">http_stub_status_module模块：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#–with-http-random-index-module模块讲解"><span class="nav-number">1.2.</span> <span class="nav-text">–with-http_random_index_module模块讲解</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#–with-http-sub-module模块讲解"><span class="nav-number">2.</span> <span class="nav-text">–with-http_sub_module模块讲解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
