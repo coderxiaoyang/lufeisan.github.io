@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Nginx," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
+<meta name="keywords" content="Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx之旅-Nginx作为静态资源web服务器">
+<meta property="og:url" content="https://zhaobugs.com/2018/12/06/Nginx之旅-Nginx作为静态资源web服务器/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxxdopa5a2j31as0kowrr.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxxz6ds8nwj31e20kmq9e.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxxz748bs4j31ek0lg0z9.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxxzf3v4zij31f40g20wv.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxxzggwy85j31eq0fu0x4.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxy0xugbc3j30uy0cogs4.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxy10k8934j30us09c432.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxy1djpxdmj30us0tcahw.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxy51j6h6vj30t20ditav.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxy52xkqrjj30ns0auaau.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxy54koz6qj30ye0fmtc0.jpg">
+<meta property="og:updated_time" content="2018-12-07T07:00:59.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx之旅-Nginx作为静态资源web服务器">
+<meta name="twitter:description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxxdopa5a2j31as0kowrr.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/12/06/Nginx之旅-Nginx作为静态资源web服务器/"/>
+
+
+
+
+
+  <title>Nginx之旅-Nginx作为静态资源web服务器 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/12/06/Nginx之旅-Nginx作为静态资源web服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx之旅-Nginx作为静态资源web服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-06T21:53:26+08:00">
+                2018-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/06/Nginx之旅-Nginx作为静态资源web服务器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/06/Nginx之旅-Nginx作为静态资源web服务器/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/12/06/Nginx之旅-Nginx作为静态资源web服务器/" class="leancloud_visitors" data-flag-title="Nginx之旅-Nginx作为静态资源web服务器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,990 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><code>Nginx</code>作为静态资源WEB服务</p>
+<p><code>Nginx</code>作为静态资源的webserver可以接收来自客户端的<code>REQ:jpeg, html, flv</code>格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。</p>
+<h6 id="静态资源的类型"><a href="#静态资源的类型" class="headerlink" title="静态资源的类型"></a>静态资源的类型</h6><p>​    非服务器动态运行生成的文件</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">种类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">浏览器端渲染</td>
+<td style="text-align:center">HTML、 CSS、JS</td>
+</tr>
+<tr>
+<td style="text-align:center">图片</td>
+<td style="text-align:center">JPEG、GIF、PNG</td>
+</tr>
+<tr>
+<td style="text-align:center">视频</td>
+<td style="text-align:center">FLV、MPEG</td>
+</tr>
+<tr>
+<td style="text-align:center">文件</td>
+<td style="text-align:center">TXT、等任意下载文件</td>
+</tr>
+</tbody>
+</table>
+<h6 id="CDN场景"><a href="#CDN场景" class="headerlink" title="CDN场景"></a>CDN场景</h6><p>我们看下百度百科的<code>CDN</code>解释：</p>
+<p><code>CDN</code>的全称是<code>Content Delivery Network</code>，即<a href="https://baike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265" target="_blank" rel="noopener">内容分发网络</a>。<code>CDN</code>是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<code>CDN</code>的关键技术主要有内容存储和分发技术。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fxxdopa5a2j31as0kowrr.jpg" alt="image-20181206220844315"></p>
+<p><code>Nginx</code>能够作为资源存储中心节点和代理前端节点。</p>
+<p>下面我们看下<code>Nginx</code>作为其中一个小的节点是如何配置处理请求的。</p>
+<h6 id="配置语法"><a href="#配置语法" class="headerlink" title="配置语法"></a>配置语法</h6><p>文件读取:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: sendfile on | off;</span><br><span class="line">Default: sendfile off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
+<p>引读：–with-file-aio 异步文件读取</p>
+<p><code>tcp_nopush</code>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: tcp_nopush on | off;</span><br><span class="line">Default: tcp_nopush off;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
+<p>开启之后将会将多个包整合为一个包发送。</p>
+<p>作用：<code>sendfile</code>开启的情况下，提高网络包的传输效率。</p>
+<p> <code>tcp_nodelay</code>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: tcp_nodelay on | off;</span><br><span class="line">Default: tcp_nodelayon;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
+<p>数据包不等待实时的发送给客户端。</p>
+<p>作用：<code>keepalive</code>连接下，提高网络包的传输实时性</p>
+<p>压缩：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip on | off;</span><br><span class="line">Default: gzip off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
+<p>作用：传输压缩</p>
+<p>经过服务端压缩之后，浏览器会自动解压，这样传输压缩后的文件能减少网络传输的消耗。</p>
+<p>压缩等级：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip_comp_level level;</span><br><span class="line">Default: gzip_comp_level 1;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
+<p>协议版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip_http_version 1.0 | 1.1;</span><br><span class="line">Default: gzip_http_version 1.1;</span><br><span class="line">Context: http, server, location</span><br></pre></td></tr></table></figure>
+<p>扩展<code>Nginx</code>压缩模块</p>
+<p><code>http_gzip_static_module</code> 预读<code>gzip</code>功能</p>
+<p>这个预读是指当我们想读取某个文件的时候，会先看对应目录下有没有文件对应的(<code>gzip</code>)压缩文件。如果有的话，直接读取。节省CPU压缩时间，不过需要保存两份数据。</p>
+<p><code>http_gunzip_module</code>应用支持<code>gunzip</code>的压缩方式 </p>
+<p>这个是为了解决浏览器不支持解压用到的。</p>
+<p>我们先看预压缩 ：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/download</span> &#123;</span><br><span class="line">    <span class="attribute">gzip_static</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nopush</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">root</span> /opt/app/code;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou download]<span class="comment"># ls</span></span><br><span class="line">test.img</span><br><span class="line">[root@hongshaorou download]<span class="comment"># gzip test.jpg</span></span><br><span class="line">[root@hongshaorou download]<span class="comment"># ls</span></span><br><span class="line">test.img.gz</span><br></pre></td></tr></table></figure>
+<p>这样我们可以直接访问文件名字获得压缩的文件。</p>
+<p>看下对图片的压缩：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ .*\.(jpg|gif|png)$</span> &#123;</span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">2</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span>  /opt/app/code/images;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在开启和关闭<code>gzip</code>的情况下 我们看下图片的大小</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxxz6ds8nwj31e20kmq9e.jpg" alt="image-20181207103212401"></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxxz748bs4j31ek0lg0z9.jpg" alt="image-20181207103256911"></p>
+<p> 相比文本压缩而言，图片压缩的效率不是很高。</p>
+<p>对文件进行压缩：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ .*\.(txt|xml)$</span> &#123;</span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;</span><br><span class="line">    <span class="attribute">root</span>  /opt/app/code/doc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在开启压缩和关闭的情况下访问一个日志</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxxzf3v4zij31f40g20wv.jpg" alt="image-20181207104038041"></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxxzggwy85j31eq0fu0x4.jpg" alt="image-20181207104156305"></p>
+<p>我们看到对文件的压缩效率还是很高的，访问时间减省了很多。</p>
+<h6 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存"></a>浏览器缓存</h6><p>浏览器的缓存机制是基于<code>HTTP</code>的缓存机制的</p>
+<p>HTTP协议定义的缓存机制（如：<code>Rxpires</code>; <code>Cache-control</code>等特殊的头信息和服务端进行验证）</p>
+<p>有了浏览器的缓存不会每次都去请求服务端，可以直接从本地读取一些数据降低了时耗。</p>
+<p>我们看下浏览器无缓存的情况下的请求：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fxy0xugbc3j30uy0cogs4.jpg" alt="image-20181207113314078"></p>
+<p>浏览器请求一个新的连接的时候先去本地临时目录查找是否存在文件，如果不存在继续请求，获得请求数据后会进行缓存。</p>
+<p>在有缓存的情况下</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxy10k8934j30us09c432.jpg" alt="image-20181207113551377"></p>
+<p>首先看缓存是否过期，如果没有直接拿去，如果过期了再次请求。</p>
+<p>校验过期机制</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">校验是否过期</th>
+<th>Expires、Cache-Control(max-age)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">协议中Etag头信息校验</td>
+<td>Etag</td>
+</tr>
+<tr>
+<td style="text-align:center">Last-Modified头信息校验</td>
+<td>Last-Modified</td>
+</tr>
+</tbody>
+</table>
+<p><code>Expires</code>是HTTP1.0版本的校验</p>
+<p><code>Cache-Control(max-age)</code>是HTTP1.1版本的校验，后面有一个过期的周期</p>
+<p>当本地的缓存已经过期的时候，就用下面的两个向服务器发起校验</p>
+<p><code>Etag</code>是一段随机字符串  检查文件是否过期 </p>
+<p><code>Last-Modified</code>后面是一段时间戳，用于和服务器端文件进行是否更新校验。如果服务器端时间发送了改变，则这个时间戳将会改变。会出现客户端的时间戳和服务端的时间戳不一致。服务端会将最新的文件发回给客户端。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxy1djpxdmj30us0tcahw.jpg" alt="image-20181207114819495"></p>
+<p>可以结合参考文章阅读<a href="https://www.jianshu.com/p/1a1536ab01f1" target="_blank" rel="noopener">强制缓存和协商缓存</a></p>
+<h6 id="浏览器缓存配置演示"><a href="#浏览器缓存配置演示" class="headerlink" title="浏览器缓存配置演示"></a>浏览器缓存配置演示</h6><p>配置语法-<code>expires</code></p>
+<p>配置<code>expires</code>会为HTTP请求返回<code>RESPONSE</code>添加<code>Cache-Control</code>、<code>Expires</code>头。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Syntax: expires [modified] time;</span><br><span class="line">		<span class="attribute">expires</span> epoch | max | <span class="literal">off</span>;</span><br><span class="line">Default: expires off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
+<p>🌰</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ .*\.(htm|html)$</span> &#123;</span><br><span class="line">    <span class="attribute">expires</span> <span class="number">24h</span>;</span><br><span class="line">    <span class="attribute">root</span>  /opt/app/code;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置解释：</p>
+<p>设置访问指定目录下面的以<code>htm或html</code>结尾的文件进行缓存。</p>
+<p>我们看下缓存开启和关闭服务端的返回。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxy51j6h6vj30t20ditav.jpg" alt="image-20181207135511085"></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxy52xkqrjj30ns0auaau.jpg" alt="image-20181207135628482"></p>
+<p>我们看到这两个返回是不一样的。</p>
+<p>不过无论是否开启，浏览器都会重新请求，这是因为浏览器中默认开启了不缓存，看下请求头</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fxy54koz6qj30ye0fmtc0.jpg" alt="image-20181207135805883"></p>
+<h6 id="跨域访问"><a href="#跨域访问" class="headerlink" title="跨域访问"></a>跨域访问</h6><p>工作中经常遇见跨域问题，这是因为出于安全的考虑，防止CSRF攻击。</p>
+<p>不过实际工作中我们有时需要开启跨域。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:  add_header name value [always];	</span><br><span class="line">Default: --</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
+<p>浏览器会根据服务端的<code>Access-Control-Allow-Origin</code>来判断是否开启跨域。</p>
+<p>实际配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="attribute">location</span> / &#123;  </span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Origin *;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Methods <span class="string">'GET, PUT, DELETE, POST, OPTIONS'</span>;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Headers <span class="string">'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization'</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置注释：</p>
+<p>第一行表示允许所有的域名进行跨域。（可以指定域名）</p>
+<p>第二行表示允许的方法。</p>
+<p>第三行表示允许在请求头里面添加的头信息。</p>
+<p>推荐阅读参考文章: <a href="https://segmentfault.com/a/1190000012550346" target="_blank" rel="noopener">Nginx配置跨域请求</a></p>
+<h6 id="防盗链"><a href="#防盗链" class="headerlink" title="防盗链"></a>防盗链</h6><p>目的：防止资源被盗用</p>
+<p>基于<code>http_refer</code>防盗链配置模块</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: valid_referers none | blocked | server_names | string ...;</span><br><span class="line">Default: --</span><br><span class="line">Context: server, location</span><br></pre></td></tr></table></figure>
+<p>指定合法的来源<code>referer</code>, 他决定了内置变量<code>$invalid_referer</code>的值，如果<code>referer</code>头部包含在这个合法网址里面，这个变量被设置为0，否则设置为1.记住，不区分大小写的.</p>
+<p>作为<code>Nginx</code>的变量<code>http_refer</code>将会记录上一个页面的地址，通过判断上一个页面的地址我们就可以判断是否是安全的访问。</p>
+<p>我们看下一个图片的防盗链</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~* \.(gif|jpg|png|bmp)$</span> &#123;</span><br><span class="line">    <span class="attribute">valid_referers</span> <span class="literal">none</span> <span class="literal">blocked</span> <span class="regexp">*.ttlsa.com</span> server_names ~\.google\. ~\.baidu\.;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">        <span class="comment">#rewrite ^/ http://www.ttlsa.com/403.jpg;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上所有来至<code>ttlsa.com</code>和域名中包含<code>google</code>和<code>baidu</code>的站点都可以访问到当前站点的图片,如果来源域名不在这个列表中，那么<code>$invalid_referer</code>等于1，在if语句中返回一个403给用户，这样用户便会看到一个403的页面,如果使用下面的<code>rewrite</code>，那么盗链的图片都会显示403.jpg。如果用户直接在浏览器输入你的图片地址,那么图片显示正常，因为它符合<code>none</code>这个规则.</p>
+<p>推荐阅读参考文章：<a href="http://www.ttlsa.com/nginx/nginx-referer/" target="_blank" rel="noopener">nginx实现图片防盗链</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i>Nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/05/Nginx之旅-基础篇-下/" rel="next" title="Nginx之旅-基础篇-下">
+                <i class="fa fa-chevron-left"></i> Nginx之旅-基础篇-下
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/09/Nginx之旅-Nginx作为代理服务器/" rel="prev" title="Nginx之旅-Nginx作为代理服务器">
+                Nginx之旅-Nginx作为代理服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#静态资源的类型"><span class="nav-number">1.</span> <span class="nav-text">静态资源的类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CDN场景"><span class="nav-number">2.</span> <span class="nav-text">CDN场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置语法"><span class="nav-number">3.</span> <span class="nav-text">配置语法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浏览器缓存"><span class="nav-number">4.</span> <span class="nav-text">浏览器缓存</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浏览器缓存配置演示"><span class="nav-number">5.</span> <span class="nav-text">浏览器缓存配置演示</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#跨域访问"><span class="nav-number">6.</span> <span class="nav-text">跨域访问</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#防盗链"><span class="nav-number">7.</span> <span class="nav-text">防盗链</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
