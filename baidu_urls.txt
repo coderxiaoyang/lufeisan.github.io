@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/12/12/Nginx之旅-Rewrite规则/
+https://zhaobugs.com/2018/12/13/Nginx之旅-secure-link模块作用原理/
