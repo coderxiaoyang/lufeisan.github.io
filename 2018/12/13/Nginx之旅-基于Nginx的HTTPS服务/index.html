@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Nginx," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="终于到了配置HTTPS了，想想之前面试还被问到了💪 HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现 对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图">
+<meta name="keywords" content="Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx之旅-基于Nginx的HTTPS服务">
+<meta property="og:url" content="https://zhaobugs.com/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="终于到了配置HTTPS了，想想之前面试还被问到了💪 HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现 对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5g7m6op9j31980h677y.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5gbix7fyj318g0i8aes.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5geiqwtwj319e0eqwi8.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fy5goky6jlj31f60gqn21.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5gz9ipjnj31fg0dm7av.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fy6e06s83hj31440owmzr.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy6efasaetj31ck0fagoq.jpg">
+<meta property="og:updated_time" content="2018-12-14T09:55:58.115Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx之旅-基于Nginx的HTTPS服务">
+<meta name="twitter:description" content="终于到了配置HTTPS了，想想之前面试还被问到了💪 HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现 对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5g7m6op9j31980h677y.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/"/>
+
+
+
+
+
+  <title>Nginx之旅-基于Nginx的HTTPS服务 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx之旅-基于Nginx的HTTPS服务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-13T21:23:10+08:00">
+                2018-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/" class="leancloud_visitors" data-flag-title="Nginx之旅-基于Nginx的HTTPS服务">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,853 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>终于到了配置HTTPS了，想想之前面试还被问到了💪</p>
+<h6 id="HTTPS原理和作用"><a href="#HTTPS原理和作用" class="headerlink" title="HTTPS原理和作用"></a>HTTPS原理和作用</h6><p><strong>为什么需要HTTPS呢？</strong></p>
+<p>原因：HTTP不安全</p>
+<ol>
+<li>传输数据容易被中间人盗用，信息泄露</li>
+<li>数据内容劫持，篡改</li>
+</ol>
+<p>HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议</p>
+<p><strong>HTTPS协议的实现</strong></p>
+<p>对传输内容进行加密以及身份验证</p>
+<p>对称加密和非对称加密的含义</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5g7m6op9j31980h677y.jpg" alt="image-20181213213941642"></p>
+<p>上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5gbix7fyj318g0i8aes.jpg" alt="image-20181213214331833"></p>
+<p>上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，私钥用于解密。</p>
+<p>非对称加密的加密算法，特点是私钥加密后的密文，只要是公钥，都可以解密，但是公钥加密后的密文，只有私钥可以解密。</p>
+<p>HTTPS加密协议原理</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5geiqwtwj319e0eqwi8.jpg" alt="image-20181213214624801"></p>
+<p>HTTPS加密既有对称加密，又有非对称加密。</p>
+<p>在一开始的时候进行一次非对称加密，服务端将公钥发送给客户端，以后的数据传输都是利用这个公钥进行加密传输。</p>
+<p>这是因为非对称的性能要求高，在第一次进行非对称加密之后，完全可以进行对称加密数据传输了。</p>
+<p><strong>中间人伪造客户端和服务端</strong></p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fy5goky6jlj31f60gqn21.jpg" alt="image-20181213215604955"></p>
+<p>对于上图这种中间人，在客户端发送数据到服务端，以及服务端发送数据到客户端的时候都能够劫持。这样多次数据连接都能被劫持。</p>
+<p>不过如果我们利用了CA证书就能解决这个问题。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5gz9ipjnj31fg0dm7av.jpg" alt="image-20181213220613309"></p>
+<p>这是因为，服务端返回给客户端的不再是公钥而是CA证书。客户端会和第三方签名机构进行校验CA证书。CA证书里面有对应的公钥。</p>
+<p>相比之前只发送公钥比，这种就很安全。因为服务端事先会和第三方机构进行对应的签名和授权。</p>
+<p>这样利用CA证书，就能完全预防中间人劫持。</p>
+<h6 id="证书签名生成CA证书"><a href="#证书签名生成CA证书" class="headerlink" title="证书签名生成CA证书"></a>证书签名生成CA证书</h6><p>生成的是自签证书</p>
+<p><strong>生成密钥和CA证书</strong></p>
+<p>首先检查模块是否安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# openssl version</span><br><span class="line">OpenSSL 1.0.2k-fips  26 Jan 2017</span><br></pre></td></tr></table></figure>
+<p>Nginx对应模块是否加载</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># nginx -V</span></span><br><span class="line">--with-http_ssl_module</span><br></pre></td></tr></table></figure>
+<p>步骤一：生成key密钥</p>
+<p>步骤二：生成证书签名请求文件（csr文件）</p>
+<p>上述两步完成之后就可以一起打包发送到对应的结构 关于网站和公司信息进行CA证书签名，机构将返回CA证书。</p>
+<p>步骤三：生成证书签名文件（CA文件）</p>
+<h6 id="证书签名生成和Nginx的HTTPS服务场景"><a href="#证书签名生成和Nginx的HTTPS服务场景" class="headerlink" title="证书签名生成和Nginx的HTTPS服务场景"></a>证书签名生成和Nginx的HTTPS服务场景</h6><p>生成key文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># cd /etc/nginx/</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou nginx]<span class="comment"># mkdir ssl_key</span></span><br><span class="line">[root@hongshaorou nginx]<span class="comment"># cd ssl_key/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成key密钥</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl genrsa -idea -out hongsr.key 1024</span></span><br><span class="line">Generating RSA private key, <span class="number">1024</span> bit long modulus</span><br><span class="line">............++++++</span><br><span class="line">..............++++++</span><br><span class="line">e is <span class="number">65537</span> (<span class="number">0</span>x10001)</span><br><span class="line"><span class="comment"># 根据提示输入密码</span></span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line">Verifying - Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成key文件</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># ls</span></span><br><span class="line">hongsr.key</span><br></pre></td></tr></table></figure>
+<p>生成证书签名请求文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl req -new -key hongsr.key  -out hongsr.csr</span></span><br><span class="line"></span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line"><span class="keyword">For</span> some fields there will be a default value,</span><br><span class="line"><span class="keyword">If</span> you enter <span class="string">'.'</span>, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (<span class="number">2</span> letter code) [XX]:CN</span><br><span class="line">State or Province Name (full name) []:Zhejiang</span><br><span class="line">Locality Name (eg, city) [Default City]:Hangzhou</span><br><span class="line">Organization Name (eg, company) [Default Company Ltd]:dabaojian</span><br><span class="line">Organizational Unit Name (eg, section) []:imooc</span><br><span class="line">Common Name (eg, your name or your server<span class="string">'s hostname) []:hongshaorou.com</span></span><br><span class="line"><span class="string">Email Address []:123456@qq.com</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Please enter the following '</span>extra<span class="string">' attributes</span></span><br><span class="line"><span class="string">to be sent with your certificate request</span></span><br><span class="line"><span class="string">A challenge password []:</span></span><br><span class="line"><span class="string">An optional company name []:imooc</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 生成csr文件</span></span><br><span class="line"><span class="string">[root@hongshaorou ssl_key]# ls</span></span><br><span class="line"><span class="string">hongsr.csr  hongsr.key</span></span><br></pre></td></tr></table></figure>
+<p>生成证书</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl x509 -req -days 3650 -in hongsr.csr -signkey hongsr.key -out hongsr.crt</span></span><br><span class="line">Signature ok</span><br><span class="line">subject=/C=CN/ST=Zhejiang/L=Hangzhou/O=dabaojian/OU=imooc/CN=hongshaorou.com/emailAddress=<span class="number">123456</span>@qq.com</span><br><span class="line">Getting Private key</span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后生成证书</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># ls</span></span><br><span class="line">hongsr.crt  hongsr.csr  hongsr.key</span><br></pre></td></tr></table></figure>
+<p>其中的<code>-days 3650</code> 签名证书的过期时间，默认过期时间是一个月。</p>
+<p><strong>Nginx的HTTPS语法配置</strong></p>
+<p>是否开启</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: ss|on|off;</span><br><span class="line">Default:ssl off;</span><br><span class="line">Context:http,server</span><br></pre></td></tr></table></figure>
+<p>证书文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:ssl_certificate file;</span><br><span class="line">Default:-</span><br><span class="line">Context:http,server</span><br></pre></td></tr></table></figure>
+<p>密码文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:ssl_certificate_key file;</span><br><span class="line">Default:-</span><br><span class="line">Context:http,server</span><br></pre></td></tr></table></figure>
+<p>新增配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="attribute">listen</span>       <span class="number">443</span>;</span><br><span class="line">   <span class="attribute">server_name</span>  hongshaorou.com;</span><br><span class="line">   <span class="attribute">ssl</span> <span class="literal">on</span>;</span><br><span class="line">   <span class="attribute">ssl_certificate</span> /etc/nginx/ssl_key/hongsr.crt;</span><br><span class="line">   <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl_key/hongsr.key;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="attribute">index</span> index.html index.htm;</span><br><span class="line">   <span class="attribute">location</span> / &#123;</span><br><span class="line">       <span class="attribute">root</span>  /opt/app/code;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>检查配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou conf.d]# nginx -t</span><br><span class="line"><span class="attribute">Enter</span> PEM pass phrase:</span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
+<p>需要我们输入生成密码文件的密码。</p>
+<p>重启<code>nginx</code>服务</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou nginx]# nginx -c /etc/nginx/nginx.conf</span><br><span class="line"><span class="attribute">Enter</span> PEM pass phrase:</span><br><span class="line">[root<span class="variable">@hongshaorou</span> nginx]<span class="comment"># netstat -tlunp | grep 443</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0.0.0:443</span>             <span class="number">0.0.0.0</span>:*               LISTEN      <span class="number">29073</span>/nginx: master</span><br></pre></td></tr></table></figure>
+<p>其他命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//停止 需要输入设置的key密码</span><br><span class="line">nginx -s stop -c /etc/nginx/nginx.conf</span><br><span class="line">//启动</span><br><span class="line">nginx -c /etc/nginx/nginx.conf</span><br><span class="line">//检查语法</span><br><span class="line">nignx -tc /etc/nginx/nginx.cof</span><br><span class="line">//查看端口是否启用</span><br><span class="line">netstat -luntp |grep 443</span><br></pre></td></tr></table></figure>
+<p>访问页面<code>https://192.168.205.10/admin.html</code>将会出现下面的情形</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fy6e06s83hj31440owmzr.jpg" alt="image-20181214170949930"></p>
+<p>之所以是这样是因为我们的证书是自己的咩有拿到去第三方机构认证，点击高级继续前往将会访问到真正的页面。</p>
+<h6 id="配置苹果要求的HTTPS服务"><a href="#配置苹果要求的HTTPS服务" class="headerlink" title="配置苹果要求的HTTPS服务"></a>配置苹果要求的HTTPS服务</h6><p>下面是苹果公司要求HTTPS要实现的技术细节。</p>
+<ul>
+<li>服务器所有的连接使用TLS1.2以上的版本(openssl1.0.2)</li>
+<li>https证书必须使用SHA256以上的哈希算法签名</li>
+<li>Https证书必须使用RSA 2048位 或ECC 256以上的公钥算法</li>
+<li>使用前向加密技术</li>
+</ul>
+<p>查看当前<code>openssl</code>证书版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou nginx]# openssl version</span><br><span class="line">OpenSSL 1.0.2k-fips  26 Jan 2017</span><br></pre></td></tr></table></figure>
+<p>符合要求不要升级</p>
+<p>查看加密算法</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy6efasaetj31ck0fagoq.jpg" alt="image-20181214172423565"></p>
+<p>加密算法是256，但是位数不是2048。</p>
+<p>重新生成证书</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ssl_key]# openssl req -days 36500 -x509 -sha256 -nodes -newkey rsa:2048 -keyout hongsr.key -out hongsr.crt</span><br></pre></td></tr></table></figure>
+<p>重启</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ssl_key]# nginx -t</span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf test is successful</span><br><span class="line">[root@hongshaorou ssl_key]#</span><br><span class="line">[root@hongshaorou ssl_key]# nginx -s reload -c /etc/nginx/nginx.conf</span><br><span class="line">[root@hongshaorou ssl_key]# netstat  -tlunp | grep 443</span><br><span class="line">tcp        0      0 0.0.0.0:443             0.0.0.0:*               LISTEN      1744/nginx: worker</span><br></pre></td></tr></table></figure>
+<p>这种配置方式，在重启停止nginx不需要输入key的密码，因为在生成的时候配置了一个参数 -keyout 重新生成新的文件</p>
+<p><strong>生成没有保护码的key</strong><br>生成没有保护码 key 的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in ./applelife.key -out ./applelife_nopass.key</span><br></pre></td></tr></table></figure>
+<h6 id="HTTPS服务优化"><a href="#HTTPS服务优化" class="headerlink" title="HTTPS服务优化"></a>HTTPS服务优化</h6><ul>
+<li>激活keepalive长连接</li>
+<li>设置ssl session缓存</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">192.33.2.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#让长连接保持更长</span></span><br><span class="line">    <span class="attribute">keepalive</span> <span class="number">100</span>;</span><br><span class="line">    <span class="attribute">ssl</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#设置缓存10M  大约可以存储 8000到10000 个会话</span></span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">    <span class="comment">#配置10分钟 session过期</span></span><br><span class="line">    <span class="attribute">ssl_session_timeout</span>  <span class="number">10m</span>;       </span><br><span class="line"></span><br><span class="line">    <span class="comment">#证书文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/nginx/ssl_key/applelife.crt;</span><br><span class="line">    <span class="comment">#key文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl_key/applelife.key;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i>Nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/13/Nginx之旅-secure-link模块作用原理/" rel="next" title="Nginx之旅-secure_link模块作用原理">
+                <i class="fa fa-chevron-left"></i> Nginx之旅-secure_link模块作用原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/20/SQLAlchemy使用遇见问题/" rel="prev" title="SQLAlchemy使用遇见问题">
+                SQLAlchemy使用遇见问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTPS原理和作用"><span class="nav-number">1.</span> <span class="nav-text">HTTPS原理和作用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#证书签名生成CA证书"><span class="nav-number">2.</span> <span class="nav-text">证书签名生成CA证书</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#证书签名生成和Nginx的HTTPS服务场景"><span class="nav-number">3.</span> <span class="nav-text">证书签名生成和Nginx的HTTPS服务场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置苹果要求的HTTPS服务"><span class="nav-number">4.</span> <span class="nav-text">配置苹果要求的HTTPS服务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTPS服务优化"><span class="nav-number">5.</span> <span class="nav-text">HTTPS服务优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
