@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/12/26/数据结构-数组/
+https://zhaobugs.com/2018/12/27/数据结构-栈和队列/
