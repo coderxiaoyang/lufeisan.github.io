@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/12/27/数据结构-栈和队列/
+https://zhaobugs.com/2018/12/28/数据结构-链表/
