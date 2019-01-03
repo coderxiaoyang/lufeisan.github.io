@@ -1,1 +1,1 @@
-https://zhaobugs.com/2018/12/28/数据结构-链表/
+https://zhaobugs.com/2019/01/03/一份从A-Z的Python技巧/
