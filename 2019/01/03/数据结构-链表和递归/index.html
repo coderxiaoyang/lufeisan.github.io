@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Redis," />
+  <meta name="keywords" content="数据结构," />
 
 
 
@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="RedisCluster集群集群特点 无中心节点，客户端与redis节点直连，不需要中间代理层 数据可以被分片存储 管理方便，后续可自行增加或摘除节点  Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。  我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总">
-<meta name="keywords" content="Redis">
+<meta name="description" content="移除链表元素这节我们通过移除链表元素这个问题来开始探讨链表和递归的关系。 按照LeetCode上的要求我们在不使用虚拟头节点的时候的代码 1234567891011121314151617181920212223242526272829class Solution &amp;#123;    public ListNode removeElements(ListNode head, int val) &amp;#">
+<meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建Redis集群">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/08/搭建Redis集群/index.html">
+<meta property="og:title" content="数据结构-链表和递归">
+<meta property="og:url" content="https://zhaobugs.com/2019/01/03/数据结构-链表和递归/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="RedisCluster集群集群特点 无中心节点，客户端与redis节点直连，不需要中间代理层 数据可以被分片存储 管理方便，后续可自行增加或摘除节点  Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。  我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总">
+<meta property="og:description" content="移除链表元素这节我们通过移除链表元素这个问题来开始探讨链表和递归的关系。 按照LeetCode上的要求我们在不使用虚拟头节点的时候的代码 1234567891011121314151617181920212223242526272829class Solution &amp;#123;    public ListNode removeElements(ListNode head, int val) &amp;#">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3lyxfcyaj30zg0ng43j.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3ma2p11mj30tq0aktaw.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:30:19.479Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fyxu4oiyjzj30wi09cq5h.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fyxuk14oz9j30wc09kjv2.jpg">
+<meta property="og:updated_time" content="2019-01-07T05:39:51.767Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建Redis集群">
-<meta name="twitter:description" content="RedisCluster集群集群特点 无中心节点，客户端与redis节点直连，不需要中间代理层 数据可以被分片存储 管理方便，后续可自行增加或摘除节点  Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。  我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总">
-<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3lyxfcyaj30zg0ng43j.jpg">
+<meta name="twitter:title" content="数据结构-链表和递归">
+<meta name="twitter:description" content="移除链表元素这节我们通过移除链表元素这个问题来开始探讨链表和递归的关系。 按照LeetCode上的要求我们在不使用虚拟头节点的时候的代码 1234567891011121314151617181920212223242526272829class Solution &amp;#123;    public ListNode removeElements(ListNode head, int val) &amp;#">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fyxu4oiyjzj30wi09cq5h.jpg">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/08/搭建Redis集群/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2019/01/03/数据结构-链表和递归/"/>
 
 
 
 
 
-  <title>搭建Redis集群 | 红烧肉</title>
+  <title>数据结构-链表和递归 | 红烧肉</title>
   
 
 
@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/08/搭建Redis集群/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/01/03/数据结构-链表和递归/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -323,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">搭建Redis集群</h1>
+          <h1 class="post-title" itemprop="name headline">数据结构-链表和递归</h1>
         
 
         <div class="post-meta">
@@ -335,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-08T11:21:48+08:00">
-                2018-06-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-03T16:32:29+08:00">
+                2019-01-03
               </time>
             
 
@@ -358,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
                   </a>
                 </span>
 
@@ -376,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/08/搭建Redis集群/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/08/搭建Redis集群/" itemprop="commentCount"></span>
+                <a href="/2019/01/03/数据结构-链表和递归/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/03/数据结构-链表和递归/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,7 +385,7 @@
 
           
           
-             <span id="/2018/06/08/搭建Redis集群/" class="leancloud_visitors" data-flag-title="搭建Redis集群">
+             <span id="/2019/01/03/数据结构-链表和递归/" class="leancloud_visitors" data-flag-title="数据结构-链表和递归">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  492 字
+                  901 字
                 </span>
               
 
@@ -431,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -452,28 +452,26 @@
       
 
       
-        <h4 id="RedisCluster集群"><a href="#RedisCluster集群" class="headerlink" title="RedisCluster集群"></a>RedisCluster集群</h4><h6 id="集群特点"><a href="#集群特点" class="headerlink" title="集群特点"></a>集群特点</h6><ul>
-<li>无中心节点，客户端与redis节点直连，不需要中间代理层</li>
-<li>数据可以被分片存储</li>
-<li>管理方便，后续可自行增加或摘除节点</li>
-</ul>
-<p>Redis集群是分片存储数据的，意味着每个节点的数据都不一样，当有一个节点故障的时候麻很容易数据丢失，因此我们需要给每个节点搭建从节点以备份数据。</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fs3lyxfcyaj30zg0ng43j.jpg" alt="image-20180608112643220"></p>
-<p>我们用到三节点构建一个集群，但是为了防止节点故障导致数据丢失，我们为每个节点配置一个冗余节点。总共用到了六个节点，正常数据操作的是节点成为主节点，备份数据的称为从节点。</p>
-<h4 id="Redis主从同步"><a href="#Redis主从同步" class="headerlink" title="Redis主从同步"></a>Redis主从同步</h4><h6 id="Redis主从同步特点"><a href="#Redis主从同步特点" class="headerlink" title="Redis主从同步特点"></a>Redis主从同步特点</h6><ul>
-<li>Redis集群中的数据库复制是通过主从同步来实现的</li>
-<li>主节点（Master）实时把数据分发给从节点（Slave）</li>
-<li>主从同步的好处在于高可用，Redis节点有冗余设计</li>
-</ul>
-<h6 id="Redis集群高可用"><a href="#Redis集群高可用" class="headerlink" title="Redis集群高可用"></a>Redis集群高可用</h6><ul>
-<li>Redis集群中应该包含奇数个Master，至少应该有3个Master</li>
-<li>Redis集群中每个Master都应该有Slave</li>
-</ul>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fs3ma2p11mj30tq0aktaw.jpg" alt="image-20180608113727222"></p>
-<p>为什么要包含奇数个呢？</p>
-<p>这是因为PXC集群和Redis集群都有选举机制，当集群中大部分节点挂了之后，剩余节点会进行选举，组建一个新的集群。当挂了超过一半的时候将无法再组成集群。</p>
-<p>还有一点Redis集群是切片存储数据的，当我们连接到一个Master，通过一定的计算规则判断数据是否应该存储到该Master，如果是则存储，如果不是则发送到应该存储的Master节点。这样虽然是切片存储数据，我们只要连接一个Master就可以取出全部数据。</p>
-<h4 id="安装Redis镜像"><a href="#安装Redis镜像" class="headerlink" title="安装Redis镜像"></a>安装Redis镜像</h4><h6 id="导入本地Redis镜像文件，运行Redis容器"><a href="#导入本地Redis镜像文件，运行Redis容器" class="headerlink" title="导入本地Redis镜像文件，运行Redis容器"></a>导入本地Redis镜像文件，运行Redis容器</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h6 id="移除链表元素"><a href="#移除链表元素" class="headerlink" title="移除链表元素"></a>移除链表元素</h6><p>这节我们通过<a href="https://leetcode-cn.com/problems/remove-linked-list-elements/" target="_blank" rel="noopener">移除链表元素</a>这个问题来开始探讨链表和递归的关系。</p>
+<p>按照LeetCode上的要求我们在不使用虚拟头节点的时候的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">removeElements</span><span class="params">(ListNode head, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果一开始就是需要删除元素 执行下面的判断</span></span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span> &amp;&amp; head.val == val) &#123;</span><br><span class="line">            ListNode delNode = head;</span><br><span class="line">            head = head.next;</span><br><span class="line">            delNode.next = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断节点是否被删除干净</span></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果上面流程走完 还有节点 则第一个节点必然是不匹配的</span></span><br><span class="line">        ListNode prev = head;</span><br><span class="line">        <span class="keyword">while</span> (prev.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prev.next.val == val) &#123;</span><br><span class="line">                ListNode delNode = prev.next;</span><br><span class="line">                prev.next = delNode.next;</span><br><span class="line">                delNode.next = <span class="keyword">null</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span></span><br><span class="line">                prev = prev.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们加上虚拟头结点试下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">removeElements</span><span class="params">(ListNode head, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(-<span class="number">1</span>);</span><br><span class="line">        dummyHead.next = head;</span><br><span class="line">        ListNode prev = dummyHead;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置了虚拟头节点之后，只需要判断判断虚拟头节点之后的就行了</span></span><br><span class="line">        <span class="keyword">while</span> (prev.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prev.next.val == val) &#123;</span><br><span class="line">                ListNode delNode = prev.next;</span><br><span class="line">                prev.next = delNode.next;</span><br><span class="line">                delNode.next = <span class="keyword">null</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span></span><br><span class="line">                prev = prev.next;</span><br><span class="line">        &#125;</span><br><span class="line">		</span><br><span class="line">        <span class="comment">// 需要返回真正的头结点</span></span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面这个 我们清楚了虚拟头结点的主要作用就是统一了头结点和其他节点的操作。达到简化逻辑的目的。</p>
+<h6 id="抒写自己的测试代码"><a href="#抒写自己的测试代码" class="headerlink" title="抒写自己的测试代码"></a>抒写自己的测试代码</h6><p>上面我们写的代码可以直接放到LeetCode进行执行，但是不可以本地测试。如果我们想本地测试需要进一些编写。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line"></span><br><span class="line">    ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">        val = x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 链表节点的构造函数</span></span><br><span class="line">    <span class="comment">// 使用arr作为参数，创建一个链表 当前的ListNode为链表头节点</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ListNode</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="keyword">null</span> || arr.length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"arr can not be empty"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.val = arr[<span class="number">0</span>];</span><br><span class="line">        ListNode cur = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            cur.next = <span class="keyword">new</span> ListNode(arr[i]);</span><br><span class="line">            cur = cur.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 以当前节点为头结点的链表信息字符串</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        StringBuilder s = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        ListNode cur = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">            s.append(cur.val + <span class="string">"-&gt;"</span>);</span><br><span class="line">            cur = cur.next;</span><br><span class="line">        &#125;</span><br><span class="line">        s.append(<span class="string">"NULL"</span>);</span><br><span class="line">        <span class="keyword">return</span> s.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在链表的节点类构造函数中，新增将数组变为链表的功能。</p>
+<p>在<code>Solution</code>类中进行测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span>[] nums = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line">    ListNode head = <span class="keyword">new</span> ListNode(nums);</span><br><span class="line">    System.out.println(head);</span><br><span class="line"></span><br><span class="line">    ListNode res = (<span class="keyword">new</span> Solution()).removeElements(head, <span class="number">6</span>);</span><br><span class="line">    System.out.println(res);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 结果</span></span><br><span class="line"><span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">6</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span>-&gt;<span class="number">6</span>-&gt;NULL</span><br><span class="line"><span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span>-&gt;NULL</span><br></pre></td></tr></table></figure>
+<p>在其他题目中，我们可以按照这种思想进行编写测试。</p>
+<h6 id="递归的基础和递归的宏观语意"><a href="#递归的基础和递归的宏观语意" class="headerlink" title="递归的基础和递归的宏观语意"></a>递归的基础和递归的宏观语意</h6><p>本质上递归就是将原来的问题转化为更小的同一个问题。</p>
+<p>例如数组求和</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fyxu4oiyjzj30wi09cq5h.jpg" alt="image-20190107105706189"></p>
+<p>我们将上面的过程写成代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Sum</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sum(arr, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算arr[l...)这个区间内所有数字的和</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> l)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 遍历到了数组的长度</span></span><br><span class="line">        <span class="keyword">if</span> (l == arr.length)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> arr[l] + sum(arr, l + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line">        System.out.println(sum(nums));</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析一下递归的代码结构，大致分为下面两个部分</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fyxuk14oz9j30wc09kjv2.jpg" alt="image-20190107111155350"></p>
+<p>递归函数本身也是一个函数，完成一个功能。</p>
 
       
     </div>
@@ -532,7 +530,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>Redis</a>
+            <a href="/tags/数据结构/" rel="tag"><i class="fa fa-tag"></i>数据结构</a>
           
         </div>
       
@@ -545,8 +543,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/06/PXC集群的负载均衡/" rel="next" title="PXC集群的负载均衡">
-                <i class="fa fa-chevron-left"></i> PXC集群的负载均衡
+              <a href="/2019/01/03/一份从A-Z的Python技巧/" rel="next" title="一份从A-Z的Python技巧">
+                <i class="fa fa-chevron-left"></i> 一份从A-Z的Python技巧
               </a>
             
           </div>
@@ -554,10 +552,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/08/Python中一切皆对象/" rel="prev" title="Python中一切皆对象">
-                Python中一切皆对象 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -719,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#RedisCluster集群"><span class="nav-number">1.</span> <span class="nav-text">RedisCluster集群</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#集群特点"><span class="nav-number">1.0.1.</span> <span class="nav-text">集群特点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis主从同步"><span class="nav-number">2.</span> <span class="nav-text">Redis主从同步</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Redis主从同步特点"><span class="nav-number">2.0.1.</span> <span class="nav-text">Redis主从同步特点</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Redis集群高可用"><span class="nav-number">2.0.2.</span> <span class="nav-text">Redis集群高可用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Redis镜像"><span class="nav-number">3.</span> <span class="nav-text">安装Redis镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#导入本地Redis镜像文件，运行Redis容器"><span class="nav-number">3.0.1.</span> <span class="nav-text">导入本地Redis镜像文件，运行Redis容器</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#移除链表元素"><span class="nav-number">1.</span> <span class="nav-text">移除链表元素</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#抒写自己的测试代码"><span class="nav-number">2.</span> <span class="nav-text">抒写自己的测试代码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#递归的基础和递归的宏观语意"><span class="nav-number">3.</span> <span class="nav-text">递归的基础和递归的宏观语意</span></a></li></ol></div>
             
 
           </div>
