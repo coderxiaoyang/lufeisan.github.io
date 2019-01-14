@@ -94,9 +94,8 @@
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu18i2ndmfj316a0o4wwn.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu19e8drgij31fe0o84p6.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu19e8drgij31fe0o84p6.jpg">
-<meta property="og:image" content="https://zhaobugs.com/var/folders/st/lbljp6kd6fq8g34qcy8_fl1m0000gn/T/abnerworks.Typora/image-20180808112749128.png">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fu25fgxo9jj30rc0a2gmf.jpg">
-<meta property="og:updated_time" content="2018-08-15T02:01:45.246Z">
+<meta property="og:updated_time" content="2019-01-08T06:32:57.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-线程隔离篇">
 <meta name="twitter:description" content="1. 进程和线程进程就是操作系统分配和调度资源的最小单位。  线程之间的切换消耗更小。   进程 分配资源 内存资源    线程 利用CPU执行代码  线程是不能被分配和获得资源的，但是线程能够访问资源（对应所属进程的资源），正因为线程不用管理资源和拥有资源的 ，因此线程切换的开销比进程小。 对于多核CPU，当存在多个线程的时候，可以并行运行在多个CPU上，但是，由于Python中GIL的存在，导">
@@ -512,7 +511,6 @@
 <p>flask为什么要使用线程隔离呢？</p>
 <p>表面原因：在多线程编程的时候，每个线程中都会创建各种对象，如果不进行线程隔离，就会出现变量指代不明确，程序运行出错。</p>
 <p>深入原因： 我们以<code>Request</code>为例，使用线程隔离后<code>request</code>变量在各个线程中会指向当前的<code>Request</code>实例化对象，不会出现指代不明的情况。</p>
-<p><img src="/var/folders/st/lbljp6kd6fq8g34qcy8_fl1m0000gn/T/abnerworks.Typora/image-20180808112749128.png" alt="image-20180808112749128"></p>
 <blockquote>
 <p>线程隔离的意义：使当前线程能够正确引用到它自己所创建的对象，而不是引用到其他线程所创建的对象。</p>
 </blockquote>
@@ -722,7 +720,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">110</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -744,7 +742,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

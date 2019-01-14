@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="上篇我们学习了一些服务器硬件和系统配置参数对MySQL性能的影响，这篇我们看下MySQL本身对性能的影响。 MySQL体系架构mysql与众不同的就是这种插件式存储引擎了，这种架构将数据库查询处理及其他系统的任务以及数据的存储，提取相分离。 这种数据存储和数据处理相分离的设计呢，可以让我们在使用时，根据存储引擎不同的性能和特征以及其他需要来选择数据存储的方式。 首先要清楚mysql的体系结构: 第">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库架构--什么影响了MySQL性能-中">
+<meta property="og:url" content="https://zhaobugs.com/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-下/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="上篇我们学习了一些服务器硬件和系统配置参数对MySQL性能的影响，这篇我们看下MySQL本身对性能的影响。 MySQL体系架构mysql与众不同的就是这种插件式存储引擎了，这种架构将数据库查询处理及其他系统的任务以及数据的存储，提取相分离。 这种数据存储和数据处理相分离的设计呢，可以让我们在使用时，根据存储引擎不同的性能和特征以及其他需要来选择数据存储的方式。 首先要清楚mysql的体系结构: 第">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fz0te4e4cwj30s40lkqbs.jpg">
+<meta property="og:updated_time" content="2019-01-10T07:32:36.899Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据库架构--什么影响了MySQL性能-中">
+<meta name="twitter:description" content="上篇我们学习了一些服务器硬件和系统配置参数对MySQL性能的影响，这篇我们看下MySQL本身对性能的影响。 MySQL体系架构mysql与众不同的就是这种插件式存储引擎了，这种架构将数据库查询处理及其他系统的任务以及数据的存储，提取相分离。 这种数据存储和数据处理相分离的设计呢，可以让我们在使用时，根据存储引擎不同的性能和特征以及其他需要来选择数据存储的方式。 首先要清楚mysql的体系结构: 第">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fz0te4e4cwj30s40lkqbs.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-下/"/>
+
+
+
+
+
+  <title>MySQL数据库架构--什么影响了MySQL性能-中 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-下/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--什么影响了MySQL性能-中</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:34:16+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-下/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-下/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-下/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--什么影响了MySQL性能-中">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,495 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  18 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上篇我们学习了一些服务器硬件和系统配置参数对MySQL性能的影响，这篇我们看下MySQL本身对性能的影响。</p>
+<h6 id="MySQL体系架构"><a href="#MySQL体系架构" class="headerlink" title="MySQL体系架构"></a>MySQL体系架构</h6><p>mysql与众不同的就是这种插件式存储引擎了，这种架构将数据库查询处理及其他系统的任务以及数据的存储，提取相分离。</p>
+<p>这种数据存储和数据处理相分离的设计呢，可以让我们在使用时，根据存储引擎不同的性能和特征以及其他需要来选择数据存储的方式。</p>
+<p>首先要清楚mysql的体系结构:</p>
+<p>第一层: 客户端</p>
+<p>这一层代表可以连接到mysql服务器的客户端，例如 php java api Odbc  jdbc ，跟大部分cs架构一样，这一层主要是，连接处理，授权认证，安全等一些功能，每个链接到mysql客户端都会在服务器进程中拥有一个线程，这个连接查询，只会在这个单独的线程中执行，也就是前面所说的哪个连接的查询只能用到一个cpu的核心</p>
+<p>第二层是比较核心的</p>
+<p>这一层包括了 查询缓存、查询解析、查询优化，以及内置函数，如常用的DDL ，DML全是在这一层定义的。总之，所有跨存储引擎的功能都是在这一层来实现的，因此这一层称之为mysql服务层。这一层中实现了与存储引擎无关的特性，什么是与存储引擎无关的特性。比如说select语句，如何从文件中获得我们所要查询的数据，这个具体的实现方式是由下一层存储引擎层来实现，这个语句对所有的存储引擎来说，所要实现的功能都是一样的，获取存储在文件中的数据，根据我们的过滤条件进行过滤，然后把数据显示出来，select语句的功能是在mysql服务层实现的，而如何从文件中获得我们要查询的数据，则是有下一层存储引擎层来实现的。</p>
+<p>第三层存储引擎层</p>
+<p>区别其他数据库最大的地方，最常用的存储引擎，innodb、myisam、XtraDB、CSV、Memory。根据不同的特点选择不同的存储引擎，注意，存储引擎是针对于表的而不是针对于库的，（理论上一个库里面不同的表可以使用不同的存储引擎）</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fz0te4e4cwj30s40lkqbs.jpg" alt="image-20190110004907432"></p>
+<h6 id="MySQL存储引擎之MyISAM"><a href="#MySQL存储引擎之MyISAM" class="headerlink" title="MySQL存储引擎之MyISAM"></a>MySQL存储引擎之MyISAM</h6><p>MyISAM为MySQL5.5之前版本默认存储引擎。</p>
+<p> 一般的临时表和系统表都是MyISAM。这里的临时表是指：在排序，分组等操作中，当数量超过一定的大小之后，由查询优化器建立的临时表。</p>
+<p>MyISAM存储引擎表由MYD（数据文件）和MYI（索引文件）组成。<br>当我们新建一张表指定MyISAM为存储引擎的时候，会有三个文件对应生成。myIsam.frm（用于记录表结构），myIsam.MYD，myIsam.MYI。</p>
+<p>MYD文件存储的是myIsam表的数据信息，MYI存放的是索引的信息</p>
+<p><strong>特性：</strong></p>
+<ul>
+<li><p>并发性与锁级别<br>  是表级锁而不是行级锁，也就是说在对数据表进行修改的时候，需要对整个表进行加锁，对表进行读取时，需要对表进行加共享锁。（读取和写入是互斥的，不过有些情况下可以在读取的时候在表的末尾新增数据，总体而言对读写混合的操作并发性支持不是很友好）</p>
+</li>
+<li><p>表损坏修复<br>  对与意外关闭进行修复，这里的修复不是事务修复，对表的修复可能造成数据的丢失。我们可以使用 <code>check table  tablename</code> 进行表的检查，使用<code>repair table  tablename</code> 进行表的修复。</p>
+</li>
+</ul>
+<p>下面我们看一下修复实例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 新建数据库 指定存储引擎</span><br><span class="line">MySQL [test]&gt; create table myIsam( id int ,c1 varchar(10))engine=myisam;</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line"></span><br><span class="line"># 在文件系统中查看生成的文件</span><br><span class="line">[root@wangerxiao test]# pwd</span><br><span class="line">/usr/local/mysql/var/test</span><br><span class="line">[root@wangerxiao test]# ls -l  myIsam*</span><br><span class="line">-rw-r----- 1 mysql mysql 8582 Mar 14 19:22 myIsam.frm</span><br><span class="line">-rw-r----- 1 mysql mysql    0 Mar 14 19:22 myIsam.MYD</span><br><span class="line">-rw-r----- 1 mysql mysql 1024 Mar 14 19:22 myIsam.MYI</span><br><span class="line"></span><br><span class="line"># 使用check 检查数据表</span><br><span class="line">MySQL [test]&gt; check table myIsam;</span><br><span class="line">+-------------+-------+----------+----------+</span><br><span class="line">| Table       | Op    | Msg_type | Msg_text |</span><br><span class="line">+-------------+-------+----------+----------+</span><br><span class="line">| test.myIsam | check | status   | OK       |</span><br><span class="line">+-------------+-------+----------+----------+</span><br><span class="line">1 row in set (0.04 sec)</span><br><span class="line"></span><br><span class="line"># 使用repair修复数据表</span><br><span class="line">MySQL [test]&gt; repair table myIsam; </span><br><span class="line">+-------------+--------+----------+----------+</span><br><span class="line">| Table       | Op     | Msg_type | Msg_text |</span><br><span class="line">+-------------+--------+----------+----------+</span><br><span class="line">| test.myIsam | repair | status   | OK       |</span><br><span class="line">+-------------+--------+----------+----------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure></p>
+<p>除了使用repair外，我们还可以使用命令行<code>myisamchk --help</code>修复，不过要事先关闭mysql服务，否则会造成更多的数据丢失。</p>
+<ul>
+<li><p>MyISAM表支持的索引类型<br>  支持全文索引</p>
+<p>  而且是在mysql5.7之前版本中，唯一原生就是支持全文索引的官方存储引擎，另外myisam表还支持，test，belog等字段前字符的前缀索引，如果myisam是一张很大的只读表的时候，也就是在表创建完，导入数据后，就不会在对表进行任何操作了，那么我们就可以对这样的表进行压缩操作，这样可以减少磁盘io。</p>
+</li>
+<li><p>MyISAM表支持数据压缩<br>  命令： myisampack</p>
+<p>  如果对一张表压缩，可以使用<code>myisampack</code>命令来对表进行压缩表中数据，对表中的数据是独立进行压缩的，在读取单数据的时候呢，不必对整个表来进行解压，下面演示下，如何对一张表来进行压缩，<code>myisampack -b -f myIsam.MYI</code>，对压缩后的表只能进行读操作，不能进行写操作。</p>
+</li>
+</ul>
+<p>实例如何进行压缩：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 进行压缩</span><br><span class="line">[root@wangerxiao test]# myisampack  -b -f myIsam.MYI</span><br><span class="line">Compressing myIsam.MYD: (0 records)</span><br><span class="line">- Calculating statistics</span><br><span class="line">- Compressing file</span><br><span class="line">Empty file saved in compressed format</span><br><span class="line"></span><br><span class="line"># 压缩之前的文件为 .OLD</span><br><span class="line">[root@wangerxiao test]# ls -lh myIsam*</span><br><span class="line">-rw-r----- 1 mysql mysql 8.4K Mar 14 19:22 myIsam.frm</span><br><span class="line">-rw-r----- 1 mysql mysql   50 Mar 14 19:28 myIsam.MYD</span><br><span class="line">-rw-r----- 1 mysql mysql 1.0K Mar 14 19:38 myIsam.MYI</span><br><span class="line">-rw-r----- 1 mysql mysql    0 Mar 14 19:28 myIsam.OLD</span><br><span class="line"></span><br><span class="line"># 压缩之后，我们尝试插入数据表</span><br><span class="line"></span><br><span class="line">MySQL [test]&gt; insert into  myIsam values(1,&apos;aa&apos;);</span><br><span class="line">ERROR 1036 (HY000): Table &apos;myIsam&apos; is read only</span><br><span class="line"></span><br><span class="line"># 提示错误，因为在压缩之后，数据表变成只读。</span><br></pre></td></tr></table></figure></p>
+<p><strong>限制</strong></p>
+<p>如果在MySQL5.0之前的版本默认表大小为4G<br>如果想要存储大表则要修改 <code>MAX_Rows</code> 和 <code>AVG_ROW_LEnGTH</code><br>两个参数相乘的大小，就是表可能达到的最大的大小</p>
+<p>大表修改这两个参数，等于对表进行重建，会花费一些时间</p>
+<p>在5.0版本之后，单表支持256TB，足够我们使用</p>
+<p><strong>适用场景</strong></p>
+<ul>
+<li><p>非事务型应用（报表类）</p>
+</li>
+<li><p>只读类应用（支持压缩）</p>
+</li>
+<li><p>空间类应用（GPS数据）</p>
+<p>在mysql5.7之前myisam是唯一个支持空间函数的一个存储引擎。</p>
+</li>
+</ul>
+<h6 id="MySQL存储引擎之Innodb"><a href="#MySQL存储引擎之Innodb" class="headerlink" title="MySQL存储引擎之Innodb"></a>MySQL存储引擎之Innodb</h6><p>在MySQL5.5以后版本默认引擎为<code>Innodb</code>。</p>
+<p>和MyISAM不同，Innodb是一种支持事务的存储引擎，更适合处理大量的小事务。Innodb使用表空间进行存储数据，具体存储在哪个存储空间是由<code>innodb_file_per_table</code>参数决定的。<br>当参数为ON时，则会为每个Innodb表建立一个以<code>tablename.ibd</code>命名的独立表空间。<br>当参数为OFF时，则会把数据存储到共享表空间（系统表空间）ibdataX（X代表数字）</p>
+<p>查看当前数据库参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show variables like &apos;innodb_file_per_table&apos;;</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Variable_name         | Value |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| innodb_file_per_table | ON    |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">1 row in set (0.05 sec)</span><br></pre></td></tr></table></figure></p>
+<p>新建一张innodb的数据表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create table myinnodb(id int,c1 varchar(10)) engine=&apos;innodb&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.07 sec)</span><br></pre></td></tr></table></figure></p>
+<p>查看文件系统中的存储方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@wangerxiao test]# ls -lh   myinno*</span><br><span class="line">-rw-r----- 1 mysql mysql 8.4K Mar 14 19:58 myinnodb.frm</span><br><span class="line">-rw-r----- 1 mysql mysql  96K Mar 14 19:58 myinnodb.ibd</span><br></pre></td></tr></table></figure></p>
+<p>frm文件同样是表结构文件，ibd文件就是表的存储空间。</p>
+<p>现在我们能看当参数为OFF的时候，表的存储方式：<br>先将参数设置为OFF状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; set  global innodb_file_per_table=off;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">MySQL [test]&gt; show variables like &apos;innodb_file_per_table&apos;;                </span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Variable_name         | Value |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| innodb_file_per_table | OFF   |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>新建一张数据表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create table myinnodb_g(id int,c1 varchar(10))engine=&apos;innodb&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.03 sec)</span><br></pre></td></tr></table></figure></p>
+<p>查看文件系统保存方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@wangerxiao test]# ls -lh   myinnodb*</span><br><span class="line">-rw-r----- 1 mysql mysql 8.4K Mar 14 19:58 myinnodb.frm</span><br><span class="line">-rw-r----- 1 mysql mysql 8.4K Mar 14 20:03 myinnodb_g.frm</span><br><span class="line">-rw-r----- 1 mysql mysql  96K Mar 14 19:58 myinnodb.ibd</span><br></pre></td></tr></table></figure></p>
+<p>我们发现只有 frm文件，而没有ibd文件。<br>实际上数据存储到了数据的共享表空间（ibdata1中）中：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@wangerxiao test]<span class="comment"># cd ..</span></span><br><span class="line">[root@wangerxiao var]<span class="comment"># ls  -lh </span></span><br><span class="line">total <span class="number">218</span>M</span><br><span class="line">-rwxr-xr-x  <span class="number">1</span> mysql mysql  <span class="number">16</span>K Oct  <span class="number">8</span> <span class="number">20</span>:<span class="number">29</span> aria_log.<span class="number">00000001</span></span><br><span class="line">-rwxr-xr-x  <span class="number">1</span> mysql mysql   <span class="number">52</span> Oct  <span class="number">8</span> <span class="number">20</span>:<span class="number">29</span> aria_log_control</span><br><span class="line">-rwxr-xr-x. <span class="number">1</span> mysql mysql   <span class="number">56</span> Aug <span class="number">19</span>  <span class="number">2016</span> auto.cnf</span><br><span class="line">-rw-r-----  <span class="number">1</span> mysql mysql  <span class="number">557</span> Dec <span class="number">22</span> <span class="number">18</span>:<span class="number">06</span> ib_buffer_pool</span><br><span class="line">-rwxr-xr-x. <span class="number">1</span> mysql mysql  <span class="number">74</span>M Mar <span class="number">14</span> <span class="number">20</span>:<span class="number">03</span> ibdata1</span><br><span class="line">-rwxr-xr-x. <span class="number">1</span> mysql mysql  <span class="number">64</span>M Mar <span class="number">14</span> <span class="number">20</span>:<span class="number">03</span> ib_logfile0</span><br><span class="line">-rwxr-xr-x. <span class="number">1</span> mysql mysql  <span class="number">64</span>M Aug <span class="number">19</span>  <span class="number">2016</span> ib_logfile1</span><br></pre></td></tr></table></figure>
+<p><strong>系统表空间和独立表空间要如何选择：</strong></p>
+<p>比较：</p>
+<pre><code>* 系统表空间无法简单的收缩文件大小（非常麻烦）
+* 独立表空间可以通过`optimize table`命令收缩文件系统文件
+     在清理大表数据之后，可以只对这一个表进行optimize操作，也会对表进行重建，但是不重启数据库服务器，不影响访问
+* 系统表空间会产生IO瓶颈
+     因为只存在一个表空间，因此当同时对多个表空间进行数据刷新时，在文件系统              上时顺序执行的，会产生一定得IO瓶颈。
+* 独立表空间可以同时向多个文件刷新数据
+</code></pre><p>建议：</p>
+<p>对Innodb使用独立表空间（5.6版本之后已是默认）</p>
+<p><strong>如何把之前的版本的的共享表空间的数据表转换到独立表空间：</strong><br>步骤：</p>
+<ol>
+<li>使用mysqldump导出所有数据库表数据数据（数据库中使用存储过程，触发器，计划事件等一起导出）</li>
+<li>停止服务MySQL服务，修改参数，并删除原来Innodb相关文件（磁盘空间的回收）</li>
+<li>重启MySQL服务，重建Innodb系统表空间</li>
+<li>重新导入数据</li>
+</ol>
+<p>当我们把数据表从共享空间转移到独立表空间中，在共享表空间中还存在着一些重要的东西：Innodb 数据字典信息，Undo回滚段 </p>
+<p><strong>Innodb存储引擎的特性：</strong></p>
+<pre><code>* Innodb是一种事务性存储引擎
+
+* 完全支持事务的ACID特性
+
+* Redo Log 和 Undo Log
+
+     Redo Log 主要用于实现事务的持久性，由两部分组成：内存中的重做日志缓冲区，重做日志文件。
+     Undo Log 主要用于未提交事务进行回滚和实现mvcc。
+
+     正是利用`redo Log`和`Undo Log`来实现事务的原子性，持久性，一致性。
+</code></pre><p>查看缓冲区的大小：(字节为单位，每一秒就把缓冲区刷新到磁盘上）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; </span><br><span class="line">MySQL [test]&gt; show variables like &apos;innodb_log_buffer_size&apos;;</span><br><span class="line">+------------------------+---------+</span><br><span class="line">| Variable_name          | Value   |</span><br><span class="line">+------------------------+---------+</span><br><span class="line">| innodb_log_buffer_size | 8388608 |</span><br><span class="line">+------------------------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>重做日志文件的设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show variables like &apos;innodb_log_files_in_group&apos;;</span><br><span class="line">+---------------------------+-------+</span><br><span class="line">| Variable_name             | Value |</span><br><span class="line">+---------------------------+-------+</span><br><span class="line">| innodb_log_files_in_group | 2     |</span><br><span class="line">+---------------------------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">我们看到有两个log</span><br><span class="line">[root@wangerxiao var]# ls  -lh </span><br><span class="line">total 218M</span><br><span class="line">-rwxr-xr-x. 1 mysql mysql  64M Mar 14 20:03 ib_logfile0</span><br><span class="line">-rwxr-xr-x. 1 mysql mysql  64M Aug 19  2016 ib_logfile1</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Innodb 支持行级锁</li>
+<li>行级锁可以最大程度的支持并发<br>  进行写操作时，需要锁定的资源更少</li>
+<li>行级锁是由存储引擎层实现的（MySQL服务器是完全不知道锁的实现方式）</li>
+</ul>
+<p><strong>什么是锁？</strong><br>锁是数据库系统区别文件系统的一个重要特性</p>
+<ul>
+<li><p>锁的主要作用是管理共享资源的并发访问（邮件服务，如果没有锁对邮箱进行控制，两个邮件同时对同一个邮箱进行投递，就会造成两封邮件数据重叠。有了锁之后，就会形成阻塞）</p>
+</li>
+<li><p>锁用于实现事务的隔离性（未提交的事务，锁定的数据是不能被其他的事务所查询到的）</p>
+</li>
+</ul>
+<p>锁的类型</p>
+<ul>
+<li><p>共享锁（读锁）<br>  不会被阻塞的，多个线程可以在同一时间读取同一个资源</p>
+</li>
+<li><p>独占锁（写锁）<br>  写锁是独占的，排他的，会阻塞其他的写锁或读锁，只有一个线程能够写</p>
+</li>
+</ul>
+<p>写锁和其他的锁都是不兼容的，读锁是和读锁是兼容的。读锁和写锁都是行级锁。</p>
+<p>实际小栗子：<br>我们开启两个连接，开启两个事务，我们在其中一个连接中开启一个事务，并为第一行添加一个独占锁。<br>查看数据表的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; select * from  myinnodb;</span><br><span class="line">+------+------+</span><br><span class="line">| id   | c1   |</span><br><span class="line">+------+------+</span><br><span class="line">|    2 | bb   |</span><br><span class="line">|    3 | cc   |</span><br><span class="line">+------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>开启事务，新增锁，但是不提交：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">MySQL [test]&gt; update myinnodb set c1=&quot;bbbb&quot; where id = 2;</span><br><span class="line">Query OK, 1 row affected (0.08 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br></pre></td></tr></table></figure></p>
+<p>我们在另一个连接中查看修改的数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; select  * from myinnodb where id = 2;</span><br><span class="line">+------+------+</span><br><span class="line">| id   | c1   |</span><br><span class="line">+------+------+</span><br><span class="line">|    2 | bb   |</span><br><span class="line">+------+------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure></p>
+<p>我们发现，独占锁并没有阻塞其他的查询，这是因为Innodb利用了上面说的Undolog，我们在这里查到的数据实际上存储的是Undolog的数据。并不是第一个连接修改后的数据。</p>
+<p><strong>锁的粒度</strong></p>
+<p>指的是被加锁的资源的最小单位。比如在行上加锁，锁的最小单位是行，锁被称为行级锁。还有页级锁，表级锁。一种提高资源并发性的方式是让锁定义的方向尽可能的小。任何时候，锁定的资源越少，并发性越高。</p>
+<ul>
+<li><p>表级锁<br>开销最小的策略（开销小，则并发性底）在MySQL服务器层使用。</p>
+</li>
+<li><p>行级锁<br> 行级锁可以最大程度的支持并发处理，同时锁的开销也比表级锁的要大，行级锁只在存储引擎中实现，而MySQL服务器层并没有实现。</p>
+</li>
+</ul>
+<p>实际栗子：<br>我们看下建表的结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show  create  table myinnodb;</span><br><span class="line">+----------+--------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Table    | Create Table                                                                                                                   |</span><br><span class="line">+----------+--------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| myinnodb | CREATE TABLE `myinnodb` (</span><br><span class="line">  `id` int(11) DEFAULT NULL,</span><br><span class="line">  `c1` varchar(10) DEFAULT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 |</span><br><span class="line">+----------+--------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>表示Innodb，因此是默认加的行级锁，我们看下如何为表添加表级锁：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 我们在一个连接中创建一个表级的独占锁</span><br><span class="line">MySQL [test]&gt; lock table myinnodb write;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 然后在另一个连接中进行查询</span><br><span class="line">MySQL [test]&gt; select  * from myinnodb where id = 2;</span><br><span class="line"></span><br><span class="line"># 我们把第一个连接的表进行解锁</span><br><span class="line">MySQL [test]&gt; unlock tables;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 再在另一个连接中进行查询</span><br><span class="line">MySQL [test]&gt; select  * from myinnodb where id = 2;</span><br><span class="line">+------+------+</span><br><span class="line">| id   | c1   |</span><br><span class="line">+------+------+</span><br><span class="line">|    2 | bb   |</span><br><span class="line">+------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>我们发现第一个连接的表锁定时，另一个连接并没有返回查询结果，发生了阻塞。当<br>解锁之后，另一个连接可以正常查询。</p>
+<p><strong>阻塞和死锁</strong></p>
+<ul>
+<li><p>什么是阻塞<br>数据库阻塞的现象：第一个连接占有资源没有释放，而第二个连接需要获取这个资源。如果第一个连接没有提交或者回滚，第二个连接会一直等待下去，直到第一个连接释放该资源为止。对于阻塞，数据库无法处理，所以对数据库操作要及时地提交或者回滚。阻塞是为了确保事务可以并发且可以正常的运行，但如果一个系统出现大量的阻塞就说明系统出现了问题，也许是在一个被频繁更新的表上出现了慢查询，或是一个频繁使用的资源加上了写锁，阻塞过多的时候可以是数据库连接大量的堆积，从而占用大量的系统资源，使得系统性能整体下降。</p>
+</li>
+<li><p>什么是死锁<br>数据库死锁的现象：第一个连接占有资源没有释放，准备获取第二个连接所占用的资源，而第二个连接占有资源没有释放，准备获取第一个连接所占用的资源。这种互相占有对方需要获取的资源的现象叫做死锁。对于死锁，数据库处理方法：牺牲一个连接（占用资源少的），保证另外一个连接成功执行。可以由系统自动处理，如果只有少量的死锁并不会对系统造成什么样的影响，只要在应用程序中发现死锁并进行处理就可以，但是如果一个系统频繁的出现大量的死锁，通常死锁可以在多个事务中按这个相同顺序，访问所需要资源来解决，也可以通过增加相关索引来解决。</p>
+</li>
+</ul>
+<p><strong>Innodb状态检查</strong></p>
+<p>性能检测工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show engine innodb status</span><br></pre></td></tr></table></figure>
+<p>这个是统计上次输出之后的平均值，两次采样之间至少间隔30s</p>
+<p>查看具体输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show  engine innodb  status \G;</span><br></pre></td></tr></table></figure>
+<p><strong>适用场景</strong></p>
+<p>Innodb适合于大多数OLTP应用（并且支持全文索引，和空间函数）</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/" rel="next" title="MySQL数据库架构--什么影响了MySQL性能-上">
+                <i class="fa fa-chevron-left"></i> MySQL数据库架构--什么影响了MySQL性能-上
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/09/Python面试笔记/" rel="prev" title="Python面试笔记">
+                Python面试笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL体系架构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系架构</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL存储引擎之MyISAM"><span class="nav-number">2.</span> <span class="nav-text">MySQL存储引擎之MyISAM</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL存储引擎之Innodb"><span class="nav-number">3.</span> <span class="nav-text">MySQL存储引擎之Innodb</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
