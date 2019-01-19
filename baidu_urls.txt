@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/01/13/Supervisor配置环境变量的问题/
+https://zhaobugs.com/2019/01/19/Django中的Request和Response对象/

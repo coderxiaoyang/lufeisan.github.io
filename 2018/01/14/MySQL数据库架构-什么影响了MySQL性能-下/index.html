@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="MySQL存储引擎之CSVCSV存储引擎可以将csv文件作为mysql的表进行处理。存储格式就是普通的csv文件。 如果把数据存储在myisam和Innodb中，存储的文件是不能直接查看的，这两种存储引擎都是以二进制文件存储的，而csv是以文本方式存储的，csv不支持索引的，查找的时候要进行全表扫描。 数据以文本方式存储在文件中（Innodb则是二进制）,会有三类文件生成 123.CSV文件存储表">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库架构--什么影响了MySQL性能-下">
+<meta property="og:url" content="https://zhaobugs.com/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="MySQL存储引擎之CSVCSV存储引擎可以将csv文件作为mysql的表进行处理。存储格式就是普通的csv文件。 如果把数据存储在myisam和Innodb中，存储的文件是不能直接查看的，这两种存储引擎都是以二进制文件存储的，而csv是以文本方式存储的，csv不支持索引的，查找的时候要进行全表扫描。 数据以文本方式存储在文件中（Innodb则是二进制）,会有三类文件生成 123.CSV文件存储表">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fz6926rn7jj31ge0e8diu.jpg">
+<meta property="og:updated_time" content="2019-01-15T02:22:28.571Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据库架构--什么影响了MySQL性能-下">
+<meta name="twitter:description" content="MySQL存储引擎之CSVCSV存储引擎可以将csv文件作为mysql的表进行处理。存储格式就是普通的csv文件。 如果把数据存储在myisam和Innodb中，存储的文件是不能直接查看的，这两种存储引擎都是以二进制文件存储的，而csv是以文本方式存储的，csv不支持索引的，查找的时候要进行全表扫描。 数据以文本方式存储在文件中（Innodb则是二进制）,会有三类文件生成 123.CSV文件存储表">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fz6926rn7jj31ge0e8diu.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/"/>
+
+
+
+
+
+  <title>MySQL数据库架构--什么影响了MySQL性能-下 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--什么影响了MySQL性能-下</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T13:42:29+08:00">
+                2018-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--什么影响了MySQL性能-下">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,721 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  17 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h6 id="MySQL存储引擎之CSV"><a href="#MySQL存储引擎之CSV" class="headerlink" title="MySQL存储引擎之CSV"></a>MySQL存储引擎之CSV</h6><p>CSV存储引擎可以将csv文件作为mysql的表进行处理。存储格式就是普通的csv文件。</p>
+<p>如果把数据存储在myisam和Innodb中，存储的文件是不能直接查看的，这两种存储引擎都是以二进制文件存储的，而csv是以文本方式存储的，csv不支持索引的，查找的时候要进行全表扫描。</p>
+<p>数据以文本方式存储在文件中（Innodb则是二进制）,会有三类文件生成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.CSV文件存储表内容</span><br><span class="line">.CSM文件存储表的元数据如表状态和数据量</span><br><span class="line">.frm文件存储表结构信息</span><br></pre></td></tr></table></figure>
+<p><strong>文件系统存储特点</strong></p>
+<ul>
+<li>以CSV格式进行数据存储（逗号隔开，引号）</li>
+<li>所有的列必须都是不能为NULL的</li>
+<li>不支持索引（不适合大表，不适合在线处理）</li>
+<li>可以对数据文件直接编辑（保存文本文件内容）</li>
+</ul>
+<p>演示一下不能为空：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 我们新建一个csv文件，但是不指定not null </span><br><span class="line">MySQL [test]&gt; create table  mycsv(id  int,c1 varchar(10),c2 char(20)) engine=csv; </span><br><span class="line">ERROR 1178 (42000): The storage engine for the table doesn&apos;t support nullable columns</span><br></pre></td></tr></table></figure>
+<p>增加不为空的约束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create table  mycsv(id  int not null ,c1 varchar(10) not null,c2 char(20) not null) engine=csv;</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br></pre></td></tr></table></figure>
+<p>向表中插入数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; insert into mycsv values ( 1,&apos;aaa&apos;,&apos;bbb&apos;),(2,&apos;ccc&apos;,&apos;ddd&apos;) ;</span><br><span class="line">Query OK, 2 rows affected (0.01 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">MySQL [test]&gt; select * from  mycsv;</span><br><span class="line">+----+-----+-----+</span><br><span class="line">| id | c1  | c2  |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">|  1 | aaa | bbb |</span><br><span class="line">|  2 | ccc | ddd |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">2 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure></p>
+<p>我们查看文件系统下的文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# cd /usr/local/mysql/var/test </span><br><span class="line">[root@hongshaorou test]# ls -lh  mycsv*</span><br><span class="line">-rw-r----- 1 mysql mysql   35 Mar 17 10:36 mycsv.CSM</span><br><span class="line">-rw-r----- 1 mysql mysql   28 Mar 17 10:36 mycsv.CSV</span><br><span class="line">-rw-r----- 1 mysql mysql 8.5K Mar 17 10:35 mycsv.frm</span><br></pre></td></tr></table></figure></p>
+<p>查看数据文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@wangerxiao test]# cat mycsv.CSV</span><br><span class="line">1,&quot;aaa&quot;,&quot;bbb&quot;</span><br><span class="line">2,&quot;ccc&quot;,&quot;ddd&quot;</span><br></pre></td></tr></table></figure>
+<p>我们对文本文件进行编辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 1,&quot;aaa&quot;,&quot;bbb&quot;</span><br><span class="line">2 2,&quot;ccc&quot;,&quot;ddd&quot;</span><br><span class="line">3 3,&quot;eee&quot;,&quot;fff&quot;</span><br></pre></td></tr></table></figure></p>
+<p>然后在数据库中查看表<br>首先我们刷新数据表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; flush tables;</span><br><span class="line">Query OK, 0 rows affected (0.05 sec)</span><br></pre></td></tr></table></figure></p>
+<p>查看数据表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; select * from  mycsv;</span><br><span class="line">+----+-----+-----+</span><br><span class="line">| id | c1  | c2  |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">|  1 | aaa | bbb |</span><br><span class="line">|  2 | ccc | ddd |</span><br><span class="line">|  3 | eee | fff |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>我们发现在文件中修改的数据已经添加到了数据库</p>
+<p>我们看看如果增加索引会发生什么<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create index idx_id on mycsv(id);</span><br><span class="line">ERROR 1069 (42000): Too many keys specified; max 0 keys allowed</span><br></pre></td></tr></table></figure></p>
+<p>最多只支持0个<code>keys</code> 证明不支持索引</p>
+<p><strong>适用场景</strong><br>        适合做为数据交换的中间表（能够在服务器运行的时候，拷贝和拷出文件，可以将电子表格存储为CSV文件再拷贝到MySQL数据目录下，就能够在数据库中打开和使用。同样，如果将数据写入到CSV文件数据表中，其它web程序也可以迅速读取到数据。</p>
+<h6 id="MySQL存储引擎之Archive"><a href="#MySQL存储引擎之Archive" class="headerlink" title="MySQL存储引擎之Archive"></a>MySQL存储引擎之Archive</h6><p><strong>文件系统存储特点：</strong></p>
+<ul>
+<li>以zlib对表数据进行压缩，磁盘I/O更少</li>
+<li>数据存储在ARZ为后缀的文件中</li>
+</ul>
+<p><strong>Archiv存储引擎的特点</strong></p>
+<ul>
+<li>只支持<code>insert</code>和<code>select</code>操作（支持行级所和缓冲区，可以实现高并发的插入）</li>
+<li>只允许在自增ID列上加索引</li>
+</ul>
+<p>Archive表比MyISAM表要小大约75%，比支持事务处理的InnoDB表小大约83%。当数据量非常大的时候Archive的插入性能表现会较MyISAM为佳。</p>
+<p>Archive表的性能是否可能超过MyISAM？答案是肯定的。根据MySQL工程师的资料，当表内的数据达到1.5GB这个量级，CPU又比较快的时候，Archive表的执行性能就会超越MyISAM表。因为这个时候，CPU会取代I/O子系统成为性能瓶颈。别忘了Archive表比其他任何类型的表执行的物理I/O操作都要少。</p>
+<p>较小的空间占用也能在你移植MySQL数据的时候发挥作用。当你需要把数据从一台MySQL服务器转移到另一台的时候，Archive表可以方便地移植到新的MySQL环境，你只需将保存Archive表的底层文件复制过去就可以了。</p>
+<p>演示实例：<br>建立一张表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create  table myarchive( id int auto_increment not null , c1  varchar(10),c2  char(10), key(id)) engine = archive;</span><br><span class="line">Query OK, 0 rows affected (0.06 sec)</span><br></pre></td></tr></table></figure>
+<p>查看文件系统<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou test]# ls  -lh  myarchi*</span><br><span class="line">-rw-r----- 1 mysql mysql 8.5K Mar 17 14:47 myarchive.ARZ</span><br><span class="line">-rw-r----- 1 mysql mysql 8.5K Mar 17 14:47 myarchive.frm</span><br></pre></td></tr></table></figure></p>
+<p>ARZ文件存储表内容，frm文件存储表结构（MySQL服务器层）。</p>
+<p>我们往数据表里插入一些数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; insert into myarchive (c1,c2) values (&apos;aa&apos;,&apos;bb&apos;),(&apos;cc&apos;,&apos;dd&apos;);</span><br><span class="line">Query OK, 2 rows affected (0.02 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">MySQL [test]&gt; select * from myarchive;</span><br><span class="line">+----+------+------+</span><br><span class="line">| id | c1   | c2   |</span><br><span class="line">+----+------+------+</span><br><span class="line">|  1 | aa   | bb   |</span><br><span class="line">|  2 | cc   | dd   |</span><br><span class="line">+----+------+------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure></p>
+<p>我们看到可以进行查询操作，现在看是否可以进行删除操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; delete from myarchive where id = 1;</span><br><span class="line">ERROR 1031 (HY000): Table storage engine for &apos;myarchive&apos; doesn&apos;t have this option</span><br></pre></td></tr></table></figure></p>
+<p>更新操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; update myarchive  set c1=&apos;aaaa&apos; where id =1;</span><br><span class="line">ERROR 1031 (HY000): Table storage engine for &apos;myarchive&apos; doesn&apos;t have this option</span><br></pre></td></tr></table></figure></p>
+<p>我们接着查看是否可以在非自增键上创建索引<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create index idx_c1 on myarchive(c1); </span><br><span class="line">ERROR 1069 (42000): Too many keys specified; max 1 keys allowed</span><br></pre></td></tr></table></figure></p>
+<p><strong>使用场景</strong></p>
+<p>日志和数据采集类应用（不支持OLTP）</p>
+<h6 id="MySQL存储引擎之Memory"><a href="#MySQL存储引擎之Memory" class="headerlink" title="MySQL存储引擎之Memory"></a>MySQL存储引擎之Memory</h6><p><strong>文件系统存储特点</strong><br>        称HEAP存储引擎，所以数据保存在内存中（服务器重启则表的数据丢失，但是表结构是保留的，表结构保存在磁盘文件中，而表的内容是存储在内存中）</p>
+<p><strong>功能特点</strong></p>
+<ul>
+<li>支持HASH索引（等值查询）和BTree索引（范围查找）（默认HASH）</li>
+<li>所有字段都为固定长度 <code>varchar(10) = char(10)</code></li>
+<li>不支持<code>BLOG</code>和<code>TEXT</code>等大字段</li>
+<li>Memory存储引擎使用表级锁</li>
+<li>表的最大大小由<code>max_heap_table_size</code>参数决定（默认16M，对存在的表修改是无效的）</li>
+</ul>
+<p><strong>演示实例</strong></p>
+<p>首先创建表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create table mymemory (id int,c1 varchar(10),c2 char(10), c3 text ) engine = memory;</span><br><span class="line">ERROR 1163 (42000): The used table type doesn&apos;t support BLOB/TEXT columns</span><br><span class="line">MySQL [test]&gt; create table mymemory (id int,c1 varchar(10),c2 char(10) ) engine = memory;        </span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br></pre></td></tr></table></figure>
+<p>我们能够看到，表是不支持TEXT字段的</p>
+<p>我们再看下文件系统<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@wangerxiao test]# ls -lh  mymemo* </span><br><span class="line">-rw-r----- 1 mysql mysql 8.5K Mar 17 15:25 mymemory.frm</span><br></pre></td></tr></table></figure></p>
+<p>只有一个保存表结构的文件，不存在存储数据的文件。</p>
+<p>下面我们再看下表的索引<br>新建两个索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; create index idx_c1 on mymemory(c1);</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line"># 创建索引的时候 指定索引类型</span><br><span class="line">MySQL [test]&gt; create index idx_c2 using btree on mymemory(c2);   </span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<p>我们查看当前索引类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show index from mymemory \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">        Table: mymemory</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: idx_c1</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: c1</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: 0</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: HASH</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">        Table: mymemory</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: idx_c2</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: c2</span><br><span class="line">    Collation: A</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: BTREE</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>存在两个索引，一个为默认的，一个是指定的BTree。</p>
+<p>接下来我们查看表的状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show table status like &apos;mymemory&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           Name: mymemory</span><br><span class="line">         Engine: MEMORY</span><br><span class="line">        Version: 10</span><br><span class="line">     Row_format: Fixed</span><br><span class="line">           Rows: 0</span><br><span class="line"> Avg_row_length: 86</span><br><span class="line">    Data_length: 0</span><br><span class="line">Max_data_length: 7799082</span><br><span class="line">   Index_length: 0</span><br><span class="line">      Data_free: 0</span><br><span class="line"> Auto_increment: NULL</span><br><span class="line">    Create_time: 2017-03-17 15:30:16</span><br><span class="line">    Update_time: NULL</span><br><span class="line">     Check_time: NULL</span><br><span class="line">      Collation: utf8mb4_general_ci</span><br><span class="line">       Checksum: NULL</span><br><span class="line"> Create_options: </span><br><span class="line">        Comment: </span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p><strong>Memory存储引擎表和临时表的区别</strong></p>
+<p>临时表分两类：</p>
+<ol>
+<li><p>系统使用临时表（查询优化器创建）</p>
+</li>
+<li><p>create temporary table 建立的临时表</p>
+</li>
+</ol>
+<p>无论哪种表，只有当前session是可见的。</p>
+<p>系统使用临时表又分为两类：超过限制使用Myisam临时表，未超过限制使用Memory表。</p>
+<p>而Memory表是所有线程都可以使用的。</p>
+<p><strong>使用场景</strong></p>
+<ul>
+<li><p>用于查找或者是映射表，例如邮编和地区的对应表</p>
+</li>
+<li><p>用于保存数据分析中产生的中间表</p>
+</li>
+<li><p>用于缓存周期性聚合数据的结果表</p>
+</li>
+</ul>
+<p>注意一点是：Memory数据易丢失，所以要求数据可再生</p>
+<p>memory存储引擎是MySQL中的一类特殊的存储引擎。其使用存储在内存中的内容来创建表，而且所有数据也放在内存中。这些特性都与InnoDB，MyISAM存储引擎不同。<br>OK，这里我们讲解一些memory存储引擎的文件存储形式，索引类型，存储周期和优缺点。</p>
+<p>每个基于memory存储引擎的表实际对应一个磁盘文件，该文件的文件名与表名相同，类型为frm类型。该文件只存储表的结构，而其数据文件，都是存储在内存中的，这样有利于对数据的快速的处理，提高整个表的处理效率。</p>
+<p>值得注意的是：服务器需要有足够的内存来维持memory存储引擎的表的使用。如果不需要了，可以释放这些内存，甚至可以删除不需要的表。</p>
+<p>Memory存储引擎默认使用哈希(HASH)索引，其速度比使用B型树(BTREE)索引快。如果我们需要使用B型树索引，可以在创建索引时选择使用。</p>
+<p>这里来整理一个小的技巧：</p>
+<p>Memory存储引擎通常很少用到，至少我是没有用到过。因为Memory表的所有数据都是存储在内存上的，如果内存出现异常会影响到数据的完整性。</p>
+<p>如果重启机器或者关机，表中的所有数据都将消失，因此，基于Memory存储引擎的表的生命周期都比较短，一般都是一次性的。</p>
+<p>Memory表的大小是受到限制的，表的大小主要取决于2个参数，分别是max_rows和max_heap_table_size。其中，max_rows可以在创建表时指定，max_heap_table_size的大小默认为16MB，可以按需要进行扩大。</p>
+<p>因此，其基于内存中的特性，这类表的处理速度会非常快，但是，其数据易丢失，生命周期短。基于其这个缺陷，选择Memory存储引擎时需要特别小心。</p>
+<h6 id="MySQL存储引擎之Federated"><a href="#MySQL存储引擎之Federated" class="headerlink" title="MySQL存储引擎之Federated"></a>MySQL存储引擎之Federated</h6><p>Federated可以不使用复制技术，直接远程服务器主机的数据表。</p>
+<p><strong>实现原理</strong><br>通过创建存储引擎为Federated 的表来实现远程共享服务器表数据。<br>Federated：能够将多个分离（不在同一台服务器上的机器）的MySQL服务器链接起来，从多个物理服务器创建一个逻辑数据库。十分适合于分布式环境或数据集市环境。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>提供了访问远程MySQL服务器上表的方法（连接）</li>
+<li>本地不存储数据，数据全部放到远程服务器上</li>
+<li>本地需要保存表结构(frm文件)和远程服务器的连接信息</li>
+</ul>
+<p><strong>如何使用</strong><br>  默认禁止，启用需要在启动时增加federated参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql://user_name[:password]@host_name[:port_num]/db_name/tbl_name</span><br></pre></td></tr></table></figure>
+<p><strong>演示实例：在本地模拟远程本地</strong><br>查看是否支持federated</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; show  engines;</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |</span><br><span class="line">| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |</span><br><span class="line">| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |</span><br><span class="line">| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |</span><br><span class="line">| MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |</span><br><span class="line">| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |</span><br><span class="line">| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |</span><br><span class="line">| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |</span><br><span class="line">| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>不支持<code>federated</code>引擎</p>
+<p>编辑配置文件 使其支持</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># vim /etc/my.cnf</span></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># more /etc/my.cnf</span></span><br><span class="line">[mysqld]</span><br><span class="line">federated</span><br></pre></td></tr></table></figure>
+<p>重启服务 </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment">#  systemctl restart  mysqld</span></span><br></pre></td></tr></table></figure>
+<p>再次查看会有<code>federated</code>引擎.</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fz6926rn7jj31ge0e8diu.jpg" alt="image-20190114173829476"></p>
+<p><strong>演示示例</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database local;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; create database remote;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; use remote;</span><br><span class="line">Database changed</span><br><span class="line"></span><br><span class="line">mysql&gt; create table remote_fed(id int auto_increment not null, c1 varchar(10) not null default &apos;&apos;, c2 char(10) not null default &apos;&apos;,  primary key(id)) engine=innodb;</span><br><span class="line">Query OK, 0 rows affected (0.11 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  show create table remote_fed\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">       Table: remote_fed</span><br><span class="line">Create Table: CREATE TABLE `remote_fed` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `c1` varchar(10) NOT NULL DEFAULT &apos;&apos;,</span><br><span class="line">  `c2` char(10) NOT NULL DEFAULT &apos;&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=latin1</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into remote_fed (c1,c2) values (&apos;aaa&apos;,&apos;bbb&apos;), (&apos;ccc&apos;, &apos;ddd&apos;);</span><br><span class="line">Query OK, 2 rows affected (0.02 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from remote_fed;</span><br><span class="line">+----+-----+-----+</span><br><span class="line">| id | c1  | c2  |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">|  1 | aaa | bbb |</span><br><span class="line">|  2 | ccc | ddd |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 授权</span><br><span class="line">mysql&gt; grant select,update,insert,delete on remote.remote_fed to fred_link@&apos;127.0.0.1&apos; identified by &apos;@#loveLOVE520&apos;;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.00 sec)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 在 local 库 创建 federated 引擎的数据表</span><br><span class="line">mysql&gt; use local;</span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt;</span><br><span class="line">mysql&gt; create table remote_fed(id int auto_increment not null, c1 varchar(10) not null default &apos;&apos;, c2 char(10) not null default &apos;&apos;,  primary key(id)) engine=federated connection=&apos;mysql://fred_link:#loveLOVE520@127.0.0.1:3306/remote/remote_fed&apos;;</span><br><span class="line">ERROR 1050 (42S01): Table &apos;remote_fed&apos; already exists</span><br><span class="line">mysql&gt; rename table remote_fed to local_fed;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 查询数据库</span><br><span class="line">mysql&gt; select * from local_fed;</span><br><span class="line">+----+-----+-----+</span><br><span class="line">| id | c1  | c2  |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">|  1 | aaa | bbb |</span><br><span class="line">|  2 | ccc | ddd |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">2 rows in set (0.02 sec)</span><br><span class="line"></span><br><span class="line"># 删除一条记录</span><br><span class="line">mysql&gt; delete from local.local_fed where id = 2;</span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line"></span><br><span class="line"># 切换到远程库 </span><br><span class="line">mysql&gt; use remote;</span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; select * from remote_fed;</span><br><span class="line">+----+-----+-----+</span><br><span class="line">| id | c1  | c2  |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">|  1 | aaa | bbb |</span><br><span class="line">+----+-----+-----+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>我们在<code>local</code>库中可以直接使用<code>remote</code>库。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># cd /var/lib/mysql/local/</span></span><br><span class="line">[root@hongshaorou local]<span class="comment"># ll</span></span><br><span class="line">total <span class="number">16</span></span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql   <span class="number">65</span> Jan <span class="number">14</span> <span class="number">17</span>:<span class="number">41</span> db.opt</span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql <span class="number">8608</span> Jan <span class="number">14</span> <span class="number">20</span>:<span class="number">23</span> local_fed.frm</span><br></pre></td></tr></table></figure>
+<p>在本地只保留了远程数据库的数据结构。</p>
+<p>推荐阅读文章<a href="https://blog.csdn.net/jenminzhang/article/details/50837603" target="_blank" rel="noopener">Mysql基于FEDERATED存储引擎的远程表使用</a></p>
+<p><strong>使用场景：</strong><br>偶尔的统计分析及手动查询</p>
+<h6 id="如何选择正确的存储引擎"><a href="#如何选择正确的存储引擎" class="headerlink" title="如何选择正确的存储引擎"></a>如何选择正确的存储引擎</h6><p>参考条件：</p>
+<ul>
+<li>首先我们要考虑应用是否需要事务支持</li>
+<li>在线热备方案 Innodb，不要使用混合引擎</li>
+<li>崩溃恢复</li>
+<li>存储引擎的特有特性</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-中/" rel="next" title="MySQL数据库架构--什么影响了MySQL性能-中">
+                <i class="fa fa-chevron-left"></i> MySQL数据库架构--什么影响了MySQL性能-中
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/09/Python面试笔记/" rel="prev" title="Python面试笔记">
+                Python面试笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL存储引擎之CSV"><span class="nav-number">1.</span> <span class="nav-text">MySQL存储引擎之CSV</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL存储引擎之Archive"><span class="nav-number">2.</span> <span class="nav-text">MySQL存储引擎之Archive</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL存储引擎之Memory"><span class="nav-number">3.</span> <span class="nav-text">MySQL存储引擎之Memory</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL存储引擎之Federated"><span class="nav-number">4.</span> <span class="nav-text">MySQL存储引擎之Federated</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#如何选择正确的存储引擎"><span class="nav-number">5.</span> <span class="nav-text">如何选择正确的存储引擎</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
