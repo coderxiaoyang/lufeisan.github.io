@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="这篇文章我们来学习下Django中的Request对象和Response对象。 HTTP请求与Django Request对象我们看下一个HTTP请求中有哪些需要我们注意的： 请求方法、headers、请求参数、cookies、请求端信息 上面这些在对应于Django Request对象的什么： 请求方法 – Request对象的method属性 客户端信息 – Request对象的META属性">
+<meta name="description" content="Django 处理请求的寻址逻辑当我们请求一个URL的时候，Django是如何将路由指向对应的视图函数呢？ 项目层面：跟路由模块 – urlpatterns  应用层面：子路由模块 – urlpatterns 视图层面：匹配成功调用指定视图   Django的路由寻址是根据具体配制来的 相比Flask较直观很多，只需逐层查找即可  Django的RESTful url设计API接口的RESTful">
 <meta name="keywords" content="Django">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Django中的Request和Response对象">
-<meta property="og:url" content="https://zhaobugs.com/2019/01/19/Django中的Request和Response对象/index.html">
+<meta property="og:title" content="Django的TESTfulURL设计">
+<meta property="og:url" content="https://zhaobugs.com/2018/07/19/Django的TESTfulURL设计/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="这篇文章我们来学习下Django中的Request对象和Response对象。 HTTP请求与Django Request对象我们看下一个HTTP请求中有哪些需要我们注意的： 请求方法、headers、请求参数、cookies、请求端信息 上面这些在对应于Django Request对象的什么： 请求方法 – Request对象的method属性 客户端信息 – Request对象的META属性">
+<meta property="og:description" content="Django 处理请求的寻址逻辑当我们请求一个URL的时候，Django是如何将路由指向对应的视图函数呢？ 项目层面：跟路由模块 – urlpatterns  应用层面：子路由模块 – urlpatterns 视图层面：匹配成功调用指定视图   Django的路由寻址是根据具体配制来的 相比Flask较直观很多，只需逐层查找即可  Django的RESTful url设计API接口的RESTful">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fzbumkjw90j30ze0doacu.jpg">
-<meta property="og:updated_time" content="2019-01-19T06:53:47.588Z">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fzbx5vj92cj30sc0dmtau.jpg">
+<meta property="og:updated_time" content="2019-01-19T07:37:18.209Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Django中的Request和Response对象">
-<meta name="twitter:description" content="这篇文章我们来学习下Django中的Request对象和Response对象。 HTTP请求与Django Request对象我们看下一个HTTP请求中有哪些需要我们注意的： 请求方法、headers、请求参数、cookies、请求端信息 上面这些在对应于Django Request对象的什么： 请求方法 – Request对象的method属性 客户端信息 – Request对象的META属性">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fzbumkjw90j30ze0doacu.jpg">
+<meta name="twitter:title" content="Django的TESTfulURL设计">
+<meta name="twitter:description" content="Django 处理请求的寻址逻辑当我们请求一个URL的时候，Django是如何将路由指向对应的视图函数呢？ 项目层面：跟路由模块 – urlpatterns  应用层面：子路由模块 – urlpatterns 视图层面：匹配成功调用指定视图   Django的路由寻址是根据具体配制来的 相比Flask较直观很多，只需逐层查找即可  Django的RESTful url设计API接口的RESTful">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fzbx5vj92cj30sc0dmtau.jpg">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2019/01/19/Django中的Request和Response对象/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/07/19/Django的TESTfulURL设计/"/>
 
 
 
 
 
-  <title>Django中的Request和Response对象 | 红烧肉</title>
+  <title>Django的TESTfulURL设计 | 红烧肉</title>
   
 
 
@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/01/19/Django中的Request和Response对象/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/07/19/Django的TESTfulURL设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -322,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Django中的Request和Response对象</h1>
+          <h1 class="post-title" itemprop="name headline">Django的TESTfulURL设计</h1>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-19T11:19:32+08:00">
-                2019-01-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-19T14:55:36+08:00">
+                2018-07-19
               </time>
             
 
@@ -375,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/19/Django中的Request和Response对象/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/19/Django中的Request和Response对象/" itemprop="commentCount"></span>
+                <a href="/2018/07/19/Django的TESTfulURL设计/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/19/Django的TESTfulURL设计/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +384,7 @@
 
           
           
-             <span id="/2019/01/19/Django中的Request和Response对象/" class="leancloud_visitors" data-flag-title="Django中的Request和Response对象">
+             <span id="/2018/07/19/Django的TESTfulURL设计/" class="leancloud_visitors" data-flag-title="Django的TESTfulURL设计">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  887 字
+                  231 字
                 </span>
               
 
@@ -430,7 +430,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  1 分钟
                 </span>
               
             </div>
@@ -451,40 +451,38 @@
       
 
       
-        <p>这篇文章我们来学习下Django中的Request对象和Response对象。</p>
-<h6 id="HTTP请求与Django-Request对象"><a href="#HTTP请求与Django-Request对象" class="headerlink" title="HTTP请求与Django Request对象"></a>HTTP请求与Django Request对象</h6><p>我们看下一个HTTP请求中有哪些需要我们注意的：</p>
-<p>请求方法、headers、请求参数、cookies、请求端信息</p>
-<p>上面这些在对应于Django Request对象的什么：</p>
-<p>请求方法 – Request对象的method属性</p>
-<p>客户端信息 – Request对象的META属性</p>
-<p>Cookies – Request对象的COOKIES属性</p>
-<p>请求参数 – Request对象中的QueryDict</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">helloworld</span><span class="params">(request)</span>:</span></span><br><span class="line">    print(<span class="string">'request method: '</span>, request.method)</span><br><span class="line">    print(<span class="string">'request META: '</span>, request.META)</span><br><span class="line">    print(<span class="string">'request cookies: '</span>, request.COOKIES)</span><br><span class="line">    print(<span class="string">'request QueryDict: '</span>, request.GET)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(content=<span class="string">'Hello Django Response'</span>, status=<span class="number">200</span>)</span><br></pre></td></tr></table></figure>
-<h6 id="HTTP应答与Django-Response对象"><a href="#HTTP应答与Django-Response对象" class="headerlink" title="HTTP应答与Django Response对象"></a>HTTP应答与Django Response对象</h6><p>在HTTP应答中我们需要关注的是 状态码、应答内容、内容格式</p>
-<p>状态码 – Response对象的status属性</p>
-<p>应答内容 – Response对象的content属性</p>
-<p>延伸的Response子类 – （JsonResponse、FileResponse）根据返回类型不同，选择不同的Response</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> HttpResponse(content=<span class="string">'Hello Django Response'</span>, status=<span class="number">201</span>)</span><br><span class="line"></span><br><span class="line">m = &#123;</span><br><span class="line">    <span class="string">"message"</span>: <span class="string">"Hello Django Response"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> JsonResponse(data=m, safe=<span class="keyword">False</span>, status=<span class="number">200</span>)</span><br></pre></td></tr></table></figure>
+        <h6 id="Django-处理请求的寻址逻辑"><a href="#Django-处理请求的寻址逻辑" class="headerlink" title="Django 处理请求的寻址逻辑"></a>Django 处理请求的寻址逻辑</h6><p>当我们请求一个URL的时候，Django是如何将路由指向对应的视图函数呢？</p>
+<p>项目层面：跟路由模块 – urlpatterns </p>
+<p>应用层面：子路由模块 – urlpatterns</p>
+<p>视图层面：匹配成功调用指定视图</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fzbx5vj92cj30sc0dmtau.jpg" alt="image-20190119152014473"></p>
 <blockquote>
-<p>注意：在 JsonResponse 中 内容属性是 data 而不是 content</p>
+<p>Django的路由寻址是根据具体配制来的 相比Flask较直观很多，只需逐层查找即可</p>
 </blockquote>
-<p>关于<code>safe</code>属性：</p>
-<p>如果safe参数设置为False，则可以是任何可JSON 序列化的对象。</p>
-<p>如果设置为True则只能是Python的Dict对象类型。</p>
-<p>我们看下的源码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JsonResponse</span><span class="params">(HttpResponse)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    An HTTP response class that consumes data to be serialized to JSON.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param data: Data to be dumped into json. By default only ``dict`` objects</span></span><br><span class="line"><span class="string">      are allowed to be passed due to a security flaw before EcmaScript 5. See</span></span><br><span class="line"><span class="string">      the ``safe`` parameter for more information.</span></span><br><span class="line"><span class="string">    :param encoder: Should be a json encoder class. Defaults to</span></span><br><span class="line"><span class="string">      ``django.core.serializers.json.DjangoJSONEncoder``.</span></span><br><span class="line"><span class="string">    :param safe: Controls if only ``dict`` objects may be serialized. Defaults</span></span><br><span class="line"><span class="string">      to ``True``.</span></span><br><span class="line"><span class="string">    :param json_dumps_params: A dictionary of kwargs passed to json.dumps().</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data, encoder=DjangoJSONEncoder, safe=True,</span></span></span><br><span class="line"><span class="function"><span class="params">                 json_dumps_params=None, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> safe <span class="keyword">and</span> <span class="keyword">not</span> isinstance(data, dict):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(</span><br><span class="line">                <span class="string">'In order to allow non-dict objects to be serialized set the '</span></span><br><span class="line">                <span class="string">'safe parameter to False.'</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">if</span> json_dumps_params <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            json_dumps_params = &#123;&#125;</span><br><span class="line">        kwargs.setdefault(<span class="string">'content_type'</span>, <span class="string">'application/json'</span>)</span><br><span class="line">        data = json.dumps(data, cls=encoder, **json_dumps_params)</span><br><span class="line">        super().__init__(content=data, **kwargs)</span><br></pre></td></tr></table></figure>
-<p>序列化内部使用的还是<code>json</code>的<code>dumps</code>。当我们想自己写序列化类的时候，只需要指定</p>
-<p>属性<code>encoder</code>为我们自己写的序列化类就好了。</p>
-<blockquote>
-<p>类别 Flask 框架的 jsonfy</p>
-</blockquote>
-<h6 id="实战：实现天气查询应用"><a href="#实战：实现天气查询应用" class="headerlink" title="实战：实现天气查询应用"></a>实战：实现天气查询应用</h6><p>通过Request和Response我们来实现一个天气查询的接口</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fzbumkjw90j30ze0doacu.jpg" alt="image-20190119135227337"></p>
-<p>首先我们注册一个 <a href="https://www.juhe.cn/" target="_blank" rel="noopener">聚合数据</a> 的账号。</p>
-<p>根据接口文档我们写一个自己封装的天气查询接口：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weather</span><span class="params">(cityname)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    :param cityname: 城市名字</span></span><br><span class="line"><span class="string">    :return: 返回实况天气</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    key = <span class="string">'2d8a555813b3f44e2f8466070a33f9f0'</span>  <span class="comment"># 换成看官自己的</span></span><br><span class="line">    api = <span class="string">'http://v.juhe.cn/weather/index'</span></span><br><span class="line">    query_url = <span class="string">f'<span class="subst">&#123;api&#125;</span>?cityname=<span class="subst">&#123;cityname&#125;</span>&amp;key=<span class="subst">&#123;key&#125;</span>'</span></span><br><span class="line"></span><br><span class="line">    response = requests.get(url=query_url)</span><br><span class="line"></span><br><span class="line">    response_dict = dict()</span><br><span class="line"></span><br><span class="line">    json_data = json.loads(response.text)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> json_data[<span class="string">'resultcode'</span>] == <span class="string">'200'</span>:</span><br><span class="line"></span><br><span class="line">        result = json_data.get(<span class="string">'result'</span>)</span><br><span class="line">        sk = result.get(<span class="string">'sk'</span>)</span><br><span class="line"></span><br><span class="line">        response_dict[<span class="string">'query_result'</span>] = <span class="number">1</span>  <span class="comment"># 查询接口</span></span><br><span class="line">        response_dict[<span class="string">'temperature'</span>] = sk.get(<span class="string">'temp'</span>)  <span class="comment"># 当前温度</span></span><br><span class="line">        response_dict[<span class="string">'wind_direction'</span>] = sk.get(<span class="string">'wind_direction'</span>)  <span class="comment"># 当前风向</span></span><br><span class="line">        response_dict[<span class="string">'wind_strength'</span>] = sk.get(<span class="string">'wind_strength'</span>)  <span class="comment"># 当前风力</span></span><br><span class="line">        response_dict[<span class="string">'humidity'</span>] = sk.get(<span class="string">'humidity'</span>)  <span class="comment"># 当前湿度</span></span><br><span class="line">        response_dict[<span class="string">'time'</span>] = sk.get(<span class="string">'time'</span>)  <span class="comment"># 当前湿度</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        response_dict = &#123;</span><br><span class="line">            <span class="string">'query_result'</span>: <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response_dict</span><br></pre></td></tr></table></figure>
-<p>编写Django代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weather</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">        city = request.GET.get(<span class="string">'city'</span>)</span><br><span class="line">        <span class="keyword">if</span> city <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(data=&#123;<span class="string">"message"</span>: <span class="string">"请输入查询的城市!"</span>&#125;, status=<span class="number">400</span>)</span><br><span class="line">        weather_data = juhe.weather(city)</span><br><span class="line">        <span class="keyword">if</span> weather_data[<span class="string">'query_result'</span>]:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(data=weather_data, status=<span class="number">200</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(data=&#123;<span class="string">"message"</span>: <span class="string">"Query weather error!"</span>&#125;, status=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        received_body = request.body</span><br><span class="line">        received_body = json.loads(received_body)</span><br><span class="line"></span><br><span class="line">        cities = received_body.get(<span class="string">'cities'</span>)</span><br><span class="line">        response_data = []</span><br><span class="line">        <span class="keyword">for</span> city <span class="keyword">in</span> cities:</span><br><span class="line">            weather_data = juhe.weather(city)</span><br><span class="line">            <span class="keyword">if</span> weather_data[<span class="string">'query_result'</span>]:</span><br><span class="line">                weather_data[<span class="string">'city'</span>] = city</span><br><span class="line">                response_data.append(weather_data)</span><br><span class="line">        <span class="keyword">return</span> JsonResponse(data=response_data, safe=<span class="keyword">False</span>, status=<span class="number">200</span>)</span><br></pre></td></tr></table></figure>
+<h6 id="Django的RESTful-url设计"><a href="#Django的RESTful-url设计" class="headerlink" title="Django的RESTful url设计"></a>Django的RESTful url设计</h6><p><strong>API接口的RESTful设计</strong></p>
+<p>如何设计出比较RESTful的API接口呢？</p>
+<ol>
+<li><p>尽量说明接口类型（视图、模板、API）</p>
+<p><code>/view</code>    <code>/template</code>    <code>/api</code></p>
+</li>
+<li><p>尽量说明接口版本（version）</p>
+<p><code>/view/v1</code>    <code>/template/v1.2</code>    <code>/api/v2.0.1</code></p>
+</li>
+</ol>
+<p><strong>增删改查的RESTful设计</strong></p>
+<ol>
+<li><p>尽量使用HTTP请求中的GET、POST、PUT、DELETE方法</p>
+</li>
+<li><p>url中的过滤信息（分页、指定具体值）</p>
+<p>GET: /api/v1.0/user?page=1</p>
+</li>
+</ol>
+<p><strong>资源路径的RESTful设计</strong></p>
+<ol>
+<li><p>尽量说明资源类型</p>
+<p>GET: /api/v1.0/resource/image?md5=<md5></md5></p>
+</li>
+</ol>
 
       
     </div>
@@ -556,8 +554,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/" rel="next" title="MySQL数据库架构--什么影响了MySQL性能-最终篇">
-                <i class="fa fa-chevron-left"></i> MySQL数据库架构--什么影响了MySQL性能-最终篇
+              <a href="/2018/07/19/Django中的Request和Response对象/" rel="next" title="Django中的Request和Response对象">
+                <i class="fa fa-chevron-left"></i> Django中的Request和Response对象
               </a>
             
           </div>
@@ -565,6 +563,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/31/职业生涯的规划/" rel="prev" title="职业生涯的规划">
+                职业生涯的规划 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -648,7 +650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-count">115</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -726,7 +728,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTP请求与Django-Request对象"><span class="nav-number">1.</span> <span class="nav-text">HTTP请求与Django Request对象</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTP应答与Django-Response对象"><span class="nav-number">2.</span> <span class="nav-text">HTTP应答与Django Response对象</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实战：实现天气查询应用"><span class="nav-number">3.</span> <span class="nav-text">实战：实现天气查询应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#Django-处理请求的寻址逻辑"><span class="nav-number">1.</span> <span class="nav-text">Django 处理请求的寻址逻辑</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Django的RESTful-url设计"><span class="nav-number">2.</span> <span class="nav-text">Django的RESTful url设计</span></a></li></ol></div>
             
 
           </div>

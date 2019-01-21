@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/01/19/Django中的Request和Response对象/
+https://zhaobugs.com/2019/01/21/Python使用小技巧/
