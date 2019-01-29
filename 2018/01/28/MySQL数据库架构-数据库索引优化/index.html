@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="索引的作用是告诉存储引擎快速找到我们需要的数据 两个极端：除了主键没有任何索引，给每一个列都建立一个索引。太多太少的索引都会对数据库的性能带来不好的影响。只有在正确的列上建立正确的索引，才能增强数据库的查询能力。 索引是在mysql存储引擎层实现的，而不是在mysql服务器层实现的，不同的存储引擎的索引方式是不同的。 Btree索引和Hash索引B-tree索引 B-tree索引是比较常见的，通常">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库架构--数据库索引优化">
+<meta property="og:url" content="https://zhaobugs.com/2018/01/28/MySQL数据库架构-数据库索引优化/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="索引的作用是告诉存储引擎快速找到我们需要的数据 两个极端：除了主键没有任何索引，给每一个列都建立一个索引。太多太少的索引都会对数据库的性能带来不好的影响。只有在正确的列上建立正确的索引，才能增强数据库的查询能力。 索引是在mysql存储引擎层实现的，而不是在mysql服务器层实现的，不同的存储引擎的索引方式是不同的。 Btree索引和Hash索引B-tree索引 B-tree索引是比较常见的，通常">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fzme7q2e5uj316c0bwwhw.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fzmg8cnvhtj312607k0wp.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fzmga74ar0j315008edmm.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fzmggs2zq8j30tw09in15.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fzng8kmsanj31ec0ea4hq.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fzng9sci2qj31em0fitmi.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fzngkdirbwj31eo0fi16a.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fzngxqty9cj31p20mydm4.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fznimvg9g9j30v007k78l.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fzninwzwlrj310008279q.jpg">
+<meta property="og:updated_time" content="2019-01-29T09:09:35.309Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据库架构--数据库索引优化">
+<meta name="twitter:description" content="索引的作用是告诉存储引擎快速找到我们需要的数据 两个极端：除了主键没有任何索引，给每一个列都建立一个索引。太多太少的索引都会对数据库的性能带来不好的影响。只有在正确的列上建立正确的索引，才能增强数据库的查询能力。 索引是在mysql存储引擎层实现的，而不是在mysql服务器层实现的，不同的存储引擎的索引方式是不同的。 Btree索引和Hash索引B-tree索引 B-tree索引是比较常见的，通常">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fzme7q2e5uj316c0bwwhw.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/01/28/MySQL数据库架构-数据库索引优化/"/>
+
+
+
+
+
+  <title>MySQL数据库架构--数据库索引优化 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/28/MySQL数据库架构-数据库索引优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--数据库索引优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T16:34:11+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/28/MySQL数据库架构-数据库索引优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/28/MySQL数据库架构-数据库索引优化/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/28/MySQL数据库架构-数据库索引优化/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--数据库索引优化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,146 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  23 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>索引的作用是告诉存储引擎快速找到我们需要的数据</p>
+<p>两个极端：除了主键没有任何索引，给每一个列都建立一个索引。太多太少的索引都会对数据库的性能带来不好的影响。只有在正确的列上建立正确的索引，才能增强数据库的查询能力。</p>
+<p>索引是在mysql存储引擎层实现的，而不是在mysql服务器层实现的，不同的存储引擎的索引方式是不同的。</p>
+<h6 id="Btree索引和Hash索引"><a href="#Btree索引和Hash索引" class="headerlink" title="Btree索引和Hash索引"></a>Btree索引和Hash索引</h6><p><strong>B-tree索引</strong></p>
+<p>B-tree索引是比较常见的，通常所说的索引就是B-tree索引</p>
+<p>B-tree以B+树的结构存储数据</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fzme7q2e5uj316c0bwwhw.jpg" alt="image-20190128164532382">每个叶子到根部的距离都是 相同的，并且所有的记录节点都是按照键值的大小，在同一层上顺序排列的，并且各个叶子节点是由指针来链接的。</p>
+<p>B-tree 索引能够加快数据的查询速度，通常索引的大小远小于表中数据的大小，使用B-tree索引，存储引擎就不用全表扫描来获取需要的数据，取而代之的是从根节点开始搜索，在索引的根节点中存放了指向下层子节点的指针，存储引擎根据这些指针向下层进行查找，通过比较节点页的值通过比较节点叶的值和要查找的值呢，就可以得到合适的指针进入下层的子节点，而这些指针是定义了子节点中值的上线和下线。在innodb中叶子节点指向的是主键，在myisam中叶子节点指向的是数据物理地址。</p>
+<p>B-tree的叶子节点存储着索引关键字的值。</p>
+<p>另外B-tree索引呢 对索引是顺序存储的，所以适合范围查找，是靠键值来存储</p>
+<p><strong>B-tree索引在什么情况下可以被使用到</strong></p>
+<ul>
+<li><p>全值匹配的查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 匹配最左前缀的查询</span><br><span class="line"></span><br><span class="line">  假设我们建立了一个由`order_sn`和`order_date`组成的联合索引，如果还是进行上面的查询，是能够用到联合索引的。也就是说，只要联合索引的第一列符合查询条件则这个联合索引是能够被用到的。如果只是查询`order_date`则联合索引是不会被用到的。</span><br><span class="line"></span><br><span class="line">* 匹配列前缀查询</span><br><span class="line"></span><br><span class="line">  ```order_sn like &apos;098%&apos;</span><br></pre></td></tr></table></figure>
+<p>匹配列前缀是指匹配某一列的开头部分（这个查询也会用到上面说的联合查询）</p>
+</li>
+<li><p>匹配范围值的查询</p>
+<p>B-tree索引更适合的是范围查找<figure class="highlight plain"><figcaption><span>> '123' and order_sn < '321'```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 精确匹配左前列并范围匹配另一列</span><br><span class="line"></span><br><span class="line">  还是上面的联合索引，可以是精确查找`order_sn`然后是范围查找`order_date`</span><br><span class="line"></span><br><span class="line">* 只访问索引的查询</span><br><span class="line"></span><br><span class="line">  查询只访问索引，不访问数据行</span><br><span class="line"></span><br><span class="line">* 排序类</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**B-tree索引的使用限制**</span><br><span class="line"></span><br><span class="line">* 如果不是按照索引最左列开始查找，则无法使用索引</span><br><span class="line"></span><br><span class="line">  还是上面说的联合索引，当我们只查询`order_date`的时候则是无法使用联合索引的</span><br><span class="line"></span><br><span class="line">* 使用索引时不能跳过索引中的列</span><br><span class="line"></span><br><span class="line">  这个同样是左边列不能少，假设我们对`order_date`、`order_name`、`order_phone`这三列建了联合索引，假设我们只搜索`order_date`、`order_phone`是不能使用这个联合索引的。只能通过`order_date`进行过滤查询。</span><br><span class="line"></span><br><span class="line">* Not in 和 &lt; &gt; 操作无法使用索引</span><br><span class="line"></span><br><span class="line">* 如果查询中有某个列的范围查询，则右边所有列都无法使用索引</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**Hash索引**</span><br><span class="line"></span><br><span class="line">Hash索引的特点：</span><br><span class="line"></span><br><span class="line">* hash索引是基于hash表实现的，hash索引只有查询条件精确匹配hash索引中的所有列时，才能够使用到hash索引。也就是说hash索引只能用到等值查询中。如果我们想使用范围查询和模糊查询就不能使用hash索引了。</span><br><span class="line"></span><br><span class="line">* 对于hash索引中的所有列，存储引擎都会为每一行计算一个hash码，hash索引中存储的就是hash码，hash表还保存了每个hash码对应数据的指针</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">Hash索引的限制:</span><br><span class="line"></span><br><span class="line">* Hash索引必须进行二次查找</span><br><span class="line"></span><br><span class="line">  Hash索引本身只存储了Hash码，使用Hash索引查询必须进行两次查询。因为Hash索引只是键值和Hash码以及对应行的指针，索引并没有保存值。因此必选先找到行，然后再读取值。</span><br><span class="line"></span><br><span class="line">* Hash索引无法用于排序（保存的是hash值）</span><br><span class="line"></span><br><span class="line">* hash索引不支持部分索引查找也不支持范围查找</span><br><span class="line">* Hash索引中Hash码的计算可能存在Hash冲突（不建议在性别字段使用）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**为什么需要索引优化？**</span><br><span class="line"></span><br><span class="line">在学习具体的索引优化前我们必须明确为什么需要索引优化</span><br><span class="line"></span><br><span class="line">使用索引能够使我们快速定位到数据，但是这不是索引的唯一作用。</span><br><span class="line"></span><br><span class="line">索引大大减少了存储引擎需要扫描的数据量，索引文件大小远小于数据文件大小，innodb 默认一页是16k，一页可以存储更多</span><br><span class="line"></span><br><span class="line">索引可以帮助我们进行排序以避免使用临时表</span><br><span class="line"></span><br><span class="line">索引可以把随机I/O变为顺序I/O，更加好的发挥磁盘性能</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**索引是不是越多越好？**</span><br><span class="line"></span><br><span class="line">索引会带来一定的损耗：</span><br><span class="line"></span><br><span class="line">* 索引会增加写操作的成本</span><br><span class="line"></span><br><span class="line">  更新数据也要更新维护的索引</span><br><span class="line"></span><br><span class="line">* 太多的索引会增加查询优化器的选择时间（当一个查询有多个索引的时候，就会增加查询优化器分析时间），只有适当的表建立适当的索引，才是正确的做法。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">###### 安装实例数据库</span><br><span class="line"></span><br><span class="line">```powershell</span><br><span class="line">[root@hongshaorou ~]# wget http://downloads.mysql.com/docs/sakila-db.tar.gz</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# tar -zxvf sakila-db.tar.gz</span><br><span class="line">sakila-db/</span><br><span class="line">sakila-db/sakila-data.sql</span><br><span class="line">sakila-db/sakila-schema.sql</span><br><span class="line">sakila-db/sakila.mwb</span><br><span class="line">[root@hongshaorou ~]# mysql -uroot -p &lt; sakila-db/sakila-schema.sql</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# mysql -uroot -p &lt; sakila-db/sakila-data.sql</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h6 id="索引优化策略"><a href="#索引优化策略" class="headerlink" title="索引优化策略"></a>索引优化策略</h6><p><strong>策略一：索引列上不能使用表达式或函数</strong></p>
+<p>如下面的这个查询</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzmg8cnvhtj312607k0wp.jpg" alt="image-20190128175520575"></p>
+<p>我们在<code>out_date</code>字段上使用了函数即使建了索引也是无法使用的</p>
+<p>优化查询</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fzmga74ar0j315008edmm.jpg" alt="image-20190128175706662"></p>
+<p><strong>策略二：前缀索引和索引列的选择性</strong></p>
+<p>因为索引也有大小限制，我们可以为列增加前缀索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX index_name ON table(col_name(n));</span><br></pre></td></tr></table></figure>
+<p>Innodb索引列的宽度767个字节(255个字符)，MySAM的索引列宽度是1000个字节。</p>
+<p>当超过最大宽度则是无法建立前缀索引。</p>
+<p>索引的选择性是不重复的索引值和表的记录数的比值</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzmggs2zq8j30tw09in15.jpg" alt="image-20190128180326408"></p>
+<p><strong>策略三：联合索引</strong></p>
+<p>不推荐在每个列上都建一个索引，推荐建立联合索引</p>
+<p>建立联合索引的时候，如何选择索引列的顺序？</p>
+<ul>
+<li>经常被使用到的列优先</li>
+<li>选择性高的列优先（状态列就不是一个选择性高的）</li>
+<li>宽度小的列优先</li>
+</ul>
+<p><strong>策略四：覆盖索引</strong></p>
+<p>直接通过B-tree索引获得数据，因为叶子节点上存储了索引关键字的值。这样我们可以通过索引的关键字获得直接获得查询数据，这样就不要数据库查询读取数据行信息 。</p>
+<p>包含了所有需要查询的字段的全部值的索引就称之为覆盖索引（不仅是查询的还包括group by 和 order by的字段）</p>
+<p>优点：</p>
+<ul>
+<li><p>可以优化缓存，减少磁盘io操作。</p>
+</li>
+<li><p>可以减少随即io ，变随机io操作变为顺序io操作</p>
+</li>
+<li><p>可以避免对innodb主键索引的二次查询</p>
+</li>
+<li><p>可以避免myisam表进行系统调用 </p>
+</li>
+</ul>
+<p>无法使用覆盖索引的情况</p>
+<ul>
+<li>不是所有的存储引擎不支持覆盖索引（只有在索引的叶子节点中包括了键值的索引才能建立覆盖索引）</li>
+<li>查询中使用了太多的列，覆盖索引索引的大小比行的数据小的多</li>
+<li>使用了双%号的like查询（内存中过滤）</li>
+</ul>
+<p>覆盖查询例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select language_id from film where language_id=1\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: film</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: idx_fk_language_id</span><br><span class="line">          key: idx_fk_language_id</span><br><span class="line">      key_len: 1</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1000</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using index</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>因为 <code>language_id</code> 上有个单列的索引，我们使用<code>language_id</code>查询并且只查询<code>language_id</code>这时就会使用覆盖查询（使用索引获取数据）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from film where language_id=1\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: film</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ALL</span><br><span class="line">possible_keys: idx_fk_language_id</span><br><span class="line">          key: NULL</span><br><span class="line">      key_len: NULL</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 1000</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using where</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>这个查询就不能使用覆盖查询，而是先把数据放到内存中，然后从内存中过滤。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show  create table actor\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">       Table: actor</span><br><span class="line">Create Table: CREATE TABLE `actor` (</span><br><span class="line">  `actor_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `first_name` varchar(45) NOT NULL,</span><br><span class="line">  `last_name` varchar(45) NOT NULL,</span><br><span class="line">  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">  PRIMARY KEY (`actor_id`),</span><br><span class="line">  KEY `idx_actor_last_name` (`last_name`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; explain select actor_id, last_name from actor where last_name=&apos;Joe&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: idx_actor_last_name</span><br><span class="line">          key: idx_actor_last_name</span><br><span class="line">      key_len: 137</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using index</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>因为主键默认有索引，因此上方的查询是覆盖查询，直接从索引中取值。</p>
+<h6 id="使用索引来优化查询"><a href="#使用索引来优化查询" class="headerlink" title="使用索引来优化查询"></a>使用索引来优化查询</h6><p><strong>使用索引扫描来优化排序</strong></p>
+<p>前面我们说过 B-tree索引是按照键值的顺序来存储数据的。我们不仅可以利用B-tree索引来查找数据还可以进行排序。</p>
+<p>MySQL有两种方式来生成有序的结果，一种是通过排序操作，另一种是按照索引顺序扫描数据。</p>
+<p>我们看看想要使用索引扫描来优化排序需要满足的条件：</p>
+<ul>
+<li>索引的列顺序和Order By子句的顺序完全一致</li>
+<li>索引中所有列的方向（升序, 降序）和Order By子句完全一致</li>
+<li>多表关联的时候Order By中的字段全部在关联表中的第一张表中</li>
+</ul>
+<p>  我们还是看下例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># rental 表的表结构</span><br><span class="line">| rental | CREATE TABLE `rental` (</span><br><span class="line">  `rental_id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `rental_date` datetime NOT NULL,</span><br><span class="line">  `inventory_id` mediumint(8) unsigned NOT NULL,</span><br><span class="line">  `customer_id` smallint(5) unsigned NOT NULL,</span><br><span class="line">  `return_date` datetime DEFAULT NULL,</span><br><span class="line">  `staff_id` tinyint(3) unsigned NOT NULL,</span><br><span class="line">  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">  PRIMARY KEY (`rental_id`),</span><br><span class="line">  UNIQUE KEY `rental_date` (`rental_date`,`inventory_id`,`customer_id`),</span><br><span class="line">  KEY `idx_fk_inventory_id` (`inventory_id`),</span><br><span class="line">  KEY `idx_fk_customer_id` (`customer_id`),</span><br><span class="line">  KEY `idx_fk_staff_id` (`staff_id`),</span><br><span class="line">  CONSTRAINT `fk_rental_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON UPDATE CASCADE,</span><br><span class="line">  CONSTRAINT `fk_rental_inventory` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`inventory_id`) ON UPDATE CASCADE,</span><br><span class="line">  CONSTRAINT `fk_rental_staff` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`) ON UPDATE CASCADE</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=16050 DEFAULT CHARSET=utf8 |</span><br></pre></td></tr></table></figure>
+<p>InnoDB存储引擎数据的逻辑顺序和主键的顺序是一致的，因此我们可以使用主键进行排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from rental where rental_date&gt;&apos;2005-01-01&apos; order by rental_id\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: index</span><br><span class="line">possible_keys: rental_date</span><br><span class="line">          key: PRIMARY</span><br><span class="line">      key_len: 4</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 16008</span><br><span class="line">     filtered: 50.00</span><br><span class="line">        Extra: Using where</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>现在我们将存储引擎改为MySAM</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzng8kmsanj31ec0ea4hq.jpg" alt="image-20190129144052432"></p>
+<p>和之前的InnoDB存储引擎具有相同的索引 进行同样的查询</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fzng9sci2qj31em0fitmi.jpg" alt="image-20190129144205410"></p>
+<p>MySAM存储引擎使用的不再是索引而是使用文件进行排序。</p>
+<p>我们看下二级索引的使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select rental where rental_date=&apos;2005-05-09&apos; order by inventory_id, customer_id\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: rental_date</span><br><span class="line">          key: rental_date</span><br><span class="line">      key_len: 5</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using index condition</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>在MySAM的存储表查询</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fzngkdirbwj31eo0fi16a.jpg" alt="image-20190129145215426"></p>
+<p>我们看到这个二级查询是可以使用到索引的，并没有使用文件排序的信息。</p>
+<p>我们看下其中使用规则之一 ：索引中所有列的方向（升序, 降序）和Order By子句完全一致</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from rental where rental_date=&apos;2005-05-09&apos; order by inventory_id desc , customer_id\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: rental_date</span><br><span class="line">          key: rental_date</span><br><span class="line">      key_len: 5</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using index condition; Using filesort</span><br></pre></td></tr></table></figure>
+<p>这样就会使用到文件排序</p>
+<p>还有一个条件是如果联合索引左边的是范围查找 则整个联合索引排序将失效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from rental where rental_date&gt;&apos;2005-05-09&apos; order by inventory_id , customer_id\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ALL</span><br><span class="line">possible_keys: rental_date</span><br><span class="line">          key: NULL</span><br><span class="line">      key_len: NULL</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 16008</span><br><span class="line">     filtered: 50.00</span><br><span class="line">        Extra: Using where; Using filesort</span><br></pre></td></tr></table></figure>
+<p>使用文件排序</p>
+<p><strong>模拟Hash索引优化查询</strong></p>
+<p>当索引的长度受到限制的时候</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzngxqty9cj31p20mydm4.jpg" alt="image-20190129150506491"></p>
+<p>现在我们模拟Hash索引进行这个字段的查询优化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table film add title_md5 varchar(32);</span><br><span class="line">Query OK, 0 rows affected (1.03 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt;  update film set title_md5=md5(title);</span><br><span class="line">Query OK, 1000 rows affected (0.22 sec)</span><br><span class="line">Rows matched: 1000  Changed: 1000  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; create index idx_md5 on film(title_md5);</span><br><span class="line">Query OK, 0 rows affected (0.24 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<p>进行查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from film  where  title=&apos;EGG IGBY&apos;\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: film</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: title_index</span><br><span class="line">          key: title_index</span><br><span class="line">      key_len: 767</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br><span class="line">1 row in set, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; explain select * from film  where  title_md5=md5(&apos;EGG IGBY&apos;) and title=&apos;EGG IGBY&apos;\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: film</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: idx_md5,title_index</span><br><span class="line">          key: idx_md5</span><br><span class="line">      key_len: 99</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 5.00</span><br><span class="line">        Extra: Using where</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>这种使用B-tree索引模拟Hash索引也是有限的：</p>
+<ul>
+<li><p>只能处理键值的全值匹配查找</p>
+</li>
+<li><p>所使用的Hash函数决定着索引键的大小</p>
+</li>
+</ul>
+<h6 id="使用索引来优化锁"><a href="#使用索引来优化锁" class="headerlink" title="使用索引来优化锁"></a>使用索引来优化锁</h6><p>InnoDB是行级锁，只有修改对应的行的时候才会对需要的行加锁。但是只有在InnoDB存储引擎层过滤掉不需要的行的时候，这种情况才会有效。如果存储引擎不能过滤掉我们不需要的行，则需要锁定所有的行，在内存中通过where条件进行过滤。可以通使用索引来减少锁定的行数。 通过索引在存储引擎层过滤掉我们不需要的行，减少锁带来的开销。</p>
+<p><strong>利用索引优化锁</strong></p>
+<ul>
+<li>索引可以减少锁定的行数</li>
+<li>索引可以加快处理速度，同时也加快了锁的释放</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show create table actor;</span><br><span class="line"></span><br><span class="line">| Table | Create Table                                     |</span><br><span class="line"></span><br><span class="line">| actor | CREATE TABLE `actor` (</span><br><span class="line">  `actor_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `first_name` varchar(45) NOT NULL,</span><br><span class="line">  `last_name` varchar(45) NOT NULL,</span><br><span class="line">  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">  PRIMARY KEY (`actor_id`),</span><br><span class="line">  KEY `idx_actor_last_name` (`last_name`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8 |</span><br><span class="line"></span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; drop index  idx_actor_last_name  on actor;</span><br><span class="line">Query OK, 0 rows affected (0.10 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; explain select * from actor where last_name=&apos;WOOD&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ALL</span><br><span class="line">possible_keys: NULL</span><br><span class="line">          key: NULL</span><br><span class="line">      key_len: NULL</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 200</span><br><span class="line">     filtered: 10.00</span><br><span class="line">        Extra: Using where</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>我们看到查询是没有用到索引的。</p>
+<p>我们在一个shell会话中开启一个事务 使用排它锁进行查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; select * from actor where last_name=&apos;WOOD&apos; for update;</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">| actor_id | first_name | last_name | last_update         |</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">|       13 | UMA        | WOOD      | 2006-02-15 04:34:33 |</span><br><span class="line">|      156 | FAY        | WOOD      | 2006-02-15 04:34:33 |</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>上面的这个查询会将所有的数据进行加锁放到内存中进行过滤</p>
+<p>现在我们在另一个shell会话中开启另一个事务 使用排它锁进行查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from actor where last_name=&apos;willis&apos; for update;</span><br></pre></td></tr></table></figure>
+<p>查询将会一直被阻塞直至报错。</p>
+<p>现在我们第一个会话中重新建上索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create index idx_actor_last_name on actor(last_name);</span><br><span class="line">Query OK, 0 rows affected (0.19 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; explain select * from actor where last_name=&apos;WOOD&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: idx_actor_last_name</span><br><span class="line">          key: idx_actor_last_name</span><br><span class="line">      key_len: 137</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 2</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 排它锁的查询</span><br><span class="line">mysql&gt; select * from actor where last_name=&apos;WOOD&apos; for update;</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">| actor_id | first_name | last_name | last_update         |</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">|       13 | UMA        | WOOD      | 2006-02-15 04:34:33 |</span><br><span class="line">|      156 | FAY        | WOOD      | 2006-02-15 04:34:33 |</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>在另一个会话重新进行查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from actor where last_name=&apos;willis&apos; for update;</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">| actor_id | first_name | last_name | last_update         |</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">|       83 | BEN        | WILLIS    | 2006-02-15 04:34:33 |</span><br><span class="line">|       96 | GENE       | WILLIS    | 2006-02-15 04:34:33 |</span><br><span class="line">|      164 | HUMPHREY   | WILLIS    | 2006-02-15 04:34:33 |</span><br><span class="line">+----------+------------+-----------+---------------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>这个时候不再阻塞。 </p>
+<p>上面就是索引优化锁的过程。</p>
+<p>使用索引之后可以在数据查询时锁定更少的行，增加了数据处理的并发性。</p>
+<p><strong>索引本身的维护和优化</strong></p>
+<p>MySQL允许在一个列上建立一个或多个索引，无论是一个还是多个MySQL都需要单独的去维护这些索引。然后在优化器查询的时候不断的对这些索引进行选择，这肯定会影响数据库的性能。</p>
+<p>删除重复和冗余的索引：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fznimvg9g9j30v007k78l.jpg" alt="image-20190129160351737"></p>
+<p>主键已经包括了唯一</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1fzninwzwlrj310008279q.jpg" alt="image-20190129160451796"></p>
+<p>上面的联合索引的第一个 在查询<code>a</code>列的时候 是可以使用到组合索引的。</p>
+<p>下面的之所以是冗余索引是因为 InnoDB存储引擎在每个二级索引之后都会加上主键信息。</p>
+<p>使用工具<code>pt-duplicate-key-checker</code>查找冗余索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 新建冗余索引</span><br><span class="line">mysql&gt; create index idx_customerid_staffid on payment(customer_id, staff_id);</span><br><span class="line">Query OK, 0 rows affected (0.33 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询冗余索引</span></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># pt-duplicate-key-checker --host=127.0.0.1 --user=root --password=root &gt;test.sql</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看</span></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># more test.sql</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A software update is available:</span></span><br><span class="line"><span class="comment"># ########################################################################</span></span><br><span class="line"><span class="comment"># sakila.payment</span></span><br><span class="line"><span class="comment"># ########################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># idx_fk_customer_id is a left-prefix of idx_customerid_staffid</span></span><br><span class="line"><span class="comment"># Key definitions:</span></span><br><span class="line"><span class="comment">#   KEY `idx_fk_customer_id` (`customer_id`),</span></span><br><span class="line"><span class="comment">#   KEY `idx_customerid_staffid` (`customer_id`,`staff_id`),</span></span><br><span class="line"><span class="comment"># Column types:</span></span><br><span class="line"><span class="comment">#	  `customer_id` smallint(5) unsigned not null</span></span><br><span class="line"><span class="comment">#	  `staff_id` tinyint(3) unsigned not null</span></span><br><span class="line"><span class="comment"># To remove this duplicate index, execute:</span></span><br><span class="line">ALTER TABLE `sakila`.`payment` DROP INDEX `idx_fk_customer_id`;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ########################################################################</span></span><br><span class="line"><span class="comment"># Summary of indexes</span></span><br><span class="line"><span class="comment"># ########################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Size Duplicate Indexes   32172</span></span><br><span class="line"><span class="comment"># Total Duplicate Indexes  1</span></span><br><span class="line"><span class="comment"># Total Indexes            128</span></span><br></pre></td></tr></table></figure>
+<p>上面给出了建议 删除单个索引</p>
+<p>查找未被使用过的索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT a.object_schema, a.object_name, a.index_name, b.TABLE_ROWS</span><br><span class="line">    -&gt;   FROM performance_schema.table_io_waits_summary_by_index_usage a</span><br><span class="line">    -&gt;   JOIN information_schema.tables b ON</span><br><span class="line">    -&gt;   a.`OBJECT_SCHEMA` = b.`TABLE_SCHEMA` AND a.`OBJECT_NAME` = b.`TABLE_NAME`</span><br><span class="line">    -&gt;  WHERE index_name IS NOT NULL</span><br><span class="line">    -&gt;    AND index_name != &apos;PRIMARY&apos;</span><br><span class="line">    -&gt;    AND count_star = 0</span><br><span class="line">    -&gt;    AND object_schema NOT IN (&apos;mysql&apos;, &apos;performance_schema&apos;)</span><br><span class="line">    -&gt;  ORDER BY object_schema, object_name;</span><br><span class="line">+---------------+---------------+-----------------------------+------------+</span><br><span class="line">| object_schema | object_name   | index_name                  | TABLE_ROWS |</span><br><span class="line">+---------------+---------------+-----------------------------+------------+</span><br><span class="line">| sakila        | address       | idx_location                |        603 |</span><br><span class="line">| sakila        | address       | idx_fk_city_id              |        603 |</span><br><span class="line">| sakila        | city          | idx_fk_country_id           |        600 |</span><br><span class="line">| sakila        | customer      | idx_fk_address_id           |        599 |</span><br><span class="line">| sakila        | customer      | idx_last_name               |        599 |</span><br><span class="line">| sakila        | customer      | idx_fk_store_id             |        599 |</span><br><span class="line">| sakila        | film          | idx_fk_original_language_id |       1000 |</span><br><span class="line">| sakila        | film          | idx_md5                     |       1000 |</span><br><span class="line">| sakila        | film          | title_index                 |       1000 |</span><br><span class="line">| sakila        | film          | idx_fk_language_id          |       1000 |</span><br><span class="line">| sakila        | film_actor    | idx_fk_film_id              |       5462 |</span><br><span class="line">| sakila        | film_category | fk_film_category_category   |       1000 |</span><br><span class="line">| sakila        | film_text     | idx_title_description       |       1000 |</span><br><span class="line">| sakila        | inventory     | idx_store_id_film_id        |       4581 |</span><br><span class="line">| sakila        | inventory     | idx_fk_film_id              |       4581 |</span><br><span class="line">| sakila        | payment       | fk_payment_rental           |      16086 |</span><br><span class="line">| sakila        | payment       | idx_customerid_staffid      |      16086 |</span><br><span class="line">| sakila        | payment       | idx_fk_staff_id             |      16086 |</span><br><span class="line">| sakila        | payment       | idx_fk_customer_id          |      16086 |</span><br><span class="line">| sakila        | rental        | idx_fk_inventory_id         |      16008 |</span><br><span class="line">| sakila        | rental        | idx_fk_customer_id          |      16008 |</span><br><span class="line">| sakila        | rental        | idx_fk_staff_id             |      16008 |</span><br><span class="line">| sakila        | rental        | rental_date                 |      16008 |</span><br><span class="line">| sakila        | staff         | idx_fk_store_id             |          2 |</span><br><span class="line">| sakila        | staff         | idx_fk_address_id           |          2 |</span><br><span class="line">| sakila        | store         | idx_unique_manager          |          2 |</span><br><span class="line">| sakila        | store         | idx_fk_address_id           |          2 |</span><br><span class="line">| windfall      | user          | ix_user_phone               |          0 |</span><br><span class="line">| windfall      | user          | ix_user_username            |          0 |</span><br><span class="line">| windfall      | user_tag      | ix_user_tag_uid             |          0 |</span><br><span class="line">| windfall      | verify        | ix_verify_phone             |          0 |</span><br><span class="line">+---------------+---------------+-----------------------------+------------+</span><br><span class="line">31 rows in set (0.22 sec)</span><br></pre></td></tr></table></figure>
+<p>使用上面的SQL将会打印出库名，表名，索引名，使用次数。</p>
+<p>更新索引统计信息及减少索引碎片化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 更新索引统计信息 提高优化器查询</span><br><span class="line">analyze table table_name</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 减少索引碎片化 使用不当会导致锁表</span><br><span class="line">optimize table table_name</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/28/MySQL数据库架构-基准测试/" rel="next" title="MySQL数据库架构--基准测试">
+                <i class="fa fa-chevron-left"></i> MySQL数据库架构--基准测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/09/Python面试笔记/" rel="prev" title="Python面试笔记">
+                Python面试笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">117</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#Btree索引和Hash索引"><span class="nav-number">1.</span> <span class="nav-text">Btree索引和Hash索引</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#索引优化策略"><span class="nav-number">2.</span> <span class="nav-text">索引优化策略</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用索引来优化查询"><span class="nav-number">3.</span> <span class="nav-text">使用索引来优化查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用索引来优化锁"><span class="nav-number">4.</span> <span class="nav-text">使用索引来优化锁</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

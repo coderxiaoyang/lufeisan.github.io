@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="红烧肉" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="MySQL服务器参数介绍加载配置最终起作用的是后面的配置文件覆盖前面的。 Mysql获取配置信息路径  我们可以通过命令行指定配置 1mysqld_safe --datadir=/data/sql_data  我们看下默认配置文件的访问顺序 123[root@hongshaorou ~]#  mysqld --help --verbose | grep -A 1 &apos;Default options&apos;">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库架构--什么影响了MySQL性能-最终篇">
+<meta property="og:url" content="https://zhaobugs.com/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/index.html">
+<meta property="og:site_name" content="红烧肉">
+<meta property="og:description" content="MySQL服务器参数介绍加载配置最终起作用的是后面的配置文件覆盖前面的。 Mysql获取配置信息路径  我们可以通过命令行指定配置 1mysqld_safe --datadir=/data/sql_data  我们看下默认配置文件的访问顺序 123[root@hongshaorou ~]#  mysqld --help --verbose | grep -A 1 &apos;Default options&apos;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-28T07:23:54.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据库架构--什么影响了MySQL性能-最终篇">
+<meta name="twitter:description" content="MySQL服务器参数介绍加载配置最终起作用的是后面的配置文件覆盖前面的。 Mysql获取配置信息路径  我们可以通过命令行指定配置 1mysqld_safe --datadir=/data/sql_data  我们看下默认配置文件的访问顺序 123[root@hongshaorou ~]#  mysqld --help --verbose | grep -A 1 &apos;Default options&apos;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/"/>
+
+
+
+
+
+  <title>MySQL数据库架构--什么影响了MySQL性能-最终篇 | 红烧肉</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红烧肉</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hongshaorou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红烧肉">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--什么影响了MySQL性能-最终篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-15T13:52:41+08:00">
+                2018-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--什么影响了MySQL性能-最终篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,625 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h6 id="MySQL服务器参数介绍"><a href="#MySQL服务器参数介绍" class="headerlink" title="MySQL服务器参数介绍"></a>MySQL服务器参数介绍</h6><p>加载配置最终起作用的是后面的配置文件覆盖前面的。</p>
+<p><strong>Mysql获取配置信息路径</strong></p>
+<ul>
+<li><p>我们可以通过命令行指定配置</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld_safe --datadir=/<span class="keyword">data</span>/sql_data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们看下默认配置文件的访问顺序</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment">#  mysqld --help --verbose | grep -A 1 'Default options'</span></span><br><span class="line">Default options are read from the following files <span class="keyword">in</span> the given order:</span><br><span class="line">/etc/my.cnf /etc/mysql/my.cnf /usr/etc/my.cnf ~/.my.cnf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>MySQL配置参数的作用域</strong></p>
+<p>MySQL的配置参数根据作用域的不同可以分为全局参数和会话参数。</p>
+<ul>
+<li>全局参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 命令要在mysql客户端下执行</span><br><span class="line">set global 参数名=参数值;</span><br><span class="line">set @@global.参数名 := 参数值;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>会话参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set [session] 参数名=参数值;</span><br><span class="line">set @@session.参数名 := 参数值;</span><br></pre></td></tr></table></figure>
+<p><code>session</code>没有指定的情况下，会使用同名的全局配置。</p>
+<blockquote>
+<p>全局配置完之后，需要退出重新登录才能生效。</p>
+</blockquote>
+<h6 id="内存配置相关参数"><a href="#内存配置相关参数" class="headerlink" title="内存配置相关参数"></a>内存配置相关参数</h6><p><strong>内存配置相关参数</strong></p>
+<ul>
+<li><p>确定可以使用的内存的上限</p>
+<p>不要超过物理内存</p>
+</li>
+<li><p>确定MySQL的每个连接使用的内存</p>
+<p>mysql对一些缓存对每个连接的内存是单独分配的，所以使用的连接数越大，占用的内存也就会越多</p>
+<p><code>sort_buffer_size</code>: 排序缓存区的尺寸，这个参数定义了mysql每个线程使用的排序缓存区的大小，mysql不是在连接初始化的时候后就给每个缓冲区分配内存，而是在有查询或排序操作时候，才会给每个缓冲区分配内存，然而在mysql出现查询排序的时候，mysql会立即分配这个参数设置的大小内存给缓冲区，而不管该排序是否需要这么大的内存，有的时候会把这个值设置很大，增加查询效率，比如100M，如果有100个连接同时进行排序，那么mysql，就会分配出10g左右的内存，所以很容易造成服务器内存溢出，所以配置这个的时候要注意。</p>
+<p><code>join_buffer_size</code>: 连接缓冲区的尺寸，这个参数定义了mysql每个线程使用的连接缓冲区的大小，如果一个查询中关联了多张表，就会为每个关联 分配一个连接缓冲，所每以个查询可能会有多个连接缓冲，所以这个参数也不能设置太大</p>
+<p><code>read_buffer_size</code>: 当对myisam表进行全表扫描时，所分配的读缓冲区的大小， mysql只会在有查询需要的时候才会对该缓存分配内存，同样也会一次性分配该参数的值，这个参数值是4k的倍数</p>
+<p><code>read_rnd_buffer_size</code>: 索引缓冲区的大小，mysql也是只有在查询的时候，才会给该缓冲区分配内存，会分配内存需要的大小，不会分配指定的的大小</p>
+<p>上面四个参数都是对每个线程生效的，如果有100个连接将会由100倍的内存被分配出去。</p>
+</li>
+<li><p>确定需要为操作系统保留多少内存</p>
+</li>
+<li><p>如何为缓存池分配内存</p>
+<p><code>Innodb_buffer_pool_size</code>: 定义了Innodb所使用的缓冲池的大小，这个参数对Innodb存储引擎性能是影响很大的，Innodb不仅要缓存索引还要缓存数据。Innodb缓存池还帮助写入，这个帮助数据一起顺序的写入到磁盘，性能影响最大，所以必须分配足够的内存。公式=总内存-（每个线程所需要的内存*连接数）-系统保留内存。官方手册中，参数配置值要是服务器内存75%以上</p>
+<p><code>key_buffer_size</code>： 这个缓冲池存储引擎用于myisam，只会缓冲索引，数据则是依赖操作系统的缓存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 我们使用下面的查询 可以知道 myisam 表的索引占得缓存池的大小</span><br><span class="line">select sum(index_length) from information_schema.tables where engine=&apos;myisam&apos;;</span><br></pre></td></tr></table></figure>
+<p>即使我们的数据表全是<code>Innodb</code>引擎，上面的这个参数我们还是有必要设置的，因为<code>MySQL</code>的内部表还是使用的是<code>myisam</code>存储引擎。</p>
+</li>
+</ul>
+<h6 id="IO相关配置参数"><a href="#IO相关配置参数" class="headerlink" title="IO相关配置参数"></a>IO相关配置参数</h6><p>​    这部分参数决定了mysql如何同步缓存池中的数据到磁盘上，已修改数据持久化的保存，这些操作对性能的影响非常的大 ，如果需要修改的数据立刻写入到磁盘上，那是很昂贵的操作。</p>
+<p>I/O配置和存储引擎是相关的。</p>
+<p><strong>Innodb I/O相关配置</strong></p>
+<p><code>Innodb_log_file_size</code> 控制了单个事务日志的大小</p>
+<p><code>Innodb_log_file_in_group</code> 控制了事务日志文件的个数，</p>
+<p> 事务日志文件总大小=<code>Innodb_log_files_in_group</code> * <code>Innodb_log_file_size</code></p>
+<p>事务日志文件是循环使用的。</p>
+<p>事务日志不是每次提交直接写入到日志文件中的，而是先写入到事务日志的缓冲区，然后再刷新到磁盘中。</p>
+<p><code>Innodb_log_buffer_size</code> 控制日志缓冲区的大小。（32M-128M）</p>
+<p><code>Innodb_flush_log_at_trx_commit</code>  刷新事务日志的频率</p>
+<p>这个参数有三个选择 ：</p>
+<p>0：每秒进行一次log写入到cache 并flush log到磁盘。在事务提交时候不会做任何事情，在MySQL崩溃的时候回至少丢失一秒钟的事务。</p>
+<p>1：默认值，在每次事务提交执行log写入cache，并flush log到磁盘。</p>
+<p>2：建议值，每次事务提交，执行log数据写入到cache，每秒执行一次flush log到磁盘。与 0 值比较，在MySQL崩溃的时候不会丢失事务。</p>
+<p><code>Innodb_flush_method=O_DIRECT</code></p>
+<p><code>Innodb_file_per_table=1</code> 为每张表建一个单独的表空间</p>
+<p><code>Innodb_doublewrite = 1</code> 双写缓存</p>
+<p><strong>MyISAM I/O相关配置</strong></p>
+<p><code>delay_key_write</code></p>
+<p><code>OFF</code>： 每次写操作后刷新键缓冲中的脏块到磁盘</p>
+<p><code>ON</code>：只对建表时指定了<code>delay_key_write</code>选项的表使用延迟刷新</p>
+<p><code>ALL</code>：对所有MyISAM表都使用延迟键写入</p>
+<h6 id="安全配置参数"><a href="#安全配置参数" class="headerlink" title="安全配置参数"></a>安全配置参数</h6><p><code>expire_logs_days</code>        //指定自动清理binlog的天数</p>
+<p><code>max_allowed_packet</code>    //控制MySQL可以接收的包的大小（32M）</p>
+<p><code>skip_name_resolve</code>       //禁用DNS查找</p>
+<p><code>sysdate_is_now</code>            //确保sysdate()返回确定性日期</p>
+<p><code>read_only</code>     //禁止非super权限的用户写入权限（建议从库中使用）</p>
+<p><code>skip_slave_start</code>     //禁用Slave自动恢复（建议从库中使用）</p>
+<p><code>sql_mode</code>            //设置MySQL所使用的SQL模式</p>
+<p><code>strict_trans_tables</code></p>
+<p><code>no_engine_subtitution</code></p>
+<p><code>no_zero_date</code></p>
+<p><code>no_zero_in_date</code></p>
+<p><code>only_full_group_by</code></p>
+<h6 id="其他配置参数"><a href="#其他配置参数" class="headerlink" title="其他配置参数"></a>其他配置参数</h6><p><code>sync_binlog</code>   //控制MySQL如何向磁盘刷新binlog（主DB 建议为1）</p>
+<p><code>tmp_table_size</code> 和 <code>max_heap_table_size</code>  //控制内存临时表大小</p>
+<p><code>max_connections</code>    //允许的最大链接数</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hongshaorou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/14/MySQL数据库架构-什么影响了MySQL性能-下/" rel="next" title="MySQL数据库架构--什么影响了MySQL性能-下">
+                <i class="fa fa-chevron-left"></i> MySQL数据库架构--什么影响了MySQL性能-下
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/28/MySQL数据库架构-基准测试/" rel="prev" title="MySQL数据库架构--基准测试">
+                MySQL数据库架构--基准测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="Hongshaorou" />
+            
+              <p class="site-author-name" itemprop="name">Hongshaorou</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">117</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL服务器参数介绍"><span class="nav-number">1.</span> <span class="nav-text">MySQL服务器参数介绍</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#内存配置相关参数"><span class="nav-number">2.</span> <span class="nav-text">内存配置相关参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#IO相关配置参数"><span class="nav-number">3.</span> <span class="nav-text">IO相关配置参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安全配置参数"><span class="nav-number">4.</span> <span class="nav-text">安全配置参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其他配置参数"><span class="nav-number">5.</span> <span class="nav-text">其他配置参数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hongshaorou</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="MySQL服务器参数介绍加载配置最终起作用的是后面的配置文件覆盖前面的。 Mysql获取配置信息路径  我们可以通过命令行指定配置 1mysqld_safe --datadir=/data/sql_data  我们看下默认配置文件的访问顺序 123[root@hongshaorou ~]#  mysqld --help --verbose | grep -A 1 &apos;Default options&apos;">
+<meta name="description" content="什么是基准测试？我们看下基准测试的定义： 基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。 基准测试和压力测试的区别： 基准测试： 直接、简单、易于比较，用于评估服务器的处理能力可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系 压力测试： 对真实业务数据进行测试，获取系统所能承受的真实压力需要针对">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL数据库架构--什么影响了MySQL性能-最终篇">
-<meta property="og:url" content="https://zhaobugs.com/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/index.html">
+<meta property="og:title" content="MySQL数据库架构--基准测试">
+<meta property="og:url" content="https://zhaobugs.com/2018/01/28/MySQL数据库架构-基准测试/index.html">
 <meta property="og:site_name" content="红烧肉">
-<meta property="og:description" content="MySQL服务器参数介绍加载配置最终起作用的是后面的配置文件覆盖前面的。 Mysql获取配置信息路径  我们可以通过命令行指定配置 1mysqld_safe --datadir=/data/sql_data  我们看下默认配置文件的访问顺序 123[root@hongshaorou ~]#  mysqld --help --verbose | grep -A 1 &apos;Default options&apos;">
+<meta property="og:description" content="什么是基准测试？我们看下基准测试的定义： 基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。 基准测试和压力测试的区别： 基准测试： 直接、简单、易于比较，用于评估服务器的处理能力可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系 压力测试： 对真实业务数据进行测试，获取系统所能承受的真实压力需要针对">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-15T09:23:10.838Z">
+<meta property="og:updated_time" content="2019-01-28T08:33:46.157Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL数据库架构--什么影响了MySQL性能-最终篇">
-<meta name="twitter:description" content="MySQL服务器参数介绍加载配置最终起作用的是后面的配置文件覆盖前面的。 Mysql获取配置信息路径  我们可以通过命令行指定配置 1mysqld_safe --datadir=/data/sql_data  我们看下默认配置文件的访问顺序 123[root@hongshaorou ~]#  mysqld --help --verbose | grep -A 1 &apos;Default options&apos;">
+<meta name="twitter:title" content="MySQL数据库架构--基准测试">
+<meta name="twitter:description" content="什么是基准测试？我们看下基准测试的定义： 基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。 基准测试和压力测试的区别： 基准测试： 直接、简单、易于比较，用于评估服务器的处理能力可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系 压力测试： 对真实业务数据进行测试，获取系统所能承受的真实压力需要针对">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/01/28/MySQL数据库架构-基准测试/"/>
 
 
 
 
 
-  <title>MySQL数据库架构--什么影响了MySQL性能-最终篇 | 红烧肉</title>
+  <title>MySQL数据库架构--基准测试 | 红烧肉</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/28/MySQL数据库架构-基准测试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hongshaorou">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--什么影响了MySQL性能-最终篇</h1>
+          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--基准测试</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-15T13:52:41+08:00">
-                2019-01-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T15:24:55+08:00">
+                2018-01-28
               </time>
             
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/" itemprop="commentCount"></span>
+                <a href="/2018/01/28/MySQL数据库架构-基准测试/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/28/MySQL数据库架构-基准测试/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2019/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--什么影响了MySQL性能-最终篇">
+             <span id="/2018/01/28/MySQL数据库架构-基准测试/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--基准测试">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,625 字
+                  1,506 字
                 </span>
               
 
@@ -449,89 +449,70 @@
       
 
       
-        <h6 id="MySQL服务器参数介绍"><a href="#MySQL服务器参数介绍" class="headerlink" title="MySQL服务器参数介绍"></a>MySQL服务器参数介绍</h6><p>加载配置最终起作用的是后面的配置文件覆盖前面的。</p>
-<p><strong>Mysql获取配置信息路径</strong></p>
+        <h6 id="什么是基准测试？"><a href="#什么是基准测试？" class="headerlink" title="什么是基准测试？"></a>什么是基准测试？</h6><p><strong>我们看下基准测试的定义：</strong></p>
+<p>基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。</p>
+<p><strong>基准测试和压力测试的区别：</strong></p>
+<p>基准测试：</p>
+<p>直接、简单、易于比较，用于评估服务器的处理能力<br>可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系</p>
+<p>压力测试：</p>
+<p>对真实业务数据进行测试，获取系统所能承受的真实压力<br>需要针对不同主题，所使用的的数据和查询也是真实用到的</p>
+<p><strong>基准测试的目的</strong></p>
 <ul>
-<li><p>我们可以通过命令行指定配置</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld_safe --datadir=/<span class="keyword">data</span>/sql_data</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>我们看下默认配置文件的访问顺序</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment">#  mysqld --help --verbose | grep -A 1 'Default options'</span></span><br><span class="line">Default options are read from the following files <span class="keyword">in</span> the given order:</span><br><span class="line">/etc/my.cnf /etc/mysql/my.cnf /usr/etc/my.cnf ~/.my.cnf</span><br></pre></td></tr></table></figure>
-</li>
+<li>建立MySQL服务器的性能基准线<br>确定当前MySQL服务器运行情况</li>
+<li>模拟比当前系统更高的负载，以找出系统的扩展瓶颈<br>增加数据库并发，观察QPS，TPS变化，确定并发量与性能最优化的关系</li>
+<li>测试不同的硬件、软件和操作系统配置</li>
+<li>证明新的硬件设备是否配置正确</li>
 </ul>
-<p><strong>MySQL配置参数的作用域</strong></p>
-<p>MySQL的配置参数根据作用域的不同可以分为全局参数和会话参数。</p>
+<p><strong>如何进行基准测试</strong></p>
+<ol>
+<li><p>对整个系统进行基准测试</p>
+<p>从系统入口进行测试（如网站web前端、手机app前端）</p>
+<p>优点：</p>
+<p>能够测试整个系统的性能，包括web服务器、程序代码、网络、缓存、数据库等</p>
+<p>能反应出系统中各个组建接口间的性能问题，体现真实性能状况</p>
+<p>缺点：测试设计复杂、消耗时间长</p>
+</li>
+<li><p>单独对组件进行测试，对mysql进行基准测试</p>
+<p>优点：测试设计简单，所需好费时间短</p>
+<p>缺点：无法全面了解整个系统的性能基线</p>
+</li>
+</ol>
+<p><strong>MySQL基准测试的常见指标</strong></p>
 <ul>
-<li>全局参数</li>
+<li>单位时间内所处理的事务数（TPS）</li>
+<li>单位时间内所处理的查询数（QPS）</li>
+<li>响应时间：平均响应时间、最小响应时间、最大响应时间、各时间所占百分比</li>
+<li>并发量：同时处理的查询请求的数量（并发量不等于连接数）这里的并发量是指正在工作中的并发的操作数或者同时工作的数量，而不是有多少连接的线程。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 命令要在mysql客户端下执行</span><br><span class="line">set global 参数名=参数值;</span><br><span class="line">set @@global.参数名 := 参数值;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>会话参数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set [session] 参数名=参数值;</span><br><span class="line">set @@session.参数名 := 参数值;</span><br></pre></td></tr></table></figure>
-<p><code>session</code>没有指定的情况下，会使用同名的全局配置。</p>
-<blockquote>
-<p>全局配置完之后，需要退出重新登录才能生效。</p>
-</blockquote>
-<h6 id="内存配置相关参数"><a href="#内存配置相关参数" class="headerlink" title="内存配置相关参数"></a>内存配置相关参数</h6><p><strong>内存配置相关参数</strong></p>
-<ul>
-<li><p>确定可以使用的内存的上限</p>
-<p>不要超过物理内存</p>
+<h6 id="基准测试"><a href="#基准测试" class="headerlink" title="基准测试"></a>基准测试</h6><p><strong>基准测试步骤</strong></p>
+<ol>
+<li>计划和设计基准测试（目标、数据、时间、次数）<br>对整个系统还是某一组件<br>使用什么样的数据（真数据，假数据）<br>准备基准测试及数据收集脚本<br>CPU使用率、IO、网络流量、状态与计数器信息等</li>
+<li>运行基准测试</li>
+</ol>
+<p>​    </p>
+<p><strong>基准测试中容易忽略的问题</strong></p>
+<ol>
+<li>使用生产环境数据时只是用了部分数据（推荐使用真实数据库完全备份来测试）</li>
+<li>在多用户的场景中，只做单用户的测试（推荐使用多线程的并发测试）</li>
+<li>在单服务器上测试分布式应用</li>
+<li>反复执行同一查询（容易缓存命中，无法反应真实查询性能）</li>
+</ol>
+<p><strong>MySQL基准测试工具与软件</strong></p>
+<ol>
+<li><p>mysqlslap（MySQL自带）<br> 特点：可以模拟服务器负载，并输出相关统计信息<br> 可以指定也可以自动生成查询语句<br> 常用参数说明:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">--auto-generate-sql # 由系统自动生成SQL脚本进行测试</span><br><span class="line">--auto-generate-sql-add-autoincrement # 在生成的表中增加自增ID（innodb推荐）</span><br><span class="line">--auto-generate-sql-load-type # 指定测试中使用的查询类型</span><br><span class="line">--auto-generate-sql-write-number # 指定初始化数据时生成的数据量</span><br><span class="line">--concurrency # 指定并发线程的数量</span><br><span class="line">--engine # 指定要测试表的存储引擎，可以用逗号分割多个存储引擎（与--no-drop冲突，不能同时指定）</span><br><span class="line">--no-drop # 指定不清理测试数据 </span><br><span class="line">--iterations # 指定测试运行的次数（与--no-drop冲突，不能同时指定）</span><br><span class="line">--number-of-queries # 指定每个线程执行的查询数量</span><br><span class="line">--debug-info # 指定输出额外的内存及CPU统计信息</span><br><span class="line">--number-int-cols # 指定测试表中包含的INT类型列的数量</span><br><span class="line">--number-char-cols # 指定测试表中包含的varchar类型的数量</span><br><span class="line">--create-schema # 指定用于执行测试的数据库的名字</span><br><span class="line">--query # 用于指定自定义的SQL的脚本</span><br><span class="line">--only-print # 不运行测试脚本，只把生成的脚本打印出来</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># mysqlslap --concurrency=1,50,100,200 --iterations=3 --number-int-cols=5 --number-char-cols=5 --auto-generate-sql --auto-generate-sql-add-autoincrement --engine=myisam,innodb --number-of-queries=10 --create-schema=test -u root -p</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>确定MySQL的每个连接使用的内存</p>
-<p>mysql对一些缓存对每个连接的内存是单独分配的，所以使用的连接数越大，占用的内存也就会越多</p>
-<p><code>sort_buffer_size</code>: 排序缓存区的尺寸，这个参数定义了mysql每个线程使用的排序缓存区的大小，mysql不是在连接初始化的时候后就给每个缓冲区分配内存，而是在有查询或排序操作时候，才会给每个缓冲区分配内存，然而在mysql出现查询排序的时候，mysql会立即分配这个参数设置的大小内存给缓冲区，而不管该排序是否需要这么大的内存，有的时候会把这个值设置很大，增加查询效率，比如100M，如果有100个连接同时进行排序，那么mysql，就会分配出10g左右的内存，所以很容易造成服务器内存溢出，所以配置这个的时候要注意。</p>
-<p><code>join_buffer_size</code>: 连接缓冲区的尺寸，这个参数定义了mysql每个线程使用的连接缓冲区的大小，如果一个查询中关联了多张表，就会为每个关联 分配一个连接缓冲，所每以个查询可能会有多个连接缓冲，所以这个参数也不能设置太大</p>
-<p><code>read_buffer_size</code>: 当对myisam表进行全表扫描时，所分配的读缓冲区的大小， mysql只会在有查询需要的时候才会对该缓存分配内存，同样也会一次性分配该参数的值，这个参数值是4k的倍数</p>
-<p><code>read_rnd_buffer_size</code>: 索引缓冲区的大小，mysql也是只有在查询的时候，才会给该缓冲区分配内存，会分配内存需要的大小，不会分配指定的的大小</p>
-<p>上面四个参数都是对每个线程生效的，如果有100个连接将会由100倍的内存被分配出去。</p>
+</ol>
+<ol start="2">
+<li><p>sysbench</p>
+<p>对io cpu 内存  都可以测试</p>
+<p>下载安装：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># wget https://github.com/akopytov/sysbench/archive/0.5.zip</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># unzip 0.5.zip</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou sysbench-<span class="number">0.5</span>]<span class="comment"># sh autogen.sh</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou sysbench-<span class="number">0.5</span>]<span class="comment"># ./configure --with-mysql-includes=/usr/local/mysql/include/ \ --with-mysql- lib=/usr/local/mysql/lib/</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou sysbench-<span class="number">0.5</span>]<span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
+<p> 常用参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">--test # 用于指定所要执行的测试类型，支持一下参数</span><br><span class="line">Fileio # 文件系统I/O性能测试</span><br><span class="line">cpu # cpu性能测试</span><br><span class="line">memory # 内存性能测试</span><br><span class="line">Oltp # 测试要指定具体的lua脚本Lua脚本位于sysbench-0.5/sysbench/tests/db</span><br><span class="line">--mysql-db # 用于指定执行基准测试的数据库名</span><br><span class="line">--mysql-table-engine # 用于指定所使用的存储引擎</span><br><span class="line">--oltp-tables-count # 执行测试的表的数量</span><br><span class="line">--oltp-table-size # 指定每个表中数据的行数</span><br><span class="line">--num-threads # 指定测试的并发线程数量</span><br><span class="line">--max-time # 指定最大的测试时间</span><br><span class="line">--report-interval # 指定间隔多长时间输出一次统计信息</span><br><span class="line">--mysql-user # 指定执行测试的mysql用户</span><br><span class="line">--mysql-password # 指定执行测试的mysql用户密码</span><br><span class="line">prepare # 用于准备测试数据</span><br><span class="line">run # 用于实际进行测试</span><br><span class="line">cleanup # 用于清理测试数据</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>确定需要为操作系统保留多少内存</p>
-</li>
-<li><p>如何为缓存池分配内存</p>
-<p><code>Innodb_buffer_pool_size</code>: 定义了Innodb所使用的缓冲池的大小，这个参数对Innodb存储引擎性能是影响很大的，Innodb不仅要缓存索引还要缓存数据。Innodb缓存池还帮助写入，这个帮助数据一起顺序的写入到磁盘，性能影响最大，所以必须分配足够的内存。公式=总内存-（每个线程所需要的内存*连接数）-系统保留内存。官方手册中，参数配置值要是服务器内存75%以上</p>
-<p><code>key_buffer_size</code>： 这个缓冲池存储引擎用于myisam，只会缓冲索引，数据则是依赖操作系统的缓存</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 我们使用下面的查询 可以知道 myisam 表的索引占得缓存池的大小</span><br><span class="line">select sum(index_length) from information_schema.tables where engine=&apos;myisam&apos;;</span><br></pre></td></tr></table></figure>
-<p>即使我们的数据表全是<code>Innodb</code>引擎，上面的这个参数我们还是有必要设置的，因为<code>MySQL</code>的内部表还是使用的是<code>myisam</code>存储引擎。</p>
-</li>
-</ul>
-<h6 id="IO相关配置参数"><a href="#IO相关配置参数" class="headerlink" title="IO相关配置参数"></a>IO相关配置参数</h6><p>​    这部分参数决定了mysql如何同步缓存池中的数据到磁盘上，已修改数据持久化的保存，这些操作对性能的影响非常的大 ，如果需要修改的数据立刻写入到磁盘上，那是很昂贵的操作。</p>
-<p>I/O配置和存储引擎是相关的。</p>
-<p><strong>Innodb I/O相关配置</strong></p>
-<p><code>Innodb_log_file_size</code> 控制了单个事务日志的大小</p>
-<p><code>Innodb_log_file_in_group</code> 控制了事务日志文件的个数，</p>
-<p> 事务日志文件总大小=<code>Innodb_log_files_in_group</code> * <code>Innodb_log_file_size</code></p>
-<p>事务日志文件是循环使用的。</p>
-<p>事务日志不是每次提交直接写入到日志文件中的，而是先写入到事务日志的缓冲区，然后再刷新到磁盘中。</p>
-<p><code>Innodb_log_buffer_size</code> 控制日志缓冲区的大小。（32M-128M）</p>
-<p><code>Innodb_flush_log_at_trx_commit</code>  刷新事务日志的频率</p>
-<p>这个参数有三个选择 ：</p>
-<p>0：每秒进行一次log写入到cache 并flush log到磁盘。在事务提交时候不会做任何事情，在MySQL崩溃的时候回至少丢失一秒钟的事务。</p>
-<p>1：默认值，在每次事务提交执行log写入cache，并flush log到磁盘。</p>
-<p>2：建议值，每次事务提交，执行log数据写入到cache，每秒执行一次flush log到磁盘。与 0 值比较，在MySQL崩溃的时候不会丢失事务。</p>
-<p><code>Innodb_flush_method=O_DIRECT</code></p>
-<p><code>Innodb_file_per_table=1</code> 为每张表建一个单独的表空间</p>
-<p><code>Innodb_doublewrite = 1</code> 双写缓存</p>
-<p><strong>MyISAM I/O相关配置</strong></p>
-<p><code>delay_key_write</code></p>
-<p><code>OFF</code>： 每次写操作后刷新键缓冲中的脏块到磁盘</p>
-<p><code>ON</code>：只对建表时指定了<code>delay_key_write</code>选项的表使用延迟刷新</p>
-<p><code>ALL</code>：对所有MyISAM表都使用延迟键写入</p>
-<h6 id="安全配置参数"><a href="#安全配置参数" class="headerlink" title="安全配置参数"></a>安全配置参数</h6><p><code>expire_logs_days</code>        //指定自动清理binlog的天数</p>
-<p><code>max_allowed_packet</code>    //控制MySQL可以接收的包的大小（32M）</p>
-<p><code>skip_name_resolve</code>       //禁用DNS查找</p>
-<p><code>sysdate_is_now</code>            //确保sysdate()返回确定性日期</p>
-<p><code>read_only</code>     //禁止非super权限的用户写入权限（建议从库中使用）</p>
-<p><code>skip_slave_start</code>     //禁用Slave自动恢复（建议从库中使用）</p>
-<p><code>sql_mode</code>            //设置MySQL所使用的SQL模式</p>
-<p><code>strict_trans_tables</code></p>
-<p><code>no_engine_subtitution</code></p>
-<p><code>no_zero_date</code></p>
-<p><code>no_zero_in_date</code></p>
-<p><code>only_full_group_by</code></p>
-<h6 id="其他配置参数"><a href="#其他配置参数" class="headerlink" title="其他配置参数"></a>其他配置参数</h6><p><code>sync_binlog</code>   //控制MySQL如何向磁盘刷新binlog（主DB 建议为1）</p>
-<p><code>tmp_table_size</code> 和 <code>max_heap_table_size</code>  //控制内存临时表大小</p>
-<p><code>max_connections</code>    //允许的最大链接数</p>
+</ol>
 
       
     </div>
@@ -603,8 +584,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/13/Supervisor配置环境变量的问题/" rel="next" title="Supervisor配置环境变量的问题">
-                <i class="fa fa-chevron-left"></i> Supervisor配置环境变量的问题
+              <a href="/2018/01/15/MySQL数据库架构-什么影响了MySQL性能-最终篇/" rel="next" title="MySQL数据库架构--什么影响了MySQL性能-最终篇">
+                <i class="fa fa-chevron-left"></i> MySQL数据库架构--什么影响了MySQL性能-最终篇
               </a>
             
           </div>
@@ -613,8 +594,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/21/Python使用小技巧/" rel="prev" title="Python使用小技巧">
-                Python使用小技巧 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/28/MySQL数据库架构-数据库索引优化/" rel="prev" title="MySQL数据库架构--数据库索引优化">
+                MySQL数据库架构--数据库索引优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -699,7 +680,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">115</span>
+                  <span class="site-state-item-count">117</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -777,7 +758,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#MySQL服务器参数介绍"><span class="nav-number">1.</span> <span class="nav-text">MySQL服务器参数介绍</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#内存配置相关参数"><span class="nav-number">2.</span> <span class="nav-text">内存配置相关参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#IO相关配置参数"><span class="nav-number">3.</span> <span class="nav-text">IO相关配置参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安全配置参数"><span class="nav-number">4.</span> <span class="nav-text">安全配置参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其他配置参数"><span class="nav-number">5.</span> <span class="nav-text">其他配置参数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是基准测试？"><span class="nav-number">1.</span> <span class="nav-text">什么是基准测试？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#基准测试"><span class="nav-number">2.</span> <span class="nav-text">基准测试</span></a></li></ol></div>
             
 
           </div>
