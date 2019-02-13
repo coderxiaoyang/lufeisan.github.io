@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fzngxqty9cj31p20mydm4.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fznimvg9g9j30v007k78l.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fzninwzwlrj310008279q.jpg">
-<meta property="og:updated_time" content="2019-02-13T03:45:34.134Z">
+<meta property="og:updated_time" content="2019-02-13T03:47:37.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL数据库架构--数据库索引优化">
 <meta name="twitter:description" content="索引的作用是告诉存储引擎快速找到我们需要的数据 两个极端：除了主键没有任何索引，给每一个列都建立一个索引。太多太少的索引都会对数据库的性能带来不好的影响。只有在正确的列上建立正确的索引，才能增强数据库的查询能力。 索引是在mysql存储引擎层实现的，而不是在mysql服务器层实现的，不同的存储引擎的索引方式是不同的。 Btree索引和Hash索引B-tree索引 B-tree索引是比较常见的，通常">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,156 字
+                  5,058 字
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  23 分钟
+                  22 分钟
                 </span>
               
             </div>
@@ -473,9 +473,76 @@
 <p><strong>B-tree索引在什么情况下可以被使用到</strong></p>
 <ul>
 <li><p>全值匹配的查询</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 匹配最左前缀的查询</span><br><span class="line"></span><br><span class="line">  假设我们建立了一个由`order_sn`和`order_date`组成的联合索引，如果还是进行上面的查询，是能够用到联合索引的。也就是说，只要联合索引的第一列符合查询条件则这个联合索引是能够被用到的。如果只是查询`order_date`则联合索引是不会被用到的。</span><br><span class="line"></span><br><span class="line">* 匹配列前缀查询</span><br><span class="line"></span><br><span class="line">  `order_sn like &apos;098%&apos; `</span><br><span class="line"></span><br><span class="line">  匹配列前缀是指匹配某一列的开头部分（这个查询也会用到上面说的联合查询）</span><br><span class="line"></span><br><span class="line">* 匹配范围值的查询</span><br><span class="line"></span><br><span class="line">  B-tree索引更适合的是范围查找</span><br><span class="line"></span><br><span class="line">  `order_sn &gt; &apos;123&apos; and order_sn &lt; &apos;321&apos;`</span><br><span class="line"></span><br><span class="line">* 精确匹配左前列并范围匹配另一列</span><br><span class="line"></span><br><span class="line">  还是上面的联合索引，可以是精确查找`order_sn`然后是范围查找`order_date`</span><br><span class="line"></span><br><span class="line">* 只访问索引的查询</span><br><span class="line"></span><br><span class="line">  查询只访问索引，不访问数据行</span><br><span class="line"></span><br><span class="line">* 排序类</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**B-tree索引的使用限制**</span><br><span class="line"></span><br><span class="line">* 如果不是按照索引最左列开始查找，则无法使用索引</span><br><span class="line"></span><br><span class="line">  还是上面说的联合索引，当我们只查询`order_date`的时候则是无法使用联合索引的</span><br><span class="line"></span><br><span class="line">* 使用索引时不能跳过索引中的列</span><br><span class="line"></span><br><span class="line">  这个同样是左边列不能少，假设我们对`order_date`、`order_name`、`order_phone`这三列建了联合索引，假设我们只搜索`order_date`、`order_phone`是不能使用这个联合索引的。只能通过`order_date`进行过滤查询。</span><br><span class="line"></span><br><span class="line">* Not in 和 &lt; &gt; 操作无法使用索引</span><br><span class="line"></span><br><span class="line">* 如果查询中有某个列的范围查询，则右边所有列都无法使用索引</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**Hash索引**</span><br><span class="line"></span><br><span class="line">Hash索引的特点：</span><br><span class="line"></span><br><span class="line">* hash索引是基于hash表实现的，hash索引只有查询条件精确匹配hash索引中的所有列时，才能够使用到hash索引。也就是说hash索引只能用到等值查询中。如果我们想使用范围查询和模糊查询就不能使用hash索引了。</span><br><span class="line"></span><br><span class="line">* 对于hash索引中的所有列，存储引擎都会为每一行计算一个hash码，hash索引中存储的就是hash码，hash表还保存了每个hash码对应数据的指针</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">Hash索引的限制:</span><br><span class="line"></span><br><span class="line">* Hash索引必须进行二次查找</span><br><span class="line"></span><br><span class="line">  Hash索引本身只存储了Hash码，使用Hash索引查询必须进行两次查询。因为Hash索引只是键值和Hash码以及对应行的指针，索引并没有保存值。因此必选先找到行，然后再读取值。</span><br><span class="line"></span><br><span class="line">* Hash索引无法用于排序（保存的是hash值）</span><br><span class="line"></span><br><span class="line">* hash索引不支持部分索引查找也不支持范围查找</span><br><span class="line">* Hash索引中Hash码的计算可能存在Hash冲突（不建议在性别字段使用）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**为什么需要索引优化？**</span><br><span class="line"></span><br><span class="line">在学习具体的索引优化前我们必须明确为什么需要索引优化</span><br><span class="line"></span><br><span class="line">使用索引能够使我们快速定位到数据，但是这不是索引的唯一作用。</span><br><span class="line"></span><br><span class="line">索引大大减少了存储引擎需要扫描的数据量，索引文件大小远小于数据文件大小，innodb 默认一页是16k，一页可以存储更多</span><br><span class="line"></span><br><span class="line">索引可以帮助我们进行排序以避免使用临时表</span><br><span class="line"></span><br><span class="line">索引可以把随机I/O变为顺序I/O，更加好的发挥磁盘性能</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**索引是不是越多越好？**</span><br><span class="line"></span><br><span class="line">索引会带来一定的损耗：</span><br><span class="line"></span><br><span class="line">* 索引会增加写操作的成本</span><br><span class="line"></span><br><span class="line">  更新数据也要更新维护的索引</span><br><span class="line"></span><br><span class="line">* 太多的索引会增加查询优化器的选择时间（当一个查询有多个索引的时候，就会增加查询优化器分析时间），只有适当的表建立适当的索引，才是正确的做法。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">###### 安装实例数据库</span><br><span class="line"></span><br><span class="line">```powershell</span><br><span class="line">[root@hongshaorou ~]# wget http://downloads.mysql.com/docs/sakila-db.tar.gz</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# tar -zxvf sakila-db.tar.gz</span><br><span class="line">sakila-db/</span><br><span class="line">sakila-db/sakila-data.sql</span><br><span class="line">sakila-db/sakila-schema.sql</span><br><span class="line">sakila-db/sakila.mwb</span><br><span class="line">[root@hongshaorou ~]# mysql -uroot -p &lt; sakila-db/sakila-schema.sql</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# mysql -uroot -p &lt; sakila-db/sakila-data.sql</span><br></pre></td></tr></table></figure>
+<p><code>order_sn = &#39;0987656789&#39;</code></p>
+</li>
+<li><p>匹配最左前缀的查询</p>
+<p>假设我们建立了一个由<code>order_sn</code>和<code>order_date</code>组成的联合索引，如果还是进行上面的查询，是能够用到联合索引的。也就是说，只要联合索引的第一列符合查询条件则这个联合索引是能够被用到的。如果只是查询<code>order_date</code>则联合索引是不会被用到的。</p>
+</li>
+<li><p>匹配列前缀查询</p>
+<p><code>order_sn like &#39;098%&#39;</code></p>
+<p>匹配列前缀是指匹配某一列的开头部分（这个查询也会用到上面说的联合查询）</p>
+</li>
+<li><p>匹配范围值的查询</p>
+<p>B-tree索引更适合的是范围查找</p>
+<p><code>order_sn &gt; &#39;123&#39; and order_sn &lt; &#39;321&#39;</code></p>
+</li>
+<li><p>精确匹配左前列并范围匹配另一列</p>
+<p>还是上面的联合索引，可以是精确查找<code>order_sn</code>然后是范围查找<code>order_date</code></p>
+</li>
+<li><p>只访问索引的查询</p>
+<p>查询只访问索引，不访问数据行</p>
+</li>
+<li><p>排序类</p>
 </li>
 </ul>
+<p><strong>B-tree索引的使用限制</strong></p>
+<ul>
+<li><p>如果不是按照索引最左列开始查找，则无法使用索引</p>
+<p>还是上面说的联合索引，当我们只查询<code>order_date</code>的时候则是无法使用联合索引的</p>
+</li>
+<li><p>使用索引时不能跳过索引中的列</p>
+<p>这个同样是左边列不能少，假设我们对<code>order_date</code>、<code>order_name</code>、<code>order_phone</code>这三列建了联合索引，假设我们只搜索<code>order_date</code>、<code>order_phone</code>是不能使用这个联合索引的。只能通过<code>order_date</code>进行过滤查询。</p>
+</li>
+<li><p>Not in 和 &lt; &gt; 操作无法使用索引</p>
+</li>
+<li><p>如果查询中有某个列的范围查询，则右边所有列都无法使用索引</p>
+</li>
+</ul>
+<p><strong>Hash索引</strong></p>
+<p>Hash索引的特点：</p>
+<ul>
+<li><p>hash索引是基于hash表实现的，hash索引只有查询条件精确匹配hash索引中的所有列时，才能够使用到hash索引。也就是说hash索引只能用到等值查询中。如果我们想使用范围查询和模糊查询就不能使用hash索引了。</p>
+</li>
+<li><p>对于hash索引中的所有列，存储引擎都会为每一行计算一个hash码，hash索引中存储的就是hash码，hash表还保存了每个hash码对应数据的指针</p>
+</li>
+</ul>
+<p>Hash索引的限制:</p>
+<ul>
+<li><p>Hash索引必须进行二次查找</p>
+<p>Hash索引本身只存储了Hash码，使用Hash索引查询必须进行两次查询。因为Hash索引只是键值和Hash码以及对应行的指针，索引并没有保存值。因此必选先找到行，然后再读取值。</p>
+</li>
+<li><p>Hash索引无法用于排序（保存的是hash值）</p>
+</li>
+<li><p>hash索引不支持部分索引查找也不支持范围查找</p>
+</li>
+<li>Hash索引中Hash码的计算可能存在Hash冲突（不建议在性别字段使用）</li>
+</ul>
+<p><strong>为什么需要索引优化？</strong></p>
+<p>在学习具体的索引优化前我们必须明确为什么需要索引优化</p>
+<p>使用索引能够使我们快速定位到数据，但是这不是索引的唯一作用。</p>
+<p>索引大大减少了存储引擎需要扫描的数据量，索引文件大小远小于数据文件大小，innodb 默认一页是16k，一页可以存储更多</p>
+<p>索引可以帮助我们进行排序以避免使用临时表</p>
+<p>索引可以把随机I/O变为顺序I/O，更加好的发挥磁盘性能</p>
+<p><strong>索引是不是越多越好？</strong></p>
+<p>索引会带来一定的损耗：</p>
+<ul>
+<li><p>索引会增加写操作的成本</p>
+<p>更新数据也要更新维护的索引</p>
+</li>
+<li><p>太多的索引会增加查询优化器的选择时间（当一个查询有多个索引的时候，就会增加查询优化器分析时间），只有适当的表建立适当的索引，才是正确的做法。</p>
+</li>
+</ul>
+<h6 id="安装实例数据库"><a href="#安装实例数据库" class="headerlink" title="安装实例数据库"></a>安装实例数据库</h6><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># wget http://downloads.mysql.com/docs/sakila-db.tar.gz</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># tar -zxvf sakila-db.tar.gz</span></span><br><span class="line">sakila-db/</span><br><span class="line">sakila-db/sakila-data.sql</span><br><span class="line">sakila-db/sakila-schema.sql</span><br><span class="line">sakila-db/sakila.mwb</span><br><span class="line">[root@hongshaorou ~]<span class="comment"># mysql -uroot -p &lt; sakila-db/sakila-schema.sql</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># mysql -uroot -p &lt; sakila-db/sakila-data.sql</span></span><br></pre></td></tr></table></figure>
 <h6 id="索引优化策略"><a href="#索引优化策略" class="headerlink" title="索引优化策略"></a>索引优化策略</h6><p><strong>策略一：索引列上不能使用表达式或函数</strong></p>
 <p>如下面的这个查询</p>
 <p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzmg8cnvhtj312607k0wp.jpg" alt="image-20190128175520575"></p>
@@ -853,7 +920,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#Btree索引和Hash索引"><span class="nav-number">1.</span> <span class="nav-text">Btree索引和Hash索引</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#索引优化策略"><span class="nav-number">2.</span> <span class="nav-text">索引优化策略</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用索引来优化查询"><span class="nav-number">3.</span> <span class="nav-text">使用索引来优化查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用索引来优化锁"><span class="nav-number">4.</span> <span class="nav-text">使用索引来优化锁</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#Btree索引和Hash索引"><span class="nav-number">1.</span> <span class="nav-text">Btree索引和Hash索引</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#安装实例数据库"><span class="nav-number">2.</span> <span class="nav-text">安装实例数据库</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#索引优化策略"><span class="nav-number">3.</span> <span class="nav-text">索引优化策略</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用索引来优化查询"><span class="nav-number">4.</span> <span class="nav-text">使用索引来优化查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用索引来优化锁"><span class="nav-number">5.</span> <span class="nav-text">使用索引来优化锁</span></a></li></ol></div>
             
 
           </div>
