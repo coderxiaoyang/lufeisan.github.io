@@ -90,7 +90,7 @@
 <meta property="og:description" content="这篇文章我们会了解到Python的序列协议是什么，以及通过序列协议使类或者实例转变为序列。 Python中的内置序列分类我们按照两个维度来区分序列 第一个维度是按照序列存贮的数据类型，分为容器序列和扁平序列 12容器序列list, tuple, deque 12扁平序列str, bytes, bytearray, array.array 容器序列里面可以放任意类型的数据。扁平序列的数据类型一致。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fsao4ht1cxj31gs0wwwmx.jpg">
-<meta property="og:updated_time" content="2019-01-08T02:45:32.445Z">
+<meta property="og:updated_time" content="2019-03-13T09:18:05.740Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中自定义序列类">
 <meta name="twitter:description" content="这篇文章我们会了解到Python的序列协议是什么，以及通过序列协议使类或者实例转变为序列。 Python中的内置序列分类我们按照两个维度来区分序列 第一个维度是按照序列存贮的数据类型，分为容器序列和扁平序列 12容器序列list, tuple, deque 12扁平序列str, bytes, bytearray, array.array 容器序列里面可以放任意类型的数据。扁平序列的数据类型一致。">
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,178 字
+                  2,157 字
                 </span>
               
 
@@ -501,10 +501,10 @@
 <p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fsao4ht1cxj31gs0wwwmx.jpg" alt="image-20180614140012534"></p>
 <p>其中的<code>insort</code>为插入数据是<code>insort_right</code>的缩写，<code>bisect</code>为查询插入位置是<code>bisect_right</code>的缩写。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">11</span>]: <span class="keyword">import</span> bisect</span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: inter_list = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们使用insort插入数据 排序查找规则是二分法</span></span><br><span class="line">In [<span class="number">13</span>]: bisect.insort(inter_list, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: bisect.insort(inter_list, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: bisect.insort(inter_list, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: bisect.insort(inter_list, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: bisect.insort(inter_list, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: inter_list</span><br><span class="line">Out[<span class="number">18</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们使用bisect查找应该插入的位置</span></span><br><span class="line"><span class="comment"># bisect_right表示在查找到重复值的右侧插入</span></span><br><span class="line">In [<span class="number">19</span>]: bisect.bisect(inter_list, <span class="number">3</span>)</span><br><span class="line">Out[<span class="number">19</span>]: <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># bisect_left表示在查找到重复值的左侧插入</span></span><br><span class="line">In [<span class="number">20</span>]: bisect.bisect_left(inter_list, <span class="number">3</span>)</span><br><span class="line">Out[<span class="number">20</span>]: <span class="number">2</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 对应的插入</span></span><br><span class="line">In [<span class="number">21</span>]: bisect.insort(inter_list, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">22</span>]: inter_list</span><br><span class="line">Out[<span class="number">22</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">23</span>]: bisect.insort_left(inter_list, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">24</span>]: inter_list</span><br><span class="line">Out[<span class="number">24</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-<p>看一篇bisect的妙用文章：<a><a href="https://blog.xiaoquankong.ai/Python-bisect%E6%A8%A1%E5%9D%97%E7%9A%84%E5%A6%99%E7%94%A8/" target="_blank" rel="noopener">https://blog.xiaoquankong.ai/Python-bisect%E6%A8%A1%E5%9D%97%E7%9A%84%E5%A6%99%E7%94%A8/</a></a></p>
+<p>看一篇bisect的妙用文章：<a href="https://blog.xiaoquankong.ai/Python-bisect%E6%A8%A1%E5%9D%97%E7%9A%84%E5%A6%99%E7%94%A8/" target="_blank" rel="noopener">Python-bisect模块的妙用</a></p>
 <h4 id="什么时候不该使用列表"><a href="#什么时候不该使用列表" class="headerlink" title="什么时候不该使用列表"></a>什么时候不该使用列表</h4><p>有时对于使用list对性能有很大影响或者，我们可以考虑使用其他序列如array, deque。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> array</span><br><span class="line"></span><br><span class="line"><span class="comment"># array和list的一个重要区别， array只能存放指定的数据类型</span></span><br><span class="line"><span class="comment"># i 表示整型</span></span><br><span class="line">my_array = array.array(<span class="string">"i"</span>)</span><br><span class="line">my_array.append(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p>array支持的数据类型查看：<a><a href="https://docs.python.org/3/library/array.html" target="_blank" rel="noopener">https://docs.python.org/3/library/array.html</a></a></p>
+<p>array支持的数据类型查看 <a href="https://docs.python.org/3/library/array.html" target="_blank" rel="noopener">array</a></p>
 
       
     </div>
@@ -672,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">118</span>
+                  <span class="site-state-item-count">120</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

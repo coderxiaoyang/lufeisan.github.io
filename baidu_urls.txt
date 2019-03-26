@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/01/21/Python使用小技巧/
+https://zhaobugs.com/2019/03/26/Python的堆模块heapq/
