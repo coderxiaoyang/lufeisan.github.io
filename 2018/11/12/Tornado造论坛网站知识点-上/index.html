@@ -89,10 +89,12 @@
 <meta property="og:site_name" content="小码农的笔记">
 <meta property="og:description" content="经过前几天的基础知识储备，下面开始真正的实战学习。实战课程知识点较多，不适合笔记记录。 现仅记录一些关键知识点。  使用WTForms作为参数校验，传递json数据的时候需要使用wtforms_json 参考文档wtforms_json 和直接使用tornado的获取参数函数(例如：message_from = MessageForm(self.request.arguments))不同，直接使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-17T15:36:28.229Z">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g1jtm8cdhaj31b60ione7.jpg">
+<meta property="og:updated_time" content="2019-04-01T06:18:26.611Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado造论坛网站知识点-上">
 <meta name="twitter:description" content="经过前几天的基础知识储备，下面开始真正的实战学习。实战课程知识点较多，不适合笔记记录。 现仅记录一些关键知识点。  使用WTForms作为参数校验，传递json数据的时候需要使用wtforms_json 参考文档wtforms_json 和直接使用tornado的获取参数函数(例如：message_from = MessageForm(self.request.arguments))不同，直接使用">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g1jtm8cdhaj31b60ione7.jpg">
 
 
 
@@ -412,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  629 字
+                  659 字
                 </span>
               
 
@@ -456,12 +458,16 @@
 <p>参考文档<a href="https://wtforms-json.readthedocs.io/en/latest/" target="_blank" rel="noopener">wtforms_json</a></p>
 <p>和直接使用<code>tornado</code>的获取参数函数(例如：<code>message_from = MessageForm(self.request.arguments)</code>)不同，直接使用<code>json</code>传递数据到<code>form</code>中将会出现遍历数据错误(如字符串只取得第一个字符)。</p>
 <p>使用规则：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在项目初始化的时候 初始化组件</span></span><br><span class="line">wtforms_json.init()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在使用 wtforms 的地方 修改数据获得方式</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 旧的获取数据方式</span></span><br><span class="line">sms_form = SmsCodeForm(params)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新的数据获取方式</span></span><br><span class="line">sms_form = SmsCodeForm.from_json(params)</span><br></pre></td></tr></table></figure>
-<p>原理：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1jtm8cdhaj31b60ione7.jpg" alt="ongimage-20190329180314736"></p>
+<p>使用非json方式的时候 我们获得的参数是一个列表形式，不是字符串形式。</p>
+</li>
+</ol>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在项目初始化的时候 初始化组件</span></span><br><span class="line">wtforms_json.init()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在使用 wtforms 的地方 修改数据获得方式</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 旧的获取数据方式</span></span><br><span class="line">sms_form = SmsCodeForm(params)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新的数据获取方式</span></span><br><span class="line">sms_form = SmsCodeForm.from_json(params)</span><br></pre></td></tr></table></figure>
+<p>   原理：</p>
 <blockquote>
 <p>通过猴子补丁将原有的类封装成一个具有<code>from_json</code>方法的新类</p>
 </blockquote>
-</li>
+<ol start="2">
 <li><p>通过<code>peewee</code>的<code>model_to_dict</code>可以将模型直接转为字典</p>
 <p>一般我们在从模型中提取数据返回给前端的时候一个个提取是有点麻烦的。我们可以直接使用<code>peewee</code>提供的<code>model_to_dict</code>将一个模型直接转为字典。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> playhouse.shortcuts <span class="keyword">import</span> model_to_dict</span><br><span class="line"></span><br><span class="line">group_dict = model_to_dict(group)</span><br></pre></td></tr></table></figure>
