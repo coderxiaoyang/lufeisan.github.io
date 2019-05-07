@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fvkmtkiifzj31kw0wwh3n.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn4jxyr5j31kw0zl194.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn8p8vb6j31c40qe10v.jpg">
-<meta property="og:updated_time" content="2018-11-21T02:17:58.712Z">
+<meta property="og:updated_time" content="2019-05-04T01:43:43.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="协程和异步IO-上">
 <meta name="twitter:description" content="终于要学习Python中的重头戏—协程了。💪 学习之前我们先看下现在存在的问题：  CPU的速度远高于IO速度 IO包括网络访问和本地访问，比如requests,urllib等传统的网络库都是同步的IO 网络IO大部分的时间都是出于等待的状态，在等待的时候CPU是空闲的，但是又不能执行其他操作  并发、并行、同步、异步、阻塞、非阻塞这一小节我们就要弄懂上面的这几个名词概念。 什么是并发和并行呢？">
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,180 字
+                  2,192 字
                 </span>
               
 
@@ -498,8 +498,8 @@
 <p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkmcvblrfj31kw0tltkg.jpg" alt="image-20180924143544454"></p>
 <p>从图中我们看出不再阻塞等待，但是需要不断去访问是否准备好数据，这个过程是消耗<code>CPU</code>时间的。</p>
 <p>对于一个操作是非阻塞式I/O来说，当下面代码不依赖上线返回结果而言，是省时的操作，但是，当依赖返回的话，就需要不断轮询去看是否有返回。</p>
-<p>一个小知识点：内核空间和用户空间</p>
-<p>操作系统会将内存分为两块，低地址的为内核空间，高地址的为用户空间。平时我们写的程序都是运行在用户空间上，真正和外界比如进行数据交流的是内核空间，因此我们进行数据请求的过程是必须经过内核空间的，从内核空间拷贝数据到用户空间，同样是耗<code>CPU</code>和时间的操作。</p>
+<p><strong>一个小知识点：内核空间和用户空间</strong></p>
+<p>操作系统会将内存分为两块，低地址的为内核空间，高地址的为用户空间。平时我们写的程序都是运行在用户空间上，真正和外界进行数据交流的是内核空间，因此我们进行数据请求的过程是必须经过内核空间的，从内核空间拷贝数据到用户空间，同样是耗<code>CPU</code>和时间的操作。</p>
 <p>有没有一种机制就是当操作系统已经准备好数据放到内核空间之后，再去通知我们的程序去拷数据呢？</p>
 <p>这种机制就是–I/O复用：</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fvkmtkiifzj31kw0wwh3n.jpg" alt="image-20180924145143527"></p>
@@ -508,12 +508,12 @@
 <p>I/O复用同样存在将内核数据拷贝到用户空间的操作，这个操作是耗时的，怎么解决这个问题呢？</p>
 <p>我们看下信号驱动式I/O:</p>
 <p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn4jxyr5j31kw0zl194.jpg" alt="image-20180924150221575"></p>
-<p>对于驱动式I/O，我们建立一个信号处理程序， 然后操作系统在数据准备好之后，主动发一个信号给我们的信号处理程序，处理程序收到信号之后就会通知应用进程调用<code>recvfrom</code>。</p>
+<p> 对于驱动式I/O，我们建立一个信号处理程序， 然后操作系统在数据准备好之后，主动发一个信号给我们的信号处理程序，处理程序收到信号之后就会通知应用进程调用<code>recvfrom</code>。</p>
 <p>我们最后看下异步I/O：</p>
 <p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvkn8p8vb6j31c40qe10v.jpg" alt="image-20180924150618293"></p>
 <p>我们看到异步I/O是在将数据复制好之后再通知信号处理程序。</p>
 <p>相比较I/O复用，性能提升不是很大。</p>
-<h6 id="什么是select、epoll、poll呢？"><a href="#什么是select、epoll、poll呢？" class="headerlink" title="什么是select、epoll、poll呢？"></a>什么是select、epoll、poll呢？</h6><p>select，poll，epoll都是IO多路复用的机制。I/O多路复用就通过一种机制，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。<strong>但select，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写（就是讲数据由内核空间拷到用户空间），也就是说这个读写过程是阻塞的</strong>，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。</p>
+<h6 id="什么是select、epoll、poll呢？"><a href="#什么是select、epoll、poll呢？" class="headerlink" title="什么是select、epoll、poll呢？"></a>什么是select、epoll、poll呢？</h6><p>select，poll，epoll都是IO多路复用的机制。I/O多路复用就通过一种机制，一个进程（一个线程）可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。<strong>但select，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写（就是讲数据由内核空间拷到用户空间），也就是说这个读写过程是阻塞的</strong>，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。</p>
 <p>关于<code>select</code>：</p>
 <p>​    <code>select</code> 函数监视的文件描述符分3类，分别是<code>writefds</code>、<code>readfds</code>、和<code>exceptfds</code>。调用后<code>select</code>函数会阻塞，直到有描述副就绪（有数据 可读、可写、或者有<code>except</code>），或者超时（<code>timeout</code>指定等待时间，如果立即返回设为<code>null</code>即可），函数返回。当<code>select</code>函数返回后，可以 通过遍历<code>fdset</code>，来找到就绪的描述符。</p>
 <p>​    <code>select</code>目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。<code>select</code>的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。</p>
@@ -525,11 +525,11 @@
 <p>​    pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。同时，pollfd并没有最大数量限制（但是数量过大后性能也是会下降）。 和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符。</p>
 <p>​    从上面看，select和poll都需要在返回后，通过遍历文件描述符来获取已经就绪的<code>socket</code>。事实上，同时连接的大量客户端在一时刻可能只有很少的处于就绪状态，因此随着监视的描述符数量的增长，其效率也会线性下降。</p>
 <p>关于<code>epoll</code>：</p>
-<p>​    epoll是在2.6内核中提出的，是之前的select和poll的增强版本。相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
+<p>​    epoll是在LInux 2.6内核中提出的，是之前的select和poll的增强版本。相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
 <blockquote>
 <p>内部数据结构为红黑树</p>
 </blockquote>
-<p>参考文章：<a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="noopener">https://segmentfault.com/a/1190000003063859</a></p>
+<p>参考文章：<a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="noopener">Linux IO模式及 select、poll、epoll详解</a></p>
 <p>小节结束我们来看一个问题，<code>epoll</code>并不代表一定比<code>select</code>好：</p>
 <p>​    在高并发的情况下，连接活跃度不是很高（是指连接后可能随时关闭，比如浏览网页），<code>epoll</code>比<code>select</code>好。</p>
 <p>​    并发性不高，同时连接很活跃（比如游戏），<code>select</code>比<code>epoll</code>好。</p>
