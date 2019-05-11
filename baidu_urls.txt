@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/03/26/Python的堆模块heapq/
+https://zhaobugs.com/2019/05/11/最漂亮iTerm2-oh-my-zsh配色/
