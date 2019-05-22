@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/05/21/SQLAlchemy中指定想要使用的索引/
+https://zhaobugs.com/2019/05/22/高效的itertools模块/
