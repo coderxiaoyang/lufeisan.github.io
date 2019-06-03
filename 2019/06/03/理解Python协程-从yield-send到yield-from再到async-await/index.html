@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小码农的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Python中的协程大概经历了如下三个阶段：   最初的生成器变形yield/send   引入@asyncio.coroutine和yield from   在最近的Python3.5版本中引入async/await关键字   一：生成器变形yield/send普通函数中如果出现了yield关键字，那么该函数就不再是普通函数，而是一个生成器。 123456789101112In [1]: def">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Python协程:从yield&#x2F;send到yield-from再到async&#x2F;await">
+<meta property="og:url" content="https://zhaobugs.com/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/index.html">
+<meta property="og:site_name" content="小码农的笔记">
+<meta property="og:description" content="Python中的协程大概经历了如下三个阶段：   最初的生成器变形yield/send   引入@asyncio.coroutine和yield from   在最近的Python3.5版本中引入async/await关键字   一：生成器变形yield/send普通函数中如果出现了yield关键字，那么该函数就不再是普通函数，而是一个生成器。 123456789101112In [1]: def">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-03T23:51:06.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解Python协程:从yield&#x2F;send到yield-from再到async&#x2F;await">
+<meta name="twitter:description" content="Python中的协程大概经历了如下三个阶段：   最初的生成器变形yield/send   引入@asyncio.coroutine和yield from   在最近的Python3.5版本中引入async/await关键字   一：生成器变形yield/send普通函数中如果出现了yield关键字，那么该函数就不再是普通函数，而是一个生成器。 123456789101112In [1]: def">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/"/>
+
+
+
+
+
+  <title>理解Python协程:从yield/send到yield-from再到async/await | 小码农的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码农的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码农的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">理解Python协程:从yield/send到yield-from再到async/await</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T22:43:48+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/" class="leancloud_visitors" data-flag-title="理解Python协程:从yield/send到yield-from再到async/await">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,290 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Python中的协程大概经历了如下三个阶段： </p>
+<ol>
+<li><p>最初的生成器变形yield/send </p>
+</li>
+<li><p>引入@asyncio.coroutine和yield from </p>
+</li>
+<li><p>在最近的Python3.5版本中引入async/await关键字</p>
+</li>
+</ol>
+<h4 id="一：生成器变形yield-send"><a href="#一：生成器变形yield-send" class="headerlink" title="一：生成器变形yield/send"></a>一：生成器变形yield/send</h4><p>普通函数中如果出现了yield关键字，那么该函数就不再是普通函数，而是一个生成器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="function"><span class="keyword">def</span> <span class="title">mygen</span><span class="params">(alist)</span>:</span></span><br><span class="line">   ...:     <span class="keyword">while</span> len(alist) &gt; <span class="number">0</span>:</span><br><span class="line">   ...:         c = randint(<span class="number">0</span>, len(alist)<span class="number">-1</span>)</span><br><span class="line">   ...:         <span class="keyword">yield</span> alist.pop(c)</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: a = [<span class="string">"aa"</span>,<span class="string">"bb"</span>,<span class="string">"cc"</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: c=mygen(a)</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: print(c)</span><br><span class="line">&lt;generator object mygen at <span class="number">0x106119360</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>像上面代码中的c就是一个生成器。生成器就是一种迭代器，可以使用<code>for</code>进行迭代。生成器函数最大的特点是可以接受外部传入的一个变量，并根据变量内容计算结果后返回。这一切都是靠生成器内部的<code>send()</code>函数实现的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">5</span>]: <span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     value=<span class="number">0</span></span><br><span class="line">   ...:     <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">   ...:         receive = <span class="keyword">yield</span> value</span><br><span class="line">   ...:         <span class="keyword">if</span> receive==<span class="string">'e'</span>:</span><br><span class="line">   ...:             <span class="keyword">break</span></span><br><span class="line">   ...:         value = <span class="string">f"get: <span class="subst">&#123;receive&#125;</span>"</span></span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: g=gen()</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: g.send(<span class="keyword">None</span>)</span><br><span class="line">Out[<span class="number">7</span>]: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: g.send(<span class="string">'hello'</span>)</span><br><span class="line">Out[<span class="number">8</span>]: <span class="string">'get: hello'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: g.send(<span class="number">123456</span>)</span><br><span class="line">Out[<span class="number">9</span>]: <span class="string">'get: 123456'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: g.send(<span class="string">'e'</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">StopIteration                             Traceback (most recent call last)</span><br><span class="line">&lt;ipython-input<span class="number">-10</span><span class="number">-422</span>bc441ae72&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; 1 g.send('e')</span><br><span class="line"></span><br><span class="line">StopIteration:</span><br></pre></td></tr></table></figure>
+<p>上面生成器函数中最关键也是最易理解错的，就是<code>receive=yield value</code>这句,如果对循环体的执行步骤理解错误，就会失之毫厘，差之千里。<br>其实<code>receive=yield value</code>包含了3个步骤： </p>
+<ol>
+<li>向函数外抛出（返回）value </li>
+<li>暂停(pause)，等待next()或send()恢复 </li>
+<li>赋值receive=MockGetValue() 。 这个MockGetValue()是假想函数，用来接收send()发送进来的值</li>
+</ol>
+<p>执行流程： </p>
+<p>1、通过<code>g.send(None)</code>或者<code>next(g)</code>启动生成器函数，并执行到第一个yield语句结束的位置。</p>
+<p>这里是关键，很多人就是在这里搞糊涂的。运行<code>receive=yield value</code>语句时，我们按照开始说的拆开来看，实际程序只执行了1，2两步，程序返回了value值，并暂停(pause)，并没有执行第3步给receive赋值。因此<code>yield value</code>会输出初始值0。</p>
+<p>这里要特别注意：在启动生成器函数时只能send(None),如果试图输入其它的值都会得到错误提示信息。</p>
+<p>2、通过<code>g.send(&#39;hello&#39;)</code>，会传入hello，从上次暂停的位置继续执行，那么就是运行第3步，赋值给receive。然后计算出value的值，并回到while头部，遇到<code>yield value</code>，程序再次执行了1，2两步，程序返回了value值，并暂停(pause)。此时yield value会输出<code>”get: hello”</code>，并等待send()激活。</p>
+<p>3、通过<code>g.send(123456)</code>，会重复第2步，最后输出结果为<code>”get: 123456″</code>。</p>
+<p>4、当我们<code>g.send(‘e’)</code>时，程序会执行break然后推出循环，最后整个函数执行完毕，所以会得到StopIteration异常。</p>
+<p>从上面可以看出， 在第一次send(None)启动生成器（执行1–&gt;2，通常第一次返回的值没有什么用）之后，对于外部的每一次send()，生成器的实际在循环中的运行顺序是3–&gt;1–&gt;2，也就是先获取值，然后dosomething，然后返回一个值，再暂停等待。</p>
+<h4 id="二：yield-from"><a href="#二：yield-from" class="headerlink" title="二：yield from"></a>二：yield from</h4><p>看一段代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">11</span>]: <span class="function"><span class="keyword">def</span> <span class="title">g1</span><span class="params">()</span>:</span></span><br><span class="line">    ...:      <span class="keyword">yield</span>  range(<span class="number">5</span>)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: <span class="function"><span class="keyword">def</span> <span class="title">g2</span><span class="params">()</span>:</span></span><br><span class="line">    ...:      <span class="keyword">yield</span>  <span class="keyword">from</span> range(<span class="number">5</span>)</span><br><span class="line">    ...:      it1 = g1()</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: it2 = g2()</span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: it1 = g1()</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: <span class="keyword">for</span> x <span class="keyword">in</span> it1:</span><br><span class="line">    ...:     print(x)</span><br><span class="line">    ...:</span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: <span class="keyword">for</span> x <span class="keyword">in</span> it2:</span><br><span class="line">    ...:     print(x)</span><br><span class="line">    ...:</span><br><span class="line">    ...:</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>这说明<code>yield</code>就是将<code>range</code>这个可迭代对象直接返回了。<br>而<code>yield from</code>解析了<code>range</code>对象，将其中每一个<code>item</code>返回了。<br><code>yield from iterable</code>本质上等于<code>for item in iterable: yield item</code>的缩写版 </p>
+<p>来看一下例子，假设我们已经编写好一个斐波那契数列函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">19</span>]: <span class="function"><span class="keyword">def</span> <span class="title">fab</span><span class="params">(max)</span>:</span></span><br><span class="line">    ...:      n,a,b = <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span></span><br><span class="line">    ...:      <span class="keyword">while</span> n &lt; max:</span><br><span class="line">    ...:           <span class="keyword">yield</span> b</span><br><span class="line">    ...:           <span class="comment"># print b</span></span><br><span class="line">    ...:           a, b = b, a + b</span><br><span class="line">    ...:           n = n + <span class="number">1</span></span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">20</span>]: f = fab(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">21</span>]: f</span><br><span class="line">Out[<span class="number">21</span>]: &lt;generator object fab at <span class="number">0x106119728</span>&gt;</span><br></pre></td></tr></table></figure>
+<p><code>fab</code>不是一个普通函数，而是一个生成器。因此<code>fab(5)</code>并没有执行函数，而是返回一个生成器对象(生成器一定是迭代器<code>iterator</code>，迭代器一定是可迭代对象<code>iterable</code>)<br>现在我们来看一下，假设要在<code>fab()</code>的基础上实现一个函数，调用起始都要记录日志</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">23</span>]: <span class="function"><span class="keyword">def</span> <span class="title">f_wrapper</span><span class="params">(fun_iterable)</span>:</span></span><br><span class="line">    ...:     print(<span class="string">'start'</span>)</span><br><span class="line">    ...:     <span class="keyword">for</span> item  <span class="keyword">in</span> fun_iterable:</span><br><span class="line">    ...:         <span class="keyword">yield</span> item</span><br><span class="line">    ...:     print(<span class="string">'end'</span>)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">27</span>]: wrap = f_wrapper(fab(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">In [<span class="number">28</span>]: <span class="keyword">for</span> i <span class="keyword">in</span> wrap:</span><br><span class="line">    ...:     print(i)</span><br><span class="line">    ...:</span><br><span class="line">start</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>现在用<code>yield from</code>代替<code>for</code>循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">29</span>]: <span class="function"><span class="keyword">def</span> <span class="title">f_wrapper2</span><span class="params">(fun_iterable)</span>:</span></span><br><span class="line">    ...:     print(<span class="string">'start'</span>)</span><br><span class="line">    ...:     <span class="keyword">yield</span> <span class="keyword">from</span> fun_iterable <span class="comment"># 注意此处必须是一个可迭代对象</span></span><br><span class="line">    ...:     print(<span class="string">'end'</span>)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">30</span>]: wrap = f_wrapper2(fab(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">In [<span class="number">31</span>]: <span class="keyword">for</span> i <span class="keyword">in</span> wrap:</span><br><span class="line">    ...:     print(i)</span><br><span class="line">    ...:</span><br><span class="line">start</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>再强调一遍：yield from后面必须跟iterable对象(可以是生成器，迭代器)</p>
+<h4 id="三：asyncio-coroutine和yield-from"><a href="#三：asyncio-coroutine和yield-from" class="headerlink" title="三：asyncio.coroutine和yield from"></a>三：asyncio.coroutine和yield from</h4><p><code>yield from</code>在asyncio模块中得以发扬光大。之前都是我们手工切换协程，现在当声明函数为协程后，我们通过事件循环来调度协程。</p>
+<p>实例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">32</span>]: <span class="keyword">import</span> asyncio,random</span><br><span class="line"></span><br><span class="line">In [<span class="number">33</span>]: @asyncio.coroutine</span><br><span class="line">    ...: <span class="function"><span class="keyword">def</span> <span class="title">smart_fib</span><span class="params">(n)</span>:</span></span><br><span class="line">    ...:     index = <span class="number">0</span></span><br><span class="line">    ...:     a = <span class="number">0</span></span><br><span class="line">    ...:     b = <span class="number">1</span></span><br><span class="line">    ...:     <span class="keyword">while</span> index &lt; n:</span><br><span class="line">    ...:         sleep_secs = random.uniform(<span class="number">0</span>, <span class="number">0.2</span>)</span><br><span class="line">    ...:         <span class="keyword">yield</span> <span class="keyword">from</span> asyncio.sleep(sleep_secs) <span class="comment">#通常yield from后都是接的耗时操作</span></span><br><span class="line">    ...:         print(<span class="string">'Smart one think &#123;&#125; secs to get &#123;&#125;'</span>.format(sleep_secs, b))</span><br><span class="line">    ...:         a, b = b, a + b</span><br><span class="line">    ...:         index += <span class="number">1</span></span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">34</span>]: @asyncio.coroutine</span><br><span class="line">    ...: <span class="function"><span class="keyword">def</span> <span class="title">stupid_fib</span><span class="params">(n)</span>:</span></span><br><span class="line">    ...:     index = <span class="number">0</span></span><br><span class="line">    ...:     a = <span class="number">0</span></span><br><span class="line">    ...:     b = <span class="number">1</span></span><br><span class="line">    ...:     <span class="keyword">while</span> index &lt; n:</span><br><span class="line">    ...:         sleep_secs = random.uniform(<span class="number">0</span>, <span class="number">0.4</span>)</span><br><span class="line">    ...:         <span class="keyword">yield</span> <span class="keyword">from</span> asyncio.sleep(sleep_secs) <span class="comment">#通常yield from后都是接的耗时操作</span></span><br><span class="line">    ...:         print(<span class="string">'Stupid one think &#123;&#125; secs to get &#123;&#125;'</span>.format(sleep_secs, b))</span><br><span class="line">    ...:         a, b = b, a + b</span><br><span class="line">    ...:         index += <span class="number">1</span></span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">35</span>]: loop = asyncio.get_event_loop()</span><br><span class="line"></span><br><span class="line">In [<span class="number">36</span>]: tasks = [smart_fib(<span class="number">10</span>), stupid_fib(<span class="number">10</span>)]</span><br><span class="line"></span><br><span class="line">In [<span class="number">37</span>]: loop.run_until_complete(asyncio.wait(tasks))</span><br><span class="line"></span><br><span class="line">In [<span class="number">38</span>]: loop.close()</span><br></pre></td></tr></table></figure>
+<p><code>yield from</code>语法可以让我们方便地调用另一个generator。<br>本例中<code>yield from</code>后面接的<code>asyncio.sleep()</code>是一个coroutine(里面也用了<code>yield from`</code>)，所以线程不会等待asyncio.sleep()<code>，而是直接中断并执行下一个消息循环。当</code>asyncio.sleep()<code>返回时，线程就可以从</code>yield from<code>拿到返回值（此处是None），然后接着执行下一行语句。 
+asyncio是一个基于事件循环的实现异步I/O的模块。通过</code>yield from<code>，我们可以将协程</code>asyncio.sleep<code>的控制权交给事件循环，然后挂起当前协程；之后，由事件循环决定何时唤醒</code>asyncio.sleep<code>,接着向后执行代码。 
+协程之间的调度都是由事件循环决定。</code>yield from asyncio.sleep(sleep_secs)<code>这里不能用</code>time.sleep(1)<code>因为</code>time.sleep()<code>返回的是None，它不是iterable，还记得前面说的</code>yield from`后面必须跟iterable对象(可以是生成器，迭代器)。 </p>
+<p>所以会报错:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">yield</span> <span class="keyword">from</span> time.sleep(sleep_secs) </span><br><span class="line">TypeError: ‘NoneType’ object <span class="keyword">is</span> <span class="keyword">not</span> iterable</span><br></pre></td></tr></table></figure>
+<h4 id="四：async和await"><a href="#四：async和await" class="headerlink" title="四：async和await"></a>四：async和await</h4><p>弄清楚了<code>asyncio.coroutine</code>和<code>yield from</code>之后，在Python3.5中引入的async和await就不难理解了：可以将他们理解成<code>asyncio.coroutine/yield from</code>的完美替身。当然，从Python设计的角度来说，<code>async/await</code>让协程表面上独立于生成器而存在，将细节都隐藏于asyncio模块之下，语法更清晰明了。 </p>
+<p>加入新的关键字 async ，可以将任何一个普通函数变成协程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">39</span>]: <span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line">In [<span class="number">40</span>]: <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">mygen</span><span class="params">(alist)</span>:</span></span><br><span class="line">    ...:     <span class="keyword">while</span> len(alist) &gt; <span class="number">0</span>:</span><br><span class="line">    ...:         c = randint(<span class="number">0</span>, len(alist)<span class="number">-1</span>)</span><br><span class="line">    ...:         print(alist.pop(c))</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">41</span>]: a = [<span class="string">"aa"</span>,<span class="string">"bb"</span>,<span class="string">"cc"</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">42</span>]: c=mygen(a)</span><br><span class="line"></span><br><span class="line">In [<span class="number">43</span>]: c</span><br><span class="line">Out[<span class="number">43</span>]: &lt;coroutine object mygen at <span class="number">0x106d7fb48</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>在上面程序中，我们在前面加上async，该函数就变成一个协程了。</p>
+<p>但是async对生成器是无效的。async无法将一个生成器转换成协程。<br>还是刚才那段代码，我们把<code>print</code>改成<code>yield</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">44</span>]: <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">mygen</span><span class="params">(alist)</span>:</span></span><br><span class="line">    ...:     <span class="keyword">while</span> len(alist) &gt; <span class="number">0</span>:</span><br><span class="line">    ...:         c = randint(<span class="number">0</span>, len(alist)<span class="number">-1</span>)</span><br><span class="line">    ...:         <span class="keyword">yield</span> alist.pop(c)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">45</span>]: a = [<span class="string">"aa"</span>,<span class="string">"bb"</span>,<span class="string">"cc"</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">46</span>]: c=mygen(a)</span><br><span class="line"></span><br><span class="line">In [<span class="number">47</span>]: c</span><br><span class="line">Out[<span class="number">47</span>]: &lt;async_generator object mygen at <span class="number">0x1067dfb40</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>并不是coroutine 协程对象</p>
+<p>所以我们的协程代码应该是这样的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> time,asyncio,random</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">mygen</span><span class="params">(alist)</span>:</span></span><br><span class="line">   ...:     <span class="keyword">while</span> len(alist) &gt; <span class="number">0</span>:</span><br><span class="line">   ...:         c = random.randint(<span class="number">0</span>, len(alist)<span class="number">-1</span>)</span><br><span class="line">   ...:         print(alist.pop(c))</span><br><span class="line">   ...:         <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: strlist = [<span class="string">"ss"</span>,<span class="string">"dd"</span>,<span class="string">"gg"</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: intlist=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: c1=mygen(strlist)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: c2=mygen(intlist)</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: loop = asyncio.get_event_loop()</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: tasks = [c1,c2]</span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: loop.run_until_complete(asyncio.wait(tasks))</span><br><span class="line"><span class="number">1</span></span><br><span class="line">dd</span><br><span class="line"><span class="number">5</span></span><br><span class="line">ss</span><br><span class="line"><span class="number">2</span></span><br><span class="line">gg</span><br><span class="line"><span class="number">6</span></span><br><span class="line">Out[<span class="number">9</span>]:</span><br><span class="line">(&#123;&lt;Task finished coro=&lt;mygen() done, defined at &lt;ipython-input<span class="number">-2</span>-b81995509425&gt;:<span class="number">1</span>&gt; result=<span class="keyword">None</span>&gt;,</span><br><span class="line">  &lt;Task finished coro=&lt;mygen() done, defined at &lt;ipython-input<span class="number">-2</span>-b81995509425&gt;:<span class="number">1</span>&gt; result=<span class="keyword">None</span>&gt;&#125;,</span><br><span class="line"> set())</span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: loop.close()</span><br></pre></td></tr></table></figure>
+<p>参考文章：</p>
+<p><a href="https://blog.csdn.net/soonfly/article/details/78361819" target="_blank" rel="noopener">理解Python协程:从yield/send到yield from再到async/await</a></p>
+<p><a href="https://www.cnblogs.com/jessonluo/p/4732565.html" target="_blank" rel="noopener">深入理解Python中的生成器</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/27258289" target="_blank" rel="noopener">Python Async/Await入门指南</a></p>
+<p><a href="https://lightless.me/archives/python-coroutine-from-start-to-boom.html" target="_blank" rel="noopener">Python 协程从零开始到放弃</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/03/协程中的async-with和async-for/" rel="next" title="协程中的async-with和async-for">
+                <i class="fa fa-chevron-left"></i> 协程中的async-with和async-for
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一：生成器变形yield-send"><span class="nav-number">1.</span> <span class="nav-text">一：生成器变形yield/send</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二：yield-from"><span class="nav-number">2.</span> <span class="nav-text">二：yield from</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三：asyncio-coroutine和yield-from"><span class="nav-number">3.</span> <span class="nav-text">三：asyncio.coroutine和yield from</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四：async和await"><span class="nav-number">4.</span> <span class="nav-text">四：async和await</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

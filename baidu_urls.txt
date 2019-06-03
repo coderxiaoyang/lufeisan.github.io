@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/05/22/高效的itertools模块/
+https://zhaobugs.com/2019/06/03/理解Python协程-从yield-send到yield-from再到async-await/
