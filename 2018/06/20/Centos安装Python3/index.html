@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="小码农的笔记">
 <meta property="og:description" content="很多小伙伴在云主机上安装Python一直不成功，这篇文章我们一起来在centos主机上安装一下。希望你能按照这边文章一次安装成功。 安装依赖包1[root@hongshaorou ~]# yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc gcc-c++ li">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T07:23:05.490Z">
+<meta property="og:updated_time" content="2019-06-19T14:26:23.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Centos安装Python3">
 <meta name="twitter:description" content="很多小伙伴在云主机上安装Python一直不成功，这篇文章我们一起来在centos主机上安装一下。希望你能按照这边文章一次安装成功。 安装依赖包1[root@hongshaorou ~]# yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc gcc-c++ li">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  407 字
+                  410 字
                 </span>
               
 
@@ -469,7 +469,7 @@
 <p>创建Python3的软连接</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou bin]# ln -s /usr/local/bin/python3.7 /usr/bin/python </span><br><span class="line">[root@hongshaorou bin]# ln -s /usr/local/bin/python3.7 /usr/bin/python3</span><br></pre></td></tr></table></figure>
 <p>将一些yum文件指向Python2</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou bin]# ls yum*</span><br><span class="line">yum  yum-builddep  yum-config-manager  yum-debug-dump  yum-debug-restore  yumdownloader  yum-groups-manager</span><br><span class="line"></span><br><span class="line">以及文件 /usr/libexec/urlgrabber-ext-down</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou bin]# ls yum*</span><br><span class="line">yum  yum-builddep  yum-config-manager  yum-debug-dump  yum-debug-restore  yumdownloader  yum-groups-manager</span><br><span class="line"></span><br><span class="line">以及文件 /usr/libexec/urlgrabber-ext-down   /usr/sbin/firewalld</span><br></pre></td></tr></table></figure>
 <p>将上述文件的头部全部改为Python2</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python2</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> yum</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">print</span> &gt;&gt; sys.stderr, <span class="string">"""\</span></span><br></pre></td></tr></table></figure>
 <p>至此我们的Python环境以及变成全局Python3</p>

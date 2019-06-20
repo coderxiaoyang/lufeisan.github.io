@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="小码农的笔记">
 <meta property="og:description" content="一、需求将数据同步HTML模板生成PDF 二、wkhtmltopdfwkhtmltopdf 不是程序，而是 软件。能够安装在 linux 或者 windows 服务器上通过命令行将任意html页面转pdf。基本上样式是一样的，不会有很大的偏差。 wkhtmltopdf 官网地址： https://wkhtmltopdf.org/ wkhtmltopdf 命令手册：https://wkhtmltop">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-18T14:30:10.264Z">
+<meta property="og:updated_time" content="2019-06-20T13:28:38.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux上使用wkhtmltopdf将网页转为pdf">
 <meta name="twitter:description" content="一、需求将数据同步HTML模板生成PDF 二、wkhtmltopdfwkhtmltopdf 不是程序，而是 软件。能够安装在 linux 或者 windows 服务器上通过命令行将任意html页面转pdf。基本上样式是一样的，不会有很大的偏差。 wkhtmltopdf 官网地址： https://wkhtmltopdf.org/ wkhtmltopdf 命令手册：https://wkhtmltop">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  251 字
+                  465 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -462,6 +462,12 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># yum install xorg-x11-server-Xvfb</span></span><br></pre></td></tr></table></figure>
 <p>安装完成之后再次执行转换命令</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># xvfb-run wkhtmltopdf www.baidu.com baidu.pdf</span></span><br><span class="line">Loading page (<span class="number">1</span>/<span class="number">2</span>)</span><br><span class="line">Printing pages (<span class="number">2</span>/<span class="number">2</span>)</span><br><span class="line">Done</span><br></pre></td></tr></table></figure>
+<h5 id="四、遇到的问题"><a href="#四、遇到的问题" class="headerlink" title="四、遇到的问题"></a>四、遇到的问题</h5><p>如果你是在macOS上完成上面的操作，基本可以完美生成PDF。但是，当你是在Linux的环境的时候，很大可能会遇见导出的PDF出现空白和乱码。这是因为缺少相应的字体导致的。</p>
+<blockquote>
+<p>后来查阅，原来程序在转换的时候需要对应的字体，以便用于文字渲染，但当你需要转换的html中包含本机环境没有的字体时，程序就会默认转为<strong>宋体</strong>来渲染，这其实应该是WebKit内核的设定，所以说，<code>你的机器上至少应该有宋体！！</code>，否则的话中文其实是没法显示的。</p>
+</blockquote>
+<p>我们需要下载对应的字体，下载地址：<a href="https://github.com/sonatype/maven-guide-zh/blob/master/content-zh/src/main/resources/fonts/simsun.ttc" target="_blank" rel="noopener">simsun.ttc</a></p>
+<p>下载好之后将字体放到<code>/usr/share/fonts/</code>目录下即可。</p>
 <p>参考文章：</p>
 <p><a href="[http://www.ptbird.cn/wkhtmltopdf-html-to-pdf.html](http://www.ptbird.cn/wkhtmltopdf-html-to-pdf.html">Linux上使用 wkhtmltopdf 将网页转成pdf</a>)</p>
 <p><a href="https://my.oschina.net/hexie/blog/1591687" target="_blank" rel="noopener">Docker快速验证HTML导出PDF高效方案</a></p>
@@ -707,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、需求"><span class="nav-number">1.</span> <span class="nav-text">一、需求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、wkhtmltopdf"><span class="nav-number">2.</span> <span class="nav-text">二、wkhtmltopdf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三、安装使用"><span class="nav-number">3.</span> <span class="nav-text">三、安装使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、需求"><span class="nav-number">1.</span> <span class="nav-text">一、需求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、wkhtmltopdf"><span class="nav-number">2.</span> <span class="nav-text">二、wkhtmltopdf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三、安装使用"><span class="nav-number">3.</span> <span class="nav-text">三、安装使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四、遇到的问题"><span class="nav-number">4.</span> <span class="nav-text">四、遇到的问题</span></a></li></ol></div>
             
 
           </div>
