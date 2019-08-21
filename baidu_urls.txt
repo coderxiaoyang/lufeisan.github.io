@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/06/25/Python中的协程锁/
+https://zhaobugs.com/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/
