@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="MySQL," />
+  <meta name="keywords" content="asyncio," />
 
 
 
@@ -81,27 +81,18 @@
 
 
 
-<meta name="description" content="学习目标：  掌握PXC集群MySQL方案的原理 掌握PXC集群的强一致性 掌握PXC集群的高可用方案  首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码： 1234567mysqlslap -hlocalhost -uroot -pabc123456 -P3306 --concurrency=5000 --iterations=1 --auto-generat">
-<meta name="keywords" content="MySQL">
+<meta name="description" content="今天看小明大神的博客：深入理解asyncio(三) 里面有段将同步函数改为协程使用的代码。其中提到了run_in_executor，主要使用这个方法将同步变为异步。 我们先看下如何将一个同步函数变为异步的 12345678910111213141516In [35]: import timeIn [36]: import asyncioIn [37]: def a():    ...:     t">
+<meta name="keywords" content="asyncio">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PXC集群介绍">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/05/PXC集群介绍/index.html">
+<meta property="og:title" content="聊聊Asyncio中的run_in_executor">
+<meta property="og:url" content="https://zhaobugs.com/2019/06/21/聊聊Asyncio中的run-in-executor/index.html">
 <meta property="og:site_name" content="小码农的笔记">
-<meta property="og:description" content="学习目标：  掌握PXC集群MySQL方案的原理 掌握PXC集群的强一致性 掌握PXC集群的高可用方案  首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码： 1234567mysqlslap -hlocalhost -uroot -pabc123456 -P3306 --concurrency=5000 --iterations=1 --auto-generat">
+<meta property="og:description" content="今天看小明大神的博客：深入理解asyncio(三) 里面有段将同步函数改为协程使用的代码。其中提到了run_in_executor，主要使用这个方法将同步变为异步。 我们先看下如何将一个同步函数变为异步的 12345678910111213141516In [35]: import timeIn [36]: import asyncioIn [37]: def a():    ...:     t">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs172714mkj30km09mmyq.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fs04kapdosj31hi0l0wie.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fs04qy69a8j30ti0fe77k.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fs176e079dj30t80de411.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fs1791wp4tj30nw0c4wfm.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fs17e7zh28j30rk0cu0v2.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs17ixfyz7j30my08kwfj.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:34:02.434Z">
+<meta property="og:updated_time" content="2019-08-21T08:30:11.031Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PXC集群介绍">
-<meta name="twitter:description" content="学习目标：  掌握PXC集群MySQL方案的原理 掌握PXC集群的强一致性 掌握PXC集群的高可用方案  首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码： 1234567mysqlslap -hlocalhost -uroot -pabc123456 -P3306 --concurrency=5000 --iterations=1 --auto-generat">
-<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg">
+<meta name="twitter:title" content="聊聊Asyncio中的run_in_executor">
+<meta name="twitter:description" content="今天看小明大神的博客：深入理解asyncio(三) 里面有段将同步函数改为协程使用的代码。其中提到了run_in_executor，主要使用这个方法将同步变为异步。 我们先看下如何将一个同步函数变为异步的 12345678910111213141516In [35]: import timeIn [36]: import asyncioIn [37]: def a():    ...:     t">
 
 
 
@@ -131,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/05/PXC集群介绍/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2019/06/21/聊聊Asyncio中的run-in-executor/"/>
 
 
 
 
 
-  <title>PXC集群介绍 | 小码农的笔记</title>
+  <title>聊聊Asyncio中的run_in_executor | 小码农的笔记</title>
   
 
 
@@ -312,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/05/PXC集群介绍/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/06/21/聊聊Asyncio中的run-in-executor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -329,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">PXC集群介绍</h1>
+          <h1 class="post-title" itemprop="name headline">聊聊Asyncio中的run_in_executor</h1>
         
 
         <div class="post-meta">
@@ -341,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T09:34:24+08:00">
-                2018-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-21T15:53:18+08:00">
+                2019-06-21
               </time>
             
 
@@ -364,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PXC/" itemprop="url" rel="index">
-                    <span itemprop="name">PXC</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -382,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/05/PXC集群介绍/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/05/PXC集群介绍/" itemprop="commentCount"></span>
+                <a href="/2019/06/21/聊聊Asyncio中的run-in-executor/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/21/聊聊Asyncio中的run-in-executor/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -391,7 +382,7 @@
 
           
           
-             <span id="/2018/06/05/PXC集群介绍/" class="leancloud_visitors" data-flag-title="PXC集群介绍">
+             <span id="/2019/06/21/聊聊Asyncio中的run-in-executor/" class="leancloud_visitors" data-flag-title="聊聊Asyncio中的run_in_executor">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -421,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,074 字
+                  829 字
                 </span>
               
 
@@ -458,43 +449,25 @@
       
 
       
-        <p>学习目标：</p>
-<ul>
-<li>掌握PXC集群MySQL方案的原理</li>
-<li>掌握PXC集群的强一致性</li>
-<li>掌握PXC集群的高可用方案</li>
-</ul>
-<p>首先对于单机单节点数据库来说，在高并发的情况下性能会变得很差。下面是一段性能测试代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysqlslap -hlocalhost -uroot -pabc123456 -P3306 </span><br><span class="line">--concurrency=5000 --iterations=1 --auto-generate-sql</span><br><span class="line">--auto-generate-sql-load-type=mixed</span><br><span class="line">--auto-generate-sql-add-autoincrement </span><br><span class="line">--engine=innodb</span><br><span class="line">--number-of-queries=5000</span><br><span class="line">--debug-info</span><br></pre></td></tr></table></figure>
-<p>我们可以按照不同指标执行压力测试。</p>
-<p>参数解释：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">-concurrency 代表并发数量，多个可以用逗号隔开，concurrency=10,50,100, 并发连接线程数分别是10、50、100个并发。</span><br><span class="line"></span><br><span class="line">--engines 代表要测试的引擎，可以有多个，用分隔符隔开。</span><br><span class="line"></span><br><span class="line">--iterations 代表要运行这些测试多少次。</span><br><span class="line"></span><br><span class="line">--auto-generate-sql 代表用系统自己生成的SQL脚本来测试。</span><br><span class="line"></span><br><span class="line">--auto-generate-sql-load-type 代表要测试的是读还是写还是两者混合的（read,write,update,mixed）</span><br><span class="line"></span><br><span class="line">--number-of-queries 代表总共要运行多少次查询。每个客户运行的查询数量可以用查询总数/并发数来计算。</span><br><span class="line"></span><br><span class="line">--debug-info 代表要额外输出CPU以及内存的相关信息。</span><br><span class="line"></span><br><span class="line">--number-int-cols ：创建测试表的 int 型字段数量</span><br><span class="line"></span><br><span class="line">--auto-generate-sql-add-autoincrement : 代表对生成的表自动添加auto_increment列，从5.1.18版本开始</span><br><span class="line"></span><br><span class="line">--number-char-cols 创建测试表的 char 型字段数量。</span><br><span class="line"></span><br><span class="line">--create-schema 测试的schema，MySQL中schema也就是database。</span><br><span class="line"></span><br><span class="line">--query 使用自定义脚本执行测试，例如可以调用自定义的一个存储过程或者sql语句来执行测试。</span><br><span class="line"></span><br><span class="line">--only-print 如果只想打印看看SQL语句是什么，可以用这个选项。</span><br></pre></td></tr></table></figure>
-<h5 id="MySQL高性能高可用集群方案"><a href="#MySQL高性能高可用集群方案" class="headerlink" title="MySQL高性能高可用集群方案"></a>MySQL高性能高可用集群方案</h5><p>方案一：PXC集群方案</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fs04khpfh3j31h40nmwj9.jpg" alt="image-20180605104420124"></p>
-<p>PXC集群方案如上图所示，底层为pxc搭建MySQL集群，使用HA进行负载均衡分配查询，上层使用MyCat按照一定算法进行SQL数据切分。为什么要进行数据切分呢？（是因为当单个数据表达到两千万行之后就会出现性能瓶颈）PXC集群是以性能换取数据强一致性。</p>
-<p>PXC(Percona XtraDB Cluster)原理：</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs172714mkj30km09mmyq.jpg" alt="image-20180606091946548"></p>
-<p>建议PXC使用PerconaServer</p>
-<p>方案二：Replication集群方案</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fs04kapdosj31hi0l0wie.jpg" alt="image-20180605110740607"></p>
-<p>Replication集群方案如上图所示，与PXC集群采用的强一致性不同的是Replication采用的是同步机制。这种非强一致性可能存在同步未及时（网络影响等）导致客户端查询数据不一致。</p>
-<p>适合保存一些日志数据。</p>
-<p>联合使用：</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fs04qy69a8j30ti0fe77k.jpg" alt="image-20180605111412670"></p>
-<p>我们可以将两种集群方案一起使用，高价值数据使用PXC集群，海量低价值使用Replication集群，通过MyCat切片数据。同时我们也可以使用缓存进行数据的临时存储。</p>
-<h5 id="PXC方案与Replication方案对比"><a href="#PXC方案与Replication方案对比" class="headerlink" title="PXC方案与Replication方案对比"></a>PXC方案与Replication方案对比</h5><h6 id="PXC方案"><a href="#PXC方案" class="headerlink" title="PXC方案"></a>PXC方案</h6><p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs176e079dj30t80de411.jpg" alt="image-20180606092348871"></p>
-<p>PXC的数据同步是双向的，在任何一个节点写入数据都会同步到其他节点之中。也就是说在任何一个MySQL节点上我们可以同时读写数据。</p>
-<h6 id="Replication方案"><a href="#Replication方案" class="headerlink" title="Replication方案"></a>Replication方案</h6><p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fs1791wp4tj30nw0c4wfm.jpg" alt="image-20180606092622194"></p>
-<p>Replication的数据同步是单向的，在Master中写入数据是可以在Slave中读取，然而在Slave中写入数据是不能在Master中读取不到的。也就是说不能再一个节点同时读取数据。</p>
-<p>同步机制示意图</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fs17e7zh28j30rk0cu0v2.jpg" alt="image-20180606093119885"></p>
-<p>我们在一个节点中写入数据，需要根据同步机制将数据同步到其他节点，并且在其他节点成功提交事务，才算写入成功，然后第一个节点再把写入成功的结果告诉客户端。</p>
-<p>异步复制示意图</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs17ixfyz7j30my08kwfj.jpg" alt="image-20180606093551386"></p>
-<p>我们在一个节点写入数据，当提交事务成功后会返回给客户端成功，但是在同步第二个节点的时候万一出现同步失败，我们是无法从第二个节点读取到数据的。</p>
-<p>总结：</p>
-<p>PXC的数据强一致性是因为采用了同步复制，事务在所有集群节点要么同时提交，要么不提交。</p>
-<p>Replication采用异步复制，无法保证数据的一致性。</p>
+        <p>今天看小明大神的博客：<a href="https://www.dongwm.com/post/understand-asyncio-3/" target="_blank" rel="noopener">深入理解asyncio(三)</a> 里面有段将同步函数改为协程使用的代码。其中提到了<code>run_in_executor</code>，主要使用这个方法将同步变为异步。</p>
+<p>我们先看下如何将一个同步函数变为异步的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">35</span>]: <span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">In [<span class="number">36</span>]: <span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line">In [<span class="number">37</span>]: <span class="function"><span class="keyword">def</span> <span class="title">a</span><span class="params">()</span>:</span></span><br><span class="line">    ...:     time.sleep(<span class="number">1</span>)</span><br><span class="line">    ...:     <span class="keyword">return</span> <span class="string">'A'</span></span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">38</span>]: <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">c</span><span class="params">()</span>:</span></span><br><span class="line">    ...:     loop = asyncio.get_running_loop()</span><br><span class="line">    ...:     <span class="keyword">return</span> <span class="keyword">await</span> loop.run_in_executor(<span class="keyword">None</span>, a)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">39</span>]: asyncio.run(c())</span><br><span class="line">Out[<span class="number">39</span>]: <span class="string">'A'</span></span><br></pre></td></tr></table></figure>
+<p>上面使用<code>run_in_executor</code>可以将同步函数<code>a</code>以协程的方式执行，我们看下源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_in_executor</span><span class="params">(self, executor, func, *args)</span>:</span></span><br><span class="line">    self._check_closed()</span><br><span class="line">    <span class="keyword">if</span> self._debug:</span><br><span class="line">        self._check_callback(func, <span class="string">'run_in_executor'</span>)</span><br><span class="line">    <span class="keyword">if</span> executor <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        executor = self._default_executor</span><br><span class="line">        <span class="keyword">if</span> executor <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            executor = concurrent.futures.ThreadPoolExecutor()</span><br><span class="line">            self._default_executor = executor</span><br><span class="line">    <span class="keyword">return</span> futures.wrap_future(</span><br><span class="line">        executor.submit(func, *args), loop=self)</span><br></pre></td></tr></table></figure>
+<p>我们看到 当没有设置 <code>executor</code>的时候 会默认使用<code>concurrent.futures.ThreadPoolExecutor()</code>  那我们自己设置一下试试看。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">40</span>]: <span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">In [<span class="number">41</span>]: thread_executor = ThreadPoolExecutor(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">44</span>]: <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">c</span><span class="params">()</span>:</span></span><br><span class="line">    ...:     loop = asyncio.get_running_loop()</span><br><span class="line">    ...:</span><br><span class="line">    ...:     <span class="keyword">return</span> <span class="keyword">await</span> loop.run_in_executor(thread_executor, a)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">45</span>]: asyncio.run(c())</span><br><span class="line">Out[<span class="number">45</span>]: <span class="string">'A'</span></span><br></pre></td></tr></table></figure>
+<p>正确输出</p>
+<p>还有其他方法实现吗？</p>
+<p>我们看到 <code>run_in_executor</code>的源码进行了<code>loop</code>是否关闭的校验和是否是<code>debug</code>的判断以及<code>executor</code>验空和赋值。假设我们不去做这些操作的话，直接使用<code>ThreadPoolExecutor</code>是否可以呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: <span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: <span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: <span class="function"><span class="keyword">def</span> <span class="title">a</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     time.sleep(<span class="number">1</span>)</span><br><span class="line">   ...:     <span class="keyword">return</span> <span class="string">'A'</span></span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: thread_executor = ThreadPoolExecutor(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">c</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     future = thread_executor.submit(a)</span><br><span class="line">   ...:     <span class="keyword">return</span> <span class="keyword">await</span> asyncio.wrap_future(future)</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: asyncio.run(c())</span><br><span class="line">Out[<span class="number">7</span>]: <span class="string">'A'</span></span><br></pre></td></tr></table></figure>
+<p>正确输出</p>
+<p>上面的<code>thread_executor.submit</code>返回的是一个<code>future</code>对象，但是并不是一个符合<code>asyncio</code>模块的<code>future</code>是不可等待的，即无法调用<code>await</code>去等待该对象。</p>
+<p>代码中的<code>wrap_future</code>是一个比较关键的函数，看下源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrap_future</span><span class="params">(future, *, loop=None)</span>:</span></span><br><span class="line">    <span class="string">"""Wrap concurrent.futures.Future object."""</span></span><br><span class="line">    <span class="keyword">if</span> isfuture(future):</span><br><span class="line">        <span class="keyword">return</span> future</span><br><span class="line">    <span class="keyword">assert</span> isinstance(future, concurrent.futures.Future), \</span><br><span class="line">        <span class="string">f'concurrent.futures.Future is expected, got <span class="subst">&#123;future!r&#125;</span>'</span></span><br><span class="line">    <span class="keyword">if</span> loop <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        loop = events.get_event_loop()</span><br><span class="line">    new_future = loop.create_future()</span><br><span class="line">    _chain_future(future, new_future)</span><br><span class="line">    <span class="keyword">return</span> new_future</span><br></pre></td></tr></table></figure>
+<p>结合着使用到的<code>_chain_future</code>源码一起看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_chain_future</span><span class="params">(source, destination)</span>:</span></span><br><span class="line">    <span class="string">"""Chain two futures so that when one completes, so does the other.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The result (or exception) of source will be copied to destination.</span></span><br><span class="line"><span class="string">    If destination is cancelled, source gets cancelled too.</span></span><br><span class="line"><span class="string">    Compatible with both asyncio.Future and concurrent.futures.Future.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isfuture(source) <span class="keyword">and</span> <span class="keyword">not</span> isinstance(source,</span><br><span class="line">                                               concurrent.futures.Future):</span><br><span class="line">        <span class="keyword">raise</span> TypeError(<span class="string">'A future is required for source argument'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isfuture(destination) <span class="keyword">and</span> <span class="keyword">not</span> isinstance(destination,</span><br><span class="line">                                                    concurrent.futures.Future):</span><br><span class="line">        <span class="keyword">raise</span> TypeError(<span class="string">'A future is required for destination argument'</span>)</span><br><span class="line">    source_loop = _get_loop(source) <span class="keyword">if</span> isfuture(source) <span class="keyword">else</span> <span class="keyword">None</span></span><br><span class="line">    dest_loop = _get_loop(destination) <span class="keyword">if</span> isfuture(destination) <span class="keyword">else</span> <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_set_state</span><span class="params">(future, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isfuture(future):</span><br><span class="line">            _copy_future_state(other, future)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            _set_concurrent_future_state(future, other)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_call_check_cancel</span><span class="params">(destination)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> destination.cancelled():</span><br><span class="line">            <span class="keyword">if</span> source_loop <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> source_loop <span class="keyword">is</span> dest_loop:</span><br><span class="line">                source.cancel()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                source_loop.call_soon_threadsafe(source.cancel)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_call_set_state</span><span class="params">(source)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> (destination.cancelled() <span class="keyword">and</span></span><br><span class="line">                dest_loop <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">and</span> dest_loop.is_closed()):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> dest_loop <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> dest_loop <span class="keyword">is</span> source_loop:</span><br><span class="line">            _set_state(destination, source)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dest_loop.call_soon_threadsafe(_set_state, destination, source)</span><br><span class="line"></span><br><span class="line">    destination.add_done_callback(_call_check_cancel)</span><br><span class="line">    source.add_done_callback(_call_set_state)</span><br></pre></td></tr></table></figure>
+<p>通过<code>wrap_future</code>函数可以将<code>concurrent.futures.Future</code>变成<code>asyncio.Future</code>实现可等待。</p>
+<p>这样我们可以不用显示的获取当前的<code>loop</code>也可以直接去将同步函数变成协程去执行了。</p>
 
       
     </div>
@@ -553,7 +526,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+            <a href="/tags/asyncio/" rel="tag"><i class="fa fa-tag"></i>asyncio</a>
           
         </div>
       
@@ -566,8 +539,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/09/Python面试笔记/" rel="next" title="Python面试笔记">
-                <i class="fa fa-chevron-left"></i> Python面试笔记
+              <a href="/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/" rel="next" title="Linux上使用wkhtmltopdf将网页转为pdf">
+                <i class="fa fa-chevron-left"></i> Linux上使用wkhtmltopdf将网页转为pdf
               </a>
             
           </div>
@@ -576,8 +549,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/05/Linux常用命令/" rel="prev" title="Linux常用命令">
-                Linux常用命令 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/25/Python中的协程锁/" rel="prev" title="Python中的协程锁">
+                Python中的协程锁 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -633,17 +606,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -730,22 +694,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#MySQL高性能高可用集群方案"><span class="nav-number">1.</span> <span class="nav-text">MySQL高性能高可用集群方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PXC方案与Replication方案对比"><span class="nav-number">2.</span> <span class="nav-text">PXC方案与Replication方案对比</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#PXC方案"><span class="nav-number">2.1.</span> <span class="nav-text">PXC方案</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Replication方案"><span class="nav-number">2.2.</span> <span class="nav-text">Replication方案</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
