@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/11/02/Tornado中使用Websocket/
+https://zhaobugs.com/2019/11/04/Python的logging模块/

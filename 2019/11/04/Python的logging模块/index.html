@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小码农的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我们知道一个良好的系统，日志模块是必不可少的，Python的基础日志模块便是logging模块。 这一篇文章，我们从源码去看下logging模块的组成。 1. 开始最开始，我们用最短的代码体验一下logging的基本功能 12345678910In [30]: import loggingIn [31]: loger = logging.getLogger()In [32]: logging.ba">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的logging模块">
+<meta property="og:url" content="https://zhaobugs.com/2019/11/04/Python的logging模块/index.html">
+<meta property="og:site_name" content="小码农的笔记">
+<meta property="og:description" content="我们知道一个良好的系统，日志模块是必不可少的，Python的基础日志模块便是logging模块。 这一篇文章，我们从源码去看下logging模块的组成。 1. 开始最开始，我们用最短的代码体验一下logging的基本功能 12345678910In [30]: import loggingIn [31]: loger = logging.getLogger()In [32]: logging.ba">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-04T17:29:02.465Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的logging模块">
+<meta name="twitter:description" content="我们知道一个良好的系统，日志模块是必不可少的，Python的基础日志模块便是logging模块。 这一篇文章，我们从源码去看下logging模块的组成。 1. 开始最开始，我们用最短的代码体验一下logging的基本功能 12345678910In [30]: import loggingIn [31]: loger = logging.getLogger()In [32]: logging.ba">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2019/11/04/Python的logging模块/"/>
+
+
+
+
+
+  <title>Python的logging模块 | 小码农的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码农的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/11/04/Python的logging模块/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码农的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的logging模块</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-04T23:48:04+08:00">
+                2019-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/04/Python的logging模块/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/04/Python的logging模块/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/11/04/Python的logging模块/" class="leancloud_visitors" data-flag-title="Python的logging模块">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,843 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  26 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们知道一个良好的系统，日志模块是必不可少的，Python的基础日志模块便是<code>logging</code>模块。</p>
+<p>这一篇文章，我们从源码去看下<code>logging</code>模块的组成。</p>
+<h3 id="1-开始"><a href="#1-开始" class="headerlink" title="1. 开始"></a>1. 开始</h3><p>最开始，我们用最短的代码体验一下logging的基本功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">30</span>]: <span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">In [<span class="number">31</span>]: loger = logging.getLogger()</span><br><span class="line"></span><br><span class="line">In [<span class="number">32</span>]: logging.basicConfig()</span><br><span class="line"></span><br><span class="line">In [<span class="number">33</span>]: loger.setLevel(<span class="string">"DEBUG"</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">34</span>]: loger.debug(<span class="string">'logsomething'</span>)</span><br><span class="line">DEBUG:root:logsomething</span><br></pre></td></tr></table></figure>
+<p>第一步：通过<code>logging.getLoger</code>函数，获得一个<code>loger</code>对象，但这个对象暂时是无法使用的。</p>
+<p>第二步：<code>logging.basicConfig</code>函数，进行一系列默认的配置，包括<code>format</code>、<code>handler</code>等。</p>
+<p>第三步：<code>loger</code>调用<code>setLevel</code>函数定义日志级别为<code>DEBUG</code></p>
+<p>最后：<code>logger</code>调用<code>debug</code>函数，输出一条<code>debug</code>级别的<code>message</code>，显示在了标准输出上</p>
+<h3 id="2-logging中的日志级别"><a href="#2-logging中的日志级别" class="headerlink" title="2. logging中的日志级别"></a>2. logging中的日志级别</h3><p><code>logging</code>在生成日志的时候，有一个日志级别的机制，默认有以下几个日志级别：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CRITICAL = <span class="number">50</span></span><br><span class="line">FATAL = CRITICAL</span><br><span class="line">ERROR = <span class="number">40</span></span><br><span class="line">WARNING = <span class="number">30</span></span><br><span class="line">WARN = WARNING</span><br><span class="line">INFO = <span class="number">20</span></span><br><span class="line">DEBUG = <span class="number">10</span></span><br><span class="line">NOTSET = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>每一个<code>logger</code>对象，都有一个日志级别，它只会输出大于等于它<code>level</code>的日志。如果一个<code>logger</code>的<code>level</code>是<code>INFO</code>，那么调用<code>logger.debug()</code>是无法输出日志的，而<code>logger.warning()</code>能够输出。</p>
+<p><strong>一般来说，以上的6个日志级别完全满足我们日常使用了。</strong></p>
+<h3 id="3-logging中的基础类"><a href="#3-logging中的基础类" class="headerlink" title="3. logging中的基础类"></a>3. logging中的基础类</h3><p><code>logging</code>是python中的一个基础模块，它在python中的源码位置如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python3<span class="number">.7</span>/logging/__init__.py <span class="comment"># 主干代码</span></span><br><span class="line">python3<span class="number">.7</span>/logging/config.py <span class="comment"># 扩展的handler和config</span></span><br><span class="line">python3<span class="number">.7</span>/logging/handlers.py</span><br></pre></td></tr></table></figure>
+<p>组成<code>logging</code>的主干的几个基础类都在<code>__init__.py</code>中</p>
+<h4 id="3-1-第一个基础类-LogRecord"><a href="#3-1-第一个基础类-LogRecord" class="headerlink" title="3.1 第一个基础类 LogRecord"></a>3.1 第一个基础类 LogRecord</h4><p>一个<code>LogRecord</code>对象，对应了日志中的一行数据。通常包含：时间、日志级别、message信息、当前执行的模块、行号、函数名……这些信息都包含在一个<code>LogRecord</code>对象里。</p>
+<p><strong>LogRecord对象可以想象成一个大字典</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogRecord</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    A LogRecord instance represents an event being logged.</span></span><br><span class="line"><span class="string">    代表一个事件被记录的实例</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, level, pathname, lineno,</span></span></span><br><span class="line"><span class="function"><span class="params">                 msg, args, exc_info, func=None, sinfo=None, **kwargs)</span>:</span></span><br><span class="line">        ct = time.time()</span><br><span class="line">        self.name = name</span><br><span class="line">        self.msg = msg</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getMessage</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Return the message for this LogRecord.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Return the message for this LogRecord after merging any user-supplied</span></span><br><span class="line"><span class="string">        arguments with the message.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        返回日志的具体信息</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        msg = str(self.msg)</span><br><span class="line">        <span class="keyword">if</span> self.args:</span><br><span class="line">            msg = msg % self.args</span><br><span class="line">        <span class="keyword">return</span> msg</span><br><span class="line">      </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeLogRecord</span><span class="params">(dict)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Make a LogRecord whose attributes are defined by the specified dictionary,</span></span><br><span class="line"><span class="string">    This function is useful for converting a logging event received over</span></span><br><span class="line"><span class="string">    a socket connection (which is sent as a dictionary) into a LogRecord</span></span><br><span class="line"><span class="string">    instance.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    这个方法很重要，生成一个空的LogRecord，然后通过一个字典，直接更新LogRecord中的成员变量</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    rv = _logRecordFactory(<span class="keyword">None</span>, <span class="keyword">None</span>, <span class="string">""</span>, <span class="number">0</span>, <span class="string">""</span>, (), <span class="keyword">None</span>, <span class="keyword">None</span>)</span><br><span class="line">    rv.__dict__.update(dict)</span><br><span class="line">    <span class="keyword">return</span> rv</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-第二个基础类-Formatter"><a href="#3-2-第二个基础类-Formatter" class="headerlink" title="3.2 第二个基础类 Formatter"></a>3.2 第二个基础类 Formatter</h4><p><code>Formatter</code>对象是用来定义日志格式的，<code>LogRecord</code>保存了很多信息，但是打日志的时候我们只需要其中几个，<code>Formatter</code>就提供了这样的功能，它依赖于python的一个功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过字典的方式,输出格式化字符串</span></span><br><span class="line">print(<span class="string">'%(name)s:%(num)d'</span> % &#123;<span class="string">'name'</span>:<span class="string">'my_name'</span>,<span class="string">'num'</span>: <span class="number">100</span>&#125;)</span><br><span class="line">out&gt;&gt;my_name:<span class="number">100</span></span><br></pre></td></tr></table></figure>
+<p><strong>如果说LogRecord是后面的那个字典，那么Formatter就是前面的那个格式字符串……的抽象</strong></p>
+<p>重要的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PercentStyle</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    default_format = <span class="string">'%(message)s'</span></span><br><span class="line">    asctime_format = <span class="string">'%(asctime)s'</span></span><br><span class="line">    asctime_search = <span class="string">'%(asctime)'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fmt)</span>:</span></span><br><span class="line">        self._fmt = fmt <span class="keyword">or</span> self.default_format</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">usesTime</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._fmt.find(self.asctime_search) &gt;= <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">format</span><span class="params">(self, record)</span>:</span></span><br><span class="line">      	<span class="string">"""</span></span><br><span class="line"><span class="string">      	真正格式化日志的函数</span></span><br><span class="line"><span class="string">      	"""</span></span><br><span class="line">        <span class="keyword">return</span> self._fmt % record.__dict__</span><br><span class="line">        </span><br><span class="line">_STYLES = &#123;</span><br><span class="line">    <span class="string">'%'</span>: (PercentStyle, BASIC_FORMAT),</span><br><span class="line">    <span class="string">'&#123;'</span>: (StrFormatStyle, <span class="string">'&#123;levelname&#125;:&#123;name&#125;:&#123;message&#125;'</span>),</span><br><span class="line">    <span class="string">'$'</span>: (StringTemplateStyle, <span class="string">'$&#123;levelname&#125;:$&#123;name&#125;:$&#123;message&#125;'</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Formatter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Formatter instances are used to convert a LogRecord to text.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    converter = time.localtime</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fmt=None, datefmt=None, style=<span class="string">'%'</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize the formatter with specified format strings.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> style <span class="keyword">not</span> <span class="keyword">in</span> _STYLES:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Style must be one of: %s'</span> % <span class="string">','</span>.join(</span><br><span class="line">                             _STYLES.keys()))</span><br><span class="line">            </span><br><span class="line">        self._style = _STYLES[style][<span class="number">0</span>](fmt) <span class="comment"># 默认的format</span></span><br><span class="line">        self._fmt = self._style._fmt</span><br><span class="line">        self.datefmt = datefmt</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">formatMessage</span><span class="params">(self, record)</span>:</span></span><br><span class="line">      	<span class="comment"># 调用 PercentStyle 或者其子类的 format</span></span><br><span class="line">        <span class="keyword">return</span> self._style.format(record)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">format</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Format the specified record as text.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        record.message = record.getMessage()</span><br><span class="line">        <span class="keyword">if</span> self.usesTime():</span><br><span class="line">            record.asctime = self.formatTime(record, self.datefmt)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 格式化信息</span></span><br><span class="line">        s = self.formatMessage(record)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+<h4 id="3-3-第三个基础类-Filter和Filterer"><a href="#3-3-第三个基础类-Filter和Filterer" class="headerlink" title="3.3 第三个基础类 Filter和Filterer"></a>3.3 第三个基础类 Filter和Filterer</h4><p><code>Filter</code>类，功能很简单。<code>Flter.filter()</code>函数传入一个<code>LogRecord</code>对象，通过筛选返回<code>True</code>，否则返回<code>False</code>。从代码中可以看到，其实是对<code>LogRecord.name</code>的筛选。</p>
+<p><code>Filterer</code>类中有一个<code>Filter</code>对象的列表，它是一组<code>Filter</code>的抽象。</p>
+<p>重要的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Filter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Filter instances are used to perform arbitrary filtering of LogRecords.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Loggers and Handlers can optionally use Filter instances to filter</span></span><br><span class="line"><span class="string">    records as desired. The base filter class only allows events which are</span></span><br><span class="line"><span class="string">    below a certain point in the logger hierarchy. For example, a filter</span></span><br><span class="line"><span class="string">    initialized with "A.B" will allow events logged by loggers "A.B",</span></span><br><span class="line"><span class="string">    "A.B.C", "A.B.C.D", "A.B.D" etc. but not "A.BB", "B.A.B" etc. If</span></span><br><span class="line"><span class="string">    initialized with the empty string, all events are passed.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name=<span class="string">''</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize a filter.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.nlen = len(name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Determine if the specified record is to be logged.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Is the specified record to be logged? Returns 0 for no, nonzero for</span></span><br><span class="line"><span class="string">        yes. If deemed appropriate, the record may be modified in-place.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 返回True表示record通过，False表示record不通过</span></span><br><span class="line">        <span class="keyword">if</span> self.nlen == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">elif</span> self.name == record.name:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="comment"># record.name不是以filter开头</span></span><br><span class="line">        <span class="keyword">elif</span> record.name.find(self.name, <span class="number">0</span>, self.nlen) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="comment"># record.name 最后一位是否为.</span></span><br><span class="line">        <span class="keyword">return</span> (record.name[self.nlen] == <span class="string">"."</span>)</span><br></pre></td></tr></table></figure>
+<p>针对<code>return (record.name[self.nlen] == &quot;.&quot;)</code>这句话可以举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"A.B"</span>能够通过的是<span class="string">"A.B."</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Filterer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    A base class for loggers and handlers which allows them to share</span></span><br><span class="line"><span class="string">    common code.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize the list of filters to be an empty list.</span></span><br><span class="line"><span class="string">        定义了一个self.filters=[]的列表管理多个filter</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.filters = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addFilter</span><span class="params">(self, filter)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Add the specified filter to this handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> (filter <span class="keyword">in</span> self.filters):</span><br><span class="line">            self.filters.append(filter)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeFilter</span><span class="params">(self, filter)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Remove the specified filter from this handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> filter <span class="keyword">in</span> self.filters:</span><br><span class="line">            self.filters.remove(filter)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Determine if a record is loggable by consulting all the filters.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        The default is to allow the record to be logged; any filter can veto</span></span><br><span class="line"><span class="string">        this and the record is then dropped. Returns a zero value if a record</span></span><br><span class="line"><span class="string">        is to be dropped, else non-zero.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">				使用列表中所有的filter进行筛选，任何一个失败都会返回0</span></span><br><span class="line"><span class="string">				例如:</span></span><br><span class="line"><span class="string">				filter1.name='A',filter2.name='A.B',filter3.name='A.B.C'</span></span><br><span class="line"><span class="string">				此时record.name='A.B.C.D'这样的record才能通过所有filter的筛选</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        rv = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">for</span> f <span class="keyword">in</span> self.filters:</span><br><span class="line">            <span class="keyword">if</span> hasattr(f, <span class="string">'filter'</span>):</span><br><span class="line">                result = f.filter(record)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = f(record) <span class="comment"># assume callable - will raise if not</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> result:</span><br><span class="line">                rv = <span class="keyword">False</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> rv</span><br></pre></td></tr></table></figure>
+<h3 id="4-logging中的高级类"><a href="#4-logging中的高级类" class="headerlink" title="4. logging中的高级类"></a>4. logging中的高级类</h3><p>有了以上三个基础的类，就可以拼凑一些更重要的高级类了，高级类可以实现<code>logging</code>的重要功能。</p>
+<h4 id="4-1-Handler——抽象了log的输出过程"><a href="#4-1-Handler——抽象了log的输出过程" class="headerlink" title="4.1 Handler——抽象了log的输出过程"></a>4.1 Handler——抽象了log的输出过程</h4><ul>
+<li><code>Handler</code>类继承自<code>Filterer</code>。<code>Handler</code>类是<code>log</code>输出这个过程的抽象</li>
+<li>同时<code>Handler</code>类具有一个成员变量<code>self.level</code>,在第二节讨论的日志级别的机制，就是在<code>Handler</code>中实现的。</li>
+<li><code>Handler</code>有一个<code>emit(record)</code>函数，<strong>这个函数负责输出log</strong>，必须在<code>Handler</code>的子类中实现。</li>
+</ul>
+<p>重要代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handler</span><span class="params">(Filterer)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Handler instances dispatch logging events to specific destinations.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, level=NOTSET)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initializes the instance - basically setting the formatter to None</span></span><br><span class="line"><span class="string">        and the filter list to empty.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        Filterer.__init__(self)</span><br><span class="line">        self._name = <span class="keyword">None</span></span><br><span class="line">        self.level = _checkLevel(level) <span class="comment"># handler必须有level属性</span></span><br><span class="line">        self.formatter = <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># Add the handler to the global _handlerList (for cleanup on shutdown)</span></span><br><span class="line">        _addHandlerRef(self)</span><br><span class="line">        self.createLock()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_name</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        _acquireLock()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> self._name <span class="keyword">in</span> _handlers:</span><br><span class="line">                <span class="keyword">del</span> _handlers[self._name]</span><br><span class="line">            self._name = name</span><br><span class="line">            <span class="keyword">if</span> name:</span><br><span class="line">                _handlers[name] = self</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            _releaseLock()</span><br><span class="line"></span><br><span class="line">    name = property(get_name, set_name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createLock</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Acquire a thread lock for serializing access to the underlying I/O.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.lock = threading.RLock()</span><br><span class="line">        _register_at_fork_acquire_release(self)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">acquire</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Acquire the I/O thread lock.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.lock:</span><br><span class="line">            self.lock.acquire()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">release</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Release the I/O thread lock.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.lock:</span><br><span class="line">            self.lock.release()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setLevel</span><span class="params">(self, level)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Set the logging level of this handler.  level must be an int or a str.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.level = _checkLevel(level)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">format</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Format the specified record.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If a formatter is set, use it. Otherwise, use the default formatter</span></span><br><span class="line"><span class="string">        for the module.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.formatter:</span><br><span class="line">            fmt = self.formatter</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            fmt = _defaultFormatter</span><br><span class="line">        <span class="keyword">return</span> fmt.format(record)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        需要子类实现</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">'emit must be implemented '</span></span><br><span class="line">                                  <span class="string">'by Handler subclasses'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Conditionally emit the specified logging record.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Emission depends on filters which may have been added to the handler.</span></span><br><span class="line"><span class="string">        Wrap the actual emission of the record with acquisition/release of</span></span><br><span class="line"><span class="string">        the I/O thread lock. Returns whether the filter passed the record for</span></span><br><span class="line"><span class="string">        emission.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 如果通过filter的筛选，则emit这条log</span></span><br><span class="line">        <span class="comment"># 这个过程是线程安全的</span></span><br><span class="line">        rv = self.filter(record)</span><br><span class="line">        <span class="keyword">if</span> rv:</span><br><span class="line">            self.acquire()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self.emit(record)</span><br><span class="line">            <span class="keyword">finally</span>:</span><br><span class="line">                self.release()</span><br><span class="line">        <span class="keyword">return</span> rv</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setFormatter</span><span class="params">(self, fmt)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Set the formatter for this handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.formatter = fmt</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flush</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Ensure all logging output has been flushed.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        This version does nothing and is intended to be implemented by</span></span><br><span class="line"><span class="string">        subclasses.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>接下来看两个简单的<code>handler</code>的子类，其实在<code>logging</code>源码中，有一个<code>handler.py</code>专门定义了很多更复杂的<code>handler</code>，有的可以将<code>log</code>缓存在内存中，有的可以将<code>log</code>做<code>rotation</code>等.</p>
+<h5 id="4-1-1-StreamHandler"><a href="#4-1-1-StreamHandler" class="headerlink" title="4.1.1 StreamHandler"></a>4.1.1 StreamHandler</h5><p>最简单的<code>handler</code>实现，将<code>log</code>写入一个流中，默认的<code>stream</code>是<code>sys.stderr</code></p>
+<p>重要的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StreamHandler</span><span class="params">(Handler)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    A handler class which writes logging records, appropriately formatted,</span></span><br><span class="line"><span class="string">    to a stream. Note that this class does not close the stream, as</span></span><br><span class="line"><span class="string">    sys.stdout or sys.stderr may be used.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    terminator = <span class="string">'\n'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, stream=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize the handler.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If stream is not specified, sys.stderr is used.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        Handler.__init__(self)</span><br><span class="line">        <span class="keyword">if</span> stream <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            stream = sys.stderr</span><br><span class="line">        self.stream = stream</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flush</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Flushes the stream.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.acquire()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> self.stream <span class="keyword">and</span> hasattr(self.stream, <span class="string">"flush"</span>):</span><br><span class="line">                self.stream.flush()</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            self.release()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Emit a record.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If a formatter is specified, it is used to format the record.</span></span><br><span class="line"><span class="string">        The record is then written to the stream with a trailing newline.  If</span></span><br><span class="line"><span class="string">        exception information is present, it is formatted using</span></span><br><span class="line"><span class="string">        traceback.print_exception and appended to the stream.  If the stream</span></span><br><span class="line"><span class="string">        has an 'encoding' attribute, it is used to determine how to do the</span></span><br><span class="line"><span class="string">        output to the stream.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            msg = self.format(record)</span><br><span class="line">            stream = self.stream</span><br><span class="line">            <span class="comment"># issue 35046: merged two stream.writes into one.</span></span><br><span class="line">            <span class="comment"># 将record的信息写入流中</span></span><br><span class="line">            stream.write(msg + self.terminator)  <span class="comment"># 每条日志都有换行</span></span><br><span class="line">            self.flush()</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setStream</span><span class="params">(self, stream)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Sets the StreamHandler's stream to the specified value,</span></span><br><span class="line"><span class="string">        if it is different.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns the old stream, if the stream was changed, or None</span></span><br><span class="line"><span class="string">        if it wasn't.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> stream <span class="keyword">is</span> self.stream:</span><br><span class="line">            result = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result = self.stream</span><br><span class="line">            self.acquire()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self.flush()</span><br><span class="line">                self.stream = stream</span><br><span class="line">            <span class="keyword">finally</span>:</span><br><span class="line">                self.release()</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h5 id="4-1-2-FileHandler"><a href="#4-1-2-FileHandler" class="headerlink" title="4.1.2 FileHandler"></a>4.1.2 FileHandler</h5><p>将<code>log</code>输出到文件的<code>handler</code>，继承自<code>StreamHandler</code></p>
+<p>重要代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span><span class="params">(StreamHandler)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    A handler class which writes formatted logging records to disk files.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename, mode=<span class="string">'a'</span>, encoding=None, delay=False)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Open the specified file and use it as the stream for logging.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># Issue #27493: add support for Path objects to be passed in</span></span><br><span class="line">        filename = os.fspath(filename)</span><br><span class="line">        <span class="comment">#keep the absolute path, otherwise derived classes which use this</span></span><br><span class="line">        <span class="comment">#may come a cropper when the current directory changes</span></span><br><span class="line">        self.baseFilename = os.path.abspath(filename)</span><br><span class="line">        self.mode = mode</span><br><span class="line">        self.encoding = encoding</span><br><span class="line">        self.delay = delay</span><br><span class="line">        <span class="keyword">if</span> delay:</span><br><span class="line">            <span class="comment">#We don't open the stream, but we still need to call the</span></span><br><span class="line">            <span class="comment">#Handler constructor to set level, formatter, lock etc.</span></span><br><span class="line">            Handler.__init__(self)</span><br><span class="line">            self.stream = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            StreamHandler.__init__(self, self._open())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">close</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Closes the stream.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.acquire()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="keyword">if</span> self.stream:</span><br><span class="line">                    <span class="keyword">try</span>:</span><br><span class="line">                        self.flush()</span><br><span class="line">                    <span class="keyword">finally</span>:</span><br><span class="line">                        stream = self.stream</span><br><span class="line">                        self.stream = <span class="keyword">None</span></span><br><span class="line">                        <span class="keyword">if</span> hasattr(stream, <span class="string">"close"</span>):</span><br><span class="line">                            stream.close()</span><br><span class="line">            <span class="keyword">finally</span>:</span><br><span class="line">                <span class="comment"># Issue #19523: call unconditionally to</span></span><br><span class="line">                <span class="comment"># prevent a handler leak when delay is set</span></span><br><span class="line">                StreamHandler.close(self)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            self.release()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_open</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Open the current base file with the (original) mode and encoding.</span></span><br><span class="line"><span class="string">        Return the resulting stream.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># append方式，打开一个文件</span></span><br><span class="line">        <span class="keyword">return</span> open(self.baseFilename, self.mode, encoding=self.encoding)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Emit a record.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If the stream was not opened because 'delay' was specified in the</span></span><br><span class="line"><span class="string">        constructor, open it before calling the superclass's emit.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 和streamhandler保持一致</span></span><br><span class="line">        <span class="keyword">if</span> self.stream <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            self.stream = self._open()</span><br><span class="line">        StreamHandler.emit(self, record)</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-Logger-——-一个独立的log管道"><a href="#4-2-Logger-——-一个独立的log管道" class="headerlink" title="4.2 Logger —— 一个独立的log管道"></a>4.2 Logger —— 一个独立的log管道</h4><p>什么是<code>logger</code>？</p>
+<ul>
+<li><code>logger</code>类继承自<code>Filterer</code>，</li>
+<li><code>logger</code>对象有<code>logger.level</code>日志级别</li>
+<li><code>logger</code>对象控制多个<code>handler</code>：<code>logger.handlers=[]</code></li>
+<li><code>logger</code>对象之间存在父子关系</li>
+</ul>
+<p>简单的来说，<code>logger</code>这个类，集中了我们以上所有的<code>LogRecord</code>类、<code>Filter</code>类、<code>Formatter</code>类、<code>handler</code>类。首先，<code>logger</code>根据输入生成一个<code>LogRecord</code>对象，经过<code>Filter</code>和<code>Formatter</code>之后，再通过<code>self.handlers</code>列表中的所有<code>handler</code>，把<code>log</code>发送出去。一个<code>logger</code>中可能有多个<code>handler</code>，可以实现把一份<code>log</code>放到多个任意的位置。</p>
+<p>重要代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span><span class="params">(Filterer)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, level=NOTSET)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize the logger with a name and an optional level.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        Filterer.__init__(self)</span><br><span class="line">        self.name = name</span><br><span class="line">        self.level = _checkLevel(level)</span><br><span class="line">        self.parent = <span class="keyword">None</span></span><br><span class="line">        self.propagate = <span class="keyword">True</span></span><br><span class="line">        self.handlers = []  <span class="comment"># handler列表</span></span><br><span class="line">        self.disabled = <span class="keyword">False</span></span><br><span class="line">        self._cache = &#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">log</span><span class="params">(self, level, msg, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Log 'msg % args' with the integer severity 'level'.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        To pass exception information, use the keyword argument exc_info with</span></span><br><span class="line"><span class="string">        a true value, e.g.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        logger.log(level, "We have a %s", "mysterious problem", exc_info=1)</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(level, int):</span><br><span class="line">            <span class="keyword">if</span> raiseExceptions:</span><br><span class="line">                <span class="keyword">raise</span> TypeError(<span class="string">"level must be an integer"</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> self.isEnabledFor(level):</span><br><span class="line">            self._log(level, msg, args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_log</span><span class="params">(self, level, msg, args, exc_info=None, extra=None, stack_info=False)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Low-level logging routine which creates a LogRecord and then calls</span></span><br><span class="line"><span class="string">        all the handlers of this logger to handle the record.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#在_log函数中创建了一个LogRecord对象</span></span><br><span class="line">        record = self.makeRecord(self.name, level, fn, lno, msg, args,</span><br><span class="line">                                 exc_info, func, extra, sinfo)</span><br><span class="line">        <span class="comment">#交给handle函数</span></span><br><span class="line">        self.handle(record)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Call the handlers for the specified record.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        This method is used for unpickled records received from a socket, as</span></span><br><span class="line"><span class="string">        well as those created locally. Logger-level filtering is applied.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 进行filter，然后调用callHandlers</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">not</span> self.disabled) <span class="keyword">and</span> self.filter(record):</span><br><span class="line">            self.callHandlers(record)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addHandler</span><span class="params">(self, hdlr)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Add the specified handler to this logger.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        _acquireLock()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> (hdlr <span class="keyword">in</span> self.handlers):</span><br><span class="line">                self.handlers.append(hdlr)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            _releaseLock()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeHandler</span><span class="params">(self, hdlr)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Remove the specified handler from this logger.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        _acquireLock()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> hdlr <span class="keyword">in</span> self.handlers:</span><br><span class="line">                self.handlers.remove(hdlr)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            _releaseLock()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasHandlers</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        See if this logger has any handlers configured.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Loop through all handlers for this logger and its parents in the</span></span><br><span class="line"><span class="string">        logger hierarchy. Return True if a handler was found, else False.</span></span><br><span class="line"><span class="string">        Stop searching up the hierarchy whenever a logger with the "propagate"</span></span><br><span class="line"><span class="string">        attribute set to zero is found - that will be the last logger which</span></span><br><span class="line"><span class="string">        is checked for the existence of handlers.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        c = self</span><br><span class="line">        rv = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">while</span> c:</span><br><span class="line">            <span class="keyword">if</span> c.handlers:</span><br><span class="line">                rv = <span class="keyword">True</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> c.propagate:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                c = c.parent</span><br><span class="line">        <span class="keyword">return</span> rv</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callHandlers</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Pass a record to all relevant handlers.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Loop through all handlers for this logger and its parents in the</span></span><br><span class="line"><span class="string">        logger hierarchy. If no handler was found, output a one-off error</span></span><br><span class="line"><span class="string">        message to sys.stderr. Stop searching up the hierarchy whenever a</span></span><br><span class="line"><span class="string">        logger with the "propagate" attribute set to zero is found - that</span></span><br><span class="line"><span class="string">        will be the last logger whose handlers are called.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        # 从当前logger到所有的父logger，递归的handle 传入的record</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        c = self</span><br><span class="line">        found = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> c:</span><br><span class="line">            <span class="keyword">for</span> hdlr <span class="keyword">in</span> c.handlers:</span><br><span class="line">                found = found + <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> record.levelno &gt;= hdlr.level:</span><br><span class="line">                    hdlr.handle(record) <span class="comment">#进入handler的emit函数发送log</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> c.propagate:</span><br><span class="line">                c = <span class="keyword">None</span>    <span class="comment">#break out</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                c = c.parent</span><br><span class="line">        <span class="keyword">if</span> (found == <span class="number">0</span>):</span><br><span class="line">            <span class="keyword">if</span> lastResort:</span><br><span class="line">                <span class="keyword">if</span> record.levelno &gt;= lastResort.level:</span><br><span class="line">                    lastResort.handle(record)</span><br><span class="line">            <span class="keyword">elif</span> raiseExceptions <span class="keyword">and</span> <span class="keyword">not</span> self.manager.emittedNoHandlerWarning:</span><br><span class="line">                sys.stderr.write(<span class="string">"No handlers could be found for logger"</span></span><br><span class="line">                                 <span class="string">" \"%s\"\n"</span> % self.name)</span><br><span class="line">                self.manager.emittedNoHandlerWarning = <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-3-Manager-——-管理logger的类"><a href="#4-3-Manager-——-管理logger的类" class="headerlink" title="4.3 Manager —— 管理logger的类"></a>4.3 Manager —— 管理logger的类</h4><p><code>Manager</code>这个类，对用户其实是不可见的，如果生成了<code>Logger</code>，<code>Manager</code>就会自动存在，<code>Manager</code>对象负责管理所有的<code>Logger</code>。</p>
+<p><code>logger</code>和<code>manager</code>的关系，总结了一下几条：</p>
+<ul>
+<li><code>Logger</code>是输出<code>log</code>的对象，<code>Manager</code>类提供了管理多个<code>Logger</code>的功能。</li>
+<li>一个程序中只能有一个<code>manager</code>对象，生成<code>manager</code>时，必定也会生成<code>RootLogger</code>，<code>manager</code>对象中的<code>self.root</code>指向了<code>RootLogger</code></li>
+<li><code>manager</code>对象中的<code>self.loggerDict</code>，这个字典保存了当前所有的<code>logger</code>对象（不包含<code>rootlogger</code>）</li>
+<li>如果使用<code>logging.getLogger</code>的<code>name</code>为空，那么默认指向了<code>name</code>为<code>root</code>的<code>RootLogger</code></li>
+<li>如果使用<code>logging.getLogger</code>的<code>name</code>不为空，生成的<code>logger</code>会自动挂载到<code>RootLogger</code>下，除非指定其他的父<code>logger</code></li>
+<li>其他的<code>logger</code>通过<code>name</code>建立父子关系</li>
+</ul>
+<p>父子关系实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">loger1=logging.getLogger(<span class="string">'A'</span>)</span><br><span class="line">loger2=logging.getLogger(<span class="string">'A.B'</span>)</span><br><span class="line"><span class="comment">#loger2的父loger是loger1</span></span><br><span class="line">loger2.parent</span><br><span class="line">out&gt;&gt;&lt;logging.Logger object at <span class="number">0xb7230d6c</span>&gt;</span><br><span class="line"><span class="comment">#loger1的父loger是rootlogger</span></span><br><span class="line">loger1.parent</span><br><span class="line">out&gt;&gt;&lt;logging.RootLogger object at <span class="number">0xb7230b6c</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这些关系都在manager中进行管理</p>
+<p>重要的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    There is [under normal circumstances] just one Manager instance, which</span></span><br><span class="line"><span class="string">    holds the hierarchy of loggers.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, rootnode)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize the manager with the root node of the logger hierarchy.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.root = rootnode</span><br><span class="line">        self.disable = <span class="number">0</span></span><br><span class="line">        self.emittedNoHandlerWarning = <span class="keyword">False</span></span><br><span class="line">        self.loggerDict = &#123;&#125;</span><br><span class="line">        self.loggerClass = <span class="keyword">None</span></span><br><span class="line">        self.logRecordFactory = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getLogger</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Get a logger with the specified name (channel name), creating it</span></span><br><span class="line"><span class="string">        if it doesn't yet exist. This name is a dot-separated hierarchical</span></span><br><span class="line"><span class="string">        name, such as "a", "a.b", "a.b.c" or similar.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If a PlaceHolder existed for the specified name [i.e. the logger</span></span><br><span class="line"><span class="string">        didn't exist but a child of it did], replace it with the created</span></span><br><span class="line"><span class="string">        logger and fix up the parent/child references which pointed to the</span></span><br><span class="line"><span class="string">        placeholder to now point to the logger.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        rv = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(name, str):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">'A logger name must be a string'</span>)</span><br><span class="line">        _acquireLock()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> name <span class="keyword">in</span> self.loggerDict:</span><br><span class="line">                rv = self.loggerDict[name]</span><br><span class="line">                <span class="keyword">if</span> isinstance(rv, PlaceHolder):</span><br><span class="line">                    ph = rv</span><br><span class="line">                    <span class="comment">#生成一个logger，将logger中的manager指向self</span></span><br><span class="line">       </span><br><span class="line">                    rv = (self.loggerClass <span class="keyword">or</span> _loggerClass)(name)</span><br><span class="line">                    rv.manager = self</span><br><span class="line">           					<span class="comment"># 维护所有logger的父子关系</span></span><br><span class="line">                    self.loggerDict[name] = rv</span><br><span class="line">                    self._fixupChildren(ph, rv)</span><br><span class="line">                    self._fixupParents(rv)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                rv = (self.loggerClass <span class="keyword">or</span> _loggerClass)(name)</span><br><span class="line">                rv.manager = self</span><br><span class="line">                self.loggerDict[name] = rv</span><br><span class="line">                self._fixupParents(rv)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            _releaseLock()</span><br><span class="line">        <span class="keyword">return</span> rv</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-LoggerAdapter-——-对标准logger的一个扩展"><a href="#4-4-LoggerAdapter-——-对标准logger的一个扩展" class="headerlink" title="4.4 LoggerAdapter —— 对标准logger的一个扩展"></a>4.4 LoggerAdapter —— 对标准logger的一个扩展</h4><p><code>LogRecord</code>这个大字典中提供的成员变量已经很多，但是，如果在输出<code>log</code>时候仍然希望能够夹带一些自己想要看到的更多信息，例如产生这个<code>log</code>的时候，调用某些函数去获得其他信息，那么就可以把这些添加到<code>Logger</code>中，<code>LoggerAdapter</code>这个类就起到这个作用。</p>
+<p><code>LoggerAdapter</code>这个类很有意思，如果不做什么改动，那么<code>LoggerAdapter</code>类和<code>Logger</code>并没有什么区别。<code>LoggerAdapter</code>只是对<code>Logger</code>类进行了一下<strong>包装</strong>。</p>
+<p><code>LoggerAdapter</code>的用法其实是在它的成员函数<code>process()</code>的注释中已经说明了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(self, msg, kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Process the logging message and keyword arguments passed in to</span></span><br><span class="line"><span class="string">    a logging call to insert contextual information. You can either</span></span><br><span class="line"><span class="string">    manipulate the message itself, the keyword args or both. Return</span></span><br><span class="line"><span class="string">    the message and kwargs modified (or not) to suit your needs.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Normally, you'll only need to override this one method in a</span></span><br><span class="line"><span class="string">    LoggerAdapter subclass for your specific needs.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    kwargs[<span class="string">"extra"</span>] = self.extra</span><br><span class="line">    <span class="keyword">return</span> msg, kwargs</span><br></pre></td></tr></table></figure>
+<p>也就是说重写process函数，以下是一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line">L=logging.getLogger(<span class="string">'name'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义一个函数，生成0~1000的随机数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> random.randint(<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">myLogger</span><span class="params">(logging.LoggerAdapter)</span>:</span></span><br><span class="line">    <span class="comment">#继承LoggerAdapter，重写process，生成随机数添加到msg前面</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(self,msg,kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'(%d),%s'</span> % (self.extra[<span class="string">'name'</span>](),msg)  ,kwargs</span><br><span class="line"></span><br><span class="line"><span class="comment">#函数对象放入字典中传入  </span></span><br><span class="line">LA=myLogger(L,&#123;<span class="string">'name'</span>:func&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">#now,do some logging</span></span><br><span class="line">LA.debug(<span class="string">'some_loging_messsage'</span>)</span><br><span class="line"></span><br><span class="line">out&gt;&gt;DEBUG:name:(<span class="number">167</span>),some_loging_messsage</span><br></pre></td></tr></table></figure>
+<h3 id="5-logging中的config函数"><a href="#5-logging中的config函数" class="headerlink" title="5. logging中的config函数"></a>5. logging中的config函数</h3><h4 id="5-1-def-basicConfig-kwargs"><a href="#5-1-def-basicConfig-kwargs" class="headerlink" title="5.1 def basicConfig(**kwargs)"></a>5.1 def basicConfig(**kwargs)</h4><p><code>basicConfig</code>函数将对各种参数进行配置，如果不传入参数，则进行默认配置：</p>
+<ol>
+<li><code>forma</code>t配置</li>
+<li><code>handler</code>配置</li>
+<li><code>level</code>配置</li>
+</ol>
+<p>参考文章：</p>
+<p><a href="https://www.jianshu.com/p/e3abceb9ab43" target="_blank" rel="noopener">python笔记_logging模块</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/02/Tornado中使用Websocket/" rel="next" title="Tornado中使用Websocket">
+                <i class="fa fa-chevron-left"></i> Tornado中使用Websocket
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-开始"><span class="nav-number">1.</span> <span class="nav-text">1. 开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-logging中的日志级别"><span class="nav-number">2.</span> <span class="nav-text">2. logging中的日志级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-logging中的基础类"><span class="nav-number">3.</span> <span class="nav-text">3. logging中的基础类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-第一个基础类-LogRecord"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 第一个基础类 LogRecord</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-第二个基础类-Formatter"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 第二个基础类 Formatter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-第三个基础类-Filter和Filterer"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 第三个基础类 Filter和Filterer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-logging中的高级类"><span class="nav-number">4.</span> <span class="nav-text">4. logging中的高级类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-Handler——抽象了log的输出过程"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 Handler——抽象了log的输出过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-1-StreamHandler"><span class="nav-number">4.1.1.</span> <span class="nav-text">4.1.1 StreamHandler</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-2-FileHandler"><span class="nav-number">4.1.2.</span> <span class="nav-text">4.1.2 FileHandler</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-Logger-——-一个独立的log管道"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 Logger —— 一个独立的log管道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-Manager-——-管理logger的类"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 Manager —— 管理logger的类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-LoggerAdapter-——-对标准logger的一个扩展"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 LoggerAdapter —— 对标准logger的一个扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-logging中的config函数"><span class="nav-number">5.</span> <span class="nav-text">5. logging中的config函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-def-basicConfig-kwargs"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 def basicConfig(**kwargs)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
