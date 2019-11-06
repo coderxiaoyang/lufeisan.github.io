@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小码农的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前面我们学习了Python的日志模块，发现想要使用不是开箱即用，而是需要进行一系列的配置。那么，有咩有直接开箱即用的日志库呢？答案当然是有的，今天我们学习下loguru模块。  安装  1pip install loguru  基本使用  那么这个库怎么来用呢？我们先用一个实例感受下： 123In [1]: from loguru import logger   ...:   ...: logge">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中更优雅的日志记录方案loguru">
+<meta property="og:url" content="https://zhaobugs.com/2019/11/06/Python中更优雅的日志记录方案loguru/index.html">
+<meta property="og:site_name" content="小码农的笔记">
+<meta property="og:description" content="前面我们学习了Python的日志模块，发现想要使用不是开箱即用，而是需要进行一系列的配置。那么，有咩有直接开箱即用的日志库呢？答案当然是有的，今天我们学习下loguru模块。  安装  1pip install loguru  基本使用  那么这个库怎么来用呢？我们先用一个实例感受下： 123In [1]: from loguru import logger   ...:   ...: logge">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-06T16:09:36.132Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python中更优雅的日志记录方案loguru">
+<meta name="twitter:description" content="前面我们学习了Python的日志模块，发现想要使用不是开箱即用，而是需要进行一系列的配置。那么，有咩有直接开箱即用的日志库呢？答案当然是有的，今天我们学习下loguru模块。  安装  1pip install loguru  基本使用  那么这个库怎么来用呢？我们先用一个实例感受下： 123In [1]: from loguru import logger   ...:   ...: logge">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2019/11/06/Python中更优雅的日志记录方案loguru/"/>
+
+
+
+
+
+  <title>Python中更优雅的日志记录方案loguru | 小码农的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码农的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/11/06/Python中更优雅的日志记录方案loguru/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码农的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python中更优雅的日志记录方案loguru</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-06T22:36:57+08:00">
+                2019-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/06/Python中更优雅的日志记录方案loguru/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/06/Python中更优雅的日志记录方案loguru/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/11/06/Python中更优雅的日志记录方案loguru/" class="leancloud_visitors" data-flag-title="Python中更优雅的日志记录方案loguru">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,715 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前面我们学习了Python的日志模块，发现想要使用不是开箱即用，而是需要进行一系列的配置。那么，有咩有直接开箱即用的日志库呢？答案当然是有的，今天我们学习下<code>loguru</code>模块。</p>
+<blockquote>
+<p>安装</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install loguru</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>基本使用</p>
+</blockquote>
+<p>那么这个库怎么来用呢？我们先用一个实例感受下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line">   ...:</span><br><span class="line">   ...: logger.debug(<span class="string">'this is a debug message'</span>)</span><br></pre></td></tr></table></figure>
+<p>看到了吧，不需要配置什么东西，直接引入一个 <code>logger</code>，然后调用其 <code>debug</code>方法即可。</p>
+<p>在 <code>loguru</code> 里面有且仅有一个主要对象，那就是 <code>logger</code>，<code>loguru</code> 里面有且仅有一个 <code>logger</code>，而且它已经被提前配置了一些基础信息，比如比较友好的格式化、文本颜色信息等等。</p>
+<p>上面的代码运行结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2019</span><span class="number">-11</span><span class="number">-06</span> <span class="number">22</span>:<span class="number">45</span>:<span class="number">31.653</span> | DEBUG    | __main__:&lt;module&gt;:<span class="number">3</span> - this <span class="keyword">is</span> a debug message</span><br></pre></td></tr></table></figure>
+<p>可以看到其默认的输出格式是上面的内容，有时间、级别、模块名、行号以及日志信息，不需要手动创建     <code>logger</code>，直接使用即可，另外其输出还是彩色的，看起来会更加友好。</p>
+<p>以上的日志信息是直接输出到控制台的，并没有输出到其他的地方，如果想要输出到其他的位置，比如存为文件，我们只需要使用一行代码声明即可。</p>
+<p>例如将结果同时输出到一个 runtime.log 文件里面，可以这么写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">2</span>]: <span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line">   ...:</span><br><span class="line">   ...: logger.add(<span class="string">'runtime.log'</span>)</span><br><span class="line">   ...: logger.debug(<span class="string">'this is a debug'</span>)</span><br></pre></td></tr></table></figure>
+<p>很简单吧，我们也不需要再声明一个 <code>FileHandler</code> 了，就一行 <code>add</code> 语句搞定，运行之后会发现目录下 <code>runtime.log</code> 里面同样出现了刚刚控制台输出的 <code>DEBUG</code> 信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat runtime.log</span><br><span class="line">2019-11-06 22:46:59.690 | DEBUG    | __main__:&lt;module&gt;:4 - this is a debug</span><br></pre></td></tr></table></figure>
+<p>上面就是一些基本的使用，但这还远远不够，下面我们来详细了解下它的一些功能模块。·</p>
+<blockquote>
+<p>详细使用</p>
+</blockquote>
+<p>既然是日志，那么最常见的就是输出到文件了。<code>loguru</code> 对输出到文件的配置有非常强大的支持，比如支持输出到多个文件，分级别分别输出，过大创建新文件，过久自动删除等等。</p>
+<p>下面我们分别看看这些怎样来实现，这里基本上就是 <code>add</code> 方法的使用介绍。因为这个 <code>add</code> 方法就相当于给 <code>logger</code> 添加了一个 <code>Handler</code>，它给我们暴露了许多参数来实现 <code>Handler</code> 的配置，下面我们来详细介绍下。</p>
+<p>首先看看它的方法定义吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    self,</span></span></span><br><span class="line"><span class="function"><span class="params">    sink,</span></span></span><br><span class="line"><span class="function"><span class="params">    *,</span></span></span><br><span class="line"><span class="function"><span class="params">    level=_defaults.LOGURU_LEVEL,</span></span></span><br><span class="line"><span class="function"><span class="params">    format=_defaults.LOGURU_FORMAT,</span></span></span><br><span class="line"><span class="function"><span class="params">    filter=_defaults.LOGURU_FILTER,</span></span></span><br><span class="line"><span class="function"><span class="params">    colorize=_defaults.LOGURU_COLORIZE,</span></span></span><br><span class="line"><span class="function"><span class="params">    serialize=_defaults.LOGURU_SERIALIZE,</span></span></span><br><span class="line"><span class="function"><span class="params">    backtrace=_defaults.LOGURU_BACKTRACE,</span></span></span><br><span class="line"><span class="function"><span class="params">    diagnose=_defaults.LOGURU_DIAGNOSE,</span></span></span><br><span class="line"><span class="function"><span class="params">    enqueue=_defaults.LOGURU_ENQUEUE,</span></span></span><br><span class="line"><span class="function"><span class="params">    catch=_defaults.LOGURU_CATCH,</span></span></span><br><span class="line"><span class="function"><span class="params">    **kwargs</span></span></span><br><span class="line"><span class="function"><span class="params">)</span>:</span></span><br><span class="line">    <span class="string">r"""Add a handler sending log messages to a sink adequately configured.</span></span><br></pre></td></tr></table></figure>
+<p>看看它的源代码，它支持这么多的参数，如 <code>level</code>、<code>format</code>、<code>filter</code>、<code>color</code> 等等，另外我们还注意到它有个非常重要的参数 <code>sink</code>，我们看看官方文档：<a href="https://loguru.readthedocs.io/en/stable/api/logger.html#sink" target="_blank" rel="noopener">sink</a>，可以了解到通过 <code>sink</code> 我们可以传入多种不同的数据结构，汇总如下：</p>
+<ul>
+<li><code>sink</code> 可以传入一个 <code>file</code> 对象，例如 <code>sys.stderr</code> 或者 <code>open(&#39;file.log&#39;, &#39;w&#39;)</code> 都可以。</li>
+<li><code>sink</code> 可以直接传入一个 <code>str</code> 字符串或者 <code>pathlib.Path</code> 对象，其实就是代表文件路径的，如果识别到是这种类型，它会自动创建对应路径的日志文件并将日志输出进去。</li>
+<li><code>sink</code> 可以是一个方法，可以自行定义输出实现。</li>
+<li><code>sink</code> 可以是一个 <code>logging</code> 模块的 <code>Handler</code>，比如 <code>FileHandler</code>、<code>StreamHandler</code> 等等，或者上文中我们提到的 <code>CMRESHandler</code> 照样也是可以的，这样就可以实现自定义 <code>Handler</code> 的配置。</li>
+<li><code>sink</code> 还可以是一个自定义的类，具体的实现规范可以参见官方文档。</li>
+</ul>
+<p>所以说，刚才我们所演示的输出到文件，仅仅给它传了一个 <code>str</code> 字符串路径，他就给我们创建了一个日志文件，就是这个原理。</p>
+<p><strong>基本参数</strong></p>
+<p>下面我们再了解下它的其他参数，例如 <code>format</code>、<code>filter</code>、<code>level</code> 等等。</p>
+<p>其实它们的概念和格式和 <code>logging</code> 模块都是基本一样的了，例如这里使用<code>format</code>、<code>filter</code>、<code>level</code>来规定输出的格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">'runtime.log'</span>, format=<span class="string">"&#123;time&#125; &#123;level&#125; &#123;message&#125;"</span>, filter=<span class="string">"my_module"</span>, level=<span class="string">"INFO"</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>删除 sink</strong></p>
+<p>另外添加 <code>sink</code> 之后我们也可以对其进行删除，相当于重新刷新并写入新的内容。</p>
+<p>删除的时候根据刚刚 <code>add</code> 方法返回的 <code>id</code> 进行删除即可，看下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"> </span><br><span class="line">trace = logger.add(<span class="string">'runtime.log'</span>)</span><br><span class="line">logger.debug(<span class="string">'this is a debug message'</span>)</span><br><span class="line">logger.remove(trace)</span><br><span class="line">logger.debug(<span class="string">'this is another debug message'</span>)</span><br></pre></td></tr></table></figure>
+<p>看这里，我们首先 <code>add</code> 了一个 <code>sink</code>，然后获取它的返回值，赋值为 <code>trace</code>。随后输出了一条日志，然后将 <code>trace</code> 变量传给<code>remove</code> 方法，再次输出一条日志，看看结果是怎样的。</p>
+<p>控制台输出如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2019</span><span class="number">-11</span><span class="number">-06</span> <span class="number">23</span>:<span class="number">03</span>:<span class="number">24.368</span> | DEBUG    | __main__:&lt;module&gt;:<span class="number">4</span> - this <span class="keyword">is</span> a debug message</span><br><span class="line"><span class="number">2019</span><span class="number">-11</span><span class="number">-06</span> <span class="number">23</span>:<span class="number">03</span>:<span class="number">24.369</span> | DEBUG    | __main__:&lt;module&gt;:<span class="number">6</span> - this <span class="keyword">is</span> another debug message</span><br></pre></td></tr></table></figure>
+<p>日志文件 <code>runtime.log</code> 内容如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat runtime.log</span><br><span class="line"><span class="number">2019</span>-<span class="number">11</span>-<span class="number">06</span> <span class="number">23</span>:<span class="number">03</span>:<span class="number">24.368</span> | DEBUG    | __main__:&lt;module&gt;:<span class="number">4</span> - this is a debug message</span><br></pre></td></tr></table></figure>
+<p>可以发现，在调用 <code>remove</code> 方法之后，确实将历史 <code>log</code> 删除了。</p>
+<p>这样我们就可以实现日志的刷新重新写入操作。</p>
+<p><strong>rotation 配置</strong></p>
+<p>用了 <code>loguru</code> 我们还可以非常方便地使用<code>rotation</code> 配置，比如我们想一天输出一个日志文件，或者文件太大了自动分隔日志文件，我们可以直接使用 <code>add</code> 方法的 <code>rotation</code> 参数进行配置。</p>
+<p>我们看看下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">'runtime_&#123;time&#125;.log'</span>, rotation=<span class="string">"500 MB"</span>)</span><br></pre></td></tr></table></figure>
+<p>通过这样的配置我们就可以实现每 500MB 存储一个文件，每个 log 文件过大就会新创建一个 log 文件。我们在配置 log 名字时加上了一个 <code>time</code> 占位符，这样在生成时可以自动将时间替换进去，生成一个文件名包含时间的 log 文件。</p>
+<p>另外我们也可以使用 <code>rotation</code> 参数实现定时创建 log 文件，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">'runtime_&#123;time&#125;.log'</span>, rotation=<span class="string">'00:00'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样就可以实现每天 0 点新创建一个 log 文件输出了。</p>
+<p>另外我们也可以配置 log 文件的循环时间，比如每隔一周创建一个 log 文件，写法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">'runtime_&#123;time&#125;.log'</span>, rotation=<span class="string">'1 week'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样我们就可以实现一周创建一个 log 文件了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- an |int| which corresponds to the maximum file size <span class="keyword">in</span> bytes before that the current</span><br><span class="line">  logged file <span class="keyword">is</span> closed <span class="keyword">and</span> a new one started over.</span><br><span class="line">- a |timedelta| which indicates the frequency of each new rotation.</span><br><span class="line">- a |time| which specifies the hour when the daily rotation should occur.</span><br><span class="line">- a |str| <span class="keyword">for</span> human-friendly parametrization of one of the previously enumerated types.</span><br><span class="line">  Examples: ``<span class="string">"100 MB"</span>``, ``<span class="string">"0.5 GB"</span>``, ``<span class="string">"1 month 2 weeks"</span>``, ``<span class="string">"4 days"</span>``, ``<span class="string">"10h"</span>``,</span><br><span class="line">  ``<span class="string">"monthly"</span>``, ``<span class="string">"18:00"</span>``, ``<span class="string">"sunday"</span>``, ``<span class="string">"w0"</span>``, ``<span class="string">"monday at 12:00"</span>``, ...</span><br><span class="line">- a |function|_ which will be called before logging. It should accept two</span><br><span class="line">  arguments: the logged message <span class="keyword">and</span> the file object, <span class="keyword">and</span> it should <span class="keyword">return</span> ``<span class="keyword">True</span>`` <span class="keyword">if</span></span><br><span class="line">  the rotation should happen now, ``<span class="keyword">False</span>`` otherwise.</span><br></pre></td></tr></table></figure>
+<p><strong>retention 配置</strong></p>
+<p>很多情况下，一些非常久远的 log 对我们来说并没有什么用处了，它白白占据了一些存储空间，不清除掉就会非常浪费。<code>retention</code> 这个参数可以配置日志的最长保留时间。</p>
+<p>比如我们想要设置日志文件最长保留 10 天，可以这么来配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">'runtime.log'</span>, retention=<span class="string">'10 days'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样 log 文件里面就会保留最新 10 天的 log，妈妈再也不用担心 log 沉积的问题啦。</p>
+<p>我们看下源码看下这个参数可以设置为哪些值:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- an |int| which indicates the number of log files to keep, <span class="keyword">while</span> older files are removed.</span><br><span class="line">- a |timedelta| which specifies the maximum age of files to keep.</span><br><span class="line">- a |str| <span class="keyword">for</span> human-friendly parametrization of the maximum age of files to keep.</span><br><span class="line">  Examples: ``<span class="string">"1 week, 3 days"</span>``, ``<span class="string">"2 months"</span>``, ...</span><br><span class="line">- a |function|_ which will be called before the retention process. It should accept the list</span><br><span class="line">  of log files <span class="keyword">as</span> argument <span class="keyword">and</span> process to whatever it wants (moving files, removing them,</span><br><span class="line">  etc.).</span><br></pre></td></tr></table></figure>
+<p><strong>compression 配置</strong></p>
+<p><code>loguru</code> 还可以配置文件的压缩格式，比如使用 <code>zip</code> 文件格式保存，示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">'runtime.log'</span>, compression=<span class="string">'zip'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样可以更加节省存储空间。</p>
+<p>我们看下源码看下这个参数可以设置为哪些值:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- a |str| which corresponds to the compressed <span class="keyword">or</span> archived file extension. This can be one</span><br><span class="line">  of: ``<span class="string">"gz"</span>``, ``<span class="string">"bz2"</span>``, ``<span class="string">"xz"</span>``, ``<span class="string">"lzma"</span>``, ``<span class="string">"tar"</span>``, ``<span class="string">"tar.gz"</span>``, ``<span class="string">"tar.bz2"</span>``,</span><br><span class="line">  ``<span class="string">"tar.xz"</span>``, ``<span class="string">"zip"</span>``.</span><br><span class="line">- a |function|_ which will be called before file termination. It should accept the path</span><br><span class="line">  of the log file <span class="keyword">as</span> argument <span class="keyword">and</span> process to whatever it wants (custom compression,</span><br><span class="line">  network sending, removing it, etc.).</span><br></pre></td></tr></table></figure>
+<p><strong>enqueue配置</strong></p>
+<p><code>loguru</code>可以配置在多进程同时往日志文件写日志的时候使用队列达到异步功效。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.add(<span class="string">"somefile.log"</span>, enqueue=<span class="keyword">True</span>)  <span class="comment"># 异步写入</span></span><br></pre></td></tr></table></figure>
+<p>看下源码的解释:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">enqueue : |bool|, optional</span><br><span class="line">    Whether the messages to be logged should first <span class="keyword">pass</span> through a multiprocess-safe queue</span><br><span class="line">    before reaching the sink. This <span class="keyword">is</span> useful <span class="keyword">while</span> logging to a file through multiple</span><br><span class="line">    processes.</span><br></pre></td></tr></table></figure>
+<p><strong>字符串格式化</strong></p>
+<p><code>loguru</code> 在输出 log 的时候还提供了非常友好的字符串格式化功能，像这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">'If you are using Python &#123;&#125;, prefer &#123;feature&#125; of course!'</span>, <span class="number">3.6</span>, feature=<span class="string">'f-strings'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样在添加参数就非常方便了。</p>
+<p><strong>Traceback 记录</strong></p>
+<p>在很多情况下，如果遇到运行错误，而我们在打印输出 log 的时候万一不小心没有配置好 Traceback 的输出，很有可能我们就没法追踪错误所在了。</p>
+<p>但用了 loguru 之后，我们用它提供的装饰器就可以直接进行 Traceback 的记录，类似这样的配置即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">(x, y, z)</span>:</span></span><br><span class="line">    <span class="comment"># An error? It's caught anyway!</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (x + y + z)</span><br></pre></td></tr></table></figure>
+<p>我们做个测试，我们在调用时三个参数都传入 0，直接引发除以 0 的错误，看看会出现什么情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_function(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>运行完毕之后，可以发现 log 里面就出现了 Traceback 信息，而且给我们输出了当时的变量值，真的是不能再赞了！结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; File <span class="string">"run.py"</span>, line <span class="number">15</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    my_function(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    └ &lt;function my_function at <span class="number">0x1171dd510</span>&gt;</span><br><span class="line"> </span><br><span class="line">  File <span class="string">"/private/var/py/logurutest/demo5.py"</span>, line <span class="number">13</span>, <span class="keyword">in</span> my_function</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (x + y + z)</span><br><span class="line">                │   │   └ <span class="number">0</span></span><br><span class="line">                │   └ <span class="number">0</span></span><br><span class="line">                └ <span class="number">0</span></span><br><span class="line"> </span><br><span class="line">ZeroDivisionError: division by zero</span><br></pre></td></tr></table></figure>
+<p>因此，用 loguru 可以非常方便地实现日志追踪，debug 效率可能要高上十倍了？</p>
+<blockquote>
+<p>Want to intercept standard logging messages toward your Loguru sinks?</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterceptHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="comment"># Retrieve context where the logging call occurred, this happens to be in the 6th frame upward</span></span><br><span class="line">        logger_opt = logger.opt(depth=<span class="number">6</span>, exception=record.exc_info)</span><br><span class="line">        logger_opt.log(record.levelno, record.getMessage())</span><br><span class="line"></span><br><span class="line">logging.basicConfig(handlers=[InterceptHandler()], level=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>参考文章：</p>
+<p><a href="https://loguru.readthedocs.io/en/stable/index.html" target="_blank" rel="noopener">官方文档</a></p>
+<p><a href="https://docs.cdwanze.work/articles/loguru-module.html" target="_blank" rel="noopener">loguru模块</a></p>
+<p><a href="https://cuiqingcai.com/7776.html" target="_blank" rel="noopener">Python 中更优雅的日志记录方案 loguru</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/06/自定义Tornado请求日志格式/" rel="next" title="自定义Tornado请求日志格式">
+                <i class="fa fa-chevron-left"></i> 自定义Tornado请求日志格式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">138</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
