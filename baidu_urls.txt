@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/11/06/Python中更优雅的日志记录方案loguru/
+https://zhaobugs.com/2019/11/07/自定义Tornado请求日志格式/
