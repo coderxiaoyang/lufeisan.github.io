@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MongoDB," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小码农的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="无论是mysql还是mongo，数据库是一个系统最容易出现问题、瓶颈的地方。mysql出现问题时，相信大家都有一套完善的调试、调优方法，从最基础的查看slow log,query log到mysql explain查询索引分析等；而由于在mongo方面的技术积累没有mysql那么多，出现性能问题时，往往需要去花很大的精力进行调优。    索引mongo中的索引跟mysql中索引同样重要，没有索引，">
+<meta name="keywords" content="MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB查询索引分析">
+<meta property="og:url" content="https://zhaobugs.com/2020/01/06/MongoDB查询索引分析/index.html">
+<meta property="og:site_name" content="小码农的笔记">
+<meta property="og:description" content="无论是mysql还是mongo，数据库是一个系统最容易出现问题、瓶颈的地方。mysql出现问题时，相信大家都有一套完善的调试、调优方法，从最基础的查看slow log,query log到mysql explain查询索引分析等；而由于在mongo方面的技术积累没有mysql那么多，出现性能问题时，往往需要去花很大的精力进行调优。    索引mongo中的索引跟mysql中索引同样重要，没有索引，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gam6isduvmj30go0vcq3r.jpg">
+<meta property="og:updated_time" content="2020-01-05T17:06:18.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MongoDB查询索引分析">
+<meta name="twitter:description" content="无论是mysql还是mongo，数据库是一个系统最容易出现问题、瓶颈的地方。mysql出现问题时，相信大家都有一套完善的调试、调优方法，从最基础的查看slow log,query log到mysql explain查询索引分析等；而由于在mongo方面的技术积累没有mysql那么多，出现性能问题时，往往需要去花很大的精力进行调优。    索引mongo中的索引跟mysql中索引同样重要，没有索引，">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gam6isduvmj30go0vcq3r.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/01/06/MongoDB查询索引分析/"/>
+
+
+
+
+
+  <title>MongoDB查询索引分析 | 小码农的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码农的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/01/06/MongoDB查询索引分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码农的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MongoDB查询索引分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-06T23:42:44+08:00">
+                2020-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MongoDB/" itemprop="url" rel="index">
+                    <span itemprop="name">MongoDB</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/06/MongoDB查询索引分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/01/06/MongoDB查询索引分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/01/06/MongoDB查询索引分析/" class="leancloud_visitors" data-flag-title="MongoDB查询索引分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,488 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>无论是<code>mysql</code>还是<code>mongo</code>，数据库是一个系统最容易出现问题、瓶颈的地方。<code>mysql</code>出现问题时，相信大家都有一套完善的调试、调优方法，从最基础的查看<code>slow log</code>,<code>query log</code>到<code>mysql explain</code>查询索引分析等；而由于在<code>mongo</code>方面的技术积累没有<code>mysql</code>那么多，出现性能问题时，往往需要去花很大的精力进行调优。   </p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p><code>mongo</code>中的索引跟<code>mysq</code>l中索引同样重要，没有索引，每次查找都需要遍历全表。    </p>
+<p><code>mongo</code>的索引类型包括如下几种：    </p>
+<ul>
+<li><code>single filed</code>索引：最基本的索引类型，加在单个<code>filed</code>上，可以指定升降序，默认<code></code>_id列会自动加上该索引    </li>
+<li><code>Compound Index</code>：复合索引加在多个<code>field</code>上，每一个字段都可以指定升降序；复合索引的顺序比较重要，它决定了该索引操作是否支持排序    </li>
+<li><code>Multikey Index</code>：如果给<code>array</code>类型的<code>field</code>加索引，<code>mongo</code>会自动创建一个<code>multikey index</code></li>
+<li><code>Geospatial Index</code>：地理空间索引</li>
+<li><code>Text Indexes</code>: 一个集合最多只能够创建一个文本索引，文本索引加在string类型的列上    </li>
+<li><code>Hashed Index</code>  </li>
+</ul>
+<p>索引的一些特征：    </p>
+<ul>
+<li><code>unique index</code>：指定为唯一索引    </li>
+<li><code>Partial Index</code>：索引只会加到特定条件的<code>document</code>上，用户可以指定过滤条件    </li>
+<li><code>Sparse Index</code>：索引会跳过所有不包含被索引键的文档。这个索引之所以称为 “稀疏” 是因为它并不包括集合中的所有文档    </li>
+<li><code>TTL Index</code>：通过TTL索引，<code>mongo</code>会在过一段时间以后自动删除集合中的文档    </li>
+</ul>
+<h3 id="Mongo-explain"><a href="#Mongo-explain" class="headerlink" title="Mongo explain"></a>Mongo explain</h3><p>与<code>mysql</code>相同，<code>mongo</code>也可以通过使用<code>explain</code>命令来查看<code>mongo</code>的执行情况，不同的是<code>mongo</code>的<code>explain</code>输出要复杂的多，mongo3.0版本对于<code>explain</code>做了很大的调整，本文只讨论3.0以后版本的<code>explain</code>情况。    </p>
+<p>包括<code>count</code>, <code>distinct</code>, <code>group</code>, <code>find</code>, <code>findAndModify</code>, <code>delete</code>,<code>update</code>等操作均可以执行<code>explain</code>。 </p>
+<p>​    </p>
+<p><strong><code>explain</code>有三种执行模式： </strong></p>
+<ol>
+<li><code>queryPlanner Mode</code>: <code>mongo</code> 通过运行查询优化器选出<code>winning plan</code>   </li>
+<li><code>executionStats Mode</code>: 除了获取<code>winning plan</code>，<code>mongo</code>还会去真正的执行该<code>plan</code>，然后返回执行时的一些统计信息；该模式<strong>比较耗时</strong>（注意：对于写操作，<code>mongo</code>虽然会去执行这些<code>winning plan</code>，但是不会将这些修改应用到该<code>database</code>上）      </li>
+<li><code>allPlansExecution Mode</code>:返回更多的信息,默认模式    </li>
+</ol>
+<p>shell环境下可以通过<code>db.collection.explain()</code>、<code>cursor.explain()</code>、<code>db.runCommand()</code>三种方法来执行<code>explain</code>，pymongo可以通过<code>db.command</code>、<code>cursor.explain()</code>来获取<code>explain</code>的结果。    </p>
+<blockquote>
+<p> 注意：aggrgate仅仅会在queryplanner模式下运行explain    </p>
+</blockquote>
+<h3 id="explain结果分析"><a href="#explain结果分析" class="headerlink" title="explain结果分析"></a>explain结果分析</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="string">"queryPlanner"</span> : &#123;</span><br><span class="line">                <span class="string">"plannerVersion"</span> : <span class="number">1</span>,</span><br><span class="line">                <span class="string">"namespace"</span> : <span class="string">"game_db.game_user"</span>,</span><br><span class="line">                <span class="string">"indexFilterSet"</span> : false,</span><br><span class="line">                <span class="string">"parsedQuery"</span> : &#123;</span><br><span class="line">                        <span class="string">"w"</span> : &#123;</span><br><span class="line">                                <span class="string">"<span class="variable">$eq</span>"</span> : <span class="number">1</span></span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">"winningPlan"</span> : &#123;</span><br><span class="line">                        <span class="string">"stage"</span> : <span class="string">"FETCH"</span>,</span><br><span class="line">                        <span class="string">"inputStage"</span> : &#123;</span><br><span class="line">                                <span class="string">"stage"</span> : <span class="string">"IXSCAN"</span>,</span><br><span class="line">                                <span class="string">"keyPattern"</span> : &#123;</span><br><span class="line">                                        <span class="string">"w"</span> : <span class="number">1</span>,</span><br><span class="line">                                        <span class="string">"n"</span> : <span class="number">1</span></span><br><span class="line">                                &#125;,</span><br><span class="line">                                <span class="string">"indexName"</span> : <span class="string">"w_1_n_1"</span>,</span><br><span class="line">                                <span class="string">"isMultiKey"</span> : false,</span><br><span class="line">                                <span class="string">"direction"</span> : <span class="string">"forward"</span>,</span><br><span class="line">                                <span class="string">"indexBounds"</span> : &#123;</span><br><span class="line">                                        <span class="string">"w"</span> : [</span><br><span class="line">                                                <span class="string">"[1.0, 1.0]"</span></span><br><span class="line">                                        ],</span><br><span class="line">                                        <span class="string">"n"</span> : [</span><br><span class="line">                                                <span class="string">"[MinKey, MaxKey]"</span></span><br><span class="line">                                        ]</span><br><span class="line">                                &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">"rejectedPlans"</span> : [</span><br><span class="line">                        &#123;</span><br><span class="line">                                <span class="string">"stage"</span> : <span class="string">"FETCH"</span>,</span><br><span class="line">                                <span class="string">"inputStage"</span> : &#123;</span><br><span class="line">                                        <span class="string">"stage"</span> : <span class="string">"IXSCAN"</span>,</span><br><span class="line">                                        <span class="string">"keyPattern"</span> : &#123;</span><br><span class="line">                                                <span class="string">"w"</span> : <span class="number">1</span>,</span><br><span class="line">                                                <span class="string">"v"</span> : <span class="number">1</span></span><br><span class="line">                                        &#125;,</span><br><span class="line">                                        <span class="string">"indexName"</span> : <span class="string">"w_1_v_1"</span>,</span><br><span class="line">                                        <span class="string">"isMultiKey"</span> : false,</span><br><span class="line">                                        <span class="string">"direction"</span> : <span class="string">"forward"</span>,</span><br><span class="line">                                        <span class="string">"indexBounds"</span> : &#123;</span><br><span class="line">                                                <span class="string">"w"</span> : [</span><br><span class="line">                                                        <span class="string">"[1.0, 1.0]"</span></span><br><span class="line">                                                ],</span><br><span class="line">                                                <span class="string">"v"</span> : [</span><br><span class="line">                                                        <span class="string">"[MinKey, MaxKey]"</span></span><br><span class="line">                                                ]</span><br><span class="line">                                        &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                ]</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+<p>各字段的意义如下所示：    </p>
+<ul>
+<li><p><code>namespace</code>： 该<code>query</code>所查询的表    </p>
+</li>
+<li><p><code>winningPlan</code>： 查询优化器针对该<code>query</code>返回的最优执行计划详细内容    </p>
+</li>
+<li><p><code>stage</code>：非常重要的一个字段，后面分析       </p>
+</li>
+<li><p><code>inputStage</code>：<code>stage</code>的<code>child stage</code>，此处是IXSCAN，表示进行的是<code>index scanning</code>  </p>
+</li>
+<li><p><code>keyPattern</code>： 所扫描的<code>index</code>内容，此处是<code>w:1</code>与<code>n:1</code>  </p>
+</li>
+<li><p><code>indexName</code>： 所选用的<code>index</code></p>
+</li>
+<li><p><code>isMultiKey</code>： 是否是<code>Multikey</code>，此处返回是false，如果索引建立在<code>array</code>上，此处将是true    </p>
+<ul>
+<li><code>direction</code>： 此<code>query</code>的查询顺序，此处是<code>forward</code>，如果用了<code>.sort({w:-1})</code>将显示<code>backward</code> </li>
+</ul>
+</li>
+<li><p><code>indexBounds</code>： <code>winningplan</code>所扫描的索引范围，此处查询条件是<code>w:1</code>,使用的<code>index</code>是<code>w</code>与<code>n</code>的联合索引，故<code>w</code>是<code>1.0</code>,<code>1.0</code>而<code>n</code>没有指定在查询条件中，故是<code>MinKey</code>,<code>MaxKey</code> </p>
+</li>
+<li><p><code>rejectedPlans</code>：其他执行计划（非最优而被查询优化器reject的）的详细返回 </p>
+</li>
+</ul>
+<p>如果在<code>executionStats</code>模式或者<code>allPlansExecution</code>模式下执行<code>explain</code>，其结果中还会包含<code>executionStats</code>信息：    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"executionStats"</span> : &#123;</span><br><span class="line">           <span class="string">"executionSuccess"</span> : true,</span><br><span class="line">           <span class="string">"nReturned"</span> : <span class="number">29861</span>,</span><br><span class="line">           <span class="string">"executionTimeMillis"</span> : <span class="number">23079</span>,</span><br><span class="line">           <span class="string">"totalKeysExamined"</span> : <span class="number">29861</span>,</span><br><span class="line">           <span class="string">"totalDocsExamined"</span> : <span class="number">29861</span>,</span><br><span class="line">           <span class="string">"executionStages"</span> : &#123;</span><br><span class="line">                   <span class="string">"stage"</span> : <span class="string">"FETCH"</span>,</span><br><span class="line">                   <span class="string">"nReturned"</span> : <span class="number">29861</span>,</span><br><span class="line">                   <span class="string">"executionTimeMillisEstimate"</span> : <span class="number">22685</span>,</span><br><span class="line">                   <span class="string">"works"</span> : <span class="number">29862</span>,</span><br><span class="line">                   <span class="string">"advanced"</span> : <span class="number">29861</span>,</span><br><span class="line">                   <span class="string">"needTime"</span> : <span class="number">0</span>,</span><br><span class="line">                   <span class="string">"needFetch"</span> : <span class="number">0</span>,</span><br><span class="line">                   <span class="string">"saveState"</span> : <span class="number">946</span>,</span><br><span class="line">                   <span class="string">"restoreState"</span> : <span class="number">946</span>,</span><br><span class="line">                   <span class="string">"isEOF"</span> : <span class="number">1</span>,</span><br><span class="line">                   <span class="string">"invalidates"</span> : <span class="number">0</span>,</span><br><span class="line">                   <span class="string">"docsExamined"</span> : <span class="number">29861</span>,</span><br><span class="line">                   <span class="string">"alreadyHasObj"</span> : <span class="number">0</span>,</span><br><span class="line">                   <span class="string">"inputStage"</span> : &#123;</span><br><span class="line">                           <span class="string">"stage"</span> : <span class="string">"IXSCAN"</span>,</span><br><span class="line">                           <span class="string">"nReturned"</span> : <span class="number">29861</span>,</span><br><span class="line">                           <span class="string">"executionTimeMillisEstimate"</span> : <span class="number">70</span>,</span><br><span class="line">                           <span class="string">"works"</span> : <span class="number">29862</span>,</span><br><span class="line">                           <span class="string">"advanced"</span> : <span class="number">29861</span>,</span><br><span class="line">                           <span class="string">"needTime"</span> : <span class="number">0</span>,</span><br><span class="line">                           <span class="string">"needFetch"</span> : <span class="number">0</span>,</span><br><span class="line">                           <span class="string">"saveState"</span> : <span class="number">946</span>,</span><br><span class="line">                           <span class="string">"restoreState"</span> : <span class="number">946</span>,</span><br><span class="line">                           <span class="string">"isEOF"</span> : <span class="number">1</span>,</span><br><span class="line">                           <span class="string">"invalidates"</span> : <span class="number">0</span>,</span><br><span class="line">                           <span class="string">"keyPattern"</span> : &#123;</span><br><span class="line">                                   <span class="string">"w"</span> : <span class="number">1</span>,</span><br><span class="line">                                   <span class="string">"n"</span> : <span class="number">1</span></span><br><span class="line">                           &#125;,</span><br><span class="line">                           <span class="string">"indexName"</span> : <span class="string">"w_1_n_1"</span>,</span><br><span class="line">                           <span class="string">"isMultiKey"</span> : false,</span><br><span class="line">                           <span class="string">"direction"</span> : <span class="string">"forward"</span>,</span><br><span class="line">                           <span class="string">"indexBounds"</span> : &#123;</span><br><span class="line">                                   <span class="string">"w"</span> : [</span><br><span class="line">                                           <span class="string">"[1.0, 1.0]"</span></span><br><span class="line">                                   ],</span><br><span class="line">                                   <span class="string">"n"</span> : [</span><br><span class="line">                                           <span class="string">"[MinKey, MaxKey]"</span></span><br><span class="line">                                   ]</span><br><span class="line">                           &#125;,</span><br><span class="line">                           <span class="string">"keysExamined"</span> : <span class="number">29861</span>,</span><br><span class="line">                           <span class="string">"dupsTested"</span> : <span class="number">0</span>,</span><br><span class="line">                           <span class="string">"dupsDropped"</span> : <span class="number">0</span>,</span><br><span class="line">                           <span class="string">"seenInvalidated"</span> : <span class="number">0</span>,</span><br><span class="line">                           <span class="string">"matchTested"</span> : <span class="number">0</span></span><br><span class="line">                   &#125;</span><br><span class="line">           &#125;</span><br><span class="line">   &#125;,</span><br></pre></td></tr></table></figure>
+<p>其中重要字段含义如下：    </p>
+<ul>
+<li><code>executionSuccess</code>：是否执行成功    </li>
+<li><code>nReturned</code>：查询的返回条数    </li>
+<li><code>executionTimeMillis</code>：整体执行时间    </li>
+<li><code>totalKeysExamined</code>：索引扫描次数    </li>
+<li><code>totalDocsExamined</code>：<code>document</code>扫描次数    </li>
+</ul>
+<p><code>stage</code>作为<code>explain</code>结果非常重要的一个字段，指明目前处于哪个阶段，常见的<code>stage</code>有：<code>COLLSCAN</code>(全表扫描), <code>IXSCAN</code>(索引扫描), <code>FETCH</code>(根据索引去检索指定<code>document</code>), <code>SHARD_MERGE</code>(将各个分片返回数据进行<code>merge</code>), <code>SOR</code>T(在内存中进行排序),<code>LIMIT</code>(使用<code>limit</code>限制返回数), <code>SKIP</code>(使用<code>skip</code>进行跳过), <code>TEXT</code>(全文索引进行查询), <code>PROJECTION</code>(限定返回字段), <code>IDHACK</code>(针对<code>_id</code>进行查询)等等    </p>
+<p>对于普通查询，我们最希望看到的组合有这些：       </p>
+<ul>
+<li>Fetch+IDHACK    </li>
+<li>Fetch+ixscan    </li>
+<li>Limit+（Fetch+ixscan）    </li>
+<li>PROJECTION+ixscan    </li>
+<li>SHARDING_FILTER+ixscan等undefined不希望看到包含如下的stage：undefinedCOLLSCAN（全表扫），SORT（使用sort但是无index），不合理的SKIP，SUBPLA（未用到index的$or）   </li>
+</ul>
+<h3 id="查询分析器"><a href="#查询分析器" class="headerlink" title="查询分析器"></a>查询分析器</h3><p>无论哪种模式，<code>explain</code>的结果中都会有<code>winning plan</code>的信息，这些<code>winning plan</code>是通过<code>mongo</code>查询分析器获得的，查询分析器会缓存<code>winning plan</code>的信息，所以<code>query planner</code>模式的<code>explain</code>执行速度很快。    </p>
+<p>下面这幅图说明了查询分析器的执行逻辑：  </p>
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1gam6isduvmj30go0vcq3r.jpg" alt="img"></p>
+<p>详细信息见：<a href="https://docs.mongodb.com/manual/core/query-plans/" target="_blank" rel="noopener">Query Plans</a></p>
+<p>参考原文：<a href="https://cloud.tencent.com/developer/article/1148443" target="_blank" rel="noopener">MongoDB查询索引分析</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MongoDB/" rel="tag"><i class="fa fa-tag"></i>MongoDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/05/Python异常记录Traceback模块详解/" rel="next" title="Python异常记录Traceback模块详解">
+                <i class="fa fa-chevron-left"></i> Python异常记录Traceback模块详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引"><span class="nav-number">1.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mongo-explain"><span class="nav-number">2.</span> <span class="nav-text">Mongo explain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#explain结果分析"><span class="nav-number">3.</span> <span class="nav-text">explain结果分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询分析器"><span class="nav-number">4.</span> <span class="nav-text">查询分析器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,1 +1,1 @@
-https://zhaobugs.com/2020/01/05/Python异常记录Traceback模块详解/
+https://zhaobugs.com/2020/01/06/MongoDB查询索引分析/
