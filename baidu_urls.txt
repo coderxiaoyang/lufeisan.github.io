@@ -1,1 +1,1 @@
-https://zhaobugs.com/2019/11/07/自定义Tornado请求日志格式/
+https://zhaobugs.com/2020/01/05/Python异常记录Traceback模块详解/
