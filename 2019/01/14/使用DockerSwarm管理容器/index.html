@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gaw3us90u2j30oy0e2gmk.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gaw3ve0jdnj30po0eyn9i.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gaw3vt6kzqj30rs0f0wgg.jpg">
-<meta property="og:updated_time" content="2020-01-14T07:24:32.204Z">
+<meta property="og:updated_time" content="2020-01-14T07:34:01.081Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用DockerSwarm管理容器">
 <meta name="twitter:description" content="我们在之前的学习都是操作一台主机上的一个或者多个容器，但是在实际场景中可能一个服务需要多台主机，多个容器，那这时候怎么办呢？  我们可以通过一套容器编排系统区解决。 Swarm Mode 并不是唯一可以做容器编排的工具  Swarm是内置在Docker中的   上面是Docker Swarm的结构设计，Docker Swarm是一种集群的架构，里面有各种节点，节点的角色分为Manager和Wor">
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,568 字
+                  2,579 字
                 </span>
               
 
@@ -434,7 +434,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  12 分钟
+                  13 分钟
                 </span>
               
             </div>
@@ -530,6 +530,8 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[node1] (local) root@<span class="number">192.168</span>.<span class="number">0.48</span> ~ </span><br><span class="line"></span><br><span class="line">$ docker service ps demo </span><br><span class="line"></span><br><span class="line">ID NAME IMAGE NODE DESIRED STATE CURRENT STATE </span><br><span class="line"></span><br><span class="line">ERROR PORTS </span><br><span class="line"></span><br><span class="line">mcewsjl5ekuw demo.<span class="number">1</span> busybox:latest node1 Running Running <span class="number">19</span> minutes ag </span><br><span class="line"></span><br><span class="line">o </span><br><span class="line"></span><br><span class="line">obbts01y3k0s demo.<span class="number">2</span> busybox:latest node2 Running Running <span class="number">9</span> minutes ago </span><br><span class="line"></span><br><span class="line">uyqnj0q2521a demo.<span class="number">3</span> busybox:latest node3 Running Running <span class="number">9</span> minutes ago </span><br><span class="line"></span><br><span class="line">m6kp0rhjihof demo.<span class="number">4</span> busybox:latest node2 Running Running <span class="number">2</span> minutes ago </span><br><span class="line"></span><br><span class="line">xmp8xwcc9p2r \_ demo.<span class="number">4</span> busybox:latest node2 Shutdown Failed <span class="number">3</span> minutes ago </span><br><span class="line"></span><br><span class="line"><span class="string">"task: non-zero exit (137)"</span> </span><br><span class="line"></span><br><span class="line">s1iofxqhr3pi demo.<span class="number">5</span> busybox:latest node1 Running Running <span class="number">9</span> minutes ago</span><br></pre></td></tr></table></figure>
 <h4 id="删除service"><a href="#删除service" class="headerlink" title="删除service"></a>删除service</h4><p>删除一个<code>service</code>只需要通过<code>docker service rm service_name</code>即可，在删除<code>service</code>之后，<code>docker swarm</code>会自动从当前<code>swarm</code>集群中删除该服务之前运行的所有容器(有一定的延时)： </p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[node1] (local) root@<span class="number">192.168</span>.<span class="number">0.48</span> ~ </span><br><span class="line"></span><br><span class="line">$ docker service rm demo </span><br><span class="line"></span><br><span class="line">demo </span><br><span class="line"></span><br><span class="line">[node1] (local) root@<span class="number">192.168</span>.<span class="number">0.48</span> ~ </span><br><span class="line"></span><br><span class="line">$ docker service ps demo </span><br><span class="line"></span><br><span class="line">no such service: demo</span><br></pre></td></tr></table></figure>
+<p>参考文章：</p>
+<p><a href="https://juejin.im/post/5d187db1e51d455d6c0ad96f" target="_blank" rel="noopener">Docker Swarm 零基础入门</a></p>
 
       
     </div>
