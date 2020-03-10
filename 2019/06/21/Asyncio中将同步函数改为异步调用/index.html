@@ -84,14 +84,14 @@
 <meta name="description" content="今天看小明大神的博客：深入理解asyncio(三) 里面有段将同步函数改为协程使用的代码。其中提到了run_in_executor，主要使用这个方法将同步变为异步。 我们先看下如何将一个同步函数变为异步的 12345678910111213141516In [35]: import timeIn [36]: import asyncioIn [37]: def a():    ...:     t">
 <meta name="keywords" content="asyncio">
 <meta property="og:type" content="article">
-<meta property="og:title" content="聊聊Asyncio中的run_in_executor">
-<meta property="og:url" content="https://zhaobugs.com/2019/06/21/聊聊Asyncio中的run-in-executor/index.html">
+<meta property="og:title" content="Asyncio中将同步函数改为异步调用">
+<meta property="og:url" content="https://zhaobugs.com/2019/06/21/Asyncio中将同步函数改为异步调用/index.html">
 <meta property="og:site_name" content="小码农的笔记">
 <meta property="og:description" content="今天看小明大神的博客：深入理解asyncio(三) 里面有段将同步函数改为协程使用的代码。其中提到了run_in_executor，主要使用这个方法将同步变为异步。 我们先看下如何将一个同步函数变为异步的 12345678910111213141516In [35]: import timeIn [36]: import asyncioIn [37]: def a():    ...:     t">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-21T08:30:11.031Z">
+<meta property="og:updated_time" content="2020-03-10T08:30:33.282Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="聊聊Asyncio中的run_in_executor">
+<meta name="twitter:title" content="Asyncio中将同步函数改为异步调用">
 <meta name="twitter:description" content="今天看小明大神的博客：深入理解asyncio(三) 里面有段将同步函数改为协程使用的代码。其中提到了run_in_executor，主要使用这个方法将同步变为异步。 我们先看下如何将一个同步函数变为异步的 12345678910111213141516In [35]: import timeIn [36]: import asyncioIn [37]: def a():    ...:     t">
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2019/06/21/聊聊Asyncio中的run-in-executor/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2019/06/21/Asyncio中将同步函数改为异步调用/"/>
 
 
 
 
 
-  <title>聊聊Asyncio中的run_in_executor | 小码农的笔记</title>
+  <title>Asyncio中将同步函数改为异步调用 | 小码农的笔记</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/06/21/聊聊Asyncio中的run-in-executor/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/06/21/Asyncio中将同步函数改为异步调用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">聊聊Asyncio中的run_in_executor</h1>
+          <h1 class="post-title" itemprop="name headline">Asyncio中将同步函数改为异步调用</h1>
         
 
         <div class="post-meta">
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/06/21/聊聊Asyncio中的run-in-executor/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/21/聊聊Asyncio中的run-in-executor/" itemprop="commentCount"></span>
+                <a href="/2019/06/21/Asyncio中将同步函数改为异步调用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/21/Asyncio中将同步函数改为异步调用/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2019/06/21/聊聊Asyncio中的run-in-executor/" class="leancloud_visitors" data-flag-title="聊聊Asyncio中的run_in_executor">
+             <span id="/2019/06/21/Asyncio中将同步函数改为异步调用/" class="leancloud_visitors" data-flag-title="Asyncio中将同步函数改为异步调用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  829 字
+                  990 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -468,6 +468,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_chain_future</span><span class="params">(source, destination)</span>:</span></span><br><span class="line">    <span class="string">"""Chain two futures so that when one completes, so does the other.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The result (or exception) of source will be copied to destination.</span></span><br><span class="line"><span class="string">    If destination is cancelled, source gets cancelled too.</span></span><br><span class="line"><span class="string">    Compatible with both asyncio.Future and concurrent.futures.Future.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isfuture(source) <span class="keyword">and</span> <span class="keyword">not</span> isinstance(source,</span><br><span class="line">                                               concurrent.futures.Future):</span><br><span class="line">        <span class="keyword">raise</span> TypeError(<span class="string">'A future is required for source argument'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isfuture(destination) <span class="keyword">and</span> <span class="keyword">not</span> isinstance(destination,</span><br><span class="line">                                                    concurrent.futures.Future):</span><br><span class="line">        <span class="keyword">raise</span> TypeError(<span class="string">'A future is required for destination argument'</span>)</span><br><span class="line">    source_loop = _get_loop(source) <span class="keyword">if</span> isfuture(source) <span class="keyword">else</span> <span class="keyword">None</span></span><br><span class="line">    dest_loop = _get_loop(destination) <span class="keyword">if</span> isfuture(destination) <span class="keyword">else</span> <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_set_state</span><span class="params">(future, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isfuture(future):</span><br><span class="line">            _copy_future_state(other, future)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            _set_concurrent_future_state(future, other)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_call_check_cancel</span><span class="params">(destination)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> destination.cancelled():</span><br><span class="line">            <span class="keyword">if</span> source_loop <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> source_loop <span class="keyword">is</span> dest_loop:</span><br><span class="line">                source.cancel()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                source_loop.call_soon_threadsafe(source.cancel)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_call_set_state</span><span class="params">(source)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> (destination.cancelled() <span class="keyword">and</span></span><br><span class="line">                dest_loop <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">and</span> dest_loop.is_closed()):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> dest_loop <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> dest_loop <span class="keyword">is</span> source_loop:</span><br><span class="line">            _set_state(destination, source)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dest_loop.call_soon_threadsafe(_set_state, destination, source)</span><br><span class="line"></span><br><span class="line">    destination.add_done_callback(_call_check_cancel)</span><br><span class="line">    source.add_done_callback(_call_set_state)</span><br></pre></td></tr></table></figure>
 <p>通过<code>wrap_future</code>函数可以将<code>concurrent.futures.Future</code>变成<code>asyncio.Future</code>实现可等待。</p>
 <p>这样我们可以不用显示的获取当前的<code>loop</code>也可以直接去将同步函数变成协程去执行了。</p>
+<h4 id="装饰器模式-将同步函数变为异步方式"><a href="#装饰器模式-将同步函数变为异步方式" class="headerlink" title="装饰器模式 将同步函数变为异步方式"></a>装饰器模式 将同步函数变为异步方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadPool</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, max_workers)</span>:</span></span><br><span class="line"></span><br><span class="line">        self._thread_pool = ThreadPoolExecutor(max_workers)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, _callable, *args, **kwargs)</span>:</span></span><br><span class="line"></span><br><span class="line">        future = self._thread_pool.submit(_callable, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> asyncio.wrap_future(future)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadWorker</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, max_workers)</span>:</span></span><br><span class="line"></span><br><span class="line">        self._thread_pool = ThreadPool(max_workers)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, func)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">        @functools.wraps(func)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> self._thread_pool.run(func, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> _wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">thread_worker = ThreadWorker(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@thread_worker</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_io_block</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">asyncio.run(some_io_block()) </span><br><span class="line"><span class="comment"># 输出 1</span></span><br></pre></td></tr></table></figure>
+<p>其中的 <code>max_workers</code> 参数就是能够执行的最大线程数。</p>
 
       
     </div>
@@ -606,8 +608,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -694,6 +705,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#装饰器模式-将同步函数变为异步方式"><span class="nav-number">1.</span> <span class="nav-text">装饰器模式 将同步函数变为异步方式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
