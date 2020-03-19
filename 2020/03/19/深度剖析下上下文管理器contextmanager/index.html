@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小码农的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我们首先看下今天探讨的对象contextmanager的源码。 12345678910111213141516171819202122232425262728293031def contextmanager(func):    &quot;&quot;&quot;@contextmanager decorator.    Typical usage:        @contextmanager        def some">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度剖析下上下文管理器contextmanager">
+<meta property="og:url" content="https://zhaobugs.com/2020/03/19/深度剖析下上下文管理器contextmanager/index.html">
+<meta property="og:site_name" content="小码农的笔记">
+<meta property="og:description" content="我们首先看下今天探讨的对象contextmanager的源码。 12345678910111213141516171819202122232425262728293031def contextmanager(func):    &quot;&quot;&quot;@contextmanager decorator.    Typical usage:        @contextmanager        def some">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-19T14:41:05.120Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度剖析下上下文管理器contextmanager">
+<meta name="twitter:description" content="我们首先看下今天探讨的对象contextmanager的源码。 12345678910111213141516171819202122232425262728293031def contextmanager(func):    &quot;&quot;&quot;@contextmanager decorator.    Typical usage:        @contextmanager        def some">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/03/19/深度剖析下上下文管理器contextmanager/"/>
+
+
+
+
+
+  <title>深度剖析下上下文管理器contextmanager | 小码农的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码农的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/03/19/深度剖析下上下文管理器contextmanager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码农的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深度剖析下上下文管理器contextmanager</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T11:14:38+08:00">
+                2020-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/19/深度剖析下上下文管理器contextmanager/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/19/深度剖析下上下文管理器contextmanager/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/03/19/深度剖析下上下文管理器contextmanager/" class="leancloud_visitors" data-flag-title="深度剖析下上下文管理器contextmanager">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,075 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们首先看下今天探讨的对象<code>contextmanager</code>的源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contextmanager</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="string">"""@contextmanager decorator.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Typical usage:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        @contextmanager</span></span><br><span class="line"><span class="string">        def some_generator(&lt;arguments&gt;):</span></span><br><span class="line"><span class="string">            &lt;setup&gt;</span></span><br><span class="line"><span class="string">            try:</span></span><br><span class="line"><span class="string">                yield &lt;value&gt;</span></span><br><span class="line"><span class="string">            finally:</span></span><br><span class="line"><span class="string">                &lt;cleanup&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This makes this:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        with some_generator(&lt;arguments&gt;) as &lt;variable&gt;:</span></span><br><span class="line"><span class="string">            &lt;body&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    equivalent to this:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &lt;setup&gt;</span></span><br><span class="line"><span class="string">        try:</span></span><br><span class="line"><span class="string">            &lt;variable&gt; = &lt;value&gt;</span></span><br><span class="line"><span class="string">            &lt;body&gt;</span></span><br><span class="line"><span class="string">        finally:</span></span><br><span class="line"><span class="string">            &lt;cleanup&gt;</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">helper</span><span class="params">(*args, **kwds)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> _GeneratorContextManager(func, args, kwds)</span><br><span class="line">    <span class="keyword">return</span> helper</span><br></pre></td></tr></table></figure>
+<p>我们看到<code>contextmanager</code>可以将一个生成器函数修饰成上下文管理器。 这是如何实现的呢？</p>
+<p>在剖析<code>contextmanager</code>之前我们要回顾两个知识点：上下文管理器、生成器。</p>
+<h5 id="何为上下文管理器？"><a href="#何为上下文管理器？" class="headerlink" title="何为上下文管理器？"></a>何为上下文管理器？</h5><p>对于实现了<code>__enter__</code>和<code>__exit__</code>这两个上下文管理器协议的对象就是一个上下文管理器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Contextor</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_type, exc_val, exc_tb)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">contextor = Contextor()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> contextor [<span class="keyword">as</span> var]:</span><br><span class="line">    with_body</span><br></pre></td></tr></table></figure>
+<p>上述代码的执行过程等价于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">VAR = contextor.__enter__()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    with_body</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    contextor.__exit__()</span><br></pre></td></tr></table></figure>
+<p>配合<code>with</code>语句使用的时候，上下文管理器会自动调用<code>__enter__</code>方法，然后进入运行时上下文环境，如果有<code>as</code> 从句，返回自身或另一个与运行时上下文相关的对象，值赋值给<code>var</code>。当<code>with_body</code>执行完毕退出<code>with</code>语句块或者<code>with_bod</code>y代码块出现异常，则会自动执行<code>__exit__</code>方法，并且会把对于的异常参数传递进来。如果<code>__exit__</code>函数返回<code>True</code>。则<code>with</code>语句代码块不会显示的抛出异常，终止程序，如果返回<code>None</code>或者<code>False</code>，异常会被主动<code>raise</code>，并终止程序。</p>
+<p>我们看下<code>__exit__</code>参数含义：</p>
+<p><code>exc_type</code>是异常的类。 <code>exc_val</code>是异常实例。 <code>exc_tb</code>是一个追溯对象，在<code>types.TraceBackType</code>有一个引用。一般情况下:</p>
+<ul>
+<li><code>type(exc_val) is exc_type</code></li>
+<li><code>exc_val.__traceback__ is exc_tb</code></li>
+</ul>
+<p>请注意，当上下文管理器下的代码未引发任何异常时，仍会调用<code>__exit__</code> ，并且args将为<code>(None, None, None)</code>因此所有三个参数都应标注为<em>optional</em> 。</p>
+<blockquote>
+<p>我们主要复习下 当<code>with body</code>出现异常的时候 异常将传递到 <code>__exit__</code></p>
+</blockquote>
+<h5 id="何为生成器？"><a href="#何为生成器？" class="headerlink" title="何为生成器？"></a>何为生成器？</h5><p>在明白<code>contextmanager</code>是如何将一个生成器变成上下文管理器之前，我们要清楚一个知识点：什么是生成式？</p>
+<p>下面我直接引用官网的一段话（<a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw%20type%20value%20traceback#yield-expressions" target="_blank" rel="noopener">yield表达式</a>）来描述生成器表达式：</p>
+<p>yield 表达式在定义 <a href="https://docs.python.org/zh-cn/3/glossary.html#term-generator" target="_blank" rel="noopener">generator</a> 函数或是 <a href="https://docs.python.org/zh-cn/3/glossary.html#term-asynchronous-generator" target="_blank" rel="noopener">asynchronous generator</a> 的时候才会用到。 因此只能在函数定义的内部使用yield表达式。 在一个函数体内使用 yield 表达式会使这个函数变成一个生成器，并且在一个 <a href="https://docs.python.org/zh-cn/3/reference/compound_stmts.html#async-def" target="_blank" rel="noopener"><code>async def</code></a> 定义的函数体内使用 yield 表达式会让协程函数变成异步的生成器。</p>
+<p>当一个生成器函数被调用的时候，它返回一个迭代器，称为生成器。然后这个生成器来控制生成器函数的执行。当这个生成器的某一个方法被调用的时候，生成器函数开始执行。这时会一直执行到第一个 yield 表达式，在此执行再次被挂起，给生成器的调用者返回 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#grammar-token-expression-list" target="_blank" rel="noopener"><code>expression_list</code></a> 的值。挂起后，我们说所有局部状态都被保留下来，包括局部变量的当前绑定，指令指针，内部求值栈和任何异常处理的状态。通过调用生成器的某一个方法，生成器函数继续执行。此时函数的运行就和 yield 表达式只是一个外部函数调用的情况完全一致。恢复后 yield 表达式的值取决于调用的哪个方法来恢复执行。 如果用的是 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.__next__" target="_blank" rel="noopener"><code>__next__()</code></a> (通常通过语言内置的 <a href="https://docs.python.org/zh-cn/3/reference/compound_stmts.html#for" target="_blank" rel="noopener"><code>for</code></a> 或是 <a href="https://docs.python.org/zh-cn/3/library/functions.html#next" target="_blank" rel="noopener"><code>next()</code></a> 来调用) 那么结果就是 <a href="https://docs.python.org/zh-cn/3/library/constants.html#None" target="_blank" rel="noopener"><code>None</code></a>. 否则，如果用 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.send" target="_blank" rel="noopener"><code>send()</code></a>, 那么结果就是传递给send方法的值。</p>
+<p>所有这些使生成器函数与协程非常相似；它们 yield 多次，它们具有多个入口点，并且它们的执行可以被挂起。唯一的区别是生成器函数不能控制在它在 yield 后交给哪里继续执行；控制权总是转移到生成器的调用者。</p>
+<p>在 <a href="https://docs.python.org/zh-cn/3/reference/compound_stmts.html#try" target="_blank" rel="noopener"><code>try</code></a> 结构中的任何位置都允许yield表达式。如果生成器在(因为引用计数到零或是因为被垃圾回收)销毁之前没有恢复执行，将调用生成器-迭代器的 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.close" target="_blank" rel="noopener"><code>close()</code></a> 方法. close 方法允许任何挂起的 <a href="https://docs.python.org/zh-cn/3/reference/compound_stmts.html#finally" target="_blank" rel="noopener"><code>finally</code></a> 子句执行。</p>
+<p>当使用 <code>yield from</code> 时，它会将所提供的表达式视为一个子迭代器。 这个子迭代器产生的所有值都直接被传递给当前生成器方法的调用者。 通过 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.send" target="_blank" rel="noopener"><code>send()</code></a> 传入的任何值以及通过 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.throw" target="_blank" rel="noopener"><code>throw()</code></a> 传入的任何异常如果有适当的方法则会被传给下层迭代器。 如果不是这种情况，那么 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.send" target="_blank" rel="noopener"><code>send()</code></a> 将引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#AttributeError" target="_blank" rel="noopener"><code>AttributeError</code></a> 或 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#TypeError" target="_blank" rel="noopener"><code>TypeError</code></a>，而 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.throw" target="_blank" rel="noopener"><code>throw()</code></a> 将立即引发所传入的异常。</p>
+<p>当下层迭代器完成时，被引发的 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener"><code>StopIteration</code></a> 实例的 <code>value</code> 属性会成为 yield 表达式的值。 它可以在引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener"><code>StopIteration</code></a> 时被显式地设置，也可以在子迭代器是一个生成器时自动地设置（通过从子生成器返回一个值）。</p>
+<p>我们看下迭代器有哪些方法：</p>
+<p>请注意在生成器已经在执行时调用以下任何方法都会引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#ValueError" target="_blank" rel="noopener"><code>ValueError</code></a> 异常。</p>
+<ul>
+<li><p><code>generator.__next__()</code></p>
+<p>开始一个生成器函数的执行或是从上次执行的 yield 表达式位置恢复执行。 当一个生成器函数通过 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.__next__" target="_blank" rel="noopener"><code>__next__()</code></a> 方法恢复执行时，当前的 yield 表达式总是取值为 <a href="https://docs.python.org/zh-cn/3/library/constants.html#None" target="_blank" rel="noopener"><code>None</code></a>。 随后会继续执行到下一个 yield 表达式，其 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#grammar-token-expression-list" target="_blank" rel="noopener"><code>expression_list</code></a> 的值会返回给 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.__next__" target="_blank" rel="noopener"><code>__next__()</code></a> 的调用者。 如果生成器没有产生下一个值就退出，则将引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener"><code>StopIteration</code></a> 异常。此方法通常是隐式地调用，例如通过 <a href="https://docs.python.org/zh-cn/3/reference/compound_stmts.html#for" target="_blank" rel="noopener"><code>for</code></a> 循环或是内置的 <a href="https://docs.python.org/zh-cn/3/library/functions.html#next" target="_blank" rel="noopener"><code>next()</code></a> 函数。</p>
+</li>
+<li><p><code>generator.send(*value*)</code></p>
+<p>恢复执行并向生成器函数“发送”一个值。 <em>value</em> 参数将成为当前 yield 表达式的结果。 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.send" target="_blank" rel="noopener"><code>send()</code></a> 方法会返回生成器所产生的下一个值，或者如果生成器没有产生下一个值就退出则会引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener"><code>StopIteration</code></a>。 当调用 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.send" target="_blank" rel="noopener"><code>send()</code></a> 来启动生成器时，它必须以 <a href="https://docs.python.org/zh-cn/3/library/constants.html#None" target="_blank" rel="noopener"><code>None</code></a> 作为调用参数，因为这时没有可以接收值的 yield 表达式。</p>
+</li>
+<li><p><code>generator.throw(*type*[, *value*[, *traceback*]])</code></p>
+<p>在生成器暂停的位置引发 <code>type</code> 类型的异常，并返回该生成器函数所产生的下一个值。 如果生成器没有产生下一个值就退出，则将引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener"><code>StopIteration</code></a> 异常。 如果生成器函数没有捕获传入的异常，或引发了另一个异常，则该异常会被传播给调用者。</p>
+</li>
+</ul>
+<ul>
+<li><p><code>generator.close()</code></p>
+<p>在生成器函数暂停的位置引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#GeneratorExit" target="_blank" rel="noopener"><code>GeneratorExit</code></a>。 如果之后生成器函数正常退出、关闭或引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#GeneratorExit" target="_blank" rel="noopener"><code>GeneratorExit</code></a> (由于未捕获该异常) 则关闭并返回其调用者。 如果生成器产生了一个值，关闭会引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#RuntimeError" target="_blank" rel="noopener"><code>RuntimeError</code></a>。 如果生成器引发任何其他异常，它会被传播给调用者。 如果生成器已经由于异常或正常退出则 <a href="https://docs.python.org/zh-cn/3/reference/expressions.html?highlight=throw type value traceback#generator.close" target="_blank" rel="noopener"><code>close()</code></a> 不会做任何事。</p>
+</li>
+</ul>
+<blockquote>
+<p> 晦涩的理论知识我们暂时可以只需要了解到生成器可以在<code>yield</code>出暂停重入即可。</p>
+</blockquote>
+<h5 id="contextmanager-的源码剖析"><a href="#contextmanager-的源码剖析" class="headerlink" title="contextmanager 的源码剖析"></a>contextmanager 的源码剖析</h5><p>有了上面生成器知识点的回顾，我们再看下<code>contextmanager</code>的源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contextmanager</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">helper</span><span class="params">(*args, **kwds)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> _GeneratorContextManager(func, args, kwds)</span><br><span class="line">    <span class="keyword">return</span> helper</span><br></pre></td></tr></table></figure>
+<p>我们看到经过<code>contextmanager</code>修饰的函数最后被放到了生成器上下文管理对象中，并且将该对象返回。</p>
+<p>为了简化我先把<code>_GeneratorContextManager</code>的结构写出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_GeneratorContextManager</span><span class="params">(_GeneratorContextManagerBase,</span></span></span><br><span class="line"><span class="class"><span class="params">                               AbstractContextManager,</span></span></span><br><span class="line"><span class="class"><span class="params">                               ContextDecorator)</span>:</span></span><br><span class="line">    <span class="string">"""Helper for @contextmanager decorator."""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_recreate_cm</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.__class__(self.func, self.args, self.kwds)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, type, value, traceback)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>其中的要打印一下<code>_GeneratorContextManagerBase</code> 在初始化的时候会初始化生成器函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_GeneratorContextManagerBase</span>:</span></span><br><span class="line">    <span class="string">"""Shared functionality for @contextmanager and @asynccontextmanager."""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func, args, kwds)</span>:</span></span><br><span class="line">        self.gen = func(*args, **kwds)</span><br><span class="line">        self.func, self.args, self.kwds = func, args, kwds</span><br><span class="line">        <span class="comment"># Issue 19330: ensure context manager instances have good docstrings</span></span><br><span class="line">        doc = getattr(func, <span class="string">"__doc__"</span>, <span class="keyword">None</span>)</span><br><span class="line">        <span class="keyword">if</span> doc <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            doc = type(self).__doc__</span><br><span class="line">        self.__doc__ = doc</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_generator</span><span class="params">(&lt;arguments&gt;)</span>:</span></span><br><span class="line">    &lt;setup&gt;</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">yield</span> &lt;value&gt;</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        &lt;cleanup&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> some_generator(&lt;arguments&gt;) <span class="keyword">as</span> &lt;variable&gt;:</span><br><span class="line">    &lt;body&gt;</span><br></pre></td></tr></table></figure>
+<p>当我们使用实现的上下文的时候首先会进入到<code>__enter__</code>协议函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># do not keep args and kwds alive unnecessarily</span></span><br><span class="line">    <span class="comment"># they are only needed for recreation, which is not possible anymore</span></span><br><span class="line">    <span class="keyword">del</span> self.args, self.kwds, self.func</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">				<span class="comment"># 执行生成器函数</span></span><br><span class="line">        <span class="keyword">return</span> next(self.gen)</span><br><span class="line">    <span class="keyword">except</span> StopIteration:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">"generator didn't yield"</span>) <span class="keyword">from</span> <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<p>我们知道<code>next</code>函数会直接执行生成器即<code>yield</code>之前的部分，当<code>yield</code>后面有值的时候会当做<code>with as</code>后面的变量。</p>
+<p>当上面的过程咩有问题的时候就进入了<code>with body</code>，在执行<code>with body</code>代码的时候会有两种情况：有咩有异常发生。</p>
+<p>我们先看正常退出<code>with body</code>之后将会执行<code>__exit___</code>的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, type, value, traceback)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> type <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">						</span><br><span class="line">            <span class="comment"># 再次执行生成器函数</span></span><br><span class="line">            next(self.gen)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> StopIteration:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">"generator didn't stop"</span>)</span><br></pre></td></tr></table></figure>
+<p>当再次执行生成器的时候将会执行<code>yield</code>后面的代码段。</p>
+<p>不过因为我们对一个只有一个<code>yield</code>的生成器函数执行了两次<code>yield</code>。将会在执行完<code>yield</code>后面代码之后出发一个<code>StopIteration</code>异常，然后被捕捉到。</p>
+<p>然后我们看下<code>with body</code>发生异常的时候</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, type, value, traceback)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> type <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> value <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="comment"># Need to force instantiation so we can reliably</span></span><br><span class="line">            <span class="comment"># tell if we get the same exception back</span></span><br><span class="line">            value = type()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">          	<span class="comment"># 这里会在 生成器暂停的地方抛出 with body 里面发生的异常</span></span><br><span class="line">            self.gen.throw(type, value, traceback)</span><br><span class="line">        <span class="keyword">except</span> StopIteration <span class="keyword">as</span> exc:</span><br><span class="line">            <span class="comment"># Suppress StopIteration *unless* it's the same exception that</span></span><br><span class="line">            <span class="comment"># was passed to throw().  This prevents a StopIteration</span></span><br><span class="line">            <span class="comment"># raised inside the "with" statement from being suppressed.</span></span><br><span class="line">            <span class="keyword">return</span> exc <span class="keyword">is</span> <span class="keyword">not</span> value</span><br><span class="line">        <span class="keyword">except</span> RuntimeError <span class="keyword">as</span> exc:</span><br><span class="line">            <span class="comment"># Don't re-raise the passed in exception. (issue27122)</span></span><br><span class="line">            <span class="keyword">if</span> exc <span class="keyword">is</span> value:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">            <span class="comment"># Likewise, avoid suppressing if a StopIteration exception</span></span><br><span class="line">            <span class="comment"># was passed to throw() and later wrapped into a RuntimeError</span></span><br><span class="line">            <span class="comment"># (see PEP 479).</span></span><br><span class="line">            <span class="keyword">if</span> type <span class="keyword">is</span> StopIteration <span class="keyword">and</span> exc.__cause__ <span class="keyword">is</span> value:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># only re-raise if it's *not* the exception that was</span></span><br><span class="line">            <span class="comment"># passed to throw(), because __exit__() must not raise</span></span><br><span class="line">            <span class="comment"># an exception unless __exit__() itself failed.  But throw()</span></span><br><span class="line">            <span class="comment"># has to raise the exception to signal propagation, so this</span></span><br><span class="line">            <span class="comment"># fixes the impedance mismatch between the throw() protocol</span></span><br><span class="line">            <span class="comment"># and the __exit__() protocol.</span></span><br><span class="line">            <span class="comment">#</span></span><br><span class="line">            <span class="comment"># This cannot use 'except BaseException as exc' (as in the</span></span><br><span class="line">            <span class="comment"># async implementation) to maintain compatibility with</span></span><br><span class="line">            <span class="comment"># Python 2, where old-style class exceptions are not caught</span></span><br><span class="line">            <span class="comment"># by 'except BaseException'.</span></span><br><span class="line">            <span class="keyword">if</span> sys.exc_info()[<span class="number">1</span>] <span class="keyword">is</span> value:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">"generator didn't stop after throw()"</span>)</span><br></pre></td></tr></table></figure>
+<p>当<code>with body</code>发生异常之后将会执行到<code>self.gen.throw(type, value, traceback)</code>这句话。</p>
+<p>我们知道这句话会在生成器暂停的位置引发 <code>type</code> 类型的异常，并返回该生成器函数所产生的下一个值。 如果生成器没有产生下一个值就退出，则将引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener"><code>StopIteration</code></a> 异常。 如果生成器函数没有捕获传入的异常，或引发了另一个异常，则该异常会被传播给调用者。</p>
+<p>上面就是通过<code>contextmanager</code>实现的上下文执行的完整流程。 我们看两个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">34</span>]: @contextmanager</span><br><span class="line">    ...: <span class="function"><span class="keyword">def</span> <span class="title">catch_error</span><span class="params">()</span>:</span></span><br><span class="line">    ...:</span><br><span class="line">    ...:     <span class="keyword">try</span>:</span><br><span class="line">    ...:</span><br><span class="line">    ...:         <span class="keyword">yield</span></span><br><span class="line">    ...:</span><br><span class="line">    ...:     <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">    ...:</span><br><span class="line">    ...:         print(err)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">35</span>]: <span class="keyword">with</span> catch_error():</span><br><span class="line">    ...:     print(<span class="string">"test"</span>)</span><br><span class="line">    ...:</span><br><span class="line">test</span><br><span class="line"></span><br><span class="line">In [<span class="number">36</span>]: <span class="keyword">with</span> catch_error():</span><br><span class="line">    ...:     print(<span class="string">"test"</span>)</span><br><span class="line">    ...:     <span class="number">1</span>/<span class="number">0</span></span><br><span class="line">    ...:</span><br><span class="line">    ...:</span><br><span class="line">test</span><br><span class="line">division by zero</span><br></pre></td></tr></table></figure>
+<p>我们看到在<code>with body</code>中的异常抛到了生成器中并将其打印了出来。</p>
+<p>这样我们使用<code>contextmanager</code>实现了一个具有捕获异常将其打印或者写入日志的上下文管理器，对于可能发生异常的代码比<code>try except</code>更加优美。</p>
+<p>对于异步的<code>asynccontextmanager</code>的原理大致和同步的一致</p>
+<p>参考文章：</p>
+<p><a href="https://blog.csdn.net/JENREY/article/details/86690018?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">python使用@contextmanager来定义上下文管理器</a></p>
+<p><a href="https://www.jianshu.com/p/d53449f9e7e0" target="_blank" rel="noopener">python黑魔法—上下文管理器</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/11/Asyncio中的子进程模块subprocess/" rel="next" title="Asyncio中的子进程模块subprocess">
+                <i class="fa fa-chevron-left"></i> Asyncio中的子进程模块subprocess
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">143</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#何为上下文管理器？"><span class="nav-number">1.</span> <span class="nav-text">何为上下文管理器？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#何为生成器？"><span class="nav-number">2.</span> <span class="nav-text">何为生成器？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#contextmanager-的源码剖析"><span class="nav-number">3.</span> <span class="nav-text">contextmanager 的源码剖析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
