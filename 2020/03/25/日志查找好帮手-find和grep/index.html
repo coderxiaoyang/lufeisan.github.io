@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="##常见Linux简单汇总 防火墙相关命令：12345678910111213查看状态： firewall-cmd --state开启：service firewall start关闭：service firewall stop重启：service firewall restart端口管理开启端口：firewall-cmd --permanent --add-port=8080-8085/tcp重">
+<meta name="description" content="​    一般要看日志的时候绝大部分情况下都是分析bug😳 如何快速定位查找到问题所在的文件和位置是我们首要的目的。因为Linux不像Windows系统有很好的图形界面，我们主要依赖一些命令进行查找日志。 今天主要想记录的主要是find和grep这两个命令，可以参考下面的文章学习下这两个命令： 每天一个linux命令（19）：find 命令概览 每天一个linux命令（22）：find 命令的参">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux常用命令">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/05/Linux常用命令/index.html">
+<meta property="og:title" content="日志查找好帮手-find和grep">
+<meta property="og:url" content="https://zhaobugs.com/2020/03/25/日志查找好帮手-find和grep/index.html">
 <meta property="og:site_name" content="小码农的笔记">
-<meta property="og:description" content="##常见Linux简单汇总 防火墙相关命令：12345678910111213查看状态： firewall-cmd --state开启：service firewall start关闭：service firewall stop重启：service firewall restart端口管理开启端口：firewall-cmd --permanent --add-port=8080-8085/tcp重">
+<meta property="og:description" content="​    一般要看日志的时候绝大部分情况下都是分析bug😳 如何快速定位查找到问题所在的文件和位置是我们首要的目的。因为Linux不像Windows系统有很好的图形界面，我们主要依赖一些命令进行查找日志。 今天主要想记录的主要是find和grep这两个命令，可以参考下面的文章学习下这两个命令： 每天一个linux命令（19）：find 命令概览 每天一个linux命令（22）：find 命令的参">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T02:22:50.944Z">
+<meta property="og:updated_time" content="2020-03-25T14:13:02.186Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux常用命令">
-<meta name="twitter:description" content="##常见Linux简单汇总 防火墙相关命令：12345678910111213查看状态： firewall-cmd --state开启：service firewall start关闭：service firewall stop重启：service firewall restart端口管理开启端口：firewall-cmd --permanent --add-port=8080-8085/tcp重">
+<meta name="twitter:title" content="日志查找好帮手-find和grep">
+<meta name="twitter:description" content="​    一般要看日志的时候绝大部分情况下都是分析bug😳 如何快速定位查找到问题所在的文件和位置是我们首要的目的。因为Linux不像Windows系统有很好的图形界面，我们主要依赖一些命令进行查找日志。 今天主要想记录的主要是find和grep这两个命令，可以参考下面的文章学习下这两个命令： 每天一个linux命令（19）：find 命令概览 每天一个linux命令（22）：find 命令的参">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/05/Linux常用命令/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2020/03/25/日志查找好帮手-find和grep/"/>
 
 
 
 
 
-  <title>Linux常用命令 | 小码农的笔记</title>
+  <title>日志查找好帮手-find和grep | 小码农的笔记</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/05/Linux常用命令/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/03/25/日志查找好帮手-find和grep/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux常用命令</h1>
+          <h1 class="post-title" itemprop="name headline">日志查找好帮手-find和grep</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T17:53:25+08:00">
-                2018-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T21:43:12+08:00">
+                2020-03-25
               </time>
             
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/05/Linux常用命令/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/05/Linux常用命令/" itemprop="commentCount"></span>
+                <a href="/2020/03/25/日志查找好帮手-find和grep/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/25/日志查找好帮手-find和grep/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/06/05/Linux常用命令/" class="leancloud_visitors" data-flag-title="Linux常用命令">
+             <span id="/2020/03/25/日志查找好帮手-find和grep/" class="leancloud_visitors" data-flag-title="日志查找好帮手-find和grep">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  261 字
+                  747 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -449,13 +449,27 @@
       
 
       
-        <p>##常见Linux简单汇总</p>
-<h5 id="防火墙相关命令："><a href="#防火墙相关命令：" class="headerlink" title="防火墙相关命令："></a>防火墙相关命令：</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">查看状态： firewall-cmd --state</span><br><span class="line">开启：service firewall start</span><br><span class="line">关闭：service firewall stop</span><br><span class="line">重启：service firewall restart</span><br><span class="line"></span><br><span class="line">端口管理</span><br><span class="line">开启端口：firewall-cmd --permanent --add-port=8080-8085/tcp</span><br><span class="line">重新加载：firewall-cmd --reload</span><br><span class="line">查看防火墙开放端口：firewall-cmd --permanent --list-ports</span><br><span class="line">查看服务：firewall-cmd --permanent --list-services</span><br><span class="line">移除端口：firewall-cmd --permanent --remove-port=8080-8085/tcp</span><br><span class="line"></span><br><span class="line">注意：我们开放的是一个端口段 我们删的时候也要同时删除端口段 单独删除一个端口会失败</span><br></pre></td></tr></table></figure>
-<h5 id="目录文件大小统计-du"><a href="#目录文件大小统计-du" class="headerlink" title="目录文件大小统计 du"></a>目录文件大小统计 du</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -h --max-depth=1</span><br></pre></td></tr></table></figure>
-<p>参考文章：<a href="https://blog.csdn.net/ouyang_peng/article/details/10414499" target="_blank" rel="noopener">Linux中查看各文件夹大小命令</a></p>
-<h5 id="linux后台执行命令：-amp-与nohup的用法"><a href="#linux后台执行命令：-amp-与nohup的用法" class="headerlink" title="linux后台执行命令：&amp;与nohup的用法"></a>linux后台执行命令：&amp;与nohup的用法</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./test &gt;&gt; out.txt <span class="number">2</span>&gt;&amp;<span class="number">1</span> &amp;</span><br></pre></td></tr></table></figure>
-<p><code>2&gt;&amp;1</code>是指将标准错误重定向到标准输出，于是标准错误和标准输出都重定向到指定的out.txt文件中，从此终端彻底清静了。</p>
-<p>参考文章： <a href="https://zhuanlan.zhihu.com/p/59297350" target="_blank" rel="noopener">linux后台执行命令：&amp;与nohup的用法</a></p>
+        <p>​    一般要看日志的时候绝大部分情况下都是分析bug😳 如何快速定位查找到问题所在的文件和位置是我们首要的目的。因为Linux不像Windows系统有很好的图形界面，我们主要依赖一些命令进行查找日志。</p>
+<p>今天主要想记录的主要是<code>find</code>和<code>grep</code>这两个命令，可以参考下面的文章学习下这两个命令：</p>
+<p><a href="https://www.cnblogs.com/peida/archive/2012/11/13/2767374.html" target="_blank" rel="noopener">每天一个linux命令（19）：find 命令概览</a></p>
+<p><a href="https://www.cnblogs.com/peida/archive/2012/11/16/2773289.html" target="_blank" rel="noopener">每天一个linux命令（22）：find 命令的参数详解</a></p>
+<p><a href="https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html" target="_blank" rel="noopener">每天一个linux命令（39）：grep 命令</a></p>
+<p>看完上面的参考文章我们基本上对着两个命令已经熟悉的差不多了</p>
+<p>其中<code>find</code>命令有几个比较特别在意的参数：</p>
+<p><code>atime</code>：访问时间（<code>access time</code>），指的是文件最后被读取的时间，可以使用<code>touch</code>命令更改为当前时间<code>ctime</code>：变更时间（<code>change time</code>），指的是文件本身最后被变更的时间，变更动作可以使<code>chmod</code>、<code>chgrp</code>、<code>mv</code>等等</p>
+<p><code>mtime</code>：修改时间（<code>modify time</code>），指的是文件内容最后被修改的时间，修改动作可以使<code>echo</code>重定向、<code>vi</code>等等</p>
+<blockquote>
+<p>-mtime -n +n 按照文件的更改时间来查找文件， - n表示文件更改时间距现在n天以内，+ n表示文件更改时间距现在n天以前</p>
+</blockquote>
+<p><code>-type</code> 查找某一类型的文件，诸如: <code>f</code> - 普通文件</p>
+<p>其中<code>grep</code>命令有几个比较特别在意的参数：</p>
+<p><code>*</code>: 表示当前目录所有文件，也可以是某个文件名<br><code>-r</code> 是递归查找<br><code>-n</code> 是显示行号<br><code>-R</code> 查找所有文件包含子目录<br><code>-i</code> 忽略大小写</p>
+<p>一个实际的例子，我们拷贝一下Tornado源码中<code>web</code>模块的源码到一个文件中，然后进行查找操作。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> /tmp vim python-doc.txt                                                                  </span><br><span class="line"> /tmp more python-doc.txt                                                                 </span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Copyright 2009 Facebook</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the "License"); you may</span></span><br><span class="line"><span class="comment"># not use this file except in compliance with the License. You may obtain</span></span><br><span class="line"><span class="comment"># a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS, WITHOUT</span></span><br><span class="line"><span class="comment"># WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the</span></span><br><span class="line"><span class="comment"># License for the specific language governing permissions and limitations</span></span><br><span class="line"><span class="comment"># under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="string">""</span><span class="string">"``tornado.web`` provides a simple web framework with asynchronous</span></span><br><span class="line"><span class="string">features that allow it to scale to large numbers of open connections,</span></span><br><span class="line"><span class="string">making it ideal for `long polling</span></span><br></pre></td></tr></table></figure>
+<p>我们查找当前目录下最近两天修改的文件类型为普通文件且包含<code>tornado</code>字符串的文件，以及显示所在行数。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> /tmp  find ./  -type f -mtime -<span class="number">2</span> | xargs grep -n <span class="string">"tornado"</span> </span><br><span class="line"> </span><br><span class="line">.//python-doc.txt:<span class="number">16</span>:<span class="string">""</span><span class="string">"``tornado.web`` provides a simple web framework with asynchronous</span></span><br><span class="line"><span class="string">.//python-doc.txt:25:    import tornado.ioloop</span></span><br><span class="line"><span class="string">.//python-doc.txt:26:    import tornado.web</span></span><br><span class="line"><span class="string">.//python-doc.txt:28:    class MainHandler(tornado.web.RequestHandler):</span></span><br><span class="line"><span class="string">.//python-doc.txt:33:        application = tornado.web.Application([</span></span><br><span class="line"><span class="string">.//python-doc.txt:37:        tornado.ioloop.IOLoop.current().start()</span></span><br></pre></td></tr></table></figure>
+<p>参考文章：</p>
+<p><a href="https://www.cnblogs.com/klb561/p/10924399.html" target="_blank" rel="noopener">Linux系统下查找最近修改过的文件</a></p>
 
       
     </div>
@@ -527,8 +541,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/05/PXC集群介绍/" rel="next" title="PXC集群介绍">
-                <i class="fa fa-chevron-left"></i> PXC集群介绍
+              <a href="/2020/03/19/深度剖析下上下文管理器contextmanager/" rel="next" title="深度剖析下上下文管理器contextmanager">
+                <i class="fa fa-chevron-left"></i> 深度剖析下上下文管理器contextmanager
               </a>
             
           </div>
@@ -536,10 +550,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/05/Docker学习笔记/" rel="prev" title="Docker学习笔记">
-                Docker学习笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -594,17 +604,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -691,22 +692,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#防火墙相关命令："><span class="nav-number">1.</span> <span class="nav-text">防火墙相关命令：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#目录文件大小统计-du"><span class="nav-number">2.</span> <span class="nav-text">目录文件大小统计 du</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#linux后台执行命令：-amp-与nohup的用法"><span class="nav-number">3.</span> <span class="nav-text">linux后台执行命令：&amp;与nohup的用法</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
