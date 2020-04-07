@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="小码农的笔记">
 <meta property="og:description" content="asyncio提供了通过 async/await 创建和管理子进程的API。不同于Python标准库的subprocess，asyncio的子进程函数都是异步的，并且提供了多种工具来处理这些函数，这就很容易并行执行和监视多个子进程。 创建子进程的方法主要有两个： coroutine asyncio.create_subprocess_exec()  coroutine asyncio.create">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-11T16:21:59.901Z">
+<meta property="og:updated_time" content="2020-04-07T03:53:36.159Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Asyncio中的子进程模块subprocess">
 <meta name="twitter:description" content="asyncio提供了通过 async/await 创建和管理子进程的API。不同于Python标准库的subprocess，asyncio的子进程函数都是异步的，并且提供了多种工具来处理这些函数，这就很容易并行执行和监视多个子进程。 创建子进程的方法主要有两个： coroutine asyncio.create_subprocess_exec()  coroutine asyncio.create">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,254 字
+                  1,419 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -471,6 +471,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_release_waiter</span><span class="params">(waiter, *args)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> waiter.done():</span><br><span class="line">        waiter.set_result(<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
 <p>上面函数就是把我们正在执行的协程停止，我们看看<code>set_result</code>函数里面做了什么:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_result</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    <span class="string">"""Mark the future done and set its result.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If the future is already done when this method is called, raises</span></span><br><span class="line"><span class="string">    InvalidStateError.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> self._state != _PENDING:</span><br><span class="line">        <span class="keyword">raise</span> InvalidStateError(<span class="string">'&#123;&#125;: &#123;!r&#125;'</span>.format(self._state, self))</span><br><span class="line">    self._result = result</span><br><span class="line">    self._state = _FINISHED</span><br><span class="line">    self.__schedule_callbacks()</span><br></pre></td></tr></table></figure>
+<h5 id="一个注意点"><a href="#一个注意点" class="headerlink" title="一个注意点"></a>一个注意点</h5><p>当我们使用子进程执行一个耗时较久的命令时候 可能会出现子进程卡住的现象。这是因为子进程产生一些数据，他们会被<code>buffer</code>起来，当<code>buffer</code>满了，会写到子进程的标准输出和标准错误输出，这些东西通过管道发送给父进程。当管道满了之后，子进程就停止写入，于是就卡住了，及时取走管道的输出就不会出现阻塞了。</p>
+<p>推荐文章：</p>
+<p><a href="[https://dothinking.github.io/blog/2018/01/12/%E4%BD%BF%E7%94%A8subprocess%E6%A8%A1%E5%9D%97%E8%B0%83%E7%94%A8%E5%AD%90%E8%BF%9B%E7%A8%8B%E5%B9%B6%E8%8E%B7%E5%8F%96%E8%BE%93%E5%87%BA.html](https://dothinking.github.io/blog/2018/01/12/使用subprocess模块调用子进程并获取输出.html">使用subprocess模块调用子进程并获取输出</a>)</p>
+<p><a href="https://blog.csdn.net/u010649766/article/details/75573887" target="_blank" rel="noopener">subprocess.Popen子进程管道阻塞</a></p>
+<p><a href="https://www.cnblogs.com/lincappu/p/8270709.html" target="_blank" rel="noopener">python subprocess模块</a></p>
 
       
     </div>
@@ -716,7 +721,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#实现一个子进程类-来管理子进程"><span class="nav-number">1.</span> <span class="nav-text">实现一个子进程类 来管理子进程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#实现一个子进程类-来管理子进程"><span class="nav-number">1.</span> <span class="nav-text">实现一个子进程类 来管理子进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个注意点"><span class="nav-number">2.</span> <span class="nav-text">一个注意点</span></a></li></ol></div>
             
 
           </div>
