@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="​    一般要看日志的时候绝大部分情况下都是分析bug😳 如何快速定位查找到问题所在的文件和位置是我们首要的目的。因为Linux不像Windows系统有很好的图形界面，我们主要依赖一些命令进行查找日志。 今天主要想记录的主要是find和grep这两个命令，可以参考下面的文章学习下这两个命令： 每天一个linux命令（19）：find 命令概览 每天一个linux命令（22）：find 命令的参">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-16T07:48:47.228Z">
+<meta property="og:updated_time" content="2020-05-20T14:31:55.654Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="日志查找好帮手-find和grep">
 <meta name="twitter:description" content="​    一般要看日志的时候绝大部分情况下都是分析bug😳 如何快速定位查找到问题所在的文件和位置是我们首要的目的。因为Linux不像Windows系统有很好的图形界面，我们主要依赖一些命令进行查找日志。 今天主要想记录的主要是find和grep这两个命令，可以参考下面的文章学习下这两个命令： 每天一个linux命令（19）：find 命令概览 每天一个linux命令（22）：find 命令的参">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  815 字
+                  984 字
                 </span>
               
 
@@ -469,11 +469,25 @@
 <p>我们查找当前目录下最近两天修改的文件类型为普通文件且包含<code>tornado</code>字符串的文件，以及显示所在行数。</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> /tmp  find ./  -type f -mtime -<span class="number">2</span> | xargs grep -n <span class="string">"tornado"</span> </span><br><span class="line"> </span><br><span class="line">.//python-doc.txt:<span class="number">16</span>:<span class="string">""</span><span class="string">"``tornado.web`` provides a simple web framework with asynchronous</span></span><br><span class="line"><span class="string">.//python-doc.txt:25:    import tornado.ioloop</span></span><br><span class="line"><span class="string">.//python-doc.txt:26:    import tornado.web</span></span><br><span class="line"><span class="string">.//python-doc.txt:28:    class MainHandler(tornado.web.RequestHandler):</span></span><br><span class="line"><span class="string">.//python-doc.txt:33:        application = tornado.web.Application([</span></span><br><span class="line"><span class="string">.//python-doc.txt:37:        tornado.ioloop.IOLoop.current().start()</span></span><br></pre></td></tr></table></figure>
 <hr>
-<p>使用<code>awk</code>输出想要的列或者进行求和</p>
+<p><strong>使用<code>awk</code>输出想要的列或者进行求和</strong></p>
 <p><code>awk</code>的默认分隔符是空格，可以使用<code>F</code>参数来指定新的分隔符</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F <span class="string">"."</span> <span class="string">'&#123;print $1&#125;'</span></span><br></pre></td></tr></table></figure>
 <p>使用<code>awk</code>对符合的列进行求和操作</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;sum += $1&#125;;END &#123;print sum&#125;'</span> test.txt</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>awk去重以某列重复的行</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost cc]<span class="comment"># cat 2.txt</span></span><br><span class="line">adc <span class="number">3</span> <span class="number">5</span></span><br><span class="line">a d a</span><br><span class="line">a <span class="number">3</span> adf</span><br><span class="line">a d b</span><br><span class="line">a <span class="number">3</span> adf</span><br></pre></td></tr></table></figure>
+<p>去重第一列重复的行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost cc]<span class="comment"># cat 2.txt |awk '!a[$1]++&#123;print&#125;'</span></span><br><span class="line">adc <span class="number">3</span> <span class="number">5</span></span><br><span class="line">a d a</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 重复的行取最上面一行记录</p>
+</blockquote>
+<p>去重以第一列和第二列重复的行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost cc]<span class="comment"># cat 2.txt |awk '!a[$1" "$2]++&#123;print&#125;'</span></span><br><span class="line">adc <span class="number">3</span> <span class="number">5</span></span><br><span class="line">a d a</span><br><span class="line">a <span class="number">3</span> adf</span><br></pre></td></tr></table></figure>
+<p>去除重复的行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost cc]<span class="comment"># cat 2.txt |awk '!a[$0]++&#123;print&#125;'</span></span><br><span class="line">adc <span class="number">3</span> <span class="number">5</span></span><br><span class="line">a d a</span><br><span class="line">a <span class="number">3</span> adf</span><br><span class="line">a d b</span><br></pre></td></tr></table></figure>
+<p>只显示重复行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost cc]<span class="comment"># cat 2.txt |awk 'a[$0]++&#123;print&#125;'</span></span><br><span class="line">a <span class="number">3</span> adf</span><br></pre></td></tr></table></figure>
 <p>参考文章：</p>
 <p><a href="https://www.cnblogs.com/klb561/p/10924399.html" target="_blank" rel="noopener">Linux系统下查找最近修改过的文件</a></p>
 
