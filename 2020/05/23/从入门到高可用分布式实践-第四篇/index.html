@@ -91,14 +91,14 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/29/aVaDyV.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/29/aVahS1.png">
-<meta property="og:image" content="https://images2018.cnblogs.com/blog/1120165/201806/1120165-20180605074856240-1421814394.png">
-<meta property="og:image" content="https://images2018.cnblogs.com/blog/1120165/201806/1120165-20180605231439984-1617714762.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/30/aK9wVO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/30/aKCaSs.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amLe3D.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amLRKJ.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amOBsH.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amOqYV.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amXn0A.png">
-<meta property="og:updated_time" content="2020-07-30T08:53:22.472Z">
+<meta property="og:updated_time" content="2020-07-30T09:10:23.089Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-Redis持久化的取舍和选择">
 <meta name="twitter:description" content="这篇我们来看下关于Redis持久化的知识点，因为有时候我们希望保存一些Redis数据到磁盘上。 持久化的作用什么是持久化？​        由于 Redis 是一个内存数据库，所谓内存数据库，就是将数据库中的内容保存在内存中，这与传统的MySQL，Oracle等关系型数据库直接将内容保存到硬盘中相比，内存数据库的读写效率比传统数据库要快的多（内存的读写效率远远大于硬盘的读写效率）。但是保存在内存中">
@@ -477,7 +477,8 @@
 </blockquote>
 <p><img src="https://s1.ax1x.com/2020/07/29/aVahS1.png" alt="save和bgsave对比"></p>
 <p><strong>自动</strong></p>
-<p>在 redis.conf 配置文件中的 SNAPSHOTTING 下<br><img src="https://images2018.cnblogs.com/blog/1120165/201806/1120165-20180605074856240-1421814394.png" alt="自动RDB"></p>
+<p>在 redis.conf 配置文件中的 SNAPSHOTTING 下</p>
+<p><img src="https://s1.ax1x.com/2020/07/30/aK9wVO.png" alt="RDB相关配置"></p>
 <p>我们看下这个配置文件中几个常用的配置：</p>
 <p>①、save：**这里是用来配置触发 Redis的 RDB 持久化条件，也就是什么时候将内存中的数据保存到硬盘。比如“save m n”。表示m秒内数据集存在n次修改时，自动触发bgsave（这个命令下面会介绍，手动触发RDB持久化的命令）</p>
 <p>　　默认如下配置：</p>
@@ -510,7 +511,8 @@
 <p>参考阅读：<a href="https://www.cnblogs.com/ysocean/p/9114268.html" target="_blank" rel="noopener">Redis详解（六）—— RDB 持久化</a></p>
 <h4 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h4><p>​        RDB 持久化存在一个缺点是一定时间内做一次备份，如果redis意外down掉的话，就会丢失最后一次快照后的所有修改(数据有丢失)。对于数据完整性要求很严格的需求，怎么解决呢？</p>
 <p>​        Redis的持久化方式之一RDB是通过保存数据库中的键值对来记录数据库的状态。而另一种持久化方式 AOF 则是通过保存Redis服务器所执行的写命令来记录数据库状态。</p>
-<p>在 redis.conf 配置文件的 APPEND ONLY MODE 下：<br><img src="https://images2018.cnblogs.com/blog/1120165/201806/1120165-20180605231439984-1617714762.png" alt="AOF相关配置"></p>
+<p>在 redis.conf 配置文件的 APPEND ONLY MODE 下：</p>
+<p><img src="https://s1.ax1x.com/2020/07/30/aKCaSs.png" alt="AOF相关配置"></p>
 <p>①、<strong>appendonly</strong>：默认值为no，也就是说redis 默认使用的是rdb方式持久化，如果想要开启 AOF 持久化方式，需要将 appendonly 修改为 yes。</p>
 <p>②、<strong>appendfilename</strong> ：aof文件名，默认是”appendonly.aof”</p>
 <p>③、<strong>appendfsync：</strong>aof持久化策略的配置；</p>
