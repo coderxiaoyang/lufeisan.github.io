@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amOBsH.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amOqYV.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/30/amXn0A.png">
-<meta property="og:updated_time" content="2020-07-29T16:51:15.486Z">
+<meta property="og:updated_time" content="2020-07-30T08:51:34.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-Redis持久化的取舍和选择">
 <meta name="twitter:description" content="这篇我们来看下关于Redis持久化的知识点，因为有时候我们希望保存一些Redis数据到磁盘上。 持久化的作用什么是持久化？​        由于 Redis 是一个内存数据库，所谓内存数据库，就是将数据库中的内容保存在内存中，这与传统的MySQL，Oracle等关系型数据库直接将内容保存到硬盘中相比，内存数据库的读写效率比传统数据库要快的多（内存的读写效率远远大于硬盘的读写效率）。但是保存在内存中">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,051 字
+                  4,379 字
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  15 分钟
+                  16 分钟
                 </span>
               
             </div>
@@ -536,6 +536,26 @@
 <p>只有同时满足上面两个条件才会触发AOF重写</p>
 </blockquote>
 <p><img src="https://s1.ax1x.com/2020/07/30/amXn0A.png" alt="AOF重写流程"></p>
+<ol>
+<li><p>执行AOF重写请求。</p>
+<p> 如果当前进程正在执行bgsave操作，重写命令会等待bgsave执行完后再执行。</p>
+</li>
+<li><p>父进程执行fork创建子进程。</p>
+</li>
+<li><p>fork操作完成后，主进程会继续响应其它命令。所有修改命令依然会写入到aof_buf中，并根据appendfsync策略持久化到AOF文件中。</p>
+</li>
+<li><p>因fork操作运用的是写时复制技术，所以子进程只能共享fork操作时的内存数据，对于fork操作后，生成的数据，主进程会单独开辟一块aof_rewrite_buf保存。</p>
+</li>
+<li><p>子进程根据内存快照，按照命令合并规则写入到新的AOF文件中。每次批量写入磁盘的数据量由aof-rewrite-incremental-fsync参数控制，默认为32M，避免单次刷盘数据过多造成硬盘阻塞。</p>
+</li>
+<li><p>新AOF文件写入完成后，子进程发送信号给父进程，父进程更新统计信息。</p>
+</li>
+<li><p>父进程将aof_rewrite_buf（AOF重写缓冲区）的数据写入到新的AOF文件中。</p>
+</li>
+<li><p>使用新AOF文件替换老文件，完成AOF重写。</p>
+</li>
+</ol>
+<p>实际上，当Redis节点执行完一个命令后，它会同时将这个写命令发送到AOF缓冲区和AOF重写缓冲区。</p>
 <p> <strong>AOF 文件重写并不是对原文件进行重新整理，而是直接读取服务器现有的键值对，然后用一条命令去代替之前记录这个键值对的多条命令，生成一个新的文件后去替换原来的 AOF 文件。</strong></p>
 <p> 　AOF 文件重写触发机制：通过 redis.conf 配置文件中的 auto-aof-rewrite-percentage：默认值为100，以及auto-aof-rewrite-min-size：64mb 配置，也就是说默认Redis会记录上次重写时的AOF大小，<strong>默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发。</strong></p>
 <p>　　这里再提一下，我们知道 Redis 是单线程工作，如果 重写 AOF 需要比较长的时间，那么在重写 AOF 期间，Redis将长时间无法处理其他的命令，这显然是不能忍受的。Redis为了克服这个问题，解决办法是将 AOF 重写程序放到子程序中进行，这样有两个好处：</p>
