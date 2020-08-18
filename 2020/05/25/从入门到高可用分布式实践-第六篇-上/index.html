@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="在Redis的持久化中曾提到，Redis高可用的方案包括持久化、主从复制（及读写分离）、哨兵和集群。其中持久化侧重解决的是Redis数据的单机备份问题（从内存到硬盘的备份）；而主从复制则侧重解决数据的多机热备。此外，主从复制还可以实现负载均衡和故障恢复。 这篇文章中，将详细介绍Redis主从复制的方方面面，包括：如何使用主从复制、主从复制的原理（重点是全量复制和部分复制、以及心跳机制）、实际应用中">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从入门到高可用分布式实践-Redis复制的原理与优化-上">
+<meta property="og:url" content="https://zhaobugs.com/2020/05/25/从入门到高可用分布式实践-第六篇-上/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="在Redis的持久化中曾提到，Redis高可用的方案包括持久化、主从复制（及读写分离）、哨兵和集群。其中持久化侧重解决的是Redis数据的单机备份问题（从内存到硬盘的备份）；而主从复制则侧重解决数据的多机热备。此外，主从复制还可以实现负载均衡和故障恢复。 这篇文章中，将详细介绍Redis主从复制的方方面面，包括：如何使用主从复制、主从复制的原理（重点是全量复制和部分复制、以及心跳机制）、实际应用中">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/18/dn0154.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/18/dn08PJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/19/dMhwqO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/19/dMh8IJ.png">
+<meta property="og:updated_time" content="2020-08-18T16:41:17.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从入门到高可用分布式实践-Redis复制的原理与优化-上">
+<meta name="twitter:description" content="在Redis的持久化中曾提到，Redis高可用的方案包括持久化、主从复制（及读写分离）、哨兵和集群。其中持久化侧重解决的是Redis数据的单机备份问题（从内存到硬盘的备份）；而主从复制则侧重解决数据的多机热备。此外，主从复制还可以实现负载均衡和故障恢复。 这篇文章中，将详细介绍Redis主从复制的方方面面，包括：如何使用主从复制、主从复制的原理（重点是全量复制和部分复制、以及心跳机制）、实际应用中">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/18/dn0154.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/05/25/从入门到高可用分布式实践-第六篇-上/"/>
+
+
+
+
+
+  <title>从入门到高可用分布式实践-Redis复制的原理与优化-上 | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/05/25/从入门到高可用分布式实践-第六篇-上/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从入门到高可用分布式实践-Redis复制的原理与优化-上</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T00:30:58+08:00">
+                2020-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/25/从入门到高可用分布式实践-第六篇-上/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/25/从入门到高可用分布式实践-第六篇-上/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/05/25/从入门到高可用分布式实践-第六篇-上/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-Redis复制的原理与优化-上">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,318 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在Redis的持久化中曾提到，Redis高可用的方案包括持久化、主从复制（及读写分离）、哨兵和集群。其中持久化侧重解决的是Redis数据的单机备份问题（从内存到硬盘的备份）；而主从复制则侧重解决数据的多机热备。此外，主从复制还可以实现负载均衡和故障恢复。</p>
+<p>这篇文章中，将详细介绍Redis主从复制的方方面面，包括：如何使用主从复制、主从复制的原理（重点是全量复制和部分复制、以及心跳机制）、实际应用中需要注意的问题（如数据不一致问题、复制超时问题、复制缓冲区溢出问题）、主从复制相关的配置（重点是repl-timeout、client-output-buffer-limit slave）等。</p>
+<h4 id="什么是主从复制？"><a href="#什么是主从复制？" class="headerlink" title="什么是主从复制？"></a>什么是主从复制？</h4><p>如果我们只在一台机子上面部署了Redis服务，这个时候就是单机，单机往往会伴随着一些问题：</p>
+<ol>
+<li>机器故障（主板、CPU等）需要高可用解决</li>
+<li>容量瓶颈（服务需要更多的内存）需要分布式解决</li>
+<li>QPS瓶颈（比单机10万QPS更高的QPS的时候，单机就会有瓶颈）需要分布式解决</li>
+</ol>
+<p><strong>主从复制概述</strong></p>
+<p>主从复制，是指将一台Redis服务器的数据，复制到其他的Redis服务器。前者称为主节点(master)，后者称为从节点(slave)；数据的复制是单向的，只能由主节点到从节点。</p>
+<p>默认情况下，每台Redis服务器都是主节点；且一个主节点可以有多个从节点(或没有从节点)，但一个从节点只能有一个主节点，从节点也可以有自己的从节点。</p>
+<p><strong>主从复制的作用</strong></p>
+<p>主从复制的作用主要包括：</p>
+<ol>
+<li>数据冗余：主从复制实现了数据的热备份，是持久化之外的一种数据冗余方式。</li>
+<li>故障恢复：当主节点出现问题时，可以由从节点提供服务，实现快速的故障恢复；实际上是一种服务的冗余。</li>
+<li>负载均衡：在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节点分担读负载，可以大大提高Redis服务器的并发量。</li>
+<li>高可用基石：除了上述作用以外，主从复制还是哨兵和集群能够实施的基础，因此说主从复制是Redis高可用的基础。</li>
+</ol>
+<h4 id="复制的配置"><a href="#复制的配置" class="headerlink" title="复制的配置"></a>复制的配置</h4><h5 id="建立复制"><a href="#建立复制" class="headerlink" title="建立复制"></a>建立复制</h5><p>需要注意，<strong>主从复制的开启，完全是在从节点发起的；不需要我们在主节点做任何事情。</strong></p>
+<p>从节点开启主从复制，有3种方式：</p>
+<p>（1）配置文件</p>
+<p>在从服务器的配置文件中加入：<code>slaveof &lt;masterip&gt; &lt;masterport&gt;</code></p>
+<p>除此之外需要设置从节点只读：<code>slave-read-only yes</code>（设置从节点只能读，不能写,否则写入从节点的数据,主不会知道，造成数据不同步）</p>
+<p>（2）启动命令</p>
+<p>redis-server启动命令后加入<code>--slaveof &lt;masterip&gt; &lt;masterport&gt;</code></p>
+<p>（3）客户端命令</p>
+<p>Redis服务器启动后，直接通过客户端执行命令：<code>slaveof &lt;masterip&gt; &lt;masterport&gt;</code>，则该Redis实例成为从节点。</p>
+<p>上述3种方式是等效的，下面以客户端命令的方式为例，看一下当执行了slaveof后，Redis主节点和从节点的变化。</p>
+<blockquote>
+<p><code>slaveof</code> 创建主从,该命令是异步的,返回OK,但不代表操作已完成</p>
+</blockquote>
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><p><strong>准备工作：启动两个节点</strong></p>
+<p>方便起见，实验所使用的主从节点是在一台机器上的不同Redis实例，其中主节点监听6379端口，从节点监听6380端口；从节点监听的端口号可以在配置文件中修改：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">port</span> <span class="number">6380</span></span><br></pre></td></tr></table></figure>
+<p>两个Redis节点启动后（分别称为6379节点和6380节点），默认都是主节点。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p <span class="number">6379</span>                                                                                                                                  </span><br><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span>&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p <span class="number">6380</span>                                                                                                                                    </span><br><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6380</span>&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><strong>建立复制</strong></p>
+<p>此时在6380节点执行slaveof命令，使之变为从节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; SLAVEOF 127.0.0.1 6379</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/08/18/dn0154.png" alt="执行完 slaveof之后 master的日志"></p>
+<p>上图是执行完<code>slaveof</code>之后<code>master</code>节点的日志输出</p>
+<p><img src="https://s1.ax1x.com/2020/08/18/dn08PJ.png" alt="执行完 slaveof之后 slave的日志"></p>
+<p>上图是执行完<code>slaveof</code>之后<code>slave</code>节点的日志输出</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span>&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; info replication</span><br><span class="line"># Replication</span><br><span class="line">role:slave</span><br><span class="line">master_host:127.0.0.1</span><br><span class="line">master_port:6379</span><br></pre></td></tr></table></figure>
+<p><strong>观察效果</strong></p>
+<p>下面验证一下，在主从复制建立后，主节点的数据会复制到从节点中。</p>
+<p>（1）首先在从节点查询一个不存在的key：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6380</span>&gt; get somekey</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<p>（2）然后在主节点中增加这个key：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span>&gt; set somekey somevalue</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>（3）此时在从节点中再次查询这个key，会发现主节点的操作已经同步至从节点：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6380</span>&gt; get somekey</span><br><span class="line"><span class="string">"somevalue"</span></span><br></pre></td></tr></table></figure>
+<p>（4）然后在主节点删除这个key：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span>&gt; DEL somekey</span><br><span class="line">(integer) <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>（5）此时在从节点中再次查询这个key，会发现主节点的操作已经同步至从节点：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6380</span>&gt; get somekey</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<h5 id="断开复制"><a href="#断开复制" class="headerlink" title="断开复制"></a>断开复制</h5><p>通过<code>slaveof &lt;masterip&gt; &lt;masterport&gt;</code>命令建立主从复制关系以后，可以通过<code>slaveof no one</code>断开。需要注意的是，从节点断开复制后，不会删除已有的数据，只是不再接受主节点新的数据变化。</p>
+<p>从节点执行<code>slaveof no one</code>后，打印日志如下所示；可以看出断开复制后，从节点又变回为主节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; SLAVEOF no one</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/08/19/dMhwqO.png" alt="主节点的断开日志"></p>
+<blockquote>
+<p>主节点的断开日志</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/19/dMh8IJ.png" alt="从节点的断开日志"></p>
+<blockquote>
+<p>从节点的断开日志</p>
+</blockquote>
+<blockquote>
+<p><code>slaveof no one</code>删除主从，返回OK，但数据并不会删除,只是连接断开。如果又重新创建一个主,则第一步会把改从节点的所有数据先清除</p>
+</blockquote>
+<h4 id="主从复制的实现原理"><a href="#主从复制的实现原理" class="headerlink" title="主从复制的实现原理"></a>主从复制的实现原理</h4><p>主从复制过程大体可以分为3个阶段：连接建立阶段（即准备阶段）、数据同步阶段、命令传播阶段；下面分别进行介绍。</p>
+<h5 id="1-连接建立阶段"><a href="#1-连接建立阶段" class="headerlink" title="1. 连接建立阶段"></a>1. 连接建立阶段</h5><p>该阶段的主要作用是在主从节点之间建立连接，为数据同步做好准备。</p>
+<p><strong>步骤1：保存主节点信息</strong></p>
+<p>​        从节点服务器内部维护了两个字段，即<code>masterhost</code>和<code>masterport</code>字段，用于存储主节点的<code>ip</code>和<code>port</code>信息。</p>
+<p>​        需要注意的是，<strong>slaveof是异步命令，从节点完成主节点ip和port的保存后，向发送slaveof命令的客户端直接返回OK，实际的复制操作在这之后才开始进行。</strong></p>
+<p>​        这个过程中，可以看到从节点打印日志如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">68518</span>:S <span class="number">19</span> Aug <span class="number">00</span>:<span class="number">31</span>:<span class="number">25.162</span> * SLAVE OF <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span> enabled (user request from <span class="string">'id=2 addr=127.0.0.1:58189 fd=8 name= age=14 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=slaveof'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>步骤2：建立socket连接</strong></p>
+<p>​        从节点每秒1次调用复制定时函数replicationCron()，如果发现了有主节点可以连接，便会根据主节点的ip和port，创建socket连接。如果连接成功，则：</p>
+<p>​        从节点：为该socket建立一个专门处理复制工作的文件事件处理器，负责后续的复制工作，如接收RDB文件、接收命令传播等。</p>
+<p>​        主节点：接收到从节点的socket连接后（即accept之后），为该socket创建相应的客户端状态，<strong>并将从节点看做是连接到主节点的一个客户端，后面的步骤会以从节点向主节点发送命令请求的形式来进行。</strong></p>
+<p>​        这个过程中，从节点打印日志如下:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">68518</span>:S <span class="number">19</span> Aug <span class="number">00</span>:<span class="number">31</span>:<span class="number">25.395</span> * Connecting to MASTER <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span></span><br><span class="line"><span class="number">68518</span>:S <span class="number">19</span> Aug <span class="number">00</span>:<span class="number">31</span>:<span class="number">25.395</span> * MASTER &lt;-&gt; SLAVE sync started</span><br></pre></td></tr></table></figure>
+<p><strong>步骤3：发送ping命令</strong></p>
+<p>​        从节点成为主节点的客户端之后，发送<code>ping</code>命令进行首次请求，目的是：检查socket连接是否可用，以及主节点当前是否能够处理请求。</p>
+<p>​        从节点发送ping命令后，可能出现3种情况：</p>
+<p>​        （1）返回pong：说明socket连接正常，且主节点当前可以处理请求，复制过程继续。</p>
+<p>​        （2）超时：一定时间后从节点仍未收到主节点的回复，说明socket连接不可用，则从节点断开socket连接，并重连。</p>
+<p>​        （3）返回pong以外的结果：如果主节点返回其他结果，如正在处理超时运行的脚本，说明主节点当前无法处理命令，则从节点断开socket连接，并重连。</p>
+<p>​        在主节点返回pong情况下，从节点打印日志如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">68518</span>:S <span class="number">19</span> Aug <span class="number">00</span>:<span class="number">31</span>:<span class="number">25.396</span> * Non blocking connect <span class="keyword">for</span> SYNC fired the event.</span><br><span class="line"><span class="number">68518</span>:S <span class="number">19</span> Aug <span class="number">00</span>:<span class="number">31</span>:<span class="number">25.398</span> * Master replied to PING, replication can continue...</span><br></pre></td></tr></table></figure>
+<p><strong>步骤4：身份验证</strong></p>
+<p>如果从节点中设置了masterauth选项，则从节点需要向主节点进行身份验证；没有设置该选项，则不需要验证。从节点进行身份验证是通过向主节点发送auth命令进行的，auth命令的参数即为配置文件中的masterauth的值。</p>
+<p>如果主节点设置密码的状态，与从节点masterauth的状态一致（一致是指都存在，且密码相同，或者都不存在），则身份验证通过，复制过程继续；如果不一致，则从节点断开socket连接，并重连。</p>
+<p><strong>步骤5：发送从节点端口信息</strong></p>
+<p>身份验证之后，从节点会向主节点发送其监听的端口号（前述例子中为6380），主节点将该信息保存到该从节点对应的客户端的<code>slave_listening_port</code>字段中；该端口信息除了在主节点中执行info Replication时显示以外，没有其他作用。</p>
+<h5 id="2-数据同步阶段"><a href="#2-数据同步阶段" class="headerlink" title="2. 数据同步阶段"></a>2. 数据同步阶段</h5><p>​        主从节点之间的连接建立以后，便可以开始进行数据同步，该阶段可以理解为从节点数据的初始化。具体执行的方式是：从节点向主节点发送psync命令（Redis2.8以前是sync命令），开始同步。</p>
+<p>​        数据同步阶段是主从复制最核心的阶段，根据主从节点当前状态的不同，可以分为全量复制和部分复制，下面会专门讲解这两种复制方式以及psync命令的执行过程。</p>
+<p>​        需要注意的是，在数据同步阶段之前，从节点是主节点的客户端，主节点不是从节点的客户端；而到了这一阶段及以后，主从节点互为客户端。原因在于：在此之前，主节点只需要响应从节点的请求即可，不需要主动发请求，而在数据同步阶段和后面的命令传播阶段，主节点需要主动向从节点发送请求（如推送缓冲区中的写命令），才能完成复制。</p>
+<h5 id="3-命令传播阶段"><a href="#3-命令传播阶段" class="headerlink" title="3. 命令传播阶段"></a>3. 命令传播阶段</h5><p>​        数据同步阶段完成后，主从节点进入命令传播阶段；在这个阶段主节点将自己执行的写命令发送给从节点，从节点接收命令并执行，从而保证主从节点数据的一致性。</p>
+<p>​        在命令传播阶段，除了发送写命令，主从节点还维持着心跳机制：PING和REPLCONF ACK。由于心跳机制的原理涉及部分复制，因此将在介绍了部分复制的相关内容后单独介绍该心跳机制。</p>
+<p>​    <strong>延迟与不一致</strong></p>
+<p>​        需要注意的是，命令传播是异步的过程，即主节点发送写命令后并不会等待从节点的回复；因此实际上主从节点之间很难保持实时的一致性，延迟在所难免。数据不一致的程度，与主从节点之间的网络状况、主节点写命令的执行频率、以及主节点中的<code>repl-disable-tcp-nodelay</code>配置等有关。</p>
+<p>​        <code>repl-disable-tcp-nodelay no</code>：该配置作用于命令传播阶段，控制主节点是否禁止与从节点的TCP_NODELAY；默认no，即不禁止TCP_NODELAY。当设置为yes时，TCP会对包进行合并从而减少带宽，但是发送的频率会降低，从节点数据延迟增加，一致性变差；具体发送频率与Linux内核的配置有关，默认配置为40ms。当设置为no时，TCP会立马将主节点的数据发送给从节点，带宽增加但延迟变小。</p>
+<p>​        一般来说，只有当应用对Redis数据不一致的容忍度较高，且主从节点之间网络状况不好时，才会设置为yes；多数情况使用默认值no。</p>
+<p>#### </p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/24/从入门到高可用分布式实践-第五篇/" rel="next" title="从入门到高可用分布式实践-常见的持久化开发运维问题">
+                <i class="fa fa-chevron-left"></i> 从入门到高可用分布式实践-常见的持久化开发运维问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">152</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是主从复制？"><span class="nav-number">1.</span> <span class="nav-text">什么是主从复制？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制的配置"><span class="nav-number">2.</span> <span class="nav-text">复制的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#建立复制"><span class="nav-number">2.1.</span> <span class="nav-text">建立复制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实例"><span class="nav-number">2.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#断开复制"><span class="nav-number">2.3.</span> <span class="nav-text">断开复制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主从复制的实现原理"><span class="nav-number">3.</span> <span class="nav-text">主从复制的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-连接建立阶段"><span class="nav-number">3.1.</span> <span class="nav-text">1. 连接建立阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-数据同步阶段"><span class="nav-number">3.2.</span> <span class="nav-text">2. 数据同步阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-命令传播阶段"><span class="nav-number">3.3.</span> <span class="nav-text">3. 命令传播阶段</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
