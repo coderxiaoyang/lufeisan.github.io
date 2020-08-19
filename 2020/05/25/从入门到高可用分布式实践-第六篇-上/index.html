@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/18/dn08PJ.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/19/dMhwqO.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/19/dMh8IJ.png">
-<meta property="og:updated_time" content="2020-08-18T16:41:17.450Z">
+<meta property="og:updated_time" content="2020-08-19T15:35:33.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-Redis复制的原理与优化-上">
 <meta name="twitter:description" content="在Redis的持久化中曾提到，Redis高可用的方案包括持久化、主从复制（及读写分离）、哨兵和集群。其中持久化侧重解决的是Redis数据的单机备份问题（从内存到硬盘的备份）；而主从复制则侧重解决数据的多机热备。此外，主从复制还可以实现负载均衡和故障恢复。 这篇文章中，将详细介绍Redis主从复制的方方面面，包括：如何使用主从复制、主从复制的原理（重点是全量复制和部分复制、以及心跳机制）、实际应用中">
@@ -562,7 +562,6 @@
 <p>​        需要注意的是，命令传播是异步的过程，即主节点发送写命令后并不会等待从节点的回复；因此实际上主从节点之间很难保持实时的一致性，延迟在所难免。数据不一致的程度，与主从节点之间的网络状况、主节点写命令的执行频率、以及主节点中的<code>repl-disable-tcp-nodelay</code>配置等有关。</p>
 <p>​        <code>repl-disable-tcp-nodelay no</code>：该配置作用于命令传播阶段，控制主节点是否禁止与从节点的TCP_NODELAY；默认no，即不禁止TCP_NODELAY。当设置为yes时，TCP会对包进行合并从而减少带宽，但是发送的频率会降低，从节点数据延迟增加，一致性变差；具体发送频率与Linux内核的配置有关，默认配置为40ms。当设置为no时，TCP会立马将主节点的数据发送给从节点，带宽增加但延迟变小。</p>
 <p>​        一般来说，只有当应用对Redis数据不一致的容忍度较高，且主从节点之间网络状况不好时，才会设置为yes；多数情况使用默认值no。</p>
-<p>#### </p>
 
       
     </div>
@@ -643,6 +642,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/26/从入门到高可用分布式实践-第六篇-中/" rel="prev" title="从入门到高可用分布式实践-Redis复制的原理与优化-中">
+                从入门到高可用分布式实践-Redis复制的原理与优化-中 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -726,7 +729,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">152</span>
+                  <span class="site-state-item-count">153</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
