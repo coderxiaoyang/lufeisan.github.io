@@ -81,20 +81,27 @@
 
 
 
-<meta name="description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法进行部分复制的情况">
+<meta name="description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制​        在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从入门到高可用分布式实践-Redis复制的原理与优化-中">
 <meta property="og:url" content="https://zhaobugs.com/2020/05/26/从入门到高可用分布式实践-第六篇-中/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法进行部分复制的情况">
+<meta property="og:description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制​        在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/19/d3KsiR.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/19/d3KbSP.png">
-<meta property="og:updated_time" content="2020-08-19T15:53:52.086Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJhAc4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ4ZRS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ4laq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ5CSU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ5L9K.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJokI1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJoBon.png">
+<meta property="og:updated_time" content="2020-08-20T15:51:18.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-Redis复制的原理与优化-中">
-<meta name="twitter:description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法进行部分复制的情况">
+<meta name="twitter:description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制​        在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/08/19/d3KsiR.png">
 
 
@@ -415,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  842 字
+                  3,376 字
                 </span>
               
 
@@ -431,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3 分钟
+                  12 分钟
                 </span>
               
             </div>
@@ -453,12 +460,12 @@
 
       
         <p>我们继续学习Redis复制的原理与优化。</p>
-<h4 id="【数据同步阶段】全量复制和部分复制"><a href="#【数据同步阶段】全量复制和部分复制" class="headerlink" title="【数据同步阶段】全量复制和部分复制"></a>【数据同步阶段】全量复制和部分复制</h4><p>在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。</p>
+<h3 id="【数据同步阶段】全量复制和部分复制"><a href="#【数据同步阶段】全量复制和部分复制" class="headerlink" title="【数据同步阶段】全量复制和部分复制"></a>【数据同步阶段】全量复制和部分复制</h3><p>​        在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。</p>
 <ol>
 <li>全量复制：用于初次复制或其他无法进行部分复制的情况，将主节点中的所有数据都发送给从节点，是一个非常重型的操作。</li>
 <li>部分复制：用于网络中断等情况后的复制，只将中断期间主节点执行的写命令发送给从节点，与全量复制相比更加高效。需要注意的是，如果网络中断时间过长，导致主节点没有能够完整地保存中断期间执行的写命令，则无法进行部分复制，仍使用全量复制。</li>
 </ol>
-<h5 id="全量复制"><a href="#全量复制" class="headerlink" title="全量复制"></a>全量复制</h5><p>Redis通过psync命令进行全量复制的过程如下：</p>
+<h4 id="全量复制"><a href="#全量复制" class="headerlink" title="全量复制"></a>全量复制</h4><p>​        Redis通过psync命令进行全量复制的过程如下：</p>
 <p>（1）从节点判断无法进行部分复制，向主节点发送全量复制的请求；或从节点发送部分复制的请求，但主节点判断无法进行部分复制。</p>
 <p>（2）主节点收到全量复制的命令后，执行bgsave，在后台生成RDB文件，并使用一个缓冲区（称为复制缓冲区）记录从现在开始执行的所有写命令</p>
 <p>（3）主节点的bgsave执行完成后，将RDB文件发送给从节点；<strong>从节点首先清除自己的旧数据，然后载入接收的RDB文件</strong>，将数据库状态更新至主节点执行bgsave时的数据库状态</p>
@@ -469,11 +476,59 @@
 <p><img src="https://s1.ax1x.com/2020/08/19/d3KsiR.png" alt="主节点日志"></p>
 <p>从节点打印日志如下图所示：</p>
 <p><img src="https://s1.ax1x.com/2020/08/19/d3KbSP.png" alt="从节点日志"></p>
-<p>其中，有几点需要注意：从节点接收了来自主节点的89260个字节的数据；从节点在载入主节点的数据之前要先将老数据清除；从节点在同步完数据后，调用了bgrewriteaof。</p>
+<p>​        其中，有几点需要注意：从节点接收了来自主节点的89260个字节的数据；从节点在载入主节点的数据之前要先将老数据清除；从节点在同步完数据后，调用了bgrewriteaof。</p>
 <p> 通过全量复制的过程可以看出，全量复制是非常重型的操作：</p>
 <p>（1）主节点通过bgsave命令fork子进程进行RDB持久化，该过程是非常消耗CPU、内存(页表复制)、硬盘IO的；</p>
 <p>（2）主节点通过网络将RDB文件发送给从节点，对主从节点的带宽都会带来很大的消耗</p>
 <p>（3）从节点清空老数据、载入新RDB文件的过程是阻塞的，无法响应客户端的命令；如果从节点执行bgrewriteaof，也会带来额外的消耗</p>
+<h3 id="部分复制"><a href="#部分复制" class="headerlink" title="部分复制"></a>部分复制</h3><p>​        由于全量复制在主节点数据量较大时效率太低，因此Redis2.8开始提供部分复制，用于处理网络中断时的数据同步。</p>
+<p>部分复制的实现，依赖于三个重要的概念：</p>
+<h5 id="（1）复制偏移量"><a href="#（1）复制偏移量" class="headerlink" title="（1）复制偏移量"></a>（1）复制偏移量</h5><p>​        主节点和从节点分别维护一个复制偏移量（offset），代表的是<strong>主节点向从节点传递的字节数</strong>；主节点每次向从节点传播N个字节数据时，主节点的offset增加N；从节点每次收到主节点传来的N个字节数据时，从节点的offset增加N。</p>
+<p>​        offset用于判断主从节点的数据库状态是否一致：如果二者offset相同，则一致；如果offset不同，则不一致，此时可以根据两个offset找出从节点缺少的那部分数据。例如，如果主节点的offset是1000，而从节点的offset是500，那么部分复制就需要将offset为501-1000的数据传递给从节点。而offset为501-1000的数据存储的位置，就是下面要介绍的复制积压缓冲区。</p>
+<h5 id="（2）复制积压缓冲区"><a href="#（2）复制积压缓冲区" class="headerlink" title="（2）复制积压缓冲区"></a>（2）复制积压缓冲区</h5><p>​        复制积压缓冲区是由主节点维护的、固定长度的、先进先出(FIFO)队列，默认大小1MB；当主节点开始有从节点时创建，其作用是备份主节点最近发送给从节点的数据。注意，无论主节点有一个还是多个从节点，都只需要一个复制积压缓冲区。</p>
+<p>​        在命令传播阶段，主节点除了将写命令发送给从节点，还会发送一份给复制积压缓冲区，作为写命令的备份；除了存储写命令，复制积压缓冲区中还存储了其中的每个字节对应的复制偏移量（offset）。由于复制积压缓冲区定长且是先进先出，所以它保存的是主节点最近执行的写命令；时间较早的写命令会被挤出缓冲区。</p>
+<p>​        由于该缓冲区长度固定且有限，因此可以备份的写命令也有限，当主从节点offset的差距过大超过缓冲区长度时，将无法执行部分复制，只能执行全量复制。反过来说，为了提高网络中断时部分复制执行的概率，可以根据需要增大复制积压缓冲区的大小(通过配置repl-backlog-size)；例如如果网络中断的平均时间是60s，而主节点平均每秒产生的写命令(特定协议格式)所占的字节数为100KB，则复制积压缓冲区的平均需求为6MB，保险起见，可以设置为12MB，来保证绝大多数断线情况都可以使用部分复制。</p>
+<p>​        从节点将offset发送给主节点后，主节点根据offset和缓冲区大小决定能否执行部分复制：</p>
+<ul>
+<li>如果offset偏移量之后的数据，仍然都在复制积压缓冲区里，则执行部分复制；</li>
+<li>如果offset偏移量之后的数据已不在复制积压缓冲区中（数据已被挤出），则执行全量复制。</li>
+</ul>
+<h5 id="（3）服务器运行ID-runid"><a href="#（3）服务器运行ID-runid" class="headerlink" title="（3）服务器运行ID(runid)"></a>（3）服务器运行ID(runid)</h5><p>​        每个Redis节点(无论主从)，在启动时都会自动生成一个随机ID(每次启动都不一样)，由40个随机的十六进制字符组成；runid用来唯一识别一个Redis节点。通过info Server命令，可以查看节点的runid：    </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> ~ redis-cli info server  | grep run_id </span><br><span class="line"></span><br><span class="line">run_id:<span class="number">97</span>e075e9a6f4d1f013b19474e800ca64c82a3880</span><br></pre></td></tr></table></figure>
+<p>​        主从节点初次复制时，主节点将自己的runid发送给从节点，从节点将这个runid保存起来；当断线重连时，从节点会将这个runid发送给主节点；主节点根据runid判断能否进行部分复制：</p>
+<ul>
+<li>如果从节点保存的runid与主节点现在的runid相同，说明主从节点之前同步过，主节点会继续尝试使用部分复制(到底能不能部分复制还要看offset和复制积压缓冲区的情况)；</li>
+<li>如果从节点保存的runid与主节点现在的runid不同，说明从节点在断线前同步的Redis节点并不是当前的主节点，只能进行全量复制。</li>
+</ul>
+<h4 id="psync命令的执行"><a href="#psync命令的执行" class="headerlink" title="psync命令的执行"></a>psync命令的执行</h4><p>​        在了解了复制偏移量、复制积压缓冲区、节点运行id之后，接下来将介绍psync命令的参数和返回值，从而说明psync命令执行过程中，主从节点是如何确定使用全量复制还是部分复制的。</p>
+<p>​        psync命令的执行过程可以参见下图（图片来源：《Redis设计与实现》）：<br><img src="https://s1.ax1x.com/2020/08/20/dJhAc4.png" alt="psync命令的执行过程"></p>
+<p>（1）首先，从节点根据当前状态，决定如何调用<code>psync</code>命令：</p>
+<ul>
+<li>如果从节点之前未执行过<code>slaveof</code>或最近执行了<code>slaveof no one</code>，则从节点发送命令为<code>psync ? -1</code>，向主节点请求全量复制；</li>
+<li>如果从节点之前执行了<code>slaveof</code>，则发送命令为<code>psync &lt;runid&gt; &lt;offset&gt;</code>，其中<code>runid</code>为上次复制的主节点的<code>runid</code>，<code>offset</code>为上次复制截止时从节点保存的复制偏移量。</li>
+</ul>
+<p>（2）主节点根据收到的<code>psync</code>命令，及当前服务器状态，决定执行全量复制还是部分复制：</p>
+<ul>
+<li>如果主节点版本低于Redis2.8，则返回<code>-ERR</code>回复，此时从节点重新发送<code>sync</code>命令执行全量复制；</li>
+<li>如果主节点版本够新，且<code>runid</code>与从节点发送的<code>runid</code>相同，且从节点发送的<code>offset</code>之后的数据在复制积压缓冲区中都存在，则回复<code>+CONTINUE</code>，表示将进行部分复制，从节点等待主节点发送其缺少的数据即可；</li>
+<li>如果主节点版本够新，但是<code>runid</code>与从节点发送的<code>runid</code>不同，或从节点发送的<code>offset</code>之后的数据已不在复制积压缓冲区中(在队列中被挤出了)，则回复<code>+FULLRESYNC &lt;runid&gt; &lt;offset&gt;</code>，表示要进行全量复制，其中<code>runid</code>表示主节点当前的<code>runid</code>，<code>offset</code>表示主节点当前的<code>offset</code>，从节点保存这两个值，以备使用。</li>
+</ul>
+<h4 id="部分复制演示"><a href="#部分复制演示" class="headerlink" title="部分复制演示"></a>部分复制演示</h4><p>​        在下面的演示中，网络中断几分钟后恢复，断开连接的主从节点进行了部分复制；为了便于模拟网络中断，本例中的主从节点在局域网中的两台机器上。</p>
+<h5 id="网络中断"><a href="#网络中断" class="headerlink" title="网络中断"></a>网络中断</h5><p>​        网络中断一段时间后，主节点和从节点都会发现失去了与对方的连接（关于主从节点对超时的判断机制，后面会有说明）；此后，从节点便开始执行对主节点的重连，由于此时网络还没有恢复，重连失败，从节点会一直尝试重连。</p>
+<p>主节点日志如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJ4ZRS.png" alt="网络中断后主节点的日志"></p>
+<p>从节点日志如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJ4laq.png" alt="网络中断后从节点的日志"></p>
+<h5 id="网络恢复"><a href="#网络恢复" class="headerlink" title="网络恢复"></a>网络恢复</h5><p>网络恢复后，从节点连接主节点成功，并请求进行部分复制，主节点接收请求后，二者进行部分复制以同步数据。<br>主节点日志如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJ5CSU.png" alt="网络恢复后主节点日志"></p>
+<p>从节点日志如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJ5L9K.png" alt="网络恢复后从节点日志"></p>
+<h3 id="【命令传播阶段】心跳机制"><a href="#【命令传播阶段】心跳机制" class="headerlink" title="【命令传播阶段】心跳机制"></a>【命令传播阶段】心跳机制</h3><p>​        在命令传播阶段，除了发送写命令，主从节点还维持着心跳机制：PING和REPLCONF ACK。心跳机制对于主从复制的超时判断、数据安全等有作用。</p>
+<h4 id="1-主-gt-从：PING"><a href="#1-主-gt-从：PING" class="headerlink" title="1.主-&gt;从：PING"></a>1.主-&gt;从：PING</h4><p>​        每隔指定的时间，<strong>主节点会向从节点发送PING命令</strong>，这个PING命令的作用，主要是为了让从节点进行超时判断。</p>
+<p>​        PING发送的频率由<code>repl-ping-slave-period</code>参数控制，单位是秒，默认值是10s。</p>
+<p>​        关于该PING命令究竟是由主节点发给从节点，还是相反，有一些争议；因为在Redis的官方文档中，对该参数的注释中说明是从节点向主节点发送PING命令，如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Slaves send PINGs to server in a predefined interval. It's possible to change</span></span><br><span class="line"><span class="comment"># this interval with the repl_ping_slave_period option. The default value is 10</span></span><br><span class="line"><span class="comment"># seconds.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># repl-ping-slave-period 10</span></span><br></pre></td></tr></table></figure>
+<p>但是根据该参数的名称(含有ping-slave)，以及代码实现，可以认为该PING命令是主节点发给从节点的。相关代码如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJokI1.png" alt="ping-slave代码实现"></p>
+<h4 id="2-从-gt-主：REPLCONF-ACK"><a href="#2-从-gt-主：REPLCONF-ACK" class="headerlink" title="2. 从-&gt;主：REPLCONF ACK"></a>2. 从-&gt;主：REPLCONF ACK</h4><p>​        在命令传播阶段，<strong>从节点会向主节点发送REPLCONF ACK</strong>命令，频率是每秒1次；命令格式为：<code>REPLCONF ACK {offset}</code>，其中<code>offset</code>指从节点保存的复制偏移量。<code>REPLCONF ACK</code>命令的作用包括：</p>
+<p>（1）实时监测主从节点网络状态：该命令会被主节点用于复制超时的判断。此外，在主节点中使用<code>info Replication</code>，可以看到其从节点的状态中的<code>lag</code>值，代表的是主节点上次收到该<code>REPLCONF ACK</code>命令的时间间隔，在正常情况下，该值应该是0或1，如下图所示：<br><img src="https://s1.ax1x.com/2020/08/20/dJoBon.png" alt="主节点查看从节点的lag值"></p>
+<p>（2）检测命令丢失：从节点发送了自身的offset，主节点会与自己的offset对比，如果从节点数据缺失（如网络丢包），主节点会推送缺失的数据（这里也会利用复制积压缓冲区）。<strong>注意，offset和复制积压缓冲区，不仅可以用于部分复制，也可以用于处理命令丢失等情形；区别在于前者是在断线重连后进行的，而后者是在主从节点没有断线的情况下进行的。</strong></p>
+<p>（3）辅助保证从节点的数量和延迟：Redis主节点中使用<code>min-slaves-to-write</code>和<code>min-slaves-max-lag</code>参数，来保证主节点在不安全的情况下不会执行写命令；所谓不安全，是指从节点数量太少，或延迟过高。例如<code>min-slaves-to-write</code>和<code>min-slaves-max-lag</code>分别是3和10，含义是如果从节点数量小于3个，或所有从节点的延迟值都大于10s，则主节点拒绝执行写命令。而这里从节点延迟值的获取，就是通过主节点接收到<code>REPLCONF ACK</code>命令的时间来判断的，即前面所说的<code>info Replication</code>中的<code>lag</code>值。</p>
 
       
     </div>
@@ -554,6 +609,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/27/从入门到高可用分布式实践-第六篇-下/" rel="prev" title="从入门到高可用分布式实践-Redis复制的原理与优化-下">
+                从入门到高可用分布式实践-Redis复制的原理与优化-下 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -637,7 +696,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">153</span>
+                  <span class="site-state-item-count">154</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -715,7 +774,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#【数据同步阶段】全量复制和部分复制"><span class="nav-number">1.</span> <span class="nav-text">【数据同步阶段】全量复制和部分复制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#全量复制"><span class="nav-number">1.1.</span> <span class="nav-text">全量复制</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#【数据同步阶段】全量复制和部分复制"><span class="nav-number">1.</span> <span class="nav-text">【数据同步阶段】全量复制和部分复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#全量复制"><span class="nav-number">1.1.</span> <span class="nav-text">全量复制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部分复制"><span class="nav-number">2.</span> <span class="nav-text">部分复制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）复制偏移量"><span class="nav-number">2.0.1.</span> <span class="nav-text">（1）复制偏移量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）复制积压缓冲区"><span class="nav-number">2.0.2.</span> <span class="nav-text">（2）复制积压缓冲区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）服务器运行ID-runid"><span class="nav-number">2.0.3.</span> <span class="nav-text">（3）服务器运行ID(runid)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#psync命令的执行"><span class="nav-number">2.1.</span> <span class="nav-text">psync命令的执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部分复制演示"><span class="nav-number">2.2.</span> <span class="nav-text">部分复制演示</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网络中断"><span class="nav-number">2.2.1.</span> <span class="nav-text">网络中断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#网络恢复"><span class="nav-number">2.2.2.</span> <span class="nav-text">网络恢复</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【命令传播阶段】心跳机制"><span class="nav-number">3.</span> <span class="nav-text">【命令传播阶段】心跳机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-主-gt-从：PING"><span class="nav-number">3.1.</span> <span class="nav-text">1.主-&gt;从：PING</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-从-gt-主：REPLCONF-ACK"><span class="nav-number">3.2.</span> <span class="nav-text">2. 从-&gt;主：REPLCONF ACK</span></a></li></ol></li></ol></div>
             
 
           </div>
