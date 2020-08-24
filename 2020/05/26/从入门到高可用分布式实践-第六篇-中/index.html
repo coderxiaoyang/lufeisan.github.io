@@ -91,14 +91,16 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/19/d3KsiR.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/19/d3KbSP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/24/dBD1nH.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJhAc4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/24/dBDqC6.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ4ZRS.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ4laq.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ5CSU.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJ5L9K.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJokI1.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/20/dJoBon.png">
-<meta property="og:updated_time" content="2020-08-20T15:51:18.011Z">
+<meta property="og:updated_time" content="2020-08-24T01:34:53.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-Redis复制的原理与优化-中">
 <meta name="twitter:description" content="我们继续学习Redis复制的原理与优化。 【数据同步阶段】全量复制和部分复制​        在Redis2.8以前，从节点向主节点发送sync命令请求同步数据，此时的同步方式是全量复制；在Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时根据主从节点当前状态的不同，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。  全量复制：用于初次复制或其他无法">
@@ -422,7 +424,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,376 字
+                  3,551 字
                 </span>
               
 
@@ -438,7 +440,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  12 分钟
+                  13 分钟
                 </span>
               
             </div>
@@ -501,6 +503,7 @@
 <li>如果从节点保存的runid与主节点现在的runid不同，说明从节点在断线前同步的Redis节点并不是当前的主节点，只能进行全量复制。</li>
 </ul>
 <h4 id="psync命令的执行"><a href="#psync命令的执行" class="headerlink" title="psync命令的执行"></a>psync命令的执行</h4><p>​        在了解了复制偏移量、复制积压缓冲区、节点运行id之后，接下来将介绍psync命令的参数和返回值，从而说明psync命令执行过程中，主从节点是如何确定使用全量复制还是部分复制的。</p>
+<p><img src="https://s1.ax1x.com/2020/08/24/dBD1nH.png" alt="全量复制流程"></p>
 <p>​        psync命令的执行过程可以参见下图（图片来源：《Redis设计与实现》）：<br><img src="https://s1.ax1x.com/2020/08/20/dJhAc4.png" alt="psync命令的执行过程"></p>
 <p>（1）首先，从节点根据当前状态，决定如何调用<code>psync</code>命令：</p>
 <ul>
@@ -513,7 +516,18 @@
 <li>如果主节点版本够新，且<code>runid</code>与从节点发送的<code>runid</code>相同，且从节点发送的<code>offset</code>之后的数据在复制积压缓冲区中都存在，则回复<code>+CONTINUE</code>，表示将进行部分复制，从节点等待主节点发送其缺少的数据即可；</li>
 <li>如果主节点版本够新，但是<code>runid</code>与从节点发送的<code>runid</code>不同，或从节点发送的<code>offset</code>之后的数据已不在复制积压缓冲区中(在队列中被挤出了)，则回复<code>+FULLRESYNC &lt;runid&gt; &lt;offset&gt;</code>，表示要进行全量复制，其中<code>runid</code>表示主节点当前的<code>runid</code>，<code>offset</code>表示主节点当前的<code>offset</code>，从节点保存这两个值，以备使用。</li>
 </ul>
-<h4 id="部分复制演示"><a href="#部分复制演示" class="headerlink" title="部分复制演示"></a>部分复制演示</h4><p>​        在下面的演示中，网络中断几分钟后恢复，断开连接的主从节点进行了部分复制；为了便于模拟网络中断，本例中的主从节点在局域网中的两台机器上。</p>
+<p>全量复制的开销：</p>
+<ol>
+<li><code>bgsave</code>时间（因为要生成RDB文件）</li>
+<li>RDB文件网络传输时间</li>
+<li>从节点清空数据时间</li>
+<li>从节点加载RDB的时间</li>
+<li>可能的AOF重写时间（在加载RDB成功之后，如果AOF开启的话就会进行AOF重写来保证最新的状态）</li>
+</ol>
+<h4 id="部分复制演示"><a href="#部分复制演示" class="headerlink" title="部分复制演示"></a>部分复制演示</h4><p>我们知道全量复制还是很消耗资源（CPU、网络等）因此有了部分复制机制。</p>
+<p><img src="https://s1.ax1x.com/2020/08/24/dBDqC6.png" alt="部分复制流程"></p>
+<p>​        在主从断开期间 master的命令会写在复制缓冲区。当主从再次连接成功之后，会将<code>offset</code>告知master，如果传输的<code>offset</code>在缓冲区中将数据（从<code>offset</code>开始）发送给从节点。</p>
+<p>在下面的演示中，网络中断几分钟后恢复，断开连接的主从节点进行了部分复制；为了便于模拟网络中断，本例中的主从节点在局域网中的两台机器上。</p>
 <h5 id="网络中断"><a href="#网络中断" class="headerlink" title="网络中断"></a>网络中断</h5><p>​        网络中断一段时间后，主节点和从节点都会发现失去了与对方的连接（关于主从节点对超时的判断机制，后面会有说明）；此后，从节点便开始执行对主节点的重连，由于此时网络还没有恢复，重连失败，从节点会一直尝试重连。</p>
 <p>主节点日志如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJ4ZRS.png" alt="网络中断后主节点的日志"></p>
 <p>从节点日志如下：<br><img src="https://s1.ax1x.com/2020/08/20/dJ4laq.png" alt="网络中断后从节点的日志"></p>
