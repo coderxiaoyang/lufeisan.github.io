@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="​        前几篇我们学习了Redis主从复制的作用有数据热备、负载均衡、故障恢复等；但主从复制存在的一个问题是故障恢复无法自动化。本文将要介绍的哨兵，它基于Redis主从复制，主要作用便是解决主节点故障恢复的自动化问题，进一步提高系统的高可用性。 在正式学习Redis的哨兵之前我们先看下主从复制存在的问题： ​        Redis的主从复制模式将数据改变同步到从节点，做数据的备份以及">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从入门到高可用分布式实践-哨兵">
+<meta property="og:url" content="https://zhaobugs.com/2020/05/28/从入门到高可用分布式实践-第七篇/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="​        前几篇我们学习了Redis主从复制的作用有数据热备、负载均衡、故障恢复等；但主从复制存在的一个问题是故障恢复无法自动化。本文将要介绍的哨兵，它基于Redis主从复制，主要作用便是解决主节点故障恢复的自动化问题，进一步提高系统的高可用性。 在正式学习Redis的哨兵之前我们先看下主从复制存在的问题： ​        Redis的主从复制模式将数据改变同步到从节点，做数据的备份以及">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/24/dyWr5T.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/27/df6vI1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfc9xO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfcdQU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfcRSK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfgukR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/d5s780.png">
+<meta property="og:updated_time" content="2020-08-27T17:08:12.876Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从入门到高可用分布式实践-哨兵">
+<meta name="twitter:description" content="​        前几篇我们学习了Redis主从复制的作用有数据热备、负载均衡、故障恢复等；但主从复制存在的一个问题是故障恢复无法自动化。本文将要介绍的哨兵，它基于Redis主从复制，主要作用便是解决主节点故障恢复的自动化问题，进一步提高系统的高可用性。 在正式学习Redis的哨兵之前我们先看下主从复制存在的问题： ​        Redis的主从复制模式将数据改变同步到从节点，做数据的备份以及">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/24/dyWr5T.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/05/28/从入门到高可用分布式实践-第七篇/"/>
+
+
+
+
+
+  <title>从入门到高可用分布式实践-哨兵 | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/05/28/从入门到高可用分布式实践-第七篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从入门到高可用分布式实践-哨兵</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-28T23:27:11+08:00">
+                2020-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/28/从入门到高可用分布式实践-第七篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/28/从入门到高可用分布式实践-第七篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/05/28/从入门到高可用分布式实践-第七篇/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-哨兵">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6,512 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  24 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>​        前几篇我们学习了Redis主从复制的作用有数据热备、负载均衡、故障恢复等；但主从复制存在的一个问题是故障恢复无法自动化。本文将要介绍的哨兵，它基于Redis主从复制，主要作用便是解决主节点故障恢复的自动化问题，进一步提高系统的高可用性。</p>
+<p>在正式学习Redis的哨兵之前我们先看下<strong>主从复制存在的问题</strong>：</p>
+<p>​        Redis的主从复制模式将数据改变同步到从节点，做数据的备份以及扩展主节点的读能力。</p>
+<p>​        但该模式存在问题：一旦主节点出现故障，需要手动将某个从节点晋升为主节点，同时需要修改应用方的主节点地址，还需要命令其他从节点去复制新节点。整个过程需要人工干预。并且写能力和存储能力受限（写和存储都在主节点）</p>
+<h2 id="一、作用和架构"><a href="#一、作用和架构" class="headerlink" title="一、作用和架构"></a>一、作用和架构</h2><h3 id="1-作用"><a href="#1-作用" class="headerlink" title="1.  作用"></a>1.  作用</h3><p>在介绍哨兵之前，首先从宏观角度回顾一下Redis实现高可用相关的技术。它们包括：持久化、复制、哨兵和集群，其主要作用和解决的问题是：</p>
+<ul>
+<li>持久化：持久化是最简单的高可用方法(有时甚至不被归为高可用的手段)，主要作用是数据备份，即将数据存储在硬盘，保证数据不会因进程退出而丢失。</li>
+<li>复制：复制是高可用Redis的基础，哨兵和集群都是在复制基础上实现高可用的。复制主要实现了数据的多机备份，以及对于读操作的负载均衡和简单的故障恢复。缺陷：故障恢复无法自动化；写操作无法负载均衡；存储能力受到单机的限制。</li>
+<li>哨兵：在复制的基础上，哨兵实现了自动化的故障恢复。缺陷：写操作无法负载均衡；存储能力受到单机的限制。</li>
+<li>集群：通过集群，Redis解决了写操作无法负载均衡，以及存储能力受到单机限制的问题，实现了较为完善的高可用方案。</li>
+</ul>
+<p>下面说回哨兵。</p>
+<p>​        Redis Sentinel，即Redis哨兵，在Redis 2.8版本开始引入。<strong>哨兵的核心功能是主节点的自动故障转移。</strong>下面是Redis官方文档对于哨兵功能的描述：</p>
+<ul>
+<li>监控（Monitoring）：哨兵会不断地检查主节点和从节点是否运作正常。</li>
+<li>自动故障转移（Automatic failover）：当主节点不能正常工作时，哨兵会开始自动故障转移操作，它会将失效主节点的其中一个从节点升级为新的主节点，并让其他从节点改为复制新的主节点。</li>
+<li>配置提供者（Configuration provider）：客户端在初始化时，通过连接哨兵来获得当前Redis服务的主节点地址。</li>
+<li>通知（Notification）：哨兵可以将故障转移的结果发送给客户端。</li>
+</ul>
+<p>其中，监控和自动故障转移功能，使得哨兵可以及时发现主节点故障并完成转移；而配置提供者和通知功能，则需要在与客户端的交互中才能体现。</p>
+<p>​        这里对“客户端”一词在文章中的用法做一个说明：在前面的文章中，只要通过API访问redis服务器，都会称作客户端，包括<code>redis-cli</code>、Java客户端Jedis等；为了便于区分说明，本文中的客户端并不包括<code>redis-cli</code>，而是比<code>redis-cli</code>更加复杂：<code>redis-cli</code>使用的是redis提供的底层接口，而客户端则对这些接口、功能进行了封装，以便充分利用哨兵的配置提供者和通知功能。</p>
+<h3 id="2-架构"><a href="#2-架构" class="headerlink" title="2.  架构"></a>2.  架构</h3><p>典型的哨兵架构图如下所示：<br><img src="https://s1.ax1x.com/2020/08/24/dyWr5T.jpg" alt="典型的哨兵架构图"></p>
+<p>它由两部分组成，哨兵节点和数据节点：</p>
+<ul>
+<li>哨兵节点：哨兵系统由一个或多个哨兵节点组成，哨兵节点是特殊的redis节点，不存储数据。</li>
+<li>数据节点：主节点和从节点都是数据节点。</li>
+</ul>
+<blockquote>
+<p>客户端从Redis Sentinel获取redis信息，从而并不关心谁是真的master</p>
+</blockquote>
+<h3 id="3-Redis-Sentinel故障转移过程"><a href="#3-Redis-Sentinel故障转移过程" class="headerlink" title="3. Redis Sentinel故障转移过程"></a>3. Redis Sentinel故障转移过程</h3><ol>
+<li>多个<code>sentinel</code>发现并确认master有问题</li>
+<li>选举出一个<code>sentine</code>作为领导</li>
+<li>选出一个<code>slave</code>作为<code>master</code></li>
+<li>通知其余<code>slave</code>成为新的<code>master</code>的<code>slave</code></li>
+<li>通知客户端主从变化</li>
+<li>等待老的<code>master</code>复活成为新的<code>master</code>的<code>slave</code></li>
+</ol>
+<h2 id="二、部署"><a href="#二、部署" class="headerlink" title="二、部署"></a>二、部署</h2><p>这一部分将部署一个简单的哨兵系统，包含1个主节点、2个从节点和3个哨兵节点。方便起见：所有这些节点都部署在一台机器上（127.0.0.1），使用端口号区分；节点的配置尽可能简化。</p>
+<h3 id="1-部署主从节点"><a href="#1-部署主从节点" class="headerlink" title="1.  部署主从节点"></a>1.  部署主从节点</h3><p>兵系统中的主从节点，与普通的主从节点配置是一样的，并不需要做任何额外配置。下面分别是主节点（port=6379）和2个从节点（port=6380/6381）的配置文件。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># redis-6379.conf                                                                                               </span></span><br><span class="line">port <span class="number">6379</span></span><br><span class="line">daemonize yes</span><br><span class="line">logfile <span class="string">"6379.log"</span></span><br><span class="line">dbfilename <span class="string">"dump-6379.rdb"</span></span><br><span class="line">pidfile /var/run/redis-<span class="number">6379</span>.pid</span><br><span class="line">dir <span class="string">"/usr/local/var/db/redis/"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># redis-6380.conf                                                                                               </span></span><br><span class="line">port <span class="number">6380</span></span><br><span class="line">daemonize yes</span><br><span class="line">logfile <span class="string">"6380.log"</span></span><br><span class="line">dbfilename <span class="string">"dump-6380.rdb"</span></span><br><span class="line">pidfile /var/run/redis-<span class="number">6380</span>.pid</span><br><span class="line">dir <span class="string">"/usr/local/var/db/redis/"</span></span><br><span class="line">slaveof <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">6379</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># redis-6381.conf                                                                                               </span></span><br><span class="line">port <span class="number">6381</span></span><br><span class="line">daemonize yes</span><br><span class="line">logfile <span class="string">"6381.log"</span></span><br><span class="line">dbfilename <span class="string">"dump-6381.rdb"</span></span><br><span class="line">pidfile /var/run/redis-<span class="number">6381</span>.pid</span><br><span class="line">dir <span class="string">"/usr/local/var/db/redis/"</span></span><br><span class="line">slaveof <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">6379</span></span><br></pre></td></tr></table></figure>
+<p>配置完成后，依次启动主节点和从节点：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis-<span class="number">6379</span>.conf</span><br><span class="line">redis-server redis-<span class="number">6380</span>.conf</span><br><span class="line">redis-server redis-<span class="number">6381</span>.conf</span><br></pre></td></tr></table></figure>
+<p>节点启动后，连接主节点查看主从状态是否正常，如下所示：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># redis-cli -p 6379 info  replication     </span></span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master <span class="comment"># 角色为 master</span></span><br><span class="line">connected_slaves:<span class="number">2</span></span><br><span class="line">slave0:ip=<span class="number">127.0</span>.<span class="number">0.1</span>,port=<span class="number">6380</span>,state=online,offset=<span class="number">98</span>,lag=<span class="number">0</span></span><br><span class="line">slave1:ip=<span class="number">127.0</span>.<span class="number">0.1</span>,port=<span class="number">6381</span>,state=online,offset=<span class="number">98</span>,lag=<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-部署哨兵节点"><a href="#2-部署哨兵节点" class="headerlink" title="2. 部署哨兵节点"></a>2. 部署哨兵节点</h3><p>哨兵节点本质上是特殊的Redis节点。</p>
+<p>3个哨兵节点的配置几乎是完全一样的，主要区别在于端口号的不同（26379/26380/26381），下面以26379节点为例介绍节点的配置和启动方式。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sentinel-26379.conf                                                                                           </span></span><br><span class="line">port <span class="number">26379</span></span><br><span class="line">daemonize yes</span><br><span class="line">logfile <span class="string">"26379.log"</span></span><br><span class="line">dir <span class="string">"/usr/local/var/db/redis/"</span></span><br><span class="line">sentinel monitor mymaster <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">6379</span> <span class="number">2</span></span><br><span class="line">sentinel down-after-milliseconds mymaster <span class="number">30000</span></span><br><span class="line">sentinel parallel-syncs mymaster <span class="number">1</span></span><br><span class="line">sentinel failover-timeout  mymaster <span class="number">180000</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>sentinel monitor mymaster 127.0.0.1 6379 2</code> 配置的含义是：该哨兵节点监控<code>127.0.0.1:6379</code>这个主节点，该主节点的名称是<code>mymaster</code>，最后的2的含义与主节点的故障判定有关：至少需要2个哨兵节点同意，才能判定主节点故障并进行故障转移。</p>
+<p>哨兵节点的启动有两种方式，二者作用是完全相同的：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-sentinel sentinel-<span class="number">26379</span>.conf</span><br><span class="line">redis-server sentinel-<span class="number">26379</span>.conf --sentinel</span><br></pre></td></tr></table></figure>
+<p>按照上述方式配置和启动之后，整个哨兵系统就启动完毕了。可以通过redis-cli连接哨兵节点进行验证，如下图所示：可以看出26379哨兵节点已经在监控mymaster主节点(即127.0.0.1:6379)，并发现了其2个从节点和另外2个哨兵节点。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">26379</span>&gt; info Sentinel</span><br><span class="line"><span class="comment"># Sentinel</span></span><br><span class="line">sentinel_masters:<span class="number">1</span></span><br><span class="line">sentinel_tilt:<span class="number">0</span></span><br><span class="line">sentinel_running_scripts:<span class="number">0</span></span><br><span class="line">sentinel_scripts_queue_length:<span class="number">0</span></span><br><span class="line">sentinel_simulate_failure_flags:<span class="number">0</span></span><br><span class="line">master0:name=mymaster,status=ok,address=<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6379</span>,slaves=<span class="number">2</span>,sentinels=<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>任何一个哨兵看到的信息是一样的</p>
+</blockquote>
+<p>此时如果查看哨兵节点的配置文件，会发现一些变化，以26379为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sentinel-26379.conf                                                     </span></span><br><span class="line">port <span class="number">26379</span></span><br><span class="line">daemonize yes</span><br><span class="line">logfile <span class="string">"26379.log"</span></span><br><span class="line">dir <span class="string">"/usr/local/var/db/redis"</span></span><br><span class="line">sentinel myid e058159147289603e85cd85ae8b5b3c077690d12</span><br><span class="line">sentinel monitor mymaster <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">6379</span> <span class="number">2</span></span><br><span class="line">sentinel config-epoch mymaster <span class="number">0</span></span><br><span class="line">sentinel leader-epoch mymaster <span class="number">0</span></span><br><span class="line"><span class="comment"># Generated by CONFIG REWRITE</span></span><br><span class="line">sentinel known-slave mymaster <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">6380</span></span><br><span class="line">sentinel known-slave mymaster <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">6381</span></span><br><span class="line">sentinel known-sentinel mymaster <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">26381</span> d211d8a859ed27d23d22d8678659e65ca71293c9</span><br><span class="line">sentinel known-sentinel mymaster <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">26380</span> <span class="number">837</span>d64d42dc5049613a1892746ea231693edb1ba</span><br><span class="line">sentinel current-epoch <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>其中，dir只是显式声明了数据和日志所在的目录（在哨兵语境下只有日志）；known-slave和known-sentinel显示哨兵已经发现了从节点和其他哨兵；带有epoch的参数与配置纪元有关（配置纪元是一个从0开始的计数器，每进行一次领导者哨兵选举，都会+1；领导者哨兵选举是故障转移阶段的一个操作，在后文原理部分会介绍）。</p>
+<h3 id="3-演示故障转移"><a href="#3-演示故障转移" class="headerlink" title="3.  演示故障转移"></a>3.  演示故障转移</h3><p>​        哨兵的4个作用中，配置提供者和通知需要客户端的配合，本文将在下一章介绍客户端访问哨兵系统的方法时详细介绍。这一小节将演示当主节点发生故障时，哨兵的监控和自动故障转移功能。</p>
+<p>（1）首先，使用kill命令杀掉主节点：<br><img src="https://s1.ax1x.com/2020/08/27/df6vI1.png" alt="停止主节点"></p>
+<p>（2）如果此时立即在哨兵节点中使用info Sentinel命令查看，会发现主节点还没有切换过来，因为哨兵发现主节点故障并转移，需要一段时间。<br><img src="https://s1.ax1x.com/2020/08/27/dfc9xO.png" alt="主节点关闭后从节点变成主节点"></p>
+<p>（3）一段时间以后，再次在哨兵节点中执行info Sentinel查看，发现主节点已经切换成6380节点。</p>
+<p>​        但是同时可以发现，哨兵节点认为新的主节点仍然有2个从节点，这是因为哨兵在将6380切换成主节点的同时，将6379节点置为其从节点；虽然6379从节点已经挂掉，但是由于哨兵并不会对从节点进行客观下线（其含义将在原理部分介绍），因此认为该从节点一直存在。当6379节点重新启动后，会自动变成6380节点的从节点。下面验证一下。</p>
+<p>（4）重启6379节点：可以看到6379节点成为了6380节点的从节点。<br><img src="https://s1.ax1x.com/2020/08/27/dfcdQU.png" alt="重启旧的主节点 变成了从节点"></p>
+<p>（5）在故障转移阶段，哨兵和主从节点的配置文件都会被改写。</p>
+<p>对于主从节点，主要是slaveof配置的变化：新的主节点没有了slaveof配置，其从节点则slaveof新的主节点。</p>
+<p>对于哨兵节点，除了主从节点信息的变化，纪元(epoch)也会变化，下图中可以看到纪元相关的参数都+1了。<br><img src="https://s1.ax1x.com/2020/08/27/dfcRSK.png" alt="故障转移 配置文件更改"></p>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><p>哨兵系统的搭建过程，有几点需要注意：</p>
+<p>（1）哨兵系统中的主从节点，与普通的主从节点并没有什么区别，故障发现和转移是由哨兵来控制和完成的。</p>
+<p>（2）哨兵节点本质上是redis节点。</p>
+<p>（3）每个哨兵节点，只需要配置监控主节点，便可以自动发现其他的哨兵节点和从节点。</p>
+<p>（4）在哨兵节点启动和故障转移阶段，各个节点的配置文件会被重写(<code>config rewrite</code>)。</p>
+<p>（5）本章的例子中，一个哨兵只监控了一个主节点；实际上，一个哨兵可以监控多个主节点，通过配置多条<code>sentinel monitor</code>即可实现。</p>
+<h2 id="三、客户端访问哨兵系统"><a href="#三、客户端访问哨兵系统" class="headerlink" title="三、客户端访问哨兵系统"></a>三、客户端访问哨兵系统</h2><p>上面演示了哨兵的两大作用：监控和自动故障转移，本小节则结合客户端演示哨兵的另外两个作用：配置提供者和通知。</p>
+<h3 id="1-代码示例"><a href="#1-代码示例" class="headerlink" title="1.  代码示例"></a>1.  代码示例</h3><p>在介绍客户端的原理之前，先以Java客户端Jedis为例，演示一下使用方法：下面代码可以连接我们刚刚搭建的哨兵系统，并进行各种读写操作（代码中只演示如何连接哨兵，异常处理、资源关闭等未考虑）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testSentinel</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">         String masterName = <span class="string">"mymaster"</span>;</span><br><span class="line">         Set&lt;String&gt; sentinels = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">         sentinels.add(<span class="string">"192.168.92.128:26379"</span>);</span><br><span class="line">         sentinels.add(<span class="string">"192.168.92.128:26380"</span>);</span><br><span class="line">         sentinels.add(<span class="string">"192.168.92.128:26381"</span>);</span><br><span class="line"> </span><br><span class="line">         JedisSentinelPool pool = <span class="keyword">new</span> JedisSentinelPool(masterName, sentinels); <span class="comment">//初始化过程做了很多工作</span></span><br><span class="line">         Jedis jedis = pool.getResource();</span><br><span class="line">         jedis.set(<span class="string">"key1"</span>, <span class="string">"value1"</span>);</span><br><span class="line">         pool.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-客户端原理"><a href="#2-客户端原理" class="headerlink" title="2.  客户端原理"></a>2.  客户端原理</h3><p>​        Jedis客户端对哨兵提供了很好的支持。如上述代码所示，我们只需要向Jedis提供哨兵节点集合和<code>masterName</code>，构造<code>JedisSentinelPool</code>对象；然后便可以像使用普通redis连接池一样来使用了：通过<code>pool.getResource()</code>获取连接，执行具体的命令。</p>
+<p>在整个过程中，我们的代码不需要显式的指定主节点的地址，就可以连接到主节点；代码中对故障转移没有任何体现，就可以在哨兵完成故障转移后自动的切换主节点。之所以可以做到这一点，是因为在<code>JedisSentinelPool</code>的构造器中，进行了相关的工作；主要包括以下两点：</p>
+<p>（1）<strong>遍历哨兵节点，获取主节点信息：</strong>遍历哨兵节点，通过其中一个<code>哨兵节点+masterName</code>获得主节点的信息；该功能是通过调用哨兵节点的<code>sentinel get-master-addr-by-name</code>命令实现，该命令示例如下：</p>
+<p><img src="https://s1.ax1x.com/2020/08/27/dfgukR.png" alt="客户端通过哨兵获取到主节点信息"></p>
+<p>一旦获得主节点信息，停止遍历（因此一般来说遍历到第一个哨兵节点，循环就停止了）。</p>
+<p>（2）<strong>增加对哨兵的监听：</strong>这样当发生故障转移时，客户端便可以收到哨兵的通知，从而完成主节点的切换。具体做法是：利用redis提供的发布订阅功能，为每一个哨兵节点开启一个单独的线程，订阅哨兵节点的<code>switch-master</code>频道，当收到消息时，重新初始化连接池。</p>
+<h3 id="3-总结"><a href="#3-总结" class="headerlink" title="3.  总结"></a>3.  总结</h3><p>通过客户端原理的介绍，可以加深对哨兵功能的理解：</p>
+<p>（1）配置提供者：客户端可以通过<code>哨兵节点+masterName</code>获取主节点信息，在这里哨兵起到的作用就是配置提供者。</p>
+<p>​        <strong>需要注意的是，哨兵只是配置提供者，而不是代理</strong>。二者的区别在于：如果是配置提供者，客户端在通过哨兵获得主节点信息后，会直接建立到主节点的连接，后续的请求(如set/get)会直接发向主节点；如果是代理，客户端的每一次请求都会发向哨兵，哨兵再通过主节点处理请求。</p>
+<p>举一个例子可以很好的理解哨兵的作用是配置提供者，而不是代理。在前面部署的哨兵系统中，将哨兵节点的配置文件进行如下修改：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster <span class="number">192.168</span>.<span class="number">92.128</span> <span class="number">6379</span> <span class="number">2</span></span><br><span class="line">改为</span><br><span class="line">sentinel monitor mymaster <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">6379</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>​        然后，将前述客户端代码在局域网的另外一台机器上运行，会发现客户端无法连接主节点；这是因为哨兵作为配置提供者，客户端通过它查询到主节点的地址为127.0.0.1:6379，客户端会向127.0.0.1:6379建立redis连接，自然无法连接。如果哨兵是代理，这个问题就不会出现了。</p>
+<p>（2）通知：哨兵节点在故障转移完成后，会将新的主节点信息发送给客户端，以便客户端及时切换主节点。</p>
+<h2 id="四、基本原理"><a href="#四、基本原理" class="headerlink" title="四、基本原理"></a>四、基本原理</h2><p>前面介绍了哨兵部署、使用的基本方法，本部分介绍哨兵实现的基本原理。</p>
+<h3 id="1-哨兵节点支持的命令"><a href="#1-哨兵节点支持的命令" class="headerlink" title="1.  哨兵节点支持的命令"></a>1.  哨兵节点支持的命令</h3><p>​        哨兵节点作为运行在特殊模式下的redis节点，其支持的命令与普通的redis节点不同。在运维中，我们可以通过这些命令查询或修改哨兵系统；不过更重要的是，哨兵系统要实现故障发现、故障转移等各种功能，离不开哨兵节点之间的通信，而通信的很大一部分是通过哨兵节点支持的命令来实现的。下面介绍哨兵节点支持的主要命令。</p>
+<p>（1）基础查询：通过这些命令，可以查询哨兵系统的拓扑结构、节点信息、配置信息等。</p>
+<ul>
+<li><code>info sentinel</code>：获取监控的所有主节点的基本信息</li>
+<li><code>sentinel masters</code>：获取监控的所有主节点的详细信息</li>
+<li><code>sentinel master mymaster</code>：获取监控的主节点<code>mymaster</code>的详细信息</li>
+<li><code>sentinel slaves mymaster</code>：获取监控的主节点<code>mymaster</code>的从节点的详细信息</li>
+<li><code>sentinel sentinels mymaster</code>：获取监控的主节点<code>mymaster</code>的哨兵节点的详细信息</li>
+<li><code>sentinel get-master-addr-by-name mymaster</code>：获取监控的主节点<code>mymaster</code>的地址信息</li>
+<li><code>sentinel is-master-down-by-addr</code>：哨兵节点之间可以通过该命令询问主节点是否下线，从而对是否客观下线做出判断</li>
+</ul>
+<p>（2）增加/移除对主节点的监控</p>
+<p><code>sentinel monitor mymaster2 127.0.0.1 16379 2</code>：与部署哨兵节点时配置文件中的<code>sentinel monitor</code>功能完全一样，不再详述</p>
+<p><code>sentinel remove mymaster2</code>：取消当前哨兵节点对主节点<code>mymaster2</code>的监控</p>
+<p>（3）强制故障转移</p>
+<p><code>sentinel failover mymaster</code>：该命令可以<strong>强制对mymaster</strong>执行故障转移，即便当前的主节点运行完好；例如，如果当前主节点所在机器即将报废，便可以提前通过<code>failover</code>命令进行故障转移。</p>
+<h3 id="2-基本原理"><a href="#2-基本原理" class="headerlink" title="2.  基本原理"></a>2.  基本原理</h3><p>关于哨兵的原理，关键是了解以下几个概念。</p>
+<p>（1）定时任务：每个哨兵节点维护了3个定时任务。定时任务的功能分别如下：通过向主从节点发送<code>info</code>命令获取最新的主从结构；通过发布订阅功能获取其他哨兵节点的信息；通过向其他节点发送<code>ping</code>命令进行心跳检测，判断是否下线。</p>
+<p>（2）主观下线：在心跳检测的定时任务中，如果其他节点超过一定时间没有回复，哨兵节点就会将其进行主观下线。顾名思义，主观下线的意思是一个哨兵节点“主观地”判断下线；与主观下线相对应的是客观下线。</p>
+<p>（3）客观下线：哨兵节点在对主节点进行主观下线后，会通过<code>sentinel is-master-down-by-addr</code>命令询问其他哨兵节点该主节点的状态；如果判断主节点下线的哨兵数量达到一定数值，则对该主节点进行客观下线。</p>
+<p><strong>需要特别注意的是，客观下线是主节点才有的概念；如果从节点和哨兵节点发生故障，被哨兵主观下线后，不会再有后续的客观下线和故障转移操作。</strong></p>
+<p>（4）选举领导者哨兵节点：当主节点被判断客观下线以后，各个哨兵节点会进行协商，选举出一个<code>领导者哨兵节点</code>，并由该领导者节点对其进行故障转移操作。</p>
+<p>​        监视该主节点的所有哨兵都有可能被选为领导者，选举使用的算法是<code>Raft</code>算法；Raft算法的基本思路是<code>先到先得</code>：即在一轮选举中，哨兵A向B发送成为领导者的申请，如果B没有同意过其他哨兵，则会同意A成为领导者。选举的具体过程这里不做详细描述，一般来说，哨兵选择的过程很快，谁先完成客观下线，一般就能成为领导者。</p>
+<p>（5）故障转移：选举出的领导者哨兵，开始进行故障转移操作，该操作大体可以分为3个步骤：</p>
+<ul>
+<li>在从节点中选择新的主节点：选择的原则是，首先过滤掉不健康的从节点；然后选择优先级最高的从节点(由<code>slave-priority</code>指定)；如果优先级无法区分，则选择复制偏移量最大的从节点；如果仍无法区分，则选择<code>runid</code>最小的从节点。</li>
+<li>更新主从状态：通过<code>slaveof no one</code>命令，让选出来的从节点成为主节点；并通过<code>slaveof</code>命令让其他节点成为其从节点。</li>
+<li>将已经下线的主节点(即6379)设置为新的主节点的从节点，当6379重新上线后，它会成为新的主节点的从节点。</li>
+</ul>
+<p>通过上述几个关键概念，可以基本了解哨兵的工作原理。为了更形象的说明，下图展示了领导者哨兵节点的日志，包括从节点启动到完成故障转移。</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/d5s780.png" alt="哨兵主从切换流程"></p>
+<h2 id="五、配置与实践建议"><a href="#五、配置与实践建议" class="headerlink" title="五、配置与实践建议"></a>五、配置与实践建议</h2><h3 id="1-配置"><a href="#1-配置" class="headerlink" title="1.  配置"></a>1.  配置</h3><p>下面介绍与哨兵相关的几个配置。</p>
+<p>（1） <code>sentinel monitor {masterName} {masterIp} {masterPort} {quorum}</code></p>
+<p><code>sentinel monitor</code>是哨兵最核心的配置，在前文讲述部署哨兵节点时已说明，其中：<code>masterName</code>指定了主节点名称，<code>masterIp</code>和<code>masterPort</code>指定了主节点地址，<code>quorum</code>是判断主节点客观下线的哨兵数量阈值：当判定主节点下线的哨兵数量达到<code></code>quorum时，对主节点进行客观下线。建议取值为哨兵数量的一半加1。</p>
+<p>（2） <code>sentinel down-after-milliseconds {masterName} {time}</code></p>
+<p><code>sentinel down-after-milliseconds</code>与主观下线的判断有关：哨兵使用ping命令对其他节点进行心跳检测，如果其他节点超过<code>down-after-milliseconds</code>配置的时间没有回复，哨兵就会将其进行主观下线。该配置对主节点、从节点和哨兵节点的主观下线判定都有效。</p>
+<p><code>down-after-milliseconds</code>的默认值是30000，即30s；可以根据不同的网络环境和应用要求来调整：值越大，对主观下线的判定会越宽松，好处是误判的可能性小，坏处是故障发现和故障转移的时间变长，客户端等待的时间也会变长。例如，如果应用对可用性要求较高，则可以将值适当调小，当故障发生时尽快完成转移；如果网络环境相对较差，可以适当提高该阈值，避免频繁误判。</p>
+<p>（3） <code>sentinel parallel-syncs {masterName} {number}</code></p>
+<p><code>sentinel parallel-syncs</code>与故障转移之后从节点的复制有关：它规定了每次向新的主节点发起复制操作的从节点个数。例如，假设主节点切换完成之后，有3个从节点要向新的主节点发起复制；如果<code>parallel-syncs=1</code>，则从节点会一个一个开始复制；如果<code>parallel-syncs=3</code>，则3个从节点会一起开始复制。</p>
+<p><code>parallel-syncs</code>取值越大，从节点完成复制的时间越快，但是对主节点的网络负载、硬盘负载造成的压力也越大；应根据实际情况设置。例如，如果主节点的负载较低，而从节点对服务可用的要求较高，可以适量增加<code>parallel-syncs</code>取值。<code>parallel-syncs</code>的默认值是1。</p>
+<p>（4） <code>sentinel failover-timeout {masterName} {time}</code></p>
+<p><code>sentinel failover-timeout</code>与故障转移超时的判断有关，但是该参数不是用来判断整个故障转移阶段的超时，而是其几个子阶段的超时，例如如果主节点晋升从节点时间超过<code>timeout</code>，或从节点向新的主节点发起复制操作的时间(不包括复制数据的时间)超过<code>timeout</code>，都会导致故障转移超时失败。</p>
+<p><code>failover-timeout</code>的默认值是180000，即180s；如果超时，则下一次该值会变为原来的2倍。</p>
+<p>（5）除上述几个参数外，还有一些其他参数，如安全验证相关的参数，这里不做介绍。</p>
+<h3 id="2-实践建议"><a href="#2-实践建议" class="headerlink" title="2. 实践建议"></a>2. 实践建议</h3><p>（1）哨兵节点的数量应不止一个，一方面增加哨兵节点的冗余，避免哨兵本身成为高可用的瓶颈；另一方面减少对下线的误判。此外，这些不同的哨兵节点应部署在不同的物理机上。</p>
+<p>（2）哨兵节点的数量应该是奇数，便于哨兵通过投票做出“决策”：领导者选举的决策、客观下线的决策等。</p>
+<p>（3）各个哨兵节点的配置应一致，包括硬件、参数等；此外，所有节点都应该使用ntp或类似服务，保证时间准确、一致。</p>
+<p>（4）哨兵的配置提供者和通知客户端功能，需要客户端的支持才能实现，如前文所说的Jedis；如果开发者使用的库未提供相应支持，则可能需要开发者自己实现。</p>
+<p>（5）当哨兵系统中的节点在docker（或其他可能进行端口映射的软件）中部署时，应特别注意端口映射可能会导致哨兵系统无法正常工作，因为哨兵的工作基于与其他节点的通信，而docker的端口映射可能导致哨兵无法连接到其他节点。例如，哨兵之间互相发现，依赖于它们对外宣称的IP和port，如果某个哨兵A部署在做了端口映射的docker中，那么其他哨兵使用A宣称的port无法连接到A。</p>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p>本文首先介绍了哨兵的作用：监控、故障转移、配置提供者和通知；然后讲述了哨兵系统的部署方法，以及通过客户端访问哨兵系统的方法；再然后简要说明了哨兵实现的基本原理；最后给出了关于哨兵实践的一些建议。</p>
+<p>在主从复制的基础上，哨兵引入了主节点的自动故障转移，进一步提高了Redis的高可用性；但是哨兵的缺陷同样很明显：哨兵无法对从节点进行自动故障转移，在读写分离场景下，从节点故障会导致读服务不可用，需要我们对从节点做额外的监控、切换操作。</p>
+<p>此外，哨兵仍然没有解决写操作无法负载均衡、及存储能力受到单机限制的问题；这些问题的解决需要使用集群。</p>
+<p>推荐阅读：<a href="https://www.cnblogs.com/kismetv/p/9609938.html" target="_blank" rel="noopener">深入学习Redis（4）：哨兵</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/27/从入门到高可用分布式实践-第六篇-下/" rel="next" title="从入门到高可用分布式实践-Redis复制的原理与优化-下">
+                <i class="fa fa-chevron-left"></i> 从入门到高可用分布式实践-Redis复制的原理与优化-下
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">155</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、作用和架构"><span class="nav-number">1.</span> <span class="nav-text">一、作用和架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-作用"><span class="nav-number">1.1.</span> <span class="nav-text">1.  作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-架构"><span class="nav-number">1.2.</span> <span class="nav-text">2.  架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Redis-Sentinel故障转移过程"><span class="nav-number">1.3.</span> <span class="nav-text">3. Redis Sentinel故障转移过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、部署"><span class="nav-number">2.</span> <span class="nav-text">二、部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-部署主从节点"><span class="nav-number">2.1.</span> <span class="nav-text">1.  部署主从节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-部署哨兵节点"><span class="nav-number">2.2.</span> <span class="nav-text">2. 部署哨兵节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-演示故障转移"><span class="nav-number">2.3.</span> <span class="nav-text">3.  演示故障转移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-总结"><span class="nav-number">2.4.</span> <span class="nav-text">4. 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、客户端访问哨兵系统"><span class="nav-number">3.</span> <span class="nav-text">三、客户端访问哨兵系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-代码示例"><span class="nav-number">3.1.</span> <span class="nav-text">1.  代码示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-客户端原理"><span class="nav-number">3.2.</span> <span class="nav-text">2.  客户端原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-总结"><span class="nav-number">3.3.</span> <span class="nav-text">3.  总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、基本原理"><span class="nav-number">4.</span> <span class="nav-text">四、基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-哨兵节点支持的命令"><span class="nav-number">4.1.</span> <span class="nav-text">1.  哨兵节点支持的命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-基本原理"><span class="nav-number">4.2.</span> <span class="nav-text">2.  基本原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、配置与实践建议"><span class="nav-number">5.</span> <span class="nav-text">五、配置与实践建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-配置"><span class="nav-number">5.1.</span> <span class="nav-text">1.  配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践建议"><span class="nav-number">5.2.</span> <span class="nav-text">2. 实践建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、总结"><span class="nav-number">6.</span> <span class="nav-text">六、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
