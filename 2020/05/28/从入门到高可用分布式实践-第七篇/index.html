@@ -95,8 +95,12 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfcdQU.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfcRSK.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/27/dfgukR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/djAME8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/djkUte.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/djkxj1.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/28/d5s780.png">
-<meta property="og:updated_time" content="2020-08-27T17:08:12.876Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/djnHMQ.png">
+<meta property="og:updated_time" content="2020-08-31T16:09:58.412Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-哨兵">
 <meta name="twitter:description" content="​        前几篇我们学习了Redis主从复制的作用有数据热备、负载均衡、故障恢复等；但主从复制存在的一个问题是故障恢复无法自动化。本文将要介绍的哨兵，它基于Redis主从复制，主要作用便是解决主节点故障恢复的自动化问题，进一步提高系统的高可用性。 在正式学习Redis的哨兵之前我们先看下主从复制存在的问题： ​        Redis的主从复制模式将数据改变同步到从节点，做数据的备份以及">
@@ -420,7 +424,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6,512 字
+                  6,829 字
                 </span>
               
 
@@ -436,7 +440,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  24 分钟
+                  25 分钟
                 </span>
               
             </div>
@@ -531,7 +535,7 @@
 <p>（3）每个哨兵节点，只需要配置监控主节点，便可以自动发现其他的哨兵节点和从节点。</p>
 <p>（4）在哨兵节点启动和故障转移阶段，各个节点的配置文件会被重写(<code>config rewrite</code>)。</p>
 <p>（5）本章的例子中，一个哨兵只监控了一个主节点；实际上，一个哨兵可以监控多个主节点，通过配置多条<code>sentinel monitor</code>即可实现。</p>
-<h2 id="三、客户端访问哨兵系统"><a href="#三、客户端访问哨兵系统" class="headerlink" title="三、客户端访问哨兵系统"></a>三、客户端访问哨兵系统</h2><p>上面演示了哨兵的两大作用：监控和自动故障转移，本小节则结合客户端演示哨兵的另外两个作用：配置提供者和通知。</p>
+<h2 id="三、客户端访问哨兵系统"><a href="#三、客户端访问哨兵系统" class="headerlink" title="三、客户端访问哨兵系统"></a>三、客户端访问哨兵系统</h2><p>上面演示了哨兵的两大作用：监控和自动故障转移，本小节则结合客户端演示哨兵的另外两个作用：配置提供者和通知。只有服务端高可用还是不行的，客户端也要高可用（在服务端主从切换之后，客户端也应该也能感知到）。</p>
 <h3 id="1-代码示例"><a href="#1-代码示例" class="headerlink" title="1.  代码示例"></a>1.  代码示例</h3><p>在介绍客户端的原理之前，先以Java客户端Jedis为例，演示一下使用方法：下面代码可以连接我们刚刚搭建的哨兵系统，并进行各种读写操作（代码中只演示如何连接哨兵，异常处理、资源关闭等未考虑）。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testSentinel</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">         String masterName = <span class="string">"mymaster"</span>;</span><br><span class="line">         Set&lt;String&gt; sentinels = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">         sentinels.add(<span class="string">"192.168.92.128:26379"</span>);</span><br><span class="line">         sentinels.add(<span class="string">"192.168.92.128:26380"</span>);</span><br><span class="line">         sentinels.add(<span class="string">"192.168.92.128:26381"</span>);</span><br><span class="line"> </span><br><span class="line">         JedisSentinelPool pool = <span class="keyword">new</span> JedisSentinelPool(masterName, sentinels); <span class="comment">//初始化过程做了很多工作</span></span><br><span class="line">         Jedis jedis = pool.getResource();</span><br><span class="line">         jedis.set(<span class="string">"key1"</span>, <span class="string">"value1"</span>);</span><br><span class="line">         pool.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="2-客户端原理"><a href="#2-客户端原理" class="headerlink" title="2.  客户端原理"></a>2.  客户端原理</h3><p>​        Jedis客户端对哨兵提供了很好的支持。如上述代码所示，我们只需要向Jedis提供哨兵节点集合和<code>masterName</code>，构造<code>JedisSentinelPool</code>对象；然后便可以像使用普通redis连接池一样来使用了：通过<code>pool.getResource()</code>获取连接，执行具体的命令。</p>
@@ -539,6 +543,9 @@
 <p>（1）<strong>遍历哨兵节点，获取主节点信息：</strong>遍历哨兵节点，通过其中一个<code>哨兵节点+masterName</code>获得主节点的信息；该功能是通过调用哨兵节点的<code>sentinel get-master-addr-by-name</code>命令实现，该命令示例如下：</p>
 <p><img src="https://s1.ax1x.com/2020/08/27/dfgukR.png" alt="客户端通过哨兵获取到主节点信息"></p>
 <p>一旦获得主节点信息，停止遍历（因此一般来说遍历到第一个哨兵节点，循环就停止了）。</p>
+<blockquote>
+<p>获取到master 节点信息之后 一般还会对其进行验证</p>
+</blockquote>
 <p>（2）<strong>增加对哨兵的监听：</strong>这样当发生故障转移时，客户端便可以收到哨兵的通知，从而完成主节点的切换。具体做法是：利用redis提供的发布订阅功能，为每一个哨兵节点开启一个单独的线程，订阅哨兵节点的<code>switch-master</code>频道，当收到消息时，重新初始化连接池。</p>
 <h3 id="3-总结"><a href="#3-总结" class="headerlink" title="3.  总结"></a>3.  总结</h3><p>通过客户端原理的介绍，可以加深对哨兵功能的理解：</p>
 <p>（1）配置提供者：客户端可以通过<code>哨兵节点+masterName</code>获取主节点信息，在这里哨兵起到的作用就是配置提供者。</p>
@@ -565,15 +572,25 @@
 <p>（3）强制故障转移</p>
 <p><code>sentinel failover mymaster</code>：该命令可以<strong>强制对mymaster</strong>执行故障转移，即便当前的主节点运行完好；例如，如果当前主节点所在机器即将报废，便可以提前通过<code>failover</code>命令进行故障转移。</p>
 <h3 id="2-基本原理"><a href="#2-基本原理" class="headerlink" title="2.  基本原理"></a>2.  基本原理</h3><p>关于哨兵的原理，关键是了解以下几个概念。</p>
-<p>（1）定时任务：每个哨兵节点维护了3个定时任务。定时任务的功能分别如下：通过向主从节点发送<code>info</code>命令获取最新的主从结构；通过发布订阅功能获取其他哨兵节点的信息；通过向其他节点发送<code>ping</code>命令进行心跳检测，判断是否下线。</p>
+<p>（1）定时任务：每个哨兵节点维护了3个定时任务。</p>
+<p>定时任务的功能分别如下：<br><img src="https://s1.ax1x.com/2020/08/31/djAME8.png" alt="10秒定时任务"><br>​            1. 通过向主从节点发送<code>info</code>命令获取最新的主从结构（每10秒每个<code>sentinel</code>对<code>master</code>和<code>slave</code>执行<code>info</code>操作；</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/djkUte.png" alt="2秒定时任务"></p>
+<p>​            2.  通过发布订阅功能获取其他哨兵节点的信息（每2秒每个<code>sentinel</code>通过<code>master</code>节点的<code>channel</code>交换信息</p>
+<p>​            （<code>pub/sub</code>）（通过<code>__sentinel__:hello</code>频道交互）（交互对节点的”看法”和自身信息）；<br><img src="https://s1.ax1x.com/2020/08/31/djkxj1.png" alt="1秒定时任务"></p>
+<p>​            3. 通过向其他节点发送<code>ping</code>命令进行心跳检测，判断是否下线。（每1秒每个<code>sentinel</code>对其他<code>sentinel</code>和<code>redis</code>执行<code>ping</code>）</p>
 <p>（2）主观下线：在心跳检测的定时任务中，如果其他节点超过一定时间没有回复，哨兵节点就会将其进行主观下线。顾名思义，主观下线的意思是一个哨兵节点“主观地”判断下线；与主观下线相对应的是客观下线。</p>
 <p>（3）客观下线：哨兵节点在对主节点进行主观下线后，会通过<code>sentinel is-master-down-by-addr</code>命令询问其他哨兵节点该主节点的状态；如果判断主节点下线的哨兵数量达到一定数值，则对该主节点进行客观下线。</p>
 <p><strong>需要特别注意的是，客观下线是主节点才有的概念；如果从节点和哨兵节点发生故障，被哨兵主观下线后，不会再有后续的客观下线和故障转移操作。</strong></p>
-<p>（4）选举领导者哨兵节点：当主节点被判断客观下线以后，各个哨兵节点会进行协商，选举出一个<code>领导者哨兵节点</code>，并由该领导者节点对其进行故障转移操作。</p>
-<p>​        监视该主节点的所有哨兵都有可能被选为领导者，选举使用的算法是<code>Raft</code>算法；Raft算法的基本思路是<code>先到先得</code>：即在一轮选举中，哨兵A向B发送成为领导者的申请，如果B没有同意过其他哨兵，则会同意A成为领导者。选举的具体过程这里不做详细描述，一般来说，哨兵选择的过程很快，谁先完成客观下线，一般就能成为领导者。</p>
+<p>（4）选举领导者哨兵节点：当主节点被判断客观下线以后，各个哨兵节点会进行协商，选举出一个<code>领导者哨兵节点</code>，并由该领导者节点对其进行故障转移操作（只需要一个<code>sentinel</code>节点完成故障转移就好了，到时会同步信息）。</p>
+<p>​        通过<code>sentinel is-master-down-by-addr</code>命令来进行领导者选择</p>
+<pre><code>1. 每个做主观下线的`Sentinel`节点向其他`Sentinel`节点发送命令，要求将它设置为领导者
+   2. 收到命令的`Sentinel`节点如果没有同意通过其他`Sentinel`节点发送的命令，那么将同意该请求，否则拒绝
+      3. 如果该`Sentinel`节点发现自己的票数已经超过`Sentinel`集合半数且超过`quorum`，那么它将成为领导者。
+         4. 如果此过程有多个`Sentinel`节点成为了领导者，那么将等待一段时间重新进行选举。
+</code></pre><p>​        监视该主节点的所有哨兵都有可能被选为领导者，选举使用的算法是<code>Raft</code>算法；Raft算法的基本思路是<code>先到先得</code>：即在一轮选举中，哨兵A向B发送成为领导者的申请，如果B没有同意过其他哨兵，则会同意A成为领导者。选举的具体过程这里不做详细描述，一般来说，哨兵选择的过程很快，谁先完成客观下线，一般就能成为领导者。</p>
 <p>（5）故障转移：选举出的领导者哨兵，开始进行故障转移操作，该操作大体可以分为3个步骤：</p>
 <ul>
-<li>在从节点中选择新的主节点：选择的原则是，首先过滤掉不健康的从节点；然后选择优先级最高的从节点(由<code>slave-priority</code>指定)；如果优先级无法区分，则选择复制偏移量最大的从节点；如果仍无法区分，则选择<code>runid</code>最小的从节点。</li>
+<li>在从节点中选择新的主节点：选择的原则是，首先过滤掉不健康的从节点；然后选择优先级最高的从节点(由<code>slave-priority</code>指定)；如果优先级无法区分，则选择复制偏移量最大的从节点（复制的最完整）；如果仍无法区分，则选择<code>runid</code>最小的从节点（启动最早的）。</li>
 <li>更新主从状态：通过<code>slaveof no one</code>命令，让选出来的从节点成为主节点；并通过<code>slaveof</code>命令让其他节点成为其从节点。</li>
 <li>将已经下线的主节点(即6379)设置为新的主节点的从节点，当6379重新上线后，它会成为新的主节点的从节点。</li>
 </ul>
@@ -591,6 +608,7 @@
 <p>（4） <code>sentinel failover-timeout {masterName} {time}</code></p>
 <p><code>sentinel failover-timeout</code>与故障转移超时的判断有关，但是该参数不是用来判断整个故障转移阶段的超时，而是其几个子阶段的超时，例如如果主节点晋升从节点时间超过<code>timeout</code>，或从节点向新的主节点发起复制操作的时间(不包括复制数据的时间)超过<code>timeout</code>，都会导致故障转移超时失败。</p>
 <p><code>failover-timeout</code>的默认值是180000，即180s；如果超时，则下一次该值会变为原来的2倍。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/djnHMQ.png" alt="主动完成故障转移"></p>
 <p>（5）除上述几个参数外，还有一些其他参数，如安全验证相关的参数，这里不做介绍。</p>
 <h3 id="2-实践建议"><a href="#2-实践建议" class="headerlink" title="2. 实践建议"></a>2. 实践建议</h3><p>（1）哨兵节点的数量应不止一个，一方面增加哨兵节点的冗余，避免哨兵本身成为高可用的瓶颈；另一方面减少对下线的误判。此外，这些不同的哨兵节点应部署在不同的物理机上。</p>
 <p>（2）哨兵节点的数量应该是奇数，便于哨兵通过投票做出“决策”：领导者选举的决策、客观下线的决策等。</p>
