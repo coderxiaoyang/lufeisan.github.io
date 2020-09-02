@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="MySQL," />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -81,18 +81,23 @@
 
 
 
-<meta name="description" content="什么是基准测试？我们看下基准测试的定义： 基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。 基准测试和压力测试的区别： 基准测试： 直接、简单、易于比较，用于评估服务器的处理能力可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系 压力测试： 对真实业务数据进行测试，获取系统所能承受的真实压力需要针对">
-<meta name="keywords" content="MySQL">
+<meta name="description" content="在前面的文章中，已经介绍了Redis的几种高可用技术：持久化、主从复制和哨兵，但这些方案仍有不足，其中最主要的问题是存储能力受单机限制，以及无法实现写操作的负载均衡。 上面的问题可以归纳为为什么需要集群？  并发量（我们知道Redis官方宣称单机QPS是 10万/每秒，但是当我们业务是100万/每秒的时候单机就不行了） 数据量（单机内存总是有限的，当我们的业务量远大于单机内存的时候就会有问题） 网">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL数据库架构--基准测试">
-<meta property="og:url" content="https://zhaobugs.com/2018/01/28/MySQL数据库架构-基准测试/index.html">
+<meta property="og:title" content="从入门到高可用分布式实践-第八篇">
+<meta property="og:url" content="https://zhaobugs.com/2020/05/29/从入门到高可用分布式实践-第八篇/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="什么是基准测试？我们看下基准测试的定义： 基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。 基准测试和压力测试的区别： 基准测试： 直接、简单、易于比较，用于评估服务器的处理能力可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系 压力测试： 对真实业务数据进行测试，获取系统所能承受的真实压力需要针对">
+<meta property="og:description" content="在前面的文章中，已经介绍了Redis的几种高可用技术：持久化、主从复制和哨兵，但这些方案仍有不足，其中最主要的问题是存储能力受单机限制，以及无法实现写操作的负载均衡。 上面的问题可以归纳为为什么需要集群？  并发量（我们知道Redis官方宣称单机QPS是 10万/每秒，但是当我们业务是100万/每秒的时候单机就不行了） 数据量（单机内存总是有限的，当我们的业务量远大于单机内存的时候就会有问题） 网">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-28T08:33:46.157Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9wS8P.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9r8OK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9s6jx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9ywsP.png">
+<meta property="og:updated_time" content="2020-09-02T16:28:29.759Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL数据库架构--基准测试">
-<meta name="twitter:description" content="什么是基准测试？我们看下基准测试的定义： 基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。 基准测试和压力测试的区别： 基准测试： 直接、简单、易于比较，用于评估服务器的处理能力可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系 压力测试： 对真实业务数据进行测试，获取系统所能承受的真实压力需要针对">
+<meta name="twitter:title" content="从入门到高可用分布式实践-第八篇">
+<meta name="twitter:description" content="在前面的文章中，已经介绍了Redis的几种高可用技术：持久化、主从复制和哨兵，但这些方案仍有不足，其中最主要的问题是存储能力受单机限制，以及无法实现写操作的负载均衡。 上面的问题可以归纳为为什么需要集群？  并发量（我们知道Redis官方宣称单机QPS是 10万/每秒，但是当我们业务是100万/每秒的时候单机就不行了） 数据量（单机内存总是有限的，当我们的业务量远大于单机内存的时候就会有问题） 网">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/02/w9wS8P.png">
 
 
 
@@ -122,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/01/28/MySQL数据库架构-基准测试/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2020/05/29/从入门到高可用分布式实践-第八篇/"/>
 
 
 
 
 
-  <title>MySQL数据库架构--基准测试 | 码农小杨的笔记</title>
+  <title>从入门到高可用分布式实践-第八篇 | 码农小杨的笔记</title>
   
 
 
@@ -303,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/28/MySQL数据库架构-基准测试/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/05/29/从入门到高可用分布式实践-第八篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--基准测试</h1>
+          <h1 class="post-title" itemprop="name headline">从入门到高可用分布式实践-第八篇</h1>
         
 
         <div class="post-meta">
@@ -332,8 +337,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T15:24:55+08:00">
-                2018-01-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T23:08:09+08:00">
+                2020-05-29
               </time>
             
 
@@ -355,8 +360,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -373,8 +378,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/28/MySQL数据库架构-基准测试/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/28/MySQL数据库架构-基准测试/" itemprop="commentCount"></span>
+                <a href="/2020/05/29/从入门到高可用分布式实践-第八篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/29/从入门到高可用分布式实践-第八篇/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +387,7 @@
 
           
           
-             <span id="/2018/01/28/MySQL数据库架构-基准测试/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--基准测试">
+             <span id="/2020/05/29/从入门到高可用分布式实践-第八篇/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-第八篇">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +417,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,506 字
+                  1,658 字
                 </span>
               
 
@@ -449,70 +454,59 @@
       
 
       
-        <h6 id="什么是基准测试？"><a href="#什么是基准测试？" class="headerlink" title="什么是基准测试？"></a>什么是基准测试？</h6><p><strong>我们看下基准测试的定义：</strong></p>
-<p>基准测试是一种测量和评估软件性能指标的活动，用于建立某个时刻的性能基准，以便当系统发生软硬件变化时重新进行基准测试，以评估变化对性能的影响。</p>
-<p><strong>基准测试和压力测试的区别：</strong></p>
-<p>基准测试：</p>
-<p>直接、简单、易于比较，用于评估服务器的处理能力<br>可以不关心业务逻辑，所使用的查询和业务的真实性和环境没关系</p>
-<p>压力测试：</p>
-<p>对真实业务数据进行测试，获取系统所能承受的真实压力<br>需要针对不同主题，所使用的的数据和查询也是真实用到的</p>
-<p><strong>基准测试的目的</strong></p>
-<ul>
-<li>建立MySQL服务器的性能基准线<br>确定当前MySQL服务器运行情况</li>
-<li>模拟比当前系统更高的负载，以找出系统的扩展瓶颈<br>增加数据库并发，观察QPS，TPS变化，确定并发量与性能最优化的关系</li>
-<li>测试不同的硬件、软件和操作系统配置</li>
-<li>证明新的硬件设备是否配置正确</li>
-</ul>
-<p><strong>如何进行基准测试</strong></p>
+        <p>在前面的文章中，已经介绍了Redis的几种高可用技术：持久化、主从复制和哨兵，但这些方案仍有不足，其中最主要的问题是存储能力受单机限制，以及无法实现写操作的负载均衡。</p>
+<p>上面的问题可以归纳为为什么需要集群？</p>
 <ol>
-<li><p>对整个系统进行基准测试</p>
-<p>从系统入口进行测试（如网站web前端、手机app前端）</p>
-<p>优点：</p>
-<p>能够测试整个系统的性能，包括web服务器、程序代码、网络、缓存、数据库等</p>
-<p>能反应出系统中各个组建接口间的性能问题，体现真实性能状况</p>
-<p>缺点：测试设计复杂、消耗时间长</p>
-</li>
-<li><p>单独对组件进行测试，对mysql进行基准测试</p>
-<p>优点：测试设计简单，所需好费时间短</p>
-<p>缺点：无法全面了解整个系统的性能基线</p>
-</li>
+<li>并发量（我们知道Redis官方宣称单机QPS是 10万/每秒，但是当我们业务是100万/每秒的时候单机就不行了）</li>
+<li>数据量（单机内存总是有限的，当我们的业务量远大于单机内存的时候就会有问题）</li>
+<li>网络流量（单机网络不足以支持业务量的时候）</li>
 </ol>
-<p><strong>MySQL基准测试的常见指标</strong></p>
-<ul>
-<li>单位时间内所处理的事务数（TPS）</li>
-<li>单位时间内所处理的查询数（QPS）</li>
-<li>响应时间：平均响应时间、最小响应时间、最大响应时间、各时间所占百分比</li>
-<li>并发量：同时处理的查询请求的数量（并发量不等于连接数）这里的并发量是指正在工作中的并发的操作数或者同时工作的数量，而不是有多少连接的线程。</li>
-</ul>
-<h6 id="基准测试"><a href="#基准测试" class="headerlink" title="基准测试"></a>基准测试</h6><p><strong>基准测试步骤</strong></p>
-<ol>
-<li>计划和设计基准测试（目标、数据、时间、次数）<br>对整个系统还是某一组件<br>使用什么样的数据（真数据，假数据）<br>准备基准测试及数据收集脚本<br>CPU使用率、IO、网络流量、状态与计数器信息等</li>
-<li>运行基准测试</li>
-</ol>
-<p>​    </p>
-<p><strong>基准测试中容易忽略的问题</strong></p>
-<ol>
-<li>使用生产环境数据时只是用了部分数据（推荐使用真实数据库完全备份来测试）</li>
-<li>在多用户的场景中，只做单用户的测试（推荐使用多线程的并发测试）</li>
-<li>在单服务器上测试分布式应用</li>
-<li>反复执行同一查询（容易缓存命中，无法反应真实查询性能）</li>
-</ol>
-<p><strong>MySQL基准测试工具与软件</strong></p>
-<ol>
-<li><p>mysqlslap（MySQL自带）<br> 特点：可以模拟服务器负载，并输出相关统计信息<br> 可以指定也可以自动生成查询语句<br> 常用参数说明:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">--auto-generate-sql # 由系统自动生成SQL脚本进行测试</span><br><span class="line">--auto-generate-sql-add-autoincrement # 在生成的表中增加自增ID（innodb推荐）</span><br><span class="line">--auto-generate-sql-load-type # 指定测试中使用的查询类型</span><br><span class="line">--auto-generate-sql-write-number # 指定初始化数据时生成的数据量</span><br><span class="line">--concurrency # 指定并发线程的数量</span><br><span class="line">--engine # 指定要测试表的存储引擎，可以用逗号分割多个存储引擎（与--no-drop冲突，不能同时指定）</span><br><span class="line">--no-drop # 指定不清理测试数据 </span><br><span class="line">--iterations # 指定测试运行的次数（与--no-drop冲突，不能同时指定）</span><br><span class="line">--number-of-queries # 指定每个线程执行的查询数量</span><br><span class="line">--debug-info # 指定输出额外的内存及CPU统计信息</span><br><span class="line">--number-int-cols # 指定测试表中包含的INT类型列的数量</span><br><span class="line">--number-char-cols # 指定测试表中包含的varchar类型的数量</span><br><span class="line">--create-schema # 指定用于执行测试的数据库的名字</span><br><span class="line">--query # 用于指定自定义的SQL的脚本</span><br><span class="line">--only-print # 不运行测试脚本，只把生成的脚本打印出来</span><br></pre></td></tr></table></figure>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># mysqlslap --concurrency=1,50,100,200 --iterations=3 --number-int-cols=5 --number-char-cols=5 --auto-generate-sql --auto-generate-sql-add-autoincrement --engine=myisam,innodb --number-of-queries=10 --create-schema=test -u root -p</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol start="2">
-<li><p>sysbench</p>
-<p>对io cpu 内存  都可以测试</p>
-<p>下载安装：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># wget https://github.com/akopytov/sysbench/archive/0.5.zip</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]<span class="comment"># unzip 0.5.zip</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou sysbench-<span class="number">0.5</span>]<span class="comment"># sh autogen.sh</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou sysbench-<span class="number">0.5</span>]<span class="comment"># ./configure --with-mysql-includes=/usr/local/mysql/include/ \ --with-mysql- lib=/usr/local/mysql/lib/</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou sysbench-<span class="number">0.5</span>]<span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
-<p> 常用参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">--test # 用于指定所要执行的测试类型，支持一下参数</span><br><span class="line">Fileio # 文件系统I/O性能测试</span><br><span class="line">cpu # cpu性能测试</span><br><span class="line">memory # 内存性能测试</span><br><span class="line">Oltp # 测试要指定具体的lua脚本Lua脚本位于sysbench-0.5/sysbench/tests/db</span><br><span class="line">--mysql-db # 用于指定执行基准测试的数据库名</span><br><span class="line">--mysql-table-engine # 用于指定所使用的存储引擎</span><br><span class="line">--oltp-tables-count # 执行测试的表的数量</span><br><span class="line">--oltp-table-size # 指定每个表中数据的行数</span><br><span class="line">--num-threads # 指定测试的并发线程数量</span><br><span class="line">--max-time # 指定最大的测试时间</span><br><span class="line">--report-interval # 指定间隔多长时间输出一次统计信息</span><br><span class="line">--mysql-user # 指定执行测试的mysql用户</span><br><span class="line">--mysql-password # 指定执行测试的mysql用户密码</span><br><span class="line">prepare # 用于准备测试数据</span><br><span class="line">run # 用于实际进行测试</span><br><span class="line">cleanup # 用于清理测试数据</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<p>Redis集群解决了上述问题，实现了较为完善的高可用方案。本篇将详细介绍集群，主要内容包括：<strong>集群的作用；集群的搭建方法及设计方案；集群的基本原理；客户端访问集群的方法；以及其他实践中需要的集群知识（集群扩容、故障转移、参数优化等）</strong>。</p>
+<h2 id="三、集群的基本原理"><a href="#三、集群的基本原理" class="headerlink" title="三、集群的基本原理"></a>三、集群的基本原理</h2><p>上面介绍了集群的搭建方法和设计方案，下面将进一步深入，介绍集群的原理。<strong>集群最核心的功能是数据分区，因此首先介绍数据的分区规则；然后介绍集群实现的细节：通信机制和数据结构；最后以cluster meet(节点握手)、cluster addslots(槽分配)为例，说明节点是如何利用上述数据结构和通信机制实现集群命令的。</strong></p>
+<h3 id="1-数据分区方案"><a href="#1-数据分区方案" class="headerlink" title="1. 数据分区方案"></a>1. 数据分区方案</h3><p>数据分区有顺序分区、哈希分区等，其中哈希分区由于其天然的随机性，使用广泛；集群的分区方案便是哈希分区的一种。</p>
+<table>
+<thead>
+<tr>
+<th>分布式方式</th>
+<th>特点</th>
+<th>典型产品</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>哈希分布</td>
+<td>数据分散度高  <br><br>键值分布业务无关<br><br>无法顺序访问<br><br>支持批量操作</td>
+<td>一致性哈希Memcache<br><br>Redis Cluster<br><br>其他缓存产品</td>
+</tr>
+<tr>
+<td>顺序分布</td>
+<td>数据分散度易倾斜<br><br>键值业务相关<br><br>可顺序访问</td>
+<td>BigTable<br><br>HBase</td>
+</tr>
+</tbody>
+</table>
+<p>哈希分区的基本思路是：对数据的特征值（如key）进行哈希，然后根据哈希值决定数据落在哪个节点。常见的哈希分区包括：哈希取余分区、一致性哈希分区、带虚拟节点的一致性哈希分区等。</p>
+<p>衡量数据分区方法好坏的标准有很多，其中比较重要的两个因素是：</p>
+<p>(1)数据分布是否均匀</p>
+<p>(2)增加或删减节点对数据分布的影响。</p>
+<p>由于哈希的随机性，哈希分区基本可以保证数据分布均匀；因此在比较哈希分区方案时，重点要看增减节点对数据分布的影响。</p>
+<h4 id="（1）哈希取余分区"><a href="#（1）哈希取余分区" class="headerlink" title="（1）哈希取余分区"></a>（1）哈希取余分区</h4><p>哈希取余分区思路非常简单：计算key的hash值，然后对节点数量进行取余，从而决定数据映射到哪个节点上。该方案最大的问题是，<strong>当新增或删减节点时，节点数量发生变化，系统中所有的数据都需要重新计算映射关系，引发大规模数据迁移</strong>。<br><img src="https://s1.ax1x.com/2020/09/02/w9wS8P.png" alt="多倍扩容"></p>
+<blockquote>
+<p>在扩容的时候 建议多倍扩容 迁移率会大大降低</p>
+</blockquote>
+<p>注意：在数据迁移之后 再次访问数据是无法从缓存中得到，需要从数据库加载数据然后回写到缓存，会涉及到大量的缓存回写，降低服务性能，增大数据库压力。</p>
+<h3 id="（2）一致性哈希分区"><a href="#（2）一致性哈希分区" class="headerlink" title="（2）一致性哈希分区"></a>（2）一致性哈希分区</h3><p>一致性哈希算法将整个哈希值空间组织成一个虚拟的圆环，如下图所示，范围为0-2^32-1；对于每个数据，根据key计算hash值，确定数据在环上的位置，然后从此位置沿环顺时针行走，找到的第一台服务器就是其应该映射到的服务器。</p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9r8OK.png" alt="一致性哈希"></p>
+<p>与哈希取余分区相比，一致性哈希分区将增减节点的影响限制在相邻节点。以上图为例，如果在node1和node2之间增加node5，则只有node2中的一部分数据会迁移到node5；如果去掉node2，则原node2中的数据只会迁移到node4中，只有node4会受影响。</p>
+<p>一致性哈希分区的主要问题在于，当节点数量较少时，增加或删减节点，对单个节点的影响可能很大，造成数据的严重不平衡。还是以上图为例，如果去掉node2，node4中的数据由总数据的1/4左右变为1/2左右，与其他节点相比负载过高（因此我们在进行扩容的时候尽量翻倍伸缩来保证最小迁移数据和负载均衡）。</p>
+<h3 id="（3）带虚拟节点的一致性哈希分区（虚拟槽分区）"><a href="#（3）带虚拟节点的一致性哈希分区（虚拟槽分区）" class="headerlink" title="（3）带虚拟节点的一致性哈希分区（虚拟槽分区）"></a>（3）带虚拟节点的一致性哈希分区（虚拟槽分区）</h3><p>该方案在一致性哈希分区的基础上，引入了虚拟节点的概念。<strong>Redis集群使用的便是该方案，其中的虚拟节点称为槽（slot）。</strong>槽是介于数据和实际节点之间的虚拟概念；每个实际节点包含一定数量的槽，每个槽包含哈希值在一定范围内的数据。引入槽以后，数据的映射关系由数据hash-&gt;实际节点，变成了数据hash-&gt;槽-&gt;实际节点。</p>
+<p><strong>在使用了槽的一致性哈希分区中，槽是数据管理和迁移的基本单位。槽解耦了数据和实际节点之间的关系，增加或删除节点对系统的影响很小。</strong>仍以上图为例，系统中有4个实际节点，假设为其分配16个槽(0-15)； 槽0-3位于node1，4-7位于node2，以此类推。如果此时删除node2，只需要将槽4-7重新分配即可，例如槽4-5分配给node1，槽6分配给node3，槽7分配给node4；可以看出删除node2后，数据在其他节点的分布仍然较为均衡。</p>
+<p>槽的数量一般远小于2^32，远大于实际节点的数量；在Redis集群中，槽的数量为16384（2^14）。</p>
+<p>下面这张图很好的总结了Redis集群将数据映射到实际节点的过程：<br><img src="https://s1.ax1x.com/2020/09/03/w9s6jx.png" alt="虚拟槽分区"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9ywsP.png" alt="虚拟槽分区"></p>
+<p>（1）Redis对数据的特征值（一般是key）计算哈希值，使用的算法是CRC16。</p>
+<p>（2）根据哈希值，计算数据属于哪个槽。</p>
+<p>（3）根据槽与节点的映射关系，计算数据属于哪个节点</p>
 
       
     </div>
@@ -571,7 +565,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>Redis</a>
           
         </div>
       
@@ -584,8 +578,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/21/Python使用小技巧/" rel="next" title="Python使用小技巧">
-                <i class="fa fa-chevron-left"></i> Python使用小技巧
+              <a href="/2020/05/28/从入门到高可用分布式实践-第七篇/" rel="next" title="从入门到高可用分布式实践-哨兵">
+                <i class="fa fa-chevron-left"></i> 从入门到高可用分布式实践-哨兵
               </a>
             
           </div>
@@ -593,10 +587,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/28/MySQL数据库架构-数据库索引优化/" rel="prev" title="MySQL数据库架构--数据库索引优化">
-                MySQL数据库架构--数据库索引优化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -758,7 +748,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是基准测试？"><span class="nav-number">1.</span> <span class="nav-text">什么是基准测试？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#基准测试"><span class="nav-number">2.</span> <span class="nav-text">基准测试</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#三、集群的基本原理"><span class="nav-number">1.</span> <span class="nav-text">三、集群的基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据分区方案"><span class="nav-number">1.1.</span> <span class="nav-text">1. 数据分区方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）哈希取余分区"><span class="nav-number">1.1.1.</span> <span class="nav-text">（1）哈希取余分区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（2）一致性哈希分区"><span class="nav-number">1.2.</span> <span class="nav-text">（2）一致性哈希分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（3）带虚拟节点的一致性哈希分区（虚拟槽分区）"><span class="nav-number">1.3.</span> <span class="nav-text">（3）带虚拟节点的一致性哈希分区（虚拟槽分区）</span></a></li></ol></li></ol></div>
             
 
           </div>
