@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9r8OK.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9s6jx.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9ywsP.png">
-<meta property="og:updated_time" content="2020-09-02T16:28:29.759Z">
+<meta property="og:updated_time" content="2020-09-03T16:38:10.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从入门到高可用分布式实践-第八篇">
 <meta name="twitter:description" content="在前面的文章中，已经介绍了Redis的几种高可用技术：持久化、主从复制和哨兵，但这些方案仍有不足，其中最主要的问题是存储能力受单机限制，以及无法实现写操作的负载均衡。 上面的问题可以归纳为为什么需要集群？  并发量（我们知道Redis官方宣称单机QPS是 10万/每秒，但是当我们业务是100万/每秒的时候单机就不行了） 数据量（单机内存总是有限的，当我们的业务量远大于单机内存的时候就会有问题） 网">
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,658 字
+                  4,378 字
                 </span>
               
 
@@ -433,7 +433,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  16 分钟
                 </span>
               
             </div>
@@ -462,6 +462,16 @@
 <li>网络流量（单机网络不足以支持业务量的时候）</li>
 </ol>
 <p>Redis集群解决了上述问题，实现了较为完善的高可用方案。本篇将详细介绍集群，主要内容包括：<strong>集群的作用；集群的搭建方法及设计方案；集群的基本原理；客户端访问集群的方法；以及其他实践中需要的集群知识（集群扩容、故障转移、参数优化等）</strong>。</p>
+<h2 id="一、集群的作用"><a href="#一、集群的作用" class="headerlink" title="一、集群的作用"></a>一、集群的作用</h2><p>集群，即Redis Cluster，是Redis 3.0开始引入的分布式存储方案。</p>
+<p>集群由多个节点(Node)组成，Redis的数据分布在这些节点中。集群中的节点分为主节点和从节点：<strong>只有主节点负责读写请求和集群信息的维护；从节点只进行主节点数据和状态信息的复制。</strong></p>
+<p>集群的作用，可以归纳为两点：</p>
+<p><strong>1、数据分区：</strong></p>
+<p>数据分区(或称数据分片)是集群最核心的功能。</p>
+<p>集群将数据分散到多个节点，一方面突破了Redis单机内存大小的限制，存储容量大大增加；另一方面每个主节点都可以对外提供读服务和写服务，大大提高了集群的响应能力。</p>
+<p>Redis单机内存大小受限问题，在介绍持久化和主从复制时都有提及；例如，如果单机内存太大，bgsave和bgrewriteaof的fork操作可能导致主进程阻塞，主从环境下主机切换时可能导致从节点长时间无法提供服务，全量复制阶段主节点的复制缓冲区可能溢出……。</p>
+<p><strong>2、高可用：</strong></p>
+<p>集群支持主从复制和主节点的自动故障转移（与哨兵类似）；</p>
+<p>当任一节点发生故障时，集群仍然可以对外提供服务。</p>
 <h2 id="三、集群的基本原理"><a href="#三、集群的基本原理" class="headerlink" title="三、集群的基本原理"></a>三、集群的基本原理</h2><p>上面介绍了集群的搭建方法和设计方案，下面将进一步深入，介绍集群的原理。<strong>集群最核心的功能是数据分区，因此首先介绍数据的分区规则；然后介绍集群实现的细节：通信机制和数据结构；最后以cluster meet(节点握手)、cluster addslots(槽分配)为例，说明节点是如何利用上述数据结构和通信机制实现集群命令的。</strong></p>
 <h3 id="1-数据分区方案"><a href="#1-数据分区方案" class="headerlink" title="1. 数据分区方案"></a>1. 数据分区方案</h3><p>数据分区有顺序分区、哈希分区等，其中哈希分区由于其天然的随机性，使用广泛；集群的分区方案便是哈希分区的一种。</p>
 <table>
@@ -507,7 +517,50 @@
 <p>（1）Redis对数据的特征值（一般是key）计算哈希值，使用的算法是CRC16。</p>
 <p>（2）根据哈希值，计算数据属于哪个槽。</p>
 <p>（3）根据槽与节点的映射关系，计算数据属于哪个节点</p>
-
+<h3 id="2-节点通信机制"><a href="#2-节点通信机制" class="headerlink" title="2. 节点通信机制"></a>2. 节点通信机制</h3><p>集群要作为一个整体工作，离不开节点之间的通信。</p>
+<h4 id="两个端口"><a href="#两个端口" class="headerlink" title="两个端口"></a>两个端口</h4><p>在哨兵系统中，节点分为数据节点和哨兵节点：前者存储数据，后者实现额外的控制功能。在集群中，没有数据节点与非数据节点之分：<strong>所有的节点都存储数据，也都参与集群状态的维护</strong>。为此，集群中的每个节点，都提供了两个TCP端口：</p>
+<ul>
+<li>普通端口：即我们在前面指定的端口(7000等)。普通端口主要用于为客户端提供服务（与单机节点类似）；但在节点间数据迁移时也会使用。</li>
+<li>集群端口：端口号是普通端口+10000（10000是固定值，无法改变），如7000节点的集群端口为17000。集群端口只用于节点之间的通信，如搭建集群、增减节点、故障转移等操作时节点间的通信；不要使用客户端连接集群接口。为了保证集群可以正常工作，在配置防火墙时，要同时开启普通端口和集群端口。</li>
+</ul>
+<h4 id="Gossip协议"><a href="#Gossip协议" class="headerlink" title="Gossip协议"></a>Gossip协议</h4><p>节点间通信，按照通信协议可以分为几种类型：单对单、广播、Gossip协议等。重点是广播和Gossip的对比。</p>
+<p>广播是指向集群内所有节点发送消息；优点是集群的收敛速度快(集群收敛是指集群内所有节点获得的集群信息是一致的)，缺点是每条消息都要发送给所有节点，CPU、带宽等消耗较大。</p>
+<p>Gossip协议的特点是：在节点数量有限的网络中，每个节点都“随机”的与部分节点通信（并不是真正的随机，而是根据特定的规则选择通信的节点），经过一番杂乱无章的通信，每个节点的状态很快会达到一致。Gossip协议的优点有负载(比广播)低、去中心化、容错性高(因为通信有冗余)等；缺点主要是集群的收敛速度慢。</p>
+<h4 id="消息类型"><a href="#消息类型" class="headerlink" title="消息类型"></a>消息类型</h4><p>集群中的节点采用固定频率（每秒10次）的定时任务进行通信相关的工作：判断是否需要发送消息及消息类型、确定接收节点、发送消息等。如果集群状态发生了变化，如增减节点、槽状态变更，通过节点间的通信，所有节点会很快得知整个集群的状态，使集群收敛。</p>
+<p>节点间发送的消息主要分为5种：meet消息、ping消息、pong消息、fail消息、publish消息。不同的消息类型，通信协议、发送的频率和时机、接收节点的选择等是不同的。</p>
+<ul>
+<li>MEET消息：在节点握手阶段，当节点收到客户端的CLUSTER MEET命令时，会向新加入的节点发送MEET消息，请求新节点加入到当前集群；新节点收到MEET消息后会回复一个PONG消息。</li>
+<li>PING消息：集群里每个节点每秒钟会选择部分节点发送PING消息，接收者收到消息后会回复一个PONG消息。PING消息的内容是自身节点和部分其他节点的状态信息；作用是彼此交换信息，以及检测节点是否在线。PING消息使用Gossip协议发送，接收节点的选择兼顾了收敛速度和带宽成本，具体规则如下：(1)随机找5个节点，在其中选择最久没有通信的1个节点(2)扫描节点列表，选择最近一次收到PONG消息时间大于cluster_node_timeout/2的所有节点，防止这些节点长时间未更新。</li>
+<li>PONG消息：PONG消息封装了自身状态数据。可以分为两种：第一种是在接到MEET/PING消息后回复的PONG消息；第二种是指节点向集群广播PONG消息，这样其他节点可以获知该节点的最新信息，例如故障恢复后新的主节点会广播PONG消息。</li>
+<li>FAIL消息：当一个主节点判断另一个主节点进入FAIL状态时，会向集群广播这一FAIL消息；接收节点会将这一FAIL消息保存起来，便于后续的判断。</li>
+<li>PUBLISH消息：节点收到PUBLISH命令后，会先执行该命令，然后向集群广播这一消息，接收节点也会执行该PUBLISH命令。</li>
+</ul>
+<h3 id="3-数据结构"><a href="#3-数据结构" class="headerlink" title="3. 数据结构"></a>3. 数据结构</h3><p>节点需要专门的数据结构来存储集群的状态。所谓集群的状态，是一个比较大的概念，包括：集群是否处于上线状态、集群中有哪些节点、节点是否可达、节点的主从状态、槽的分布……</p>
+<p>节点为了存储集群状态而提供的数据结构中，最关键的是<code>clusterNode</code>和<code>clusterState</code>结构：前者记录了一个节点的状态，后者记录了集群作为一个整体的状态。</p>
+<h4 id="clusterNode"><a href="#clusterNode" class="headerlink" title="clusterNode"></a>clusterNode</h4><p><code>clusterNode</code>结构保存了一个节点的当前状态，包括创建时间、节点id、ip和端口号等。每个节点都会用一个<code>clusterNode</code>结构记录自己的状态，并为集群内所有其他节点都创建一个<code>clusterNode</code>结构来记录节点状态。</p>
+<p>下面列举了<code>clusterNode</code>的部分字段，并说明了字段的含义和作用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">clusterNode</span> &#123;</span></span><br><span class="line">    <span class="comment">//节点创建时间</span></span><br><span class="line">    <span class="keyword">mstime_t</span> ctime;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//节点id</span></span><br><span class="line">    <span class="keyword">char</span> name[REDIS_CLUSTER_NAMELEN];</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//节点的ip和端口号</span></span><br><span class="line">    <span class="keyword">char</span> ip[REDIS_IP_STR_LEN];</span><br><span class="line">    <span class="keyword">int</span> port;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//节点标识：整型，每个bit都代表了不同状态，如节点的主从状态、是否在线、是否在握手等</span></span><br><span class="line">    <span class="keyword">int</span> flags;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//配置纪元：故障转移时起作用，类似于哨兵的配置纪元</span></span><br><span class="line">    <span class="keyword">uint64_t</span> configEpoch;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//槽在该节点中的分布：占用16384/8个字节，16384个比特；每个比特对应一个槽：比特值为1，则该比特对应的槽在节点中；比特值为0，则该比特对应的槽不在节点中</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> slots[<span class="number">16384</span>/<span class="number">8</span>];</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//节点中槽的数量</span></span><br><span class="line">    <span class="keyword">int</span> numslots;</span><br><span class="line"> </span><br><span class="line">    …………</span><br><span class="line"> </span><br><span class="line">&#125; clusterNode;</span><br></pre></td></tr></table></figure>
+<p>除了上述字段，clusterNode还包含节点连接、主从复制、故障发现和转移需要的信息等。</p>
+<h4 id="clusterState"><a href="#clusterState" class="headerlink" title="clusterState"></a>clusterState</h4><p><code>clusterState</code>结构保存了在当前节点视角下，集群所处的状态。主要字段包括：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">clusterState</span> &#123;</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">//自身节点</span></span><br><span class="line">    clusterNode *myself;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//配置纪元</span></span><br><span class="line">    <span class="keyword">uint64_t</span> currentEpoch;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//集群状态：在线还是下线</span></span><br><span class="line">    <span class="keyword">int</span> state;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//集群中至少包含一个槽的节点数量</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//哈希表，节点名称-&gt;clusterNode节点指针</span></span><br><span class="line">    dict *nodes;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//槽分布信息：数组的每个元素都是一个指向clusterNode结构的指针；如果槽还没有分配给任何节点，则为NULL</span></span><br><span class="line">    clusterNode *slots[<span class="number">16384</span>];</span><br><span class="line"> </span><br><span class="line">    …………</span><br><span class="line">     </span><br><span class="line">&#125; clusterState;</span><br></pre></td></tr></table></figure>
+<p>除此之外，<code>clusterState</code>还包括故障转移、槽迁移等需要的信息。</p>
+<h3 id="4-集群命令的实现"><a href="#4-集群命令的实现" class="headerlink" title="4. 集群命令的实现"></a>4. 集群命令的实现</h3><p>这一部分将以<code>cluster meet(节点握手)</code>、<code>cluster addslots(槽分配)</code>为例，说明节点是如何利用上述数据结构和通信机制实现集群命令的。</p>
+<h4 id="cluster-meet"><a href="#cluster-meet" class="headerlink" title="cluster meet"></a>cluster meet</h4><p>假设要向A节点发送cluster meet命令，将B节点加入到A所在的集群，则A节点收到命令后，执行的操作如下：</p>
+<p>1)  A为B创建一个clusterNode结构，并将其添加到clusterState的nodes字典中</p>
+<p>2)  A向B发送MEET消息</p>
+<p>3)  B收到MEET消息后，会为A创建一个clusterNode结构，并将其添加到clusterState的nodes字典中</p>
+<p>4)  B回复A一个PONG消息</p>
+<p>5)  A收到B的PONG消息后，便知道B已经成功接收自己的MEET消息</p>
+<p>6)  然后，A向B返回一个PING消息</p>
+<p>7)  B收到A的PING消息后，便知道A已经成功接收自己的PONG消息，握手完成</p>
+<p>8)  之后，A通过Gossip协议将B的信息广播给集群内其他节点，其他节点也会与B握手；一段时间后，集群收敛，B成为集群内的一个普通节点</p>
+<p>通过上述过程可以发现，集群中两个节点的握手过程与TCP类似，都是三次握手：A向B发送MEET；B向A发送PONG；A向B发送PING。</p>
+<h4 id="cluster-addslots"><a href="#cluster-addslots" class="headerlink" title="cluster addslots"></a>cluster addslots</h4><p>集群中槽的分配信息，存储在clusterNode的slots数组和clusterState的slots数组中，两个数组的结构前面已做介绍；二者的区别在于：前者存储的是该节点中分配了哪些槽，后者存储的是集群中所有槽分别分布在哪个节点。</p>
+<p>cluster addslots命令接收一个槽或多个槽作为参数，例如在A节点上执行cluster addslots {0..10}命令，是将编号为0-10的槽分配给A节点，具体执行过程如下：</p>
+<p>1)  遍历输入槽，检查它们是否都没有分配，如果有一个槽已分配，命令执行失败；方法是检查输入槽在clusterState.slots[]中对应的值是否为NULL。</p>
+<p>2)  遍历输入槽，将其分配给节点A；方法是修改clusterNode.slots[]中对应的比特为1，以及clusterState.slots[]中对应的指针指向A节点</p>
+<p>3)  A节点执行完成后，通过节点通信机制通知其他节点，所有节点都会知道0-10的槽分配给了A节点</p>
+<h2 id="四、客户端访问集群"><a href="#四、客户端访问集群" class="headerlink" title="四、客户端访问集群"></a>四、客户端访问集群</h2>
       
     </div>
     
@@ -670,7 +723,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">157</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -748,7 +801,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#三、集群的基本原理"><span class="nav-number">1.</span> <span class="nav-text">三、集群的基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据分区方案"><span class="nav-number">1.1.</span> <span class="nav-text">1. 数据分区方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）哈希取余分区"><span class="nav-number">1.1.1.</span> <span class="nav-text">（1）哈希取余分区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（2）一致性哈希分区"><span class="nav-number">1.2.</span> <span class="nav-text">（2）一致性哈希分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（3）带虚拟节点的一致性哈希分区（虚拟槽分区）"><span class="nav-number">1.3.</span> <span class="nav-text">（3）带虚拟节点的一致性哈希分区（虚拟槽分区）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、集群的作用"><span class="nav-number">1.</span> <span class="nav-text">一、集群的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、集群的基本原理"><span class="nav-number">2.</span> <span class="nav-text">三、集群的基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据分区方案"><span class="nav-number">2.1.</span> <span class="nav-text">1. 数据分区方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）哈希取余分区"><span class="nav-number">2.1.1.</span> <span class="nav-text">（1）哈希取余分区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（2）一致性哈希分区"><span class="nav-number">2.2.</span> <span class="nav-text">（2）一致性哈希分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（3）带虚拟节点的一致性哈希分区（虚拟槽分区）"><span class="nav-number">2.3.</span> <span class="nav-text">（3）带虚拟节点的一致性哈希分区（虚拟槽分区）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-节点通信机制"><span class="nav-number">2.4.</span> <span class="nav-text">2. 节点通信机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两个端口"><span class="nav-number">2.4.1.</span> <span class="nav-text">两个端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gossip协议"><span class="nav-number">2.4.2.</span> <span class="nav-text">Gossip协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">消息类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-数据结构"><span class="nav-number">2.5.</span> <span class="nav-text">3. 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#clusterNode"><span class="nav-number">2.5.1.</span> <span class="nav-text">clusterNode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clusterState"><span class="nav-number">2.5.2.</span> <span class="nav-text">clusterState</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-集群命令的实现"><span class="nav-number">2.6.</span> <span class="nav-text">4. 集群命令的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cluster-meet"><span class="nav-number">2.6.1.</span> <span class="nav-text">cluster meet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cluster-addslots"><span class="nav-number">2.6.2.</span> <span class="nav-text">cluster addslots</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、客户端访问集群"><span class="nav-number">3.</span> <span class="nav-text">四、客户端访问集群</span></a></li></ol></div>
             
 
           </div>
