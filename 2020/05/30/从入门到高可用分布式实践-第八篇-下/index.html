@@ -81,18 +81,22 @@
 
 
 
-<meta name="description" content="书接上回，我们继续学习Redis的集群知识点。 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。">
+<meta name="description" content="书接上回，我们继续学习Redis的集群知识点。 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。 1. redis-cli当节点收到redis-cli发来的命令(如set/get)时，过程如下： （1）计算key属于哪个槽：CRC16(key) &amp;amp; 16383集群提供的cluster keyslot命令">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从入门到高可用分布式实践-第八篇-下">
+<meta property="og:title" content="从入门到高可用分布式实践-集群-下">
 <meta property="og:url" content="https://zhaobugs.com/2020/05/30/从入门到高可用分布式实践-第八篇-下/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="书接上回，我们继续学习Redis的集群知识点。 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。">
+<meta property="og:description" content="书接上回，我们继续学习Redis的集群知识点。 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。 1. redis-cli当节点收到redis-cli发来的命令(如set/get)时，过程如下： （1）计算key属于哪个槽：CRC16(key) &amp;amp; 16383集群提供的cluster keyslot命令">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-24T15:05:36.954Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/24/0poko8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/24/0pTGHP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/25/0pbM3F.png">
+<meta property="og:updated_time" content="2020-09-24T16:36:45.229Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="从入门到高可用分布式实践-第八篇-下">
-<meta name="twitter:description" content="书接上回，我们继续学习Redis的集群知识点。 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。">
+<meta name="twitter:title" content="从入门到高可用分布式实践-集群-下">
+<meta name="twitter:description" content="书接上回，我们继续学习Redis的集群知识点。 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。 1. redis-cli当节点收到redis-cli发来的命令(如set/get)时，过程如下： （1）计算key属于哪个槽：CRC16(key) &amp;amp; 16383集群提供的cluster keyslot命令">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/24/0poko8.png">
 
 
 
@@ -128,7 +132,7 @@
 
 
 
-  <title>从入门到高可用分布式实践-第八篇-下 | 码农小杨的笔记</title>
+  <title>从入门到高可用分布式实践-集群-下 | 码农小杨的笔记</title>
   
 
 
@@ -320,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">从入门到高可用分布式实践-第八篇-下</h1>
+          <h1 class="post-title" itemprop="name headline">从入门到高可用分布式实践-集群-下</h1>
         
 
         <div class="post-meta">
@@ -382,7 +386,7 @@
 
           
           
-             <span id="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-第八篇-下">
+             <span id="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-集群-下">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +416,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  79 字
+                  2,965 字
                 </span>
               
 
@@ -428,7 +432,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  11 分钟
                 </span>
               
             </div>
@@ -451,6 +455,73 @@
       
         <p>书接上回，我们继续学习Redis的集群知识点。</p>
 <h2 id="四、客户端访问集群"><a href="#四、客户端访问集群" class="headerlink" title="四、客户端访问集群"></a>四、客户端访问集群</h2><p>在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。</p>
+<h3 id="1-redis-cli"><a href="#1-redis-cli" class="headerlink" title="1. redis-cli"></a>1. redis-cli</h3><p>当节点收到redis-cli发来的命令(如set/get)时，过程如下：</p>
+<h4 id="（1）计算key属于哪个槽：CRC16-key-amp-16383"><a href="#（1）计算key属于哪个槽：CRC16-key-amp-16383" class="headerlink" title="（1）计算key属于哪个槽：CRC16(key) &amp; 16383"></a>（1）计算key属于哪个槽：CRC16(key) &amp; 16383</h4><p>集群提供的<code>cluster keyslot</code>命令也是使用上述公式实现，如：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7000</span>&gt; cluster keyslot kye1</span><br><span class="line">(integer) <span class="number">5113</span></span><br></pre></td></tr></table></figure>
+<h4 id="（2）判断key所在的槽是否在当前节点"><a href="#（2）判断key所在的槽是否在当前节点" class="headerlink" title="（2）判断key所在的槽是否在当前节点"></a>（2）判断key所在的槽是否在当前节点</h4><p>假设key位于第i个槽，<code>clusterState.slots[i]</code>则指向了槽所在的节点，如果<code>clusterState.slots[i]==clusterState.myself</code>，说明槽在当前节点，可以直接在当前节点执行命令；否则，说明槽不在当前节点，则查询槽所在节点的地址<code>(clusterState.slots[i].ip/port)</code>，并将其包装到MOVED错误中返回给redis-cli。</p>
+<h4 id="（3）redis-cli收到MOVED错误后，根据返回的ip和port重新发送请求。"><a href="#（3）redis-cli收到MOVED错误后，根据返回的ip和port重新发送请求。" class="headerlink" title="（3）redis-cli收到MOVED错误后，根据返回的ip和port重新发送请求。"></a>（3）redis-cli收到MOVED错误后，根据返回的ip和port重新发送请求。</h4><p>下面的例子展示了redis-cli和集群的互动过程：在7000节点中操作key1，但key1所在的槽5113在节点7001中，因此节点返回MOVED错误(包含7001节点的ip和port)给redis-cli，redis-cli重新向7001发起请求。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7001</span>&gt; set key1 value1</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7001</span>&gt; get key1</span><br><span class="line"><span class="string">"value1"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># redis-cli -c -p 7000                                                                                                         </span></span><br><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7000</span>&gt; set key1 value2</span><br><span class="line">-&gt; Redirected to slot [<span class="number">9189</span>] located at <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7001</span></span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>上例中，redis-cli通过-c指定了集群模式，如果没有指定，redis-cli无法处理MOVED错误：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7000</span>&gt; set key1 value2</span><br><span class="line">(error) MOVED <span class="number">9189</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7001</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-Smart客户端"><a href="#2-Smart客户端" class="headerlink" title="2. Smart客户端"></a>2. Smart客户端</h3><p>redis-cli这一类客户端称为Dummy客户端，因为它们在执行命令前不知道数据在哪个节点，需要借助MOVED错误重新定向。与Dummy客户端相对应的是Smart客户端。</p>
+<p>Smart客户端（以Java的JedisCluster为例）的基本原理：</p>
+<p>（1）JedisCluster初始化时，在内部维护slot-&gt;node的缓存，方法是连接任一节点，执行<code>cluster slots</code>命令，该命令返回如下所示：<br><img src="https://s1.ax1x.com/2020/09/24/0poko8.png" alt="集群槽位分布"></p>
+<p>（2）此外，JedisCluster为每个节点创建连接池(即JedisPool)。</p>
+<p>（3）当执行命令时，JedisCluster根据<code>key-&gt;slot-&gt;node</code>选择需要连接的节点，发送命令。如果成功，则命令执行完毕。如果执行失败，则会随机选择其他节点进行重试，并在出现MOVED错误时，使用<code>cluster slots</code>重新同步<code>slot-&gt;node</code>的映射关系。</p>
+<p>下面代码演示了如何使用JedisCluster访问集群(未考虑资源释放、异常处理等)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   Set&lt;HostAndPort&gt; nodes = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">   nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.72.128"</span>, <span class="number">7000</span>));</span><br><span class="line">   nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.72.128"</span>, <span class="number">7001</span>));</span><br><span class="line">   nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.72.128"</span>, <span class="number">7002</span>));</span><br><span class="line">   nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.72.128"</span>, <span class="number">8000</span>));</span><br><span class="line">   nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.72.128"</span>, <span class="number">8001</span>));</span><br><span class="line">   nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.72.128"</span>, <span class="number">8002</span>));</span><br><span class="line">   JedisCluster cluster = <span class="keyword">new</span> JedisCluster(nodes);</span><br><span class="line">   System.out.println(cluster.get(<span class="string">"key1"</span>));</span><br><span class="line">   cluster.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意事项如下：</p>
+<p>（1）JedisCluster中已经包含所有节点的连接池，因此JedisCluster要使用单例。</p>
+<p>（2）客户端维护了slot-&gt;node映射关系以及为每个节点创建了连接池，当节点数量较多时，应注意客户端内存资源和连接资源的消耗。</p>
+<p>（3）Jedis较新版本针对JedisCluster做了一些性能方面的优化，如cluster slots缓存更新和锁阻塞等方面的优化，应尽量使用2.8.2及以上版本的Jedis。</p>
+<h2 id="五、实践须知"><a href="#五、实践须知" class="headerlink" title="五、实践须知"></a>五、实践须知</h2><p>前面介绍了集群正常运行和访问的方法和原理，下面是一些重要的补充内容。</p>
+<h3 id="1-集群伸缩"><a href="#1-集群伸缩" class="headerlink" title="1. 集群伸缩"></a>1. 集群伸缩</h3><p>​        实践中常常需要对集群进行伸缩，如访问量增大时的扩容操作。Redis集群可以在不影响对外服务的情况下实现伸缩；<strong>伸缩的核心是槽迁移：修改槽与节点的对应关系，实现槽(即数据)在节点之间的移动。</strong>例如，如果槽均匀分布在集群的3个节点中，此时增加一个节点，则需要从3个节点中分别拿出一部分槽给新节点，从而实现槽在4个节点中的均匀分布。</p>
+<h4 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h4><p>假设要增加7003和8003节点，其中8003是7003的从节点；步骤如下：</p>
+<p>（1）启动节点：方法参见集群搭建</p>
+<p>（2）节点握手：可以使用cluster meet命令，但在生产环境中建议使用redis-trib.rb的add-node工具，其原理也是cluster meet，但它会先检查新节点是否已加入其它集群或者存在数据，避免加入到集群后带来混乱。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`redis-trib.rb ``add``-node <span class="number">192.168</span>.<span class="number">72.128</span>:<span class="number">7003</span> <span class="number">192.168</span>.<span class="number">72.128</span> <span class="number">7000</span>``redis-trib.rb ``add``-node <span class="number">192.168</span>.<span class="number">72.128</span>:<span class="number">8003</span> <span class="number">192.168</span>.<span class="number">72.128</span> <span class="number">7000</span>`</span><br></pre></td></tr></table></figure>
+<p>（3）迁移槽：推荐使用redis-trib.rb的<code>reshard</code>工具实现。<code>reshard</code>自动化程度很高，只需要输入<code>redis-trib.rb reshard ip:port</code>(ip和port可以是集群中的任一节点)，然后按照提示输入以下信息，槽迁移会自动完成：</p>
+<ul>
+<li>待迁移的槽数量：16384个槽均分给4个节点，每个节点4096个槽，因此待迁移槽数量为4096</li>
+</ul>
+<ul>
+<li>目标节点id：7003节点的id</li>
+<li>源节点的id：7000/7001/7002节点的id</li>
+</ul>
+<p>（4）指定主从关系：方法参见集群搭建</p>
+<h4 id="减少节点"><a href="#减少节点" class="headerlink" title="减少节点"></a>减少节点</h4><p>假设要下线7000/8000节点，可以分为两步：</p>
+<p>（1）迁移槽：使用<code>reshard</code>将7000节点中的槽均匀迁移到7001/7002/7003节点</p>
+<p>（2）下线节点：使用<code>redis-trib.rb del-node</code>工具；应先下线从节点再下线主节点，因为若主节点先下线，从节点会被指向其他主节点，造成不必要的全量复制。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`redis-trib.rb del-node <span class="number">192.168</span>.<span class="number">72.128</span>:<span class="number">7001</span> &#123;节点<span class="number">8000</span>的id&#125;``redis-trib.rb del-node <span class="number">192.168</span>.<span class="number">72.128</span>:<span class="number">7001</span> &#123;节点<span class="number">7000</span>的id&#125;`</span><br></pre></td></tr></table></figure>
+<h4 id="ASK错误"><a href="#ASK错误" class="headerlink" title="ASK错误"></a>ASK错误</h4><p>集群伸缩的核心是槽迁移。在槽迁移过程中，如果客户端向源节点发送命令，源节点执行流程如下：<br><img src="https://s1.ax1x.com/2020/09/24/0pTGHP.png" alt="ASK错误"></p>
+<p>客户端收到ASK错误后，从中读取目标节点的地址信息，并向目标节点重新发送请求，就像收到MOVED错误时一样。但是二者有很大区别：ASK错误说明数据正在迁移，不知道何时迁移完成，因此重定向是临时的，SMART客户端不会刷新slots缓存；MOVED错误重定向则是(相对)永久的，SMART客户端会刷新slots缓存。</p>
+<h3 id="2-故障转移"><a href="#2-故障转移" class="headerlink" title="2. 故障转移"></a>2. 故障转移</h3><p>在 <a href="https://www.cnblogs.com/kismetv/p/9609938.html#t42" target="_blank" rel="noopener">哨兵</a> 一文中，介绍了哨兵实现故障发现和故障转移的原理。虽然细节上有很大不同，但集群的实现与哨兵思路类似：通过定时任务发送PING消息检测其他节点状态；节点下线分为主观下线和客观下线；客观下线后选取从节点进行故障转移。</p>
+<p>与哨兵一样，集群只实现了主节点的故障转移；从节点故障时只会被下线，不会进行故障转移。因此，使用集群时，应谨慎使用读写分离技术，因为从节点故障会导致读服务不可用，可用性变差。</p>
+<p>这里不再详细介绍故障转移的细节，只对重要事项进行说明：</p>
+<p><strong>节点数量：</strong>在故障转移阶段，需要由主节点投票选出哪个从节点成为新的主节点；从节点选举胜出需要的票数为N/2+1；其中N为主节点数量(包括故障主节点)，但故障主节点实际上不能投票。因此为了能够在故障发生时顺利选出从节点，集群中至少需要3个主节点(且部署在不同的物理机上)。</p>
+<p><strong>故障转移时间：</strong>从主节点故障发生到完成转移，所需要的时间主要消耗在主观下线识别、主观下线传播、选举延迟等几个环节；具体时间与参数<code>cluster-node-timeout</code>有关，一般来说：</p>
+<p>故障转移时间(毫秒) ≤ <code>1.5 * cluster-node-timeout + 1000</code></p>
+<p><code>cluster-node-timeout</code>的默认值为15000ms(15s)，因此故障转移时间会在20s量级。</p>
+<h3 id="3-集群的限制及应对方法"><a href="#3-集群的限制及应对方法" class="headerlink" title="3. 集群的限制及应对方法"></a>3. 集群的限制及应对方法</h3><p>由于集群中的数据分布在不同节点中，导致一些功能受限，包括：</p>
+<p>（1）key批量操作受限：例如mget、mset操作，只有当操作的key都位于一个槽时，才能进行。针对该问题，一种思路是在客户端记录槽与key的信息，每次针对特定槽执行mget/mset；另外一种思路是使用Hash Tag。</p>
+<p>（2）keys/flushall等操作：keys/flushall等操作可以在任一节点执行，但是结果只针对当前节点，例如keys操作只返回当前节点的所有键。针对该问题，可以在客户端使用cluster nodes获取所有节点信息，并对其中的所有主节点执行keys/flushall等操作。</p>
+<p>（3）事务/Lua脚本：集群支持事务及Lua脚本，但前提条件是所涉及的key必须在同一个节点。Hash Tag可以解决该问题。</p>
+<p>（4）数据库：单机Redis节点可以支持16个数据库，集群模式下只支持一个，即db0。</p>
+<p>（5）复制结构：只支持一层复制结构，不支持嵌套。</p>
+<h3 id="4-Hash-Tag"><a href="#4-Hash-Tag" class="headerlink" title="4. Hash Tag"></a>4. Hash Tag</h3><p>Hash Tag原理是：<strong>当一个key包含 {} 的时候，不对整个key做hash，而仅对 {} 包括的字符串做hash。</strong></p>
+<p>Hash Tag可以让不同的key拥有相同的hash值，从而分配在同一个槽里；这样针对不同key的批量操作(mget/mset等)，以及事务、Lua脚本等都可以支持。不过Hash Tag可能会带来数据分配不均的问题，这时需要：</p>
+<p>(1)调整不同节点中槽的数量，使数据分布尽量均匀；(2)避免对热点数据使用Hash Tag，导致请求分布不均。</p>
+<p>下面是使用Hash Tag的一个例子；通过对product加Hash Tag，可以将所有产品信息放到同一个槽中，便于操作<br><img src="https://s1.ax1x.com/2020/09/25/0pbM3F.png" alt="Hash Tag"></p>
+<h3 id="5-参数优化"><a href="#5-参数优化" class="headerlink" title="5. 参数优化"></a>5. 参数优化</h3><p><strong>cluster_node_timeout</strong></p>
+<p><code>cluster_node_timeout</code>参数在前面已经初步介绍；它的默认值是15s，影响包括：</p>
+<p>（1）影响PING消息接收节点的选择：值越大对延迟容忍度越高，选择的接收节点越少，可以降低带宽，但会降低收敛速度；应根据带宽情况和应用要求进行调整。</p>
+<p>（2）影响故障转移的判定和时间：值越大，越不容易误判，但完成转移消耗时间越长；应根据网络状况和应用要求进行调整。</p>
+<p><strong>cluster-require-full-coverage</strong></p>
+<p>前面提到，只有当16384个槽全部分配完毕时，集群才能上线。这样做是为了保证集群的完整性，但同时也带来了新的问题：当主节点发生故障而故障转移尚未完成，原主节点中的槽不在任何节点中，此时会集群处于下线状态，无法响应客户端的请求。</p>
+<p><code>cluster-require-full-coverage</code>参数可以改变这一设定：如果设置为no，则当槽没有完全分配时，集群仍可以上线。参数默认值为yes，如果应用对可用性要求较高，可以修改为no，但需要自己保证槽全部分配。</p>
+<h3 id="6-redis-trib-rb"><a href="#6-redis-trib-rb" class="headerlink" title="6. redis-trib.rb"></a>6. redis-trib.rb</h3><p><code>redis-trib.rb</code>提供了众多实用工具：创建集群、增减节点、槽迁移、检查完整性、数据重新平衡等；通过help命令可以查看详细信息。在实践中如果能使用redis-trib.rb工具则尽量使用，不但方便快捷，还可以大大降低出错概率。</p>
+<p>推荐阅读：<a href="https://www.cnblogs.com/kismetv/p/9853040.html" target="_blank" rel="noopener">深入学习Redis（5）：集群</a></p>
 
       
     </div>
@@ -692,7 +763,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#四、客户端访问集群"><span class="nav-number">1.</span> <span class="nav-text">四、客户端访问集群</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#四、客户端访问集群"><span class="nav-number">1.</span> <span class="nav-text">四、客户端访问集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-redis-cli"><span class="nav-number">1.1.</span> <span class="nav-text">1. redis-cli</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）计算key属于哪个槽：CRC16-key-amp-16383"><span class="nav-number">1.1.1.</span> <span class="nav-text">（1）计算key属于哪个槽：CRC16(key) &amp; 16383</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）判断key所在的槽是否在当前节点"><span class="nav-number">1.1.2.</span> <span class="nav-text">（2）判断key所在的槽是否在当前节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）redis-cli收到MOVED错误后，根据返回的ip和port重新发送请求。"><span class="nav-number">1.1.3.</span> <span class="nav-text">（3）redis-cli收到MOVED错误后，根据返回的ip和port重新发送请求。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Smart客户端"><span class="nav-number">1.2.</span> <span class="nav-text">2. Smart客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、实践须知"><span class="nav-number">2.</span> <span class="nav-text">五、实践须知</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-集群伸缩"><span class="nav-number">2.1.</span> <span class="nav-text">1. 集群伸缩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#增加节点"><span class="nav-number">2.1.1.</span> <span class="nav-text">增加节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少节点"><span class="nav-number">2.1.2.</span> <span class="nav-text">减少节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ASK错误"><span class="nav-number">2.1.3.</span> <span class="nav-text">ASK错误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-故障转移"><span class="nav-number">2.2.</span> <span class="nav-text">2. 故障转移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-集群的限制及应对方法"><span class="nav-number">2.3.</span> <span class="nav-text">3. 集群的限制及应对方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Hash-Tag"><span class="nav-number">2.4.</span> <span class="nav-text">4. Hash Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-参数优化"><span class="nav-number">2.5.</span> <span class="nav-text">5. 参数优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-redis-trib-rb"><span class="nav-number">2.6.</span> <span class="nav-text">6. redis-trib.rb</span></a></li></ol></li></ol></div>
             
 
           </div>

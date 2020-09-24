@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" itemprop="url">从入门到高可用分布式实践-第八篇-下</a></h1>
+                <a class="post-title-link" href="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" itemprop="url">从入门到高可用分布式实践-集群-下</a></h1>
         
 
         <div class="post-meta">
@@ -383,7 +383,7 @@
 
           
           
-             <span id="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-第八篇-下">
+             <span id="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" class="leancloud_visitors" data-flag-title="从入门到高可用分布式实践-集群-下">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -408,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  79 字
+                  2,965 字
                 </span>
               
 
@@ -424,7 +424,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  11 分钟
                 </span>
               
             </div>
@@ -449,8 +449,9 @@
           
           书接上回，我们继续学习Redis的集群知识点。
 四、客户端访问集群在集群中，数据分布在不同的节点中，客户端通过某节点访问数据时，数据可能不在该节点中；下面介绍集群是如何处理这个问题的。
-
-          
+1. redis-cli当节点收到redis-cli发来的命令(如set/get)时，过程如下：
+（1）计算key属于哪个槽：CRC16(key) &amp; 16383集群提供的cluster keyslot命令
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/05/30/从入门到高可用分布式实践-第八篇-下/#more" rel="contents">
