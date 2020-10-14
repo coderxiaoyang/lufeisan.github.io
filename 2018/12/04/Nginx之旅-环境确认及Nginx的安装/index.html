@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="一：环境调试确认四项确认  确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  123456789查看iptables规则  iptables -L关闭iptables规则  iptables -F获得当前selinux状态  getenforce关闭selinux  setenforce 0 两项依赖安装12yum install -y gcc gcc-c">
+<meta name="description" content="环境调试确认一：四项确认 确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0 二：两项依赖安装12yum install">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-环境确认及Nginx的安装">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/04/Nginx之旅-环境确认及Nginx的安装/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="一：环境调试确认四项确认  确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  123456789查看iptables规则  iptables -L关闭iptables规则  iptables -F获得当前selinux状态  getenforce关闭selinux  setenforce 0 两项依赖安装12yum install -y gcc gcc-c">
+<meta property="og:description" content="环境调试确认一：四项确认 确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0 二：两项依赖安装12yum install">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fxurz0xdatj30to0cc761.jpg">
-<meta property="og:updated_time" content="2018-12-04T08:06:25.279Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/14/0IX25D.png">
+<meta property="og:updated_time" content="2020-10-14T15:58:01.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-环境确认及Nginx的安装">
-<meta name="twitter:description" content="一：环境调试确认四项确认  确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  123456789查看iptables规则  iptables -L关闭iptables规则  iptables -F获得当前selinux状态  getenforce关闭selinux  setenforce 0 两项依赖安装12yum install -y gcc gcc-c">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fxurz0xdatj30to0cc761.jpg">
+<meta name="twitter:description" content="环境调试确认一：四项确认 确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0 二：两项依赖安装12yum install">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/14/0IX25D.png">
 
 
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  336 字
+                  341 字
                 </span>
               
 
@@ -451,24 +451,25 @@
       
 
       
-        <p>一：环境调试确认<br>四项确认</p>
-<ul>
+        <h3 id="环境调试确认"><a href="#环境调试确认" class="headerlink" title="环境调试确认"></a>环境调试确认</h3><h4 id="一：四项确认"><a href="#一：四项确认" class="headerlink" title="一：四项确认"></a>一：四项确认</h4><ul>
 <li>确认系统网络可通行</li>
 <li>确认yum可用</li>
 <li>确认关闭iptables规则</li>
 <li>确认停用selinux</li>
 </ul>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">查看iptables规则  </span><br><span class="line">iptables -L</span><br><span class="line">关闭iptables规则  </span><br><span class="line">iptables -F</span><br><span class="line"></span><br><span class="line">获得当前selinux状态  </span><br><span class="line">getenforce</span><br><span class="line">关闭selinux  </span><br><span class="line">setenforce <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>两项依赖安装<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc gcc-c++ autoconf pcre pcre-devel make automake</span><br><span class="line">yum install -y wget httpd-tools vim</span><br></pre></td></tr></table></figure></p>
-<p>一次初始化<br>初始化目录是以后我们放对应的文件代码</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看iptables规则  </span></span><br><span class="line">iptables -L</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭iptables规则  </span></span><br><span class="line">iptables -F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获得当前selinux状态  </span></span><br><span class="line">getenforce</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭selinux  </span></span><br><span class="line">setenforce <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="二：两项依赖安装"><a href="#二：两项依赖安装" class="headerlink" title="二：两项依赖安装"></a>二：两项依赖安装</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc gcc-c++ autoconf pcre pcre-devel make automake</span><br><span class="line">yum install -y wget httpd-tools vim</span><br></pre></td></tr></table></figure>
+<h4 id="三：-一次初始化"><a href="#三：-一次初始化" class="headerlink" title="三： 一次初始化"></a>三： 一次初始化</h4><p>初始化目录是以后我们放对应的文件代码</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt;mkdir app download logs work backup </span><br><span class="line"></span><br><span class="line">app：代码目录</span><br><span class="line">download：下载的源码包等</span><br><span class="line">logs：自定义日志</span><br><span class="line">work：一些shell脚本</span><br><span class="line">backup：默认配置文件的备份</span><br></pre></td></tr></table></figure>
-<p>安装过程</p>
-<p>第一步：添加Nginx到YUM源<br>添加CentOS 7 Nginx yum资源库,打开终端,使用以下命令<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh http://nginx.org/packages/centos/<span class="number">7</span>/noarch/RPMS/nginx-release-centos-<span class="number">7</span>-<span class="number">0</span>.el7.ngx.noarch.rpm</span><br></pre></td></tr></table></figure></p>
-<p>第二步：安装<br>在CentOS 7 服务器中使用yum命令从Nginx源服务器中获取来安装Nginx：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure></p>
-<p>第三步：启动Nginx<br>刚安装的Nginx不会自行启动。运行Nginx:<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure></p>
+<h4 id="四：安装过程"><a href="#四：安装过程" class="headerlink" title="四：安装过程"></a>四：安装过程</h4><h5 id="第一步：添加Nginx到YUM源"><a href="#第一步：添加Nginx到YUM源" class="headerlink" title="第一步：添加Nginx到YUM源"></a>第一步：添加Nginx到YUM源</h5><p>添加CentOS 7 Nginx yum资源库,打开终端,使用以下命令</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh http://nginx.org/packages/centos/<span class="number">7</span>/noarch/RPMS/nginx-release-centos-<span class="number">7</span>-<span class="number">0</span>.el7.ngx.noarch.rpm</span><br></pre></td></tr></table></figure>
+<h5 id="第二步：安装"><a href="#第二步：安装" class="headerlink" title="第二步：安装"></a>第二步：安装</h5><p>在CentOS 7 服务器中使用yum命令从Nginx源服务器中获取来安装Nginx：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
+<h5 id="第三步：启动Nginx"><a href="#第三步：启动Nginx" class="headerlink" title="第三步：启动Nginx"></a>第三步：启动Nginx</h5><p>刚安装的Nginx不会自行启动。运行Nginx:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure>
 <p>如果一切进展顺利的话，现在你可以通过你的域名或IP来访问你的Web页面来预览一下Nginx的默认页面</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxurz0xdatj30to0cc761.jpg" alt="image-20181204160611499"></p>
-<p>第四步：设置开启自启<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable nginx.service</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://s1.ax1x.com/2020/10/14/0IX25D.png" alt="默认页面"></p>
+<h5 id="第四步：设置开启自启"><a href="#第四步：设置开启自启" class="headerlink" title="第四步：设置开启自启"></a>第四步：设置开启自启</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable nginx.service</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -607,8 +608,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -695,6 +705,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境调试确认"><span class="nav-number">1.</span> <span class="nav-text">环境调试确认</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一：四项确认"><span class="nav-number">1.1.</span> <span class="nav-text">一：四项确认</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二：两项依赖安装"><span class="nav-number">1.2.</span> <span class="nav-text">二：两项依赖安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三：-一次初始化"><span class="nav-number">1.3.</span> <span class="nav-text">三： 一次初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四：安装过程"><span class="nav-number">1.4.</span> <span class="nav-text">四：安装过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一步：添加Nginx到YUM源"><span class="nav-number">1.4.1.</span> <span class="nav-text">第一步：添加Nginx到YUM源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二步：安装"><span class="nav-number">1.4.2.</span> <span class="nav-text">第二步：安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三步：启动Nginx"><span class="nav-number">1.4.3.</span> <span class="nav-text">第三步：启动Nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第四步：设置开启自启"><span class="nav-number">1.4.4.</span> <span class="nav-text">第四步：设置开启自启</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

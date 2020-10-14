@@ -408,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  336 字
+                  341 字
                 </span>
               
 
@@ -447,15 +447,14 @@
       
         
           
-          一：环境调试确认四项确认
-
+          环境调试确认一：四项确认
 确认系统网络可通行
 确认yum可用
 确认关闭iptables规则
 确认停用selinux
 
-123456789查看iptables规则  iptables -L关闭iptables规则  iptables -F获得当前selinux状态  getenforce关闭selinux  setenforce 0
-两项依赖安装12yum install -y gcc gcc-c
+1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0
+二：两项依赖安装12yum install 
           ...
           <!--noindex-->
           <div class="post-button text-center">
