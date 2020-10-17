@@ -2347,7 +2347,7 @@ FLV、MPEG
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6,462 字
+                  6,652 字
                 </span>
               
 
@@ -2363,7 +2363,7 @@ FLV、MPEG
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  27 分钟
+                  28 分钟
                 </span>
               
             </div>
@@ -2386,13 +2386,18 @@ FLV、MPEG
       
         
           
-           Nginx的中间件架构中间件能够做到服务分发，分层优化服务。
+          Nginx的中间件架构中间件能够做到服务分发，分层优化服务。
 
 Nginx是一个开源且高性能、可靠的HTTP中间件、代理服务。
 我们看下Nginx具体有哪些优势：
 采用IO多路复用epoll模型epoll模型一般是指IO读写的一种方式，之前学习Python协程的时候讲了协程原理的时候有深入了解过epoll。
 
-一个线程只能处理一个流的I/O事件。如果想要处理多个流，要么多进程(fork)，要么多
+
+硬件最终都是要由内核来驱动的
+
+
+
+每次请求对应一个 Socket 产生一个IO流  
           ...
           <!--noindex-->
           <div class="post-button text-center">
