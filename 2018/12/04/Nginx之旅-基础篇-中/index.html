@@ -95,8 +95,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/19/0jL9Qf.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/19/0jLWX8.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/19/0jLjnU.png">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxvw15jb2hj31040m6ace.jpg">
-<meta property="og:updated_time" content="2020-10-18T17:03:46.923Z">
+<meta property="og:updated_time" content="2020-10-19T09:48:37.179Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-基础篇-中">
 <meta name="twitter:description" content="HTTP请求大家都知道nginx作为webserver和http的代理，处理的就是http请求。http请求是是建立在tcp基础上的。 一个完整的http请求包括request和response两部分。request组成：请求行, 请求头, 请求数据response组成：状态行, 消息报头, 响应正文 我们在终端下发起一个HTTP请求： 123456789101112131415161718192">
@@ -420,7 +419,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,834 字
+                  1,880 字
                 </span>
               
 
@@ -501,7 +500,7 @@
 <p>日志主要实现方式是使用 <code>log_format</code></p>
 <p><code>nginx</code>记录的每次信息都可以当做一个变量，<code>log_format</code>就是将这些变量组合起来，记录到日志中去</p>
 <p>我们看一下<code>log_format</code>的配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: log_format name [escape=default|json] string …;</span><br><span class="line">Default: log_format combined &quot;...&quot;;</span><br><span class="line">Context: http （约束log_format的配置位置）</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxvw15jb2hj31040m6ace.jpg" alt="image-20181205151211125"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置错误日志</span></span><br><span class="line">error_log  /var/log/nginx/error.log warn;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置成功日志</span></span><br><span class="line">log_format  main  <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></span><br><span class="line">                  <span class="string">'$status $body_bytes_sent "$http_referer" '</span></span><br><span class="line">                  <span class="string">'"$http_user_agent" "$http_x_forwarded_for"'</span>;</span><br><span class="line">access_log  /var/log/nginx/access.log  main;</span><br></pre></td></tr></table></figure>
 <p>上面的<code>error.log</code>后面表示错误等级。</p>
 <p>下面的<code>access.log</code>后面的<code>main</code>表示使用上面的<code>log_format</code>。</p>
 <p><code>Nginx</code>大致有三类变量能够记录在<code>log_format</code> 中</p>
