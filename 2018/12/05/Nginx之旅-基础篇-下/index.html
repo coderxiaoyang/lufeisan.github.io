@@ -89,22 +89,18 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="模块讲解nginx的模块有官方模块和第三方模块之分。 我们在终端中可以查看nginx加载的模块有哪些123456789101112131415161718192021222324--with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxvxzkf15fj30q20f0q49.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxvy22tm4wj30l809uq3w.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxwvu8zdxkj30pg06cwf7.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxwvzec9haj30po06w3zb.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxww3ge43rj30pa0683zb.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxwzikkrjrj30lq0lywh8.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxx3hhechuj30gk06kt8x.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fxx3gtwfkfj30pk08cjs1.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxx477hdf9j31bw0hqn5i.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxx4ayluqej318o0imqcp.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxx4r0cb1jj30ow0dydgk.jpg">
-<meta property="og:updated_time" content="2018-12-06T09:01:50.452Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/20/B9Fb9I.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/20/B9Fju8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/20/B9kQ81.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/21/B9ZbOx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/21/B9ZO0K.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/21/BP4dh9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/21/BP42Ae.png">
+<meta property="og:updated_time" content="2020-10-21T15:49:34.386Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-基础篇-下">
 <meta name="twitter:description" content="模块讲解nginx的模块有官方模块和第三方模块之分。 我们在终端中可以查看nginx加载的模块有哪些123456789101112131415161718192021222324--with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with">
-<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxvxzkf15fj30q20f0q49.jpg">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/20/B9Fb9I.png">
 
 
 
@@ -424,7 +420,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,623 字
+                  2,829 字
                 </span>
               
 
@@ -440,7 +436,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11 分钟
+                  12 分钟
                 </span>
               
             </div>
@@ -467,15 +463,16 @@
 <p>主要用于展示当前处理链接的状态，用于监控链接信息</p>
 <p>配置语法：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax：stub_status;</span><br><span class="line">Default：——  <span class="comment"># 默认没有配置</span></span><br><span class="line">Context：server,location <span class="comment"># 配置的上下文</span></span><br></pre></td></tr></table></figure></p>
 <p>我们在默认配置文件中做如下配置</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxvxzkf15fj30q20f0q49.jpg" alt="image-20181205161951275"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /mystatus &#123;</span><br><span class="line">	stub_status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host conf.d]$ sudo nginx -t</span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf test is successful</span><br><span class="line">[vagrant@docker-host conf.d]$ sudo nginx -s reload -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxvy22tm4wj30l809uq3w.jpg" alt="image-20181205162215974"></p>
+<p>完成检查重启之后再浏览器中输入IP+<code>mystatus</code>将获得如下输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Active connections: 3 </span><br><span class="line">server accepts handled requests</span><br><span class="line"> 1245 1245 3038 </span><br><span class="line">Reading: 0 Writing: 1 Waiting: 2</span><br></pre></td></tr></table></figure>
 <p>第一行展示的是当前活跃连接数<br>第二行第一个数字表示nginx接受的握手的总次数，第二个表示nginx所处理的连接数，最后一个表示请求数。正常情况连接数和握手数是相等的，表示没有丢失。<br>最后一行分别表示读写等待的数量，最后一个等待表示开启长连接时(keep-alive)，客户端服务端既没有读也没有写仅仅建立连接的数量。</p>
 <h6 id="–with-http-random-index-module模块讲解"><a href="#–with-http-random-index-module模块讲解" class="headerlink" title="–with-http_random_index_module模块讲解"></a>–with-http_random_index_module模块讲解</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">编译选项：--with-http_random_index_module</span><br><span class="line">作用：主目录中选一个随机主页</span><br></pre></td></tr></table></figure>
 <p>配置语法：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax：random_index on | off;</span><br><span class="line">Default：random_index off;  <span class="comment"># 默认关闭</span></span><br><span class="line">Context：location</span><br></pre></td></tr></table></figure></p>
 <p>我们修改默认配置如下</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">random_index</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="comment"># index  index.html index.htm;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们可以在<code>/opt/app/code</code>目录下放几个页面作为首页。</p>
+<p>这样我们可以在<code>/opt/app/code</code>目录下放几个页面作为首页，当请求对应连接的时候会随机展示页面。</p>
 <blockquote>
 <p>不会选择指定目录下以<code>.</code>开头的文件（隐藏文件）</p>
 </blockquote>
@@ -488,18 +485,18 @@
 <p>字符串替换一次还是多次替换，默认替换一次，如果off，那么所有的都会 被替换</p>
 <p>详细例子参考文章：<a href="http://www.ttlsa.com/linux/nginx-modules-ngx_http_sub_module/" target="_blank" rel="noopener">nginx替换网站响应内容</a></p>
 <p>我们做了一个页面，里面是下面的信息</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxwvu8zdxkj30pg06cwf7.jpg" alt="image-20181206115115962"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang code]<span class="comment"># pwd</span></span><br><span class="line">/opt/app/code</span><br><span class="line">[root@xiaoyang code]<span class="comment"># cat index.html</span></span><br><span class="line">&lt;p&gt; hello imooc xiaoyang imooc&lt;/p&gt;</span><br></pre></td></tr></table></figure>
 <p>现在使用<code>sub_module</code>进行数据替换。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    <span class="attribute">sub_filter</span> <span class="string">'imooc'</span> <span class="string">'IMOOC'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这样配置之后 我们查看下网页的变化</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxwvzec9haj30po06w3zb.jpg" alt="image-20181206115615052">只有一个<code>imooc</code>发生了改变，这是因为默认只替换一个。</p>
+<p><a href="https://imgchr.com/i/B9Fb9I" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/20/B9Fb9I.png" alt="替换单个"></a></p>
+<p>只有一个<code>imooc</code>发生了改变，这是因为默认只替换一个。</p>
 <p>修改下配置文件：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    <span class="attribute">sub_filter</span> <span class="string">'imooc'</span> <span class="string">'IMOOC'</span>;</span><br><span class="line">    <span class="attribute">sub_filter_once</span> <span class="literal">off</span>;	<span class="comment"># 关闭只替换一次</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxww3ge43rj30pa0683zb.jpg" alt="image-20181206120009307"></p>
+<p><a href="https://imgchr.com/i/B9Fju8" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/20/B9Fju8.png" alt="关闭替换多个"></a></p>
 <h5 id="Nginx的请求限制"><a href="#Nginx的请求限制" class="headerlink" title="Nginx的请求限制"></a>Nginx的请求限制</h5><h6 id="连接频率限制配置语法于原理"><a href="#连接频率限制配置语法于原理" class="headerlink" title="连接频率限制配置语法于原理"></a>连接频率限制配置语法于原理</h6><p>连接频率限制： <code>limit_conn_module</code><br>请求频率限制： <code>limit_req_module</code></p>
 <p>我们知道HTTP协议是基于TCP的，如果要完成一次HTTP请求的时候，首先进行TCP的三次握手。当建立连接的时候就可以进行请求和响应。</p>
-<p>HTTP协议的连接与请求</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxwzikkrjrj30lq0lywh8.jpg" alt="image-20181206135828824"></p>
+<p><a href="https://imgchr.com/i/B9kQ81" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/20/B9kQ81.png" alt="HTTP协议的连接与请求"></a></p>
 <p>我们看下<code>HTTP</code>协议版本与连接关系</p>
 <table>
 <thead>
@@ -525,24 +522,26 @@
 </table>
 <p>总结:</p>
 <p><code>HTTP</code>请求建立在一次<code>TCP</code>连接基础上<br>一次<code>TCP</code>请求至少产生一次<code>HTTP</code>请求（可以有多个）</p>
-<p>对于 <code>limit_conn_module</code>模块：<br>该<code>nginx_http_limit_conn_module</code>模块用于限制每个定义的密钥的连接数量，特别是来自单个IP地址的连接数量。<br>并非所有连接都被计算在内 只有在服务器处理请求并且已经读取了整个请求头时才计算连接。</p>
+<p>对于 <code>limit_conn_module</code>模块（连接限制）：<br>该<code>nginx_http_limit_conn_module</code>模块用于限制每个定义的密钥的连接数量，特别是来自单个IP地址的连接数量。<br>并非所有连接都被计算在内 只有在服务器处理请求并且已经读取了整个请求头时才计算连接。</p>
 <p>对于连接限制的配置：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Syntax: 	limit_conn_zone key zone=name:size;</span><br><span class="line">Default: 	—</span><br><span class="line">Context: 	http</span><br><span class="line"></span><br><span class="line">Syntax: 	limit_conn zone number;</span><br><span class="line">Default: 	—</span><br><span class="line">Context: 	http, server, location</span><br></pre></td></tr></table></figure></p>
 <p>对于第一部分可以理解在内存中开辟一个区域对于指定的<code>nginx</code>变量（key，例如：<code>binary_remote_addr</code>）进行限制。<code>name</code>表示申请的空间的名字，<code>size</code>表示申请空间的大小。</p>
+<p>既然我们需要对连接进行限制，那么我们就需要存储连接对应的状态，我们从操作系统中开辟出一块空间进行存储这些连接状态，这块空间就是<code>zone</code>。</p>
 <p>对于第二部分<code>zone</code>就是第一部分设置的名字<code>name</code>，<code>number</code>表示进行并发的限制。例如设置为1，表示一个时间段只能有一个。</p>
-<p>对于<code>nginx_http_limit_req_module</code>模块：<br>用于限制每一个定义的密钥的请求的处理速率，特别是从一个单一的IP地址的请求的处理速率。限制是使用“泄漏桶”方法完成的</p>
+<p>对于<code>nginx_http_limit_req_module</code>模块（请求限制）：<br>用于限制每一个定义的密钥的请求的处理速率，特别是从一个单一的IP地址的请求的处理速率。限制是使用“泄漏桶”方法完成的</p>
 <p>对于请求限制的配置：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Syntax: limit_req_zone key zone=name:size rate=rate;</span><br><span class="line">Default: —</span><br><span class="line">Context: http</span><br><span class="line"></span><br><span class="line">Syntax: limit_req zone=name [burst=number] [nodelay];</span><br><span class="line">Default: —</span><br><span class="line">Context: http, server, location</span><br></pre></td></tr></table></figure></p>
 <p>对于第一部分配置和连接配置相似，<code>rate</code>表示速率，以秒s为单位（rate=1r/s）<br>对于第二部分<code>zone</code>就是第一部分设置的名字<code>name</code>，<code>[]</code>内为可配置选项。</p>
 <p>🌰</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="attribute">limit_conn_zone</span> <span class="variable">$binary_remote_addr</span> zone=conn_zone:<span class="number">1m</span>;</span><br><span class="line">    <span class="attribute">limit_req_zone</span> <span class="variable">$binary_remote_addr</span> zone=req_zone:<span class="number">1m</span> rate=1r/s;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">        <span class="attribute">limit_req</span> zone=req_zone;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们看到上面为定义zone，第二行是请求定义，表示对远程请求进行每秒一次的请求限制。这里的<code>binary_remote_addr</code>和<code>remote_addr</code>代表的含义是一样的（远程主机的IP）只是使用<code>binary_remote_addr</code>存储一个IP会比<code>remote_addr</code>省10个字节。</p>
 <p>按照上面配置，每秒只能有一次请求，通过压力测试请求20次查看请求成功次数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ab -n 20 -c 20 url</span><br><span class="line"># -n 表示多少次</span><br><span class="line"># -c 表示同时并发多少个</span><br></pre></td></tr></table></figure>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Concurrency Level:      <span class="number">20</span></span><br><span class="line">Time taken <span class="keyword">for</span> tests:   <span class="number">0.020</span> seconds</span><br><span class="line">Complete requests:      <span class="number">20</span></span><br><span class="line">Failed requests:        <span class="number">19</span></span><br><span class="line">   (Connect: <span class="number">0</span>, Receive: <span class="number">0</span>, Length: <span class="number">19</span>, Exceptions: <span class="number">0</span>)</span><br><span class="line">Non-<span class="number">2</span>xx responses:      <span class="number">19</span></span><br></pre></td></tr></table></figure>
 <p>有19次非200非返回。</p>
 <p>我们再看一个配置</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    <span class="attribute">limit_req</span> zone=req_zone burst=<span class="number">3</span> nodelay;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们对配置进行一下解释：</p>
 <p><code>nodelay</code>表示其他的不延迟立即返回</p>
-<p><code>burst=3</code> 表示当我们的请求速率超过配置的<code>rate=1r/s</code>将会遗留三个到下一秒执行<br>来对客户端进行延迟响应</p>
+<p><code>burst=3</code> 表示当我们的请求速率超过配置的<code>rate=1r/s</code>将会遗留三个到下一秒执行来对客户端进行延迟响应</p>
 <p>看下压力测试的输出</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Concurrency Level:      <span class="number">20</span></span><br><span class="line">Time taken <span class="keyword">for</span> tests:   <span class="number">0.016</span> seconds</span><br><span class="line">Complete requests:      <span class="number">20</span></span><br><span class="line">Failed requests:        <span class="number">16</span></span><br><span class="line">   (Connect: <span class="number">0</span>, Receive: <span class="number">0</span>, Length: <span class="number">16</span>, Exceptions: <span class="number">0</span>)</span><br><span class="line">Non-<span class="number">2</span>xx responses:      <span class="number">16</span></span><br></pre></td></tr></table></figure>
 <p>20个请求1个成功16个失败3个放到下一秒。</p>
@@ -559,21 +558,20 @@
 <h6 id="http-access-module模块："><a href="#http-access-module模块：" class="headerlink" title="http_access_module模块："></a>http_access_module模块：</h6><p>模块允许限制访问某些客户端地址。访问也可以通过密码子请求结果或JWT来限制满足控制地址和密码的同时访问限制。</p>
 <p>配置语法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Syntax:   allow address | CIDR | unix: | all;</span><br><span class="line">Default:  —</span><br><span class="line">Context:  http, server, location, limit_except</span><br><span class="line"></span><br><span class="line">Syntax:   deny address | CIDR | unix: | all;</span><br><span class="line">Default:  —</span><br><span class="line">Context:  http, server, location, limit_except</span><br></pre></td></tr></table></figure></p>
 <p>语法中<code>address</code>表示地址，<code>CIDR</code>表示网段。<code>unix:</code>指定了特殊值，则允许访问所有<code>UNIX</code>域套接字。<code>all</code>表示所有的。</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/admin.html</span> &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">deny</span> <span class="number">222.128.189.17</span>;	<span class="comment"># 想要拒绝的IP</span></span><br><span class="line">    <span class="attribute">allow</span> all;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/admin.html</span> &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">deny</span> <span class="number">112.10.111.161</span>;	<span class="comment"># 想要拒绝的IP</span></span><br><span class="line">    <span class="attribute">allow</span> all;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>配置说明：</p>
 <p>这里的 <code>~</code>表示匹配 以<code>/admin.html</code>访问到该<code>location</code></p>
-<p>当我们直接用本地IP访问的时候</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxx3hhechuj30gk06kt8x.jpg" alt="image-20181206161549494"></p>
-<p>我们开启代理看看</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxx3gtwfkfj30pk08cjs1.jpg" alt="image-20181206161510954"></p>
-<p>先在我们更改一下配置</p>
+<p>当我们直接用本地IP访问的时候<br><a href="https://imgchr.com/i/B9ZbOx" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/21/B9ZbOx.png" alt="限制本机IP"></a></p>
+<p>我们开启代理看看 可以访问</p>
+<p><a href="https://imgchr.com/i/B9ZO0K" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/21/B9ZO0K.png" alt="打开代理可以访问"></a></p>
+<p>先在我们更改一下配置，拒绝所有的，但是允许当前主机。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/admin.html</span> &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">allow</span> <span class="number">222.128.189.17</span>;  <span class="comment"># 运行访问的IP</span></span><br><span class="line">    <span class="attribute">deny</span> all;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h6 id="http-access-module局限性"><a href="#http-access-module局限性" class="headerlink" title="http_access_module局限性"></a>http_access_module局限性</h6><p>我们看下下面的图就很容易理解局限性了</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxx477hdf9j31bw0hqn5i.jpg" alt="image-20181206164031837"></p>
+<p><a href="https://imgchr.com/i/BP4dh9" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/21/BP4dh9.png" alt="access_module局限性"></a></p>
 <p>nginx的访问控制限制是针对客户端的IP来进行限制的，但是nginx并不确定真正的客户端是哪个，凡是和nginx进行交互的都被当做是客户端。（remote_addr是直接和nginx通信的IP）如果我们访问不是直接访问到服务端而是由中间代理进行（如上图），访问控制这时就会失效。</p>
 <p>局限性解决方法总结：</p>
 <p>方法一： 采用http头信息控制访问，如<code>HTTP_X_FORWARD_FOR</code></p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxx4ayluqej318o0imqcp.jpg" alt="image-20181206164409028"></p>
+<p><a href="https://imgchr.com/i/BP42Ae" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/21/BP42Ae.png" alt="采用http头信息控制访问"></a></p>
 <p><code>http_x_forwarded_for</code>头信息控制访问 会更好的解决该问题,它要求访问时必须带上所有用到的ip的地址信息<br>我们看一下<code>http_x_forwarded_for</code>记录过程：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http_x_forwarded_for = Client IP, Proxy(1)IP, Proxy(2)IP,...</span><br></pre></td></tr></table></figure>
 <p><code>http_x_forwarded_for</code>也有一定的局限性，例如代理没有适配这个协议，被篡改等。</p>
@@ -587,11 +585,10 @@
 <p>密码加密方式有多中这里我们使用htpasswd<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">can be generated using the “htpasswd” utility from the Apache HTTP Server distribution or the “openssl passwd” command</span><br></pre></td></tr></table></figure></p>
 <p>想要使用该方式，首先要装对应的包<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou conf.d]<span class="comment"># yum -y install httpd-tools</span></span><br></pre></td></tr></table></figure></p>
 <p>接下来创建对应的<code>use_file</code>文件</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou nginx]<span class="comment"># htpasswd -c ./auth_conf hongshaorou</span></span><br><span class="line">New password:</span><br><span class="line">Re-type new password:</span><br><span class="line">Adding password <span class="keyword">for</span> user hongshaorou</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou nginx]<span class="comment"># htpasswd -c ./auth_conf hongshaorou(用户名)</span></span><br><span class="line">New password:</span><br><span class="line">Re-type new password:</span><br><span class="line">Adding password <span class="keyword">for</span> user hongshaorou</span><br></pre></td></tr></table></figure>
 <p>配置<code>Nginx</code></p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/admin.html</span> &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">auth_basic</span> <span class="string">"Auth access test!input your passward!"</span>;	</span><br><span class="line">    <span class="attribute">auth_basic_user_file</span> /etc/nginx/auth_conf;	<span class="comment"># 指定用户文件</span></span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们再次访问页面就会要求我们登录</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxx4r0cb1jj30ow0dydgk.jpg" alt="image-20181206165934329"></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/admin.html</span> &#123;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">auth_basic</span> <span class="string">"Auth access test!input your password!"</span>;	</span><br><span class="line">    <span class="attribute">auth_basic_user_file</span> /etc/nginx/auth_conf;	<span class="comment"># 指定用户文件</span></span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们再次访问页面就会要求我们使用刚才配置的账户密码登录。</p>
 <p>局限性：</p>
 <p>一： 用户信息依赖文件<br>二： 操作管理机械，效率低</p>
 <p>解决方式：</p>
