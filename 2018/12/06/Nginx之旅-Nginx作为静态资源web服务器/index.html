@@ -89,22 +89,24 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxxdopa5a2j31as0kowrr.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxxz6ds8nwj31e20kmq9e.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxxz748bs4j31ek0lg0z9.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fxxzf3v4zij31f40g20wv.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxxzggwy85j31eq0fu0x4.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxy0xugbc3j30uy0cogs4.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxy10k8934j30us09c432.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxy1djpxdmj30us0tcahw.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxy51j6h6vj30t20ditav.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fxy52xkqrjj30ns0auaau.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxy54koz6qj30ye0fmtc0.jpg">
-<meta property="og:updated_time" content="2018-12-20T00:39:19.725Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/27/BKT9Mt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/28/B88VAS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/28/B8GmVK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/28/B8GqIO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/28/B8GNa8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/28/B8NnOA.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/28/B8N4k6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8apUx.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8assJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8BKmQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8aHeA.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8ajW8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8dmy4.png">
+<meta property="og:updated_time" content="2020-10-28T16:36:52.683Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为静态资源web服务器">
 <meta name="twitter:description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
-<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fxxdopa5a2j31as0kowrr.jpg">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/27/BKT9Mt.png">
 
 
 
@@ -424,7 +426,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,093 字
+                  2,454 字
                 </span>
               
 
@@ -440,7 +442,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  9 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -492,33 +494,27 @@
 </table>
 <h6 id="CDN场景"><a href="#CDN场景" class="headerlink" title="CDN场景"></a>CDN场景</h6><p>我们看下百度百科的<code>CDN</code>解释：</p>
 <p><code>CDN</code>的全称是<code>Content Delivery Network</code>，即<a href="https://baike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265" target="_blank" rel="noopener">内容分发网络</a>。<code>CDN</code>是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<code>CDN</code>的关键技术主要有内容存储和分发技术。</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fxxdopa5a2j31as0kowrr.jpg" alt="image-20181206220844315"></p>
-<p><code>Nginx</code>能够作为资源存储中心节点和代理前端节点。</p>
+<p><a href="https://imgchr.com/i/BKT9Mt" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/27/BKT9Mt.png" alt="CDN服务"></a></p>
+<p>主要是传输延迟的最小化，静态资源的适用于大部分场景。<code>Nginx</code>能够作为资源存储中心节点和代理前端节点。</p>
 <p>下面我们看下<code>Nginx</code>作为其中一个小的节点是如何配置处理请求的。</p>
-<h6 id="配置语法"><a href="#配置语法" class="headerlink" title="配置语法"></a>配置语法</h6><p>文件读取:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: sendfile on | off;</span><br><span class="line">Default: sendfile off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
+<h6 id="配置语法文件读取"><a href="#配置语法文件读取" class="headerlink" title="配置语法文件读取:"></a>配置语法文件读取:</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: sendfile on | off;</span><br><span class="line">Default: sendfile off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
 <p>引读：–with-file-aio 异步文件读取</p>
-<p><code>tcp_nopush</code>:</p>
+<p><code>配置语法-tcp_nopush</code>:</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: tcp_nopush on | off;</span><br><span class="line">Default: tcp_nopush off;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
-<p>开启之后将会将多个包整合为一个包发送。</p>
+<p>开启之后将会将多个包整合为一个包发送，推荐在传输大文件的时候打开。</p>
 <p>作用：<code>sendfile</code>开启的情况下，提高网络包的传输效率。</p>
-<p> <code>tcp_nodelay</code>:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: tcp_nodelay on | off;</span><br><span class="line">Default: tcp_nodelayon;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
+<p> <code>配置语法-tcp_nodelay</code>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: tcp_nodelay on | off;</span><br><span class="line">Default: tcp_nodelay on;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
 <p>数据包不等待实时的发送给客户端。</p>
-<p>作用：<code>keepalive</code>连接下，提高网络包的传输实时性</p>
-<p>压缩：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip on | off;</span><br><span class="line">Default: gzip off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
+<p>作用：<code>keepalive</code>连接下（前提条件），提高网络包的传输实时性</p>
+<h6 id="配置语法压缩："><a href="#配置语法压缩：" class="headerlink" title="配置语法压缩："></a>配置语法压缩：</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip on | off;</span><br><span class="line">Default: gzip off;</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
 <p>作用：传输压缩</p>
-<p>经过服务端压缩之后，浏览器会自动解压，这样传输压缩后的文件能减少网络传输的消耗。</p>
-<p>压缩等级：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip_comp_level level;</span><br><span class="line">Default: gzip_comp_level 1;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
-<p>协议版本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip_http_version 1.0 | 1.1;</span><br><span class="line">Default: gzip_http_version 1.1;</span><br><span class="line">Context: http, server, location</span><br></pre></td></tr></table></figure>
-<p>扩展<code>Nginx</code>压缩模块</p>
-<p><code>http_gzip_static_module</code> 预读<code>gzip</code>功能</p>
-<p>这个预读是指当我们想读取某个文件的时候，会先看对应目录下有没有文件对应的(<code>gzip</code>)压缩文件。如果有的话，直接读取。节省CPU压缩时间，不过需要保存两份数据。</p>
-<p><code>http_gunzip_module</code>应用支持<code>gunzip</code>的压缩方式 </p>
-<p>这个是为了解决浏览器不支持解压用到的。</p>
+<p>经过服务端压缩之后，浏览器会自动解压，这样传输压缩后的文件能减少网络传输的消耗，减少带宽的使用。</p>
+<h6 id="压缩等级："><a href="#压缩等级：" class="headerlink" title="压缩等级："></a>压缩等级：</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip_comp_level level;</span><br><span class="line">Default: gzip_comp_level 1;</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
+<h6 id="协议版本："><a href="#协议版本：" class="headerlink" title="协议版本："></a>协议版本：</h6><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: gzip_http_version <span class="number">1.0</span> | <span class="number">1.1</span>;</span><br><span class="line">Default: gzip_http_version <span class="number">1.1</span>;</span><br><span class="line">Context: http, server, location</span><br></pre></td></tr></table></figure>
+<h6 id="扩展Nginx压缩模块"><a href="#扩展Nginx压缩模块" class="headerlink" title="扩展Nginx压缩模块"></a>扩展<code>Nginx</code>压缩模块</h6><p><code>http_gzip_static_module</code> -预读<code>gzip</code>功能。</p>
+<p>这个预读是指当我们想读取某个文件的时候，会先看对应目录下有没有文件对应的(<code>gzip</code>)压缩文件。如果有的话，直接读取。节省CPU压缩时间，不过需要保存两份数据（源文件需要保留一份）。</p>
+<p><code>http_gunzip_module</code>-应用支持<code>gunzip</code>的压缩方式。这个是为了解决浏览器不支持解压用到的。</p>
 <p>我们先看预压缩 ：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/download</span> &#123;</span><br><span class="line">    <span class="attribute">gzip_static</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nopush</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">root</span> /opt/app/code;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou download]<span class="comment"># ls</span></span><br><span class="line">test.img</span><br><span class="line">[root@hongshaorou download]<span class="comment"># gzip test.jpg</span></span><br><span class="line">[root@hongshaorou download]<span class="comment"># ls</span></span><br><span class="line">test.img.gz</span><br></pre></td></tr></table></figure>
@@ -526,25 +522,26 @@
 <p>看下对图片的压缩：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ .*\.(jpg|gif|png)$</span> &#123;</span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">2</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span>  /opt/app/code/images;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在开启和关闭<code>gzip</code>的情况下 我们看下图片的大小</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxxz6ds8nwj31e20kmq9e.jpg" alt="image-20181207103212401"></p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxxz748bs4j31ek0lg0z9.jpg" alt="image-20181207103256911"></p>
-<p> 相比文本压缩而言，图片压缩的效率不是很高。</p>
+<p><a href="https://imgchr.com/i/B88VAS" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/28/B88VAS.png" alt="未开启压缩"></a></p>
+<p><a href="https://imgchr.com/i/B8GmVK" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/28/B8GmVK.png" alt="开启压缩"></a></p>
+<p>我们看到相比文本压缩而言，图片压缩的效率不是很高。</p>
 <p>对文件进行压缩：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ .*\.(txt|xml)$</span> &#123;</span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;</span><br><span class="line">    <span class="attribute">root</span>  /opt/app/code/doc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在开启压缩和关闭的情况下访问一个日志</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fxxzf3v4zij31f40g20wv.jpg" alt="image-20181207104038041"></p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxxzggwy85j31eq0fu0x4.jpg" alt="image-20181207104156305"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang doc]<span class="comment"># pwd</span></span><br><span class="line">/opt/app/code/doc</span><br><span class="line">[root@xiaoyang doc]<span class="comment"># ls -lh</span></span><br><span class="line">total <span class="number">796</span>K</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">789</span>K Dec  <span class="number">7</span>  <span class="number">2018</span> access.txt</span><br></pre></td></tr></table></figure>
+<p><a href="https://imgchr.com/i/B8GqIO" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/28/B8GqIO.png" alt="未开启压缩"></a></p>
+<p><a href="https://imgchr.com/i/B8GNa8" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/28/B8GNa8.png" alt="开启压缩"></a></p>
 <p>我们看到对文件的压缩效率还是很高的，访问时间减省了很多。</p>
 <h6 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存"></a>浏览器缓存</h6><p>浏览器的缓存机制是基于<code>HTTP</code>的缓存机制的</p>
 <p>HTTP协议定义的缓存机制（如：<code>Rxpires</code>; <code>Cache-control</code>等特殊的头信息和服务端进行验证）</p>
 <p>有了浏览器的缓存不会每次都去请求服务端，可以直接从本地读取一些数据降低了时耗。</p>
 <p>我们看下浏览器无缓存的情况下的请求：</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fxy0xugbc3j30uy0cogs4.jpg" alt="image-20181207113314078"></p>
+<p><a href="https://imgchr.com/i/B8NnOA" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/28/B8NnOA.png" alt="浏览器无缓存"></a></p>
 <p>浏览器请求一个新的连接的时候先去本地临时目录查找是否存在文件，如果不存在继续请求，获得请求数据后会进行缓存。</p>
 <p>在有缓存的情况下</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxy10k8934j30us09c432.jpg" alt="image-20181207113551377"></p>
-<p>首先看缓存是否过期，如果没有直接拿去，如果过期了再次请求。</p>
-<p>校验过期机制</p>
+<p><a href="https://imgchr.com/i/B8N4k6" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/28/B8N4k6.png" alt="浏览器有缓存"></a></p>
+<p>首先看缓存是否过期，如果没有直接拿去，如果过期了再次请求。相比无缓存增加了校验过期机制。</p>
+<p><strong>校验过期机制</strong></p>
 <table>
 <thead>
 <tr>
@@ -564,11 +561,14 @@
 </tbody>
 </table>
 <p><code>Expires</code>是HTTP1.0版本的校验</p>
-<p><code>Cache-Control(max-age)</code>是HTTP1.1版本的校验，后面有一个过期的周期</p>
-<p>当本地的缓存已经过期的时候，就用下面的两个向服务器发起校验</p>
-<p><code>Etag</code>是一段随机字符串  检查文件是否过期 </p>
-<p><code>Last-Modified</code>后面是一段时间戳，用于和服务器端文件进行是否更新校验。如果服务器端时间发送了改变，则这个时间戳将会改变。会出现客户端的时间戳和服务端的时间戳不一致。服务端会将最新的文件发回给客户端。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxy1djpxdmj30us0tcahw.jpg" alt="image-20181207114819495"></p>
+<p><code>Cache-Control(max-age)</code>是HTTP1.1版本的校验，后面有一个过期的周期。<code>max-age</code>表示本地缓存在多久时间之后就可以认为过期了。</p>
+<p>当本地的缓存已经过期的时候，就用下面的两个向服务器发起校验：</p>
+<p><code>Etag</code>是一段随机字符串  检查文件是否过期 （优先使用）</p>
+<p><code>Last-Modified</code>后面是一段时间戳，用于和服务器端文件进行是否更新校验。如果服务器端时间发送了改变，则这个时间戳将会改变。会出现客户端的时间戳和服务端的时间戳不一致。服务端会将最新的文件发回给客户端。（在一秒内发生变化这个值一般不边，因此我们会优先使用<code>Etag</code>）</p>
+<p><a href="https://imgchr.com/i/B8apUx" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8apUx.jpg" alt="浏览器缓存机制"></a></p>
+<blockquote>
+<p>本地有etag优先判断，没有再去判断last-modified 和服务端一直 则直接从缓存读取 不一致从新获取返回</p>
+</blockquote>
 <p>可以结合参考文章阅读<a href="https://www.jianshu.com/p/1a1536ab01f1" target="_blank" rel="noopener">强制缓存和协商缓存</a></p>
 <h6 id="浏览器缓存配置演示"><a href="#浏览器缓存配置演示" class="headerlink" title="浏览器缓存配置演示"></a>浏览器缓存配置演示</h6><p>配置语法-<code>expires</code></p>
 <p>配置<code>expires</code>会为HTTP请求返回<code>RESPONSE</code>添加<code>Cache-Control</code>、<code>Expires</code>头。</p>
@@ -578,11 +578,19 @@
 <p>配置解释：</p>
 <p>设置访问指定目录下面的以<code>htm或html</code>结尾的文件进行缓存。</p>
 <p>我们看下缓存开启和关闭服务端的返回。</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxy51j6h6vj30t20ditav.jpg" alt="image-20181207135511085"></p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fxy52xkqrjj30ns0auaau.jpg" alt="image-20181207135628482"></p>
-<p>我们看到这两个返回是不一样的。</p>
-<p>不过无论是否开启，浏览器都会重新请求，这是因为浏览器中默认开启了不缓存，看下请求头</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fxy54koz6qj30ye0fmtc0.jpg" alt="image-20181207135805883"></p>
+<p><a href="https://imgchr.com/i/B8assJ" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8assJ.png" alt="开启缓存第一次访问"></a></p>
+<p>上面是开启缓存的时候 第一次访问的情况</p>
+<p><a href="https://imgchr.com/i/B8BKmQ" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8BKmQ.png" alt="没开启缓存的时候"></a></p>
+<p>上面是没有开启缓存的时候 第一次访问的情况</p>
+<p>我们看下返回头信息 有开启缓存的返回头信息：</p>
+<p><a href="https://imgchr.com/i/B8aHeA" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8aHeA.png" alt="头信息"></a></p>
+<p>我们看到了一些关系缓存的头信息，再次请个资源会直接使用缓存</p>
+<p><a href="https://imgchr.com/i/B8ajW8" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8ajW8.png" alt="使用缓存再次请求"></a></p>
+<blockquote>
+<p>再次请求返回 304 表示浏览器和服务端进行了etag和last-modified的校验 如果值没变 则服务端返回304</p>
+</blockquote>
+<p>不过无论是否开启，有的浏览器都会重新请求，这是因为浏览器中默认开启了不直接使用缓存而是每次请求都需要向服务器进行一次校验，如果校验通过则返回304，否则返回200，看下请求头</p>
+<p><a href="https://imgchr.com/i/B8dmy4" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8dmy4.png" alt="强制校验"></a></p>
 <h6 id="跨域访问"><a href="#跨域访问" class="headerlink" title="跨域访问"></a>跨域访问</h6><p>工作中经常遇见跨域问题，这是因为出于安全的考虑，防止CSRF攻击。</p>
 <p>不过实际工作中我们有时需要开启跨域。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:  add_header name value [always];	</span><br><span class="line">Default: --</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
@@ -851,7 +859,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#静态资源的类型"><span class="nav-number">1.</span> <span class="nav-text">静态资源的类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CDN场景"><span class="nav-number">2.</span> <span class="nav-text">CDN场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置语法"><span class="nav-number">3.</span> <span class="nav-text">配置语法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浏览器缓存"><span class="nav-number">4.</span> <span class="nav-text">浏览器缓存</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浏览器缓存配置演示"><span class="nav-number">5.</span> <span class="nav-text">浏览器缓存配置演示</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#跨域访问"><span class="nav-number">6.</span> <span class="nav-text">跨域访问</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#防盗链"><span class="nav-number">7.</span> <span class="nav-text">防盗链</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#静态资源的类型"><span class="nav-number">1.</span> <span class="nav-text">静态资源的类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CDN场景"><span class="nav-number">2.</span> <span class="nav-text">CDN场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置语法文件读取"><span class="nav-number">3.</span> <span class="nav-text">配置语法文件读取:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置语法压缩："><span class="nav-number">4.</span> <span class="nav-text">配置语法压缩：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#压缩等级："><span class="nav-number">5.</span> <span class="nav-text">压缩等级：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#协议版本："><span class="nav-number">6.</span> <span class="nav-text">协议版本：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#扩展Nginx压缩模块"><span class="nav-number">7.</span> <span class="nav-text">扩展Nginx压缩模块</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浏览器缓存"><span class="nav-number">8.</span> <span class="nav-text">浏览器缓存</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#浏览器缓存配置演示"><span class="nav-number">9.</span> <span class="nav-text">浏览器缓存配置演示</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#跨域访问"><span class="nav-number">10.</span> <span class="nav-text">跨域访问</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#防盗链"><span class="nav-number">11.</span> <span class="nav-text">防盗链</span></a></li></ol></div>
             
 
           </div>
