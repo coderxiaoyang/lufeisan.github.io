@@ -102,7 +102,8 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8aHeA.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8ajW8.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8dmy4.png">
-<meta property="og:updated_time" content="2020-10-28T16:36:52.683Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/29/BJz5ex.png">
+<meta property="og:updated_time" content="2020-10-29T15:43:16.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为静态资源web服务器">
 <meta name="twitter:description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
@@ -426,7 +427,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,454 字
+                  2,726 字
                 </span>
               
 
@@ -442,7 +443,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10 分钟
+                  11 分钟
                 </span>
               
             </div>
@@ -591,14 +592,18 @@
 </blockquote>
 <p>不过无论是否开启，有的浏览器都会重新请求，这是因为浏览器中默认开启了不直接使用缓存而是每次请求都需要向服务器进行一次校验，如果校验通过则返回304，否则返回200，看下请求头</p>
 <p><a href="https://imgchr.com/i/B8dmy4" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/B8dmy4.png" alt="强制校验"></a></p>
-<h6 id="跨域访问"><a href="#跨域访问" class="headerlink" title="跨域访问"></a>跨域访问</h6><p>工作中经常遇见跨域问题，这是因为出于安全的考虑，防止CSRF攻击。</p>
+<h6 id="跨域访问"><a href="#跨域访问" class="headerlink" title="跨域访问"></a>跨域访问</h6><p><a href="https://imgchr.com/i/BJz5ex" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/10/29/BJz5ex.png" alt="什么是跨域"></a></p>
+<blockquote>
+<p>在同一个页面中 浏览器禁止访问两个域名 否则就会出现跨域问题 </p>
+</blockquote>
+<p>工作中经常遇见跨域问题，不过浏览器是禁止跨域访问的，这是因为出于安全的考虑，防止CSRF攻击。</p>
 <p>不过实际工作中我们有时需要开启跨域。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:  add_header name value [always];	</span><br><span class="line">Default: --</span><br><span class="line">Context: http,server, location, if in location</span><br></pre></td></tr></table></figure>
 <p>浏览器会根据服务端的<code>Access-Control-Allow-Origin</code>来判断是否开启跨域。</p>
 <p>实际配置：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="attribute">location</span> / &#123;  </span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Origin *;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Methods <span class="string">'GET, PUT, DELETE, POST, OPTIONS'</span>;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Headers <span class="string">'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization'</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>配置注释：</p>
-<p>第一行表示允许所有的域名进行跨域。（可以指定域名）</p>
+<p>第一行表示允许所有的域名进行跨域。（可以指定域名则在该域名页面下可以进行跨域请求）</p>
 <p>第二行表示允许的方法。</p>
 <p>第三行表示允许在请求头里面添加的头信息。</p>
 <p>扩展：</p>
@@ -606,9 +611,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> make_response</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">allow_cross_domain</span><span class="params">(fun)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(fun)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_fun</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        rst = make_response(fun(*args, **kwargs))</span><br><span class="line">        rst.headers[<span class="string">'Access-Control-Allow-Origin'</span>] = <span class="string">'*'</span></span><br><span class="line">        rst.headers[<span class="string">'Access-Control-Allow-Methods'</span>] = <span class="string">'PUT,GET,POST,DELETE'</span></span><br><span class="line">        allow_headers = <span class="string">"Referer,Accept,Origin,User-Agent"</span></span><br><span class="line">        rst.headers[<span class="string">'Access-Control-Allow-Headers'</span>] = allow_headers</span><br><span class="line">        <span class="keyword">return</span> rst</span><br><span class="line">    <span class="keyword">return</span> wrapper_fun</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/hosts/')</span></span><br><span class="line"><span class="meta">@allow_cross_domain</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">domains</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 <p>推荐阅读参考文章: <a href="https://segmentfault.com/a/1190000012550346" target="_blank" rel="noopener">Nginx配置跨域请求</a></p>
 <h6 id="防盗链"><a href="#防盗链" class="headerlink" title="防盗链"></a>防盗链</h6><p>目的：防止资源被盗用</p>
+<p>防盗链设置思路：首要方式是区别哪些是非正常的用户请求</p>
 <p>基于<code>http_refer</code>防盗链配置模块</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: valid_referers none | blocked | server_names | string ...;</span><br><span class="line">Default: --</span><br><span class="line">Context: server, location</span><br></pre></td></tr></table></figure>
 <p>指定合法的来源<code>referer</code>, 他决定了内置变量<code>$invalid_referer</code>的值，如果<code>referer</code>头部包含在这个合法网址里面，这个变量被设置为0，否则设置为1.记住，不区分大小写的.</p>
+<p>参数说明：<br><code>none</code>：<code>Referer</code>来源头部为空的情况，即表示空的来路，也就是直接访问，比如直接在浏览器打开一个图片<br><code>blocked</code>：<code>Referer</code>来源头部不为空，但是里面的值被代理或者防火墙删除了，这些值都不以<code>http://</code>或者<code>https://</code>开头。即表示被防火墙标记过的来路<br><code>server_names</code>：<code>Referer</code>来源头部包含当前的<code>server_names</code>（当前域名）<br><code>string</code>：任意字符串,定义服务器名或者可选的URI前缀.主机名可以使用*开头或者结尾，在检测来源头部这个过程中，来源域名中的主机端口将会被忽略掉<br><code>regular expression</code>：正则表达式,~表示排除<code>https://</code>或<code>http://</code>开头的字符串.</p>
 <p>作为<code>Nginx</code>的变量<code>http_refer</code>将会记录上一个页面的地址，通过判断上一个页面的地址我们就可以判断是否是安全的访问。</p>
 <p>我们看下一个图片的防盗链</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~* \.(gif|jpg|png|bmp)$</span> &#123;</span><br><span class="line">    <span class="attribute">valid_referers</span> <span class="literal">none</span> <span class="literal">blocked</span> <span class="regexp">*.ttlsa.com</span> server_names ~\.google\. ~\.baidu\.;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">        <span class="comment">#rewrite ^/ http://www.ttlsa.com/403.jpg;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
