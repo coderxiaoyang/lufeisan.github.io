@@ -103,7 +103,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8ajW8.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/29/B8dmy4.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/10/29/BJz5ex.png">
-<meta property="og:updated_time" content="2020-10-29T15:43:16.955Z">
+<meta property="og:updated_time" content="2020-10-29T15:45:21.545Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为静态资源web服务器">
 <meta name="twitter:description" content="Nginx作为静态资源WEB服务 Nginx作为静态资源的webserver可以接收来自客户端的REQ:jpeg, html, flv格式的静态资源的请求，然后从静态存储总返回给客户端。主要用于动静分离的场景。 静态资源的类型​    非服务器动态运行生成的文件    类型 种类     浏览器端渲染 HTML、 CSS、JS   图片 JPEG、GIF、PNG   视频 FLV、MPEG   文">
@@ -427,7 +427,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,726 字
+                  2,753 字
                 </span>
               
 
@@ -620,7 +620,9 @@
 <p>我们看下一个图片的防盗链</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~* \.(gif|jpg|png|bmp)$</span> &#123;</span><br><span class="line">    <span class="attribute">valid_referers</span> <span class="literal">none</span> <span class="literal">blocked</span> <span class="regexp">*.ttlsa.com</span> server_names ~\.google\. ~\.baidu\.;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">        <span class="comment">#rewrite ^/ http://www.ttlsa.com/403.jpg;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上所有来至<code>ttlsa.com</code>和域名中包含<code>google</code>和<code>baidu</code>的站点都可以访问到当前站点的图片,如果来源域名不在这个列表中，那么<code>$invalid_referer</code>等于1，在if语句中返回一个403给用户，这样用户便会看到一个403的页面,如果使用下面的<code>rewrite</code>，那么盗链的图片都会显示403.jpg。如果用户直接在浏览器输入你的图片地址,那么图片显示正常，因为它符合<code>none</code>这个规则.</p>
-<p>推荐阅读参考文章：<a href="http://www.ttlsa.com/nginx/nginx-referer/" target="_blank" rel="noopener">nginx实现图片防盗链</a></p>
+<p>推荐阅读参考文章：</p>
+<p><a href="http://www.ttlsa.com/nginx/nginx-referer/" target="_blank" rel="noopener">nginx实现图片防盗链</a></p>
+<p><a href="https://www.cnblogs.com/kevingrace/p/6168992.html" target="_blank" rel="noopener">Nginx中防盗链（下载防盗链和图片防盗链）及图片访问地址操作记录</a></p>
 
       
     </div>
@@ -788,7 +790,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">158</span>
+                  <span class="site-state-item-count">159</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

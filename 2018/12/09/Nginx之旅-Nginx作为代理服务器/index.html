@@ -81,28 +81,18 @@
 
 
 
-<meta name="description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理  反向代理一般用在针对性访问">
+<meta name="description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。 按照应用分类可以分为正向代理和反向代理。 正向代理 当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理 反向代理一般用在针对性访问某个站">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-Nginx作为代理服务器">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/09/Nginx之旅-Nginx作为代理服务器/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理  反向代理一般用在针对性访问">
+<meta property="og:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。 按照应用分类可以分为正向代理和反向代理。 正向代理 当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理 反向代理一般用在针对性访问某个站">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fy0glpj8v8j30nu0augr4.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fy0gnhmp52j30ma0cmagd.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fy0gq7zum1j30q60d4n3b.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fy0gx42a62j30zq0gcnds.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fy0h0tmtfrj311k09gtfg.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fy0h462d2dj310y080wka.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fy0h9531uuj310y09igme.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fy0t57qe92j315s0c8q6u.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fy0tbmfiyij31660nyak1.jpg">
-<meta property="og:updated_time" content="2018-12-10T01:38:19.368Z">
+<meta property="og:updated_time" content="2020-10-29T16:22:27.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为代理服务器">
-<meta name="twitter:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理  反向代理一般用在针对性访问">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fy0glpj8v8j30nu0augr4.jpg">
+<meta name="twitter:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。 按照应用分类可以分为正向代理和反向代理。 正向代理 当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理 反向代理一般用在针对性访问某个站">
 
 
 
@@ -461,20 +451,14 @@
       
         <p>这个小节我们学习下<code>Nginx</code>的代理服务。</p>
 <p>在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fy0glpj8v8j30nu0augr4.jpg" alt="image-20181209140612143"></p>
 <p>按照应用分类可以分为正向代理和反向代理。</p>
 <p>正向代理</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fy0gnhmp52j30ma0cmagd.jpg" alt="image-20181209140757198"></p>
 <p>当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。</p>
 <p>反向代理</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fy0gq7zum1j30q60d4n3b.jpg" alt="image-20181209141034599"></p>
 <p>反向代理一般用在针对性访问某个站点。需要客户端自己通过DNS获得域名解析。反向代理代理的对象是服务端，是为服务端提供服务的。</p>
 <p>参考文章: <a href="https://www.jianshu.com/p/208c02c9dd1d" target="_blank" rel="noopener">正向代理与反向代理的区别</a></p>
 <h6 id="Nginx作为代理的模块"><a href="#Nginx作为代理的模块" class="headerlink" title="Nginx作为代理的模块"></a>Nginx作为代理的模块</h6><p><code>Nginx</code>可支持的代理协议</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fy0gx42a62j30zq0gcnds.jpg" alt="image-20181209141710876"></p>
 <p>常见的<code>Nginx</code>作为反向代理支持协议</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fy0h0tmtfrj311k09gtfg.jpg" alt="image-20181209142045401"></p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fy0h462d2dj310y080wka.jpg" alt="image-20181209142358240"></p>
 <table>
 <thead>
 <tr>
@@ -502,7 +486,6 @@
 </tbody>
 </table>
 <p> 常见的<code>Nginx</code>作为正向代理支持协议</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fy0h9531uuj310y09igme.jpg" alt="image-20181209142843601"></p>
 <p>注意：不能支持<code>HTTPS</code>协议。</p>
 <h6 id="Nginx作为反向代理场景"><a href="#Nginx作为反向代理场景" class="headerlink" title="Nginx作为反向代理场景"></a>Nginx作为反向代理场景</h6><p>配置语法：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: proxy_pass URL;</span><br><span class="line">Default: --</span><br><span class="line">Context: location, if in location, limit_except</span><br></pre></td></tr></table></figure>
@@ -540,10 +523,8 @@
 <p>一般配置代理如下：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_redirect</span> default;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_set_header</span> Host <span class="variable">$http_host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_connect_timeout</span> <span class="number">30</span>;</span><br><span class="line"><span class="attribute">proxy_send_timeout</span> <span class="number">60</span>;</span><br><span class="line"><span class="attribute">proxy_read_timeout</span> <span class="number">60</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_buffer_size</span> <span class="number">32k</span>;</span><br><span class="line"><span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">proxy_buffers</span> <span class="number">4</span> <span class="number">128k</span>;</span><br><span class="line"><span class="attribute">proxy_busy_buffers_size</span> <span class="number">256k</span>;</span><br><span class="line"><span class="attribute">proxy_max_temp_file_size</span> <span class="number">256k</span>;</span><br></pre></td></tr></table></figure>
 <h6 id="Uwsgi反向代理模式"><a href="#Uwsgi反向代理模式" class="headerlink" title="Uwsgi反向代理模式"></a>Uwsgi反向代理模式</h6><p>我们看下UWSGI的配置场景</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fy0t57qe92j315s0c8q6u.jpg" alt="image-20181209212007394"></p>
 <p>为什么WEB框架要使用uwsgi？</p>
 <p>优势：安全（对于Django需要普通用户启动），效率</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fy0tbmfiyij31660nyak1.jpg" alt="image-20181209212520267"></p>
 <p>通过<code>Nginx</code>能够做到动静分离。</p>
 
       
@@ -712,7 +693,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">158</span>
+                  <span class="site-state-item-count">159</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

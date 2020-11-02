@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Nginx," />
+  <meta name="keywords" content="MongoDB," />
 
 
 
@@ -81,20 +81,18 @@
 
 
 
-<meta name="description" content="环境调试确认一：四项确认 确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0 二：两项依赖安装12yum install">
-<meta name="keywords" content="Nginx">
+<meta name="description" content="​        我们在使用MySQL的时候 如果数据库存的是时间戳 但又想按照天等时间方式分组，这时候可以使用DATE_FORMAT函数进行格式化时间字符串。那么 在MongoDB中有类似的需求应该如何实现呢？ 答案就是：aggregate聚合  官方文档在此aggregation 我们把SQL 与 Aggergation 对比下：    SQL Terms, Functions, and Co">
+<meta name="keywords" content="MongoDB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Nginx之旅-环境确认及Nginx的安装">
-<meta property="og:url" content="https://zhaobugs.com/2018/12/04/Nginx之旅-环境确认及Nginx的安装/index.html">
+<meta property="og:title" content="在MongoDB中实现类似MySQL时间DATE_FORMAT分组">
+<meta property="og:url" content="https://zhaobugs.com/2019/11/02/在MongoDB中实现类似MySQL时间DATE-FORMAT分组/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="环境调试确认一：四项确认 确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0 二：两项依赖安装12yum install">
+<meta property="og:description" content="​        我们在使用MySQL的时候 如果数据库存的是时间戳 但又想按照天等时间方式分组，这时候可以使用DATE_FORMAT函数进行格式化时间字符串。那么 在MongoDB中有类似的需求应该如何实现呢？ 答案就是：aggregate聚合  官方文档在此aggregation 我们把SQL 与 Aggergation 对比下：    SQL Terms, Functions, and Co">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://s1.ax1x.com/2020/10/14/0IX25D.png">
-<meta property="og:updated_time" content="2020-10-14T15:58:01.560Z">
+<meta property="og:updated_time" content="2020-11-02T16:43:42.731Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nginx之旅-环境确认及Nginx的安装">
-<meta name="twitter:description" content="环境调试确认一：四项确认 确认系统网络可通行 确认yum可用 确认关闭iptables规则 确认停用selinux  1234567891011# 查看iptables规则  iptables -L#关闭iptables规则  iptables -F# 获得当前selinux状态  getenforce# 关闭selinux  setenforce 0 二：两项依赖安装12yum install">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/14/0IX25D.png">
+<meta name="twitter:title" content="在MongoDB中实现类似MySQL时间DATE_FORMAT分组">
+<meta name="twitter:description" content="​        我们在使用MySQL的时候 如果数据库存的是时间戳 但又想按照天等时间方式分组，这时候可以使用DATE_FORMAT函数进行格式化时间字符串。那么 在MongoDB中有类似的需求应该如何实现呢？ 答案就是：aggregate聚合  官方文档在此aggregation 我们把SQL 与 Aggergation 对比下：    SQL Terms, Functions, and Co">
 
 
 
@@ -124,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/12/04/Nginx之旅-环境确认及Nginx的安装/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2019/11/02/在MongoDB中实现类似MySQL时间DATE-FORMAT分组/"/>
 
 
 
 
 
-  <title>Nginx之旅-环境确认及Nginx的安装 | 码农小杨的笔记</title>
+  <title>在MongoDB中实现类似MySQL时间DATE_FORMAT分组 | 码农小杨的笔记</title>
   
 
 
@@ -305,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/12/04/Nginx之旅-环境确认及Nginx的安装/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/11/02/在MongoDB中实现类似MySQL时间DATE-FORMAT分组/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -322,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Nginx之旅-环境确认及Nginx的安装</h1>
+          <h1 class="post-title" itemprop="name headline">在MongoDB中实现类似MySQL时间DATE_FORMAT分组</h1>
         
 
         <div class="post-meta">
@@ -334,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T16:00:46+08:00">
-                2018-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-02T23:51:37+08:00">
+                2019-11-02
               </time>
             
 
@@ -357,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">Nginx</span>
+                  <a href="/categories/MongoDB/" itemprop="url" rel="index">
+                    <span itemprop="name">MongoDB</span>
                   </a>
                 </span>
 
@@ -375,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/12/04/Nginx之旅-环境确认及Nginx的安装/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/04/Nginx之旅-环境确认及Nginx的安装/" itemprop="commentCount"></span>
+                <a href="/2019/11/02/在MongoDB中实现类似MySQL时间DATE-FORMAT分组/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/02/在MongoDB中实现类似MySQL时间DATE-FORMAT分组/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +382,7 @@
 
           
           
-             <span id="/2018/12/04/Nginx之旅-环境确认及Nginx的安装/" class="leancloud_visitors" data-flag-title="Nginx之旅-环境确认及Nginx的安装">
+             <span id="/2019/11/02/在MongoDB中实现类似MySQL时间DATE-FORMAT分组/" class="leancloud_visitors" data-flag-title="在MongoDB中实现类似MySQL时间DATE_FORMAT分组">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -414,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  341 字
+                  979 字
                 </span>
               
 
@@ -430,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -451,25 +449,155 @@
       
 
       
-        <h3 id="环境调试确认"><a href="#环境调试确认" class="headerlink" title="环境调试确认"></a>环境调试确认</h3><h4 id="一：四项确认"><a href="#一：四项确认" class="headerlink" title="一：四项确认"></a>一：四项确认</h4><ul>
-<li>确认系统网络可通行</li>
-<li>确认yum可用</li>
-<li>确认关闭iptables规则</li>
-<li>确认停用selinux</li>
+        <p>​        我们在使用MySQL的时候 如果数据库存的是时间戳 但又想按照天等时间方式分组，这时候可以使用<code>DATE_FORMAT</code>函数进行格式化时间字符串。那么 在MongoDB中有类似的需求应该如何实现呢？</p>
+<p>答案就是：<code>aggregate</code>聚合  官方文档在此<a href="https://docs.mongodb.com/manual/aggregation/" target="_blank" rel="noopener">aggregation</a></p>
+<p>我们把SQL 与 Aggergation 对比下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">SQL Terms, Functions, and Concepts</th>
+<th style="text-align:center">MongoDB Aggregation Operators</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">WHERE</td>
+<td style="text-align:center">$match</td>
+</tr>
+<tr>
+<td style="text-align:center">HAVING</td>
+<td style="text-align:center">$match</td>
+</tr>
+<tr>
+<td style="text-align:center">SELECT</td>
+<td style="text-align:center">$project</td>
+</tr>
+<tr>
+<td style="text-align:center">ORDER BY</td>
+<td style="text-align:center">$sort</td>
+</tr>
+<tr>
+<td style="text-align:center">LIMIT</td>
+<td style="text-align:center">$limit</td>
+</tr>
+<tr>
+<td style="text-align:center">SUM()</td>
+<td style="text-align:center">$sum</td>
+</tr>
+<tr>
+<td style="text-align:center">COUNT()</td>
+<td style="text-align:center">$sum</td>
+</tr>
+<tr>
+<td style="text-align:center">COUNT()</td>
+<td style="text-align:center">$sortByCount</td>
+</tr>
+<tr>
+<td style="text-align:center">join</td>
+<td style="text-align:center">$lookup</td>
+</tr>
+</tbody>
+</table>
+<p><code>mongodb的聚合框架（</code>aggregate<code>）提供了很多修改器用来修改去获取IOSDate类型的字段的年、月、日、时、分、秒、等；同时</code>mongodb`也提供了相关的修改器去把IOSDate类型的时间转换为通常我们可以接受的时间格式；</p>
+<ul>
+<li>$dayOfYear: 返回该日期是这一年的第几天。（全年366天）</li>
+<li>$dayOfMonth: 返回该日期是这一个月的第几天。（1到31）</li>
+<li>$dayOfWeek: 返回的是这个周的星期几。（1：星期日，7：星期六）</li>
+<li>$year: 返回该日期的年份部分</li>
+<li>$month： 返回该日期的月份部分（between 1and12.）</li>
+<li>$week： 返回该日期是所在年的第几个星期（between 0and53）</li>
+<li>$hour： 返回该日期的小时部分 </li>
+<li>$minute: 返回该日期的分钟部分</li>
+<li>$second: 返回该日期的秒部分（以0到59之间的数字形式返回日期的第二部分，但可以是60来计算闰秒。）</li>
+<li>$millisecond：返回该日期的毫秒部分（between 0and999.）</li>
+<li>$dateToString：<code>{ $dateToString: { format: &lt;formatString&gt;, date: &lt;dateExpression&gt; } }</code></li>
 </ul>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看iptables规则  </span></span><br><span class="line">iptables -L</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭iptables规则  </span></span><br><span class="line">iptables -F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获得当前selinux状态  </span></span><br><span class="line">getenforce</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭selinux  </span></span><br><span class="line">setenforce <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<h4 id="二：两项依赖安装"><a href="#二：两项依赖安装" class="headerlink" title="二：两项依赖安装"></a>二：两项依赖安装</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc gcc-c++ autoconf pcre pcre-devel make automake</span><br><span class="line">yum install -y wget httpd-tools vim</span><br></pre></td></tr></table></figure>
-<h4 id="三：-一次初始化"><a href="#三：-一次初始化" class="headerlink" title="三： 一次初始化"></a>三： 一次初始化</h4><p>初始化目录是以后我们放对应的文件代码</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt;mkdir app download logs work backup </span><br><span class="line"></span><br><span class="line">app：代码目录</span><br><span class="line">download：下载的源码包等</span><br><span class="line">logs：自定义日志</span><br><span class="line">work：一些shell脚本</span><br><span class="line">backup：默认配置文件的备份</span><br></pre></td></tr></table></figure>
-<h4 id="四：安装过程"><a href="#四：安装过程" class="headerlink" title="四：安装过程"></a>四：安装过程</h4><h5 id="第一步：添加Nginx到YUM源"><a href="#第一步：添加Nginx到YUM源" class="headerlink" title="第一步：添加Nginx到YUM源"></a>第一步：添加Nginx到YUM源</h5><p>添加CentOS 7 Nginx yum资源库,打开终端,使用以下命令</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh http://nginx.org/packages/centos/<span class="number">7</span>/noarch/RPMS/nginx-release-centos-<span class="number">7</span>-<span class="number">0</span>.el7.ngx.noarch.rpm</span><br></pre></td></tr></table></figure>
-<h5 id="第二步：安装"><a href="#第二步：安装" class="headerlink" title="第二步：安装"></a>第二步：安装</h5><p>在CentOS 7 服务器中使用yum命令从Nginx源服务器中获取来安装Nginx：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
-<h5 id="第三步：启动Nginx"><a href="#第三步：启动Nginx" class="headerlink" title="第三步：启动Nginx"></a>第三步：启动Nginx</h5><p>刚安装的Nginx不会自行启动。运行Nginx:</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure>
-<p>如果一切进展顺利的话，现在你可以通过你的域名或IP来访问你的Web页面来预览一下Nginx的默认页面</p>
-<p><img src="https://s1.ax1x.com/2020/10/14/0IX25D.png" alt="默认页面"></p>
-<h5 id="第四步：设置开启自启"><a href="#第四步：设置开启自启" class="headerlink" title="第四步：设置开启自启"></a>第四步：设置开启自启</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable nginx.service</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的date的值需要是mongo中的Date类型</p>
+</blockquote>
+<p>formatString：需要返回的日期式，日期格式通常为以：</p>
+<table>
+<thead>
+<tr>
+<th>%Y</th>
+<th>Year (4 digits, zero padded)</th>
+<th>0000-9999</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%m</td>
+<td>Month (2 digits, zero padded)</td>
+<td>01-12</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>Day of Month (2 digits, zero padded)</td>
+<td>01-31</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>Hour (2 digits, zero padded, 24-hour clock)</td>
+<td>00-23</td>
+</tr>
+<tr>
+<td>%M</td>
+<td>Minute (2 digits, zero padded)</td>
+<td>00-59</td>
+</tr>
+<tr>
+<td>%S</td>
+<td>Second (2 digits, zero padded)</td>
+<td>00-60</td>
+</tr>
+<tr>
+<td>%L</td>
+<td>Millisecond (3 digits, zero padded)</td>
+<td>000-999</td>
+</tr>
+<tr>
+<td>%j</td>
+<td>Day of year (3 digits, zero padded)</td>
+<td>001-366</td>
+</tr>
+<tr>
+<td>%w</td>
+<td>Day of week (1-Sunday, 7-Saturday)</td>
+<td>1-7</td>
+</tr>
+<tr>
+<td>%U</td>
+<td>Week of year (2 digits, zero padded)</td>
+<td>00-53</td>
+</tr>
+<tr>
+<td>%%</td>
+<td>Percent Character as a Literal</td>
+</tr>
+</tbody>
+</table>
+<p>我们实现准备一些数据 看下数据结构</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">db.sms_log.find().limit(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        _id: ObjectId(<span class="string">"5ed3d4f781dbb4a0205baab3"</span>),</span><br><span class="line">        phone: <span class="string">"13657873286"</span>,</span><br><span class="line">        client: <span class="number">3</span>,</span><br><span class="line">        create_time: <span class="number">1590940919</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>我们将其中的时间格式化输出试下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">db.sms_log.aggregate(</span><br><span class="line">   [</span><br><span class="line">     &#123;</span><br><span class="line">       $project: &#123;</span><br><span class="line">          create_time: <span class="number">1</span>,</span><br><span class="line">          date1Str: &#123;$dateToString: &#123;format: <span class="string">"%Y-%m-%d %H:%M:%S:%L"</span>, date:&#123;<span class="string">"$add"</span>:[new Date(<span class="number">0</span>),<span class="string">"$create_time"</span>]&#125;&#125;&#125;,</span><br><span class="line">          date2Str: &#123;$dateToString: &#123;format: <span class="string">"%Y-%m-%d %H:%M:%S:%L"</span>, date:&#123;<span class="string">"$add"</span>:[new Date(<span class="number">0</span>),<span class="string">"$create_time"</span>,<span class="number">28800000</span>]&#125;&#125;&#125;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        _id: ObjectId(<span class="string">"5ed3d4f781dbb4a0205baab3"</span>),</span><br><span class="line">        create_time: <span class="number">1590940919</span>,</span><br><span class="line">        date1Str: <span class="string">"1970-01-19 09:55:40:919"</span>,</span><br><span class="line">        date2Str: <span class="string">"1970-01-19 17:55:40:919"</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>“$add”:[new Date(0),”$timestamp”] ，这是为了把$timestamp的值转为Date类型</p>
+</blockquote>
+<p>我们发现时间并没有正常转换成对应的时间，并且<code>date1Str</code>时间比<code>date2Str</code>晚了八个小时(<code>date2Str</code>是正确的。)</p>
+<p>通过将值乘以1000将createTs字段转换为毫秒时间戳，再将其转为Date类型即可转为正确的时间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">db.sms_log.aggregate(</span><br><span class="line">   [</span><br><span class="line">     &#123;</span><br><span class="line">       $project: &#123;</span><br><span class="line">          create_time: <span class="number">1</span>,</span><br><span class="line">          date1Str: &#123;$dateToString: &#123;format: <span class="string">"%Y-%m-%d %H:%M:%S:%L"</span>, date:&#123;<span class="string">"$add"</span>:[new Date(<span class="number">0</span>),&#123;<span class="string">"$multiply"</span>:[<span class="string">"$create_time"</span>,<span class="number">1000</span>]&#125;]&#125;&#125;&#125;,</span><br><span class="line">          date2Str: &#123;$dateToString: &#123;format: <span class="string">"%Y-%m-%d %H:%M:%S:%L"</span>, date:&#123;<span class="string">"$add"</span>:[new Date(<span class="number">0</span>),&#123;<span class="string">"$multiply"</span>:[<span class="string">"$create_time"</span>,<span class="number">1000</span>]&#125;,<span class="number">28800000</span>]&#125;&#125;&#125;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        _id: ObjectId(<span class="string">"5ed3d4f781dbb4a0205baab3"</span>),</span><br><span class="line">        create_time: <span class="number">1590940919</span>,</span><br><span class="line">        date1Str: <span class="string">"2020-05-31 16:01:59:000"</span>,</span><br><span class="line">        date2Str: <span class="string">"2020-06-01 00:01:59:000"</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>$multiply 将数字相乘以返回产品。接受任意数量的参数表达式。</p>
+</blockquote>
+<blockquote>
+<p>将<code>毫秒时间</code>添加到<code>零毫秒Date(0)</code>对象 然后格式化时间</p>
+</blockquote>
+<p>我们知道了如何正确格式化时间 现在按照时间天分组获取<code>client</code>等3的每天的量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">db.sms_log.aggregate(</span><br><span class="line">  [</span><br><span class="line">    &#123; </span><br><span class="line">      $match: </span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">"sms_client"</span>:<span class="number">5</span>,</span><br><span class="line">        <span class="string">"send_status"</span>: <span class="number">1</span>,</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    &#123;<span class="string">"$group"</span>: </span><br><span class="line">     &#123; </span><br><span class="line">       <span class="string">"_id"</span>:  &#123;$dateToString: &#123;format: <span class="string">"%Y-%m-%d"</span>, date:&#123;<span class="string">"$add"</span>:[new Date(<span class="number">0</span>),&#123;<span class="string">"$multiply"</span>:[<span class="string">"$create_time"</span>,<span class="number">1000</span>]&#125;,<span class="number">28800000</span>]&#125;&#125;&#125;, <span class="string">"count"</span> : &#123; <span class="string">"$sum"</span> : <span class="number">1</span> &#125;&#125;&#125;</span><br><span class="line">  ]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        _id: <span class="string">"2020-07-21"</span>,</span><br><span class="line">        count: <span class="number">5583</span></span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这样我们就实现和<code>MySQL</code>类似的按照时间分组的功能了。</p>
+<p>参考阅读：</p>
+<p><a href="https://jiemin.wang/2019/05/20/mongodb-aggregate/" target="_blank" rel="noopener">mongodb aggregate 基于UNIX时间戳的聚合</a></p>
+<p><a href="https://blog.csdn.net/pengyiming/article/details/82775827" target="_blank" rel="noopener">Mongodb聚合框架Aggregate - 时间戳转时间聚合分组统计实现</a></p>
 
       
     </div>
@@ -528,7 +656,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i>Nginx</a>
+            <a href="/tags/MongoDB/" rel="tag"><i class="fa fa-tag"></i>MongoDB</a>
           
         </div>
       
@@ -541,8 +669,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/30/MongoDB学习笔记-Python篇/" rel="next" title="MongoDB学习笔记--Python篇">
-                <i class="fa fa-chevron-left"></i> MongoDB学习笔记--Python篇
+              <a href="/2019/11/02/Tornado中使用Websocket/" rel="next" title="Tornado中使用Websocket">
+                <i class="fa fa-chevron-left"></i> Tornado中使用Websocket
               </a>
             
           </div>
@@ -551,8 +679,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/04/Nginx之旅-基础篇-上/" rel="prev" title="Nginx之旅-基础篇-上">
-                Nginx之旅-基础篇-上 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/04/Python的logging模块/" rel="prev" title="Python的logging模块">
+                Python的logging模块 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -608,17 +736,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -705,22 +824,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境调试确认"><span class="nav-number">1.</span> <span class="nav-text">环境调试确认</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一：四项确认"><span class="nav-number">1.1.</span> <span class="nav-text">一：四项确认</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二：两项依赖安装"><span class="nav-number">1.2.</span> <span class="nav-text">二：两项依赖安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三：-一次初始化"><span class="nav-number">1.3.</span> <span class="nav-text">三： 一次初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四：安装过程"><span class="nav-number">1.4.</span> <span class="nav-text">四：安装过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一步：添加Nginx到YUM源"><span class="nav-number">1.4.1.</span> <span class="nav-text">第一步：添加Nginx到YUM源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二步：安装"><span class="nav-number">1.4.2.</span> <span class="nav-text">第二步：安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三步：启动Nginx"><span class="nav-number">1.4.3.</span> <span class="nav-text">第三步：启动Nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第四步：设置开启自启"><span class="nav-number">1.4.4.</span> <span class="nav-text">第四步：设置开启自启</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
