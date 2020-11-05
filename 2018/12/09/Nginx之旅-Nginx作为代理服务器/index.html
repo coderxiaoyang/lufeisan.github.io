@@ -81,18 +81,26 @@
 
 
 
-<meta name="description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。 按照应用分类可以分为正向代理和反向代理。 正向代理 当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理 反向代理一般用在针对性访问某个站">
+<meta name="description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。代理请求DNS服务器。 反向代理  反向">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-Nginx作为代理服务器">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/09/Nginx之旅-Nginx作为代理服务器/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。 按照应用分类可以分为正向代理和反向代理。 正向代理 当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理 反向代理一般用在针对性访问某个站">
+<meta property="og:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。代理请求DNS服务器。 反向代理  反向">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-29T16:22:27.259Z">
+<meta property="og:image" content="https://static01.imgkr.com/temp/6ac0659daea24995a14eb639c1d85fd4.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/729b843d01a94f9d97389429c9307b34.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/1554e1d2e8c54e47a38d186bcc83693d.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/05/BWY974.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/05/BWYHKK.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/6fd62582cc6d4c18a003b6e5f82426e9.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/d5c0c0a80ae64f329ba62decee9ff77e.png">
+<meta property="og:updated_time" content="2020-11-05T16:28:47.551Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为代理服务器">
-<meta name="twitter:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。 按照应用分类可以分为正向代理和反向代理。 正向代理 当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。 反向代理 反向代理一般用在针对性访问某个站">
+<meta name="twitter:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。代理请求DNS服务器。 反向代理  反向">
+<meta name="twitter:image" content="https://static01.imgkr.com/temp/6ac0659daea24995a14eb639c1d85fd4.png">
 
 
 
@@ -412,7 +420,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  911 字
+                  1,912 字
                 </span>
               
 
@@ -428,7 +436,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -451,14 +459,18 @@
       
         <p>这个小节我们学习下<code>Nginx</code>的代理服务。</p>
 <p>在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。</p>
+<p><img src="https://static01.imgkr.com/temp/6ac0659daea24995a14eb639c1d85fd4.png" alt="代理"></p>
 <p>按照应用分类可以分为正向代理和反向代理。</p>
-<p>正向代理</p>
-<p>当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。</p>
-<p>反向代理</p>
-<p>反向代理一般用在针对性访问某个站点。需要客户端自己通过DNS获得域名解析。反向代理代理的对象是服务端，是为服务端提供服务的。</p>
+<p><strong>正向代理</strong></p>
+<p><img src="https://static01.imgkr.com/temp/729b843d01a94f9d97389429c9307b34.png" alt="正向代理"></p>
+<p>当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。代理请求DNS服务器。</p>
+<p><strong>反向代理</strong></p>
+<p><img src="https://static01.imgkr.com/temp/1554e1d2e8c54e47a38d186bcc83693d.png" alt="反向代理"></p>
+<p>反向代理一般用在针对性访问某个站点。需要客户端自己通过DNS获得域名解析。反向代理代理的对象是服务端，是为服务端提供服务的。(如根据路由分发请求等)</p>
 <p>参考文章: <a href="https://www.jianshu.com/p/208c02c9dd1d" target="_blank" rel="noopener">正向代理与反向代理的区别</a></p>
-<h6 id="Nginx作为代理的模块"><a href="#Nginx作为代理的模块" class="headerlink" title="Nginx作为代理的模块"></a>Nginx作为代理的模块</h6><p><code>Nginx</code>可支持的代理协议</p>
+<h6 id="Nginx作为代理的模块"><a href="#Nginx作为代理的模块" class="headerlink" title="Nginx作为代理的模块"></a>Nginx作为代理的模块</h6><p><code>Nginx</code>可支持的代理协议<br><a href="https://imgchr.com/i/BWY974" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/11/05/BWY974.png" alt="支持的协议"></a></p>
 <p>常见的<code>Nginx</code>作为反向代理支持协议</p>
+<p><a href="https://imgchr.com/i/BWYHKK" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/11/05/BWYHKK.png" alt="反向代理支持协议和模块"></a></p>
 <table>
 <thead>
 <tr>
@@ -485,8 +497,11 @@
 </tr>
 </tbody>
 </table>
-<p> 常见的<code>Nginx</code>作为正向代理支持协议</p>
+<p> 常见的<code>Nginx</code>作为正向代理支持协议:</p>
+<p><img src="https://static01.imgkr.com/temp/6fd62582cc6d4c18a003b6e5f82426e9.png" alt="反向代理支持协议和模块"></p>
+<blockquote>
 <p>注意：不能支持<code>HTTPS</code>协议。</p>
+</blockquote>
 <h6 id="Nginx作为反向代理场景"><a href="#Nginx作为反向代理场景" class="headerlink" title="Nginx作为反向代理场景"></a>Nginx作为反向代理场景</h6><p>配置语法：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: proxy_pass URL;</span><br><span class="line">Default: --</span><br><span class="line">Context: location, if in location, limit_except</span><br></pre></td></tr></table></figure>
 <p><code>URL</code>表示如果我们请求到<code>Nginx</code>代理服务器进行转发到对应的链接。</p>
@@ -494,34 +509,41 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8000/uri/</span><br><span class="line">https://192.169.1.1:8000/uri/</span><br><span class="line">http://unix:/tmp/backend.socket:/uri/</span><br></pre></td></tr></table></figure>
 <p>最后一个进程间通信的一个<code>socket</code>方式。</p>
 <p>🌰</p>
-<p>我们编写一个在8000端口的应用</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">8000</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /opt/app/code2;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用代理配置 将 80端口的访问代理到 8000</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ /test_proxy.html$</span> &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1:8080;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们即使在主机8000端口没有开放的情况下，还可以访问到对应的服务。</p>
+<p>我们编写一个在8080端口的应用，这个8080是公网无法访问到的</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /opt/app/code2;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在上面应用的家目录下有一个 test_proxy.html 文件</p>
+</blockquote>
+<p>使用代理配置 将 80端口的访问代理到8080</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 增加一个匹配规则 当访问是 以 test_proxy.html 结束 将会代理 将请求到80的请求转发到8080上</span></span><br><span class="line">		<span class="attribute">location</span> <span class="regexp">~ /test_proxy.html$</span> &#123;</span><br><span class="line">		    <span class="attribute">proxy_pass</span> http://127.0.0.1:8080;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们即使在主机8080端口没有开放的情况下，还可以访问到对应的服务。</p>
 <h6 id="Nginx作为正向代理场景"><a href="#Nginx作为正向代理场景" class="headerlink" title="Nginx作为正向代理场景"></a>Nginx作为正向代理场景</h6><p>在程序服务器上配置只有指定<code>IP</code>能够访问</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">if</span> ( <span class="variable">$http_x_forwarded_for</span> !<span class="regexp">~* "^116\.62\.103\.228")</span> &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样如果如果不是指定<code>IP</code>是不允许访问的。</p>
-<p>在程序允许访问的服务器（即代理服务器上做请求转发）</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">resolver</span> <span class="number">8.8.8.8</span>;</span><br><span class="line"><span class="attribute">location</span> / &#123;  </span><br><span class="line">    <span class="attribute">proxy_pass</span> http://<span class="variable">$http_host</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完成上面配置之后还需要在客户端配置代理服务器（IP+端口）。</p>
-<p>关于代理模块的: <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html" target="_blank" rel="noopener">官方文档</a></p>
-<p>缓冲区：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">if</span> ( <span class="variable">$http_x_forwarded_for</span> !<span class="regexp">~* "^116\.62\.103\.228")</span> &#123;</span><br><span class="line">            <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">root</span>   /opt/app/code;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样如果不是指定<code>IP</code>是不允许访问的。</p>
+<p>在程序允许访问的服务器（即代理服务器上做请求转发）来解决只能运行在指定服务器上访问的限制。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line">		</span><br><span class="line">  	<span class="comment"># 指定使用的 DNS 域名解析服务器</span></span><br><span class="line">    <span class="attribute">resolver</span> <span class="number">8.8.8.8</span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="comment"># 将所有请求直接进行转发</span></span><br><span class="line">    <span class="attribute">location</span> / &#123;  </span><br><span class="line">        <span class="attribute">proxy_pass</span> http://<span class="variable">$http_host</span><span class="variable">$request_uri</span>;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完成上面配置之后还需要在客户端配置代理服务器（IP+端口）。因为正向代理代理的是客户端。</p>
+<p>我们使用代理插件或者代理工具配置程序允许访问的服务器。</p>
+<p><img src="https://static01.imgkr.com/temp/d5c0c0a80ae64f329ba62decee9ff77e.png" alt="反向代理支持协议和模块"></p>
+<p>整体流程就是存在一个服务只能运行某些IP进行访问，我们在对应的IP上安装NGINX服务，并开启反向代理功能转发访问受限的请求，除此之外还要再客户端配置一些本地正向代理。即实际是先访问正向代理服务器，然后由正向代理服务器进行反向代理转发，最后获取到受限制的服务。</p>
+<p>更多关于代理模块的: <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html" target="_blank" rel="noopener">官方文档</a></p>
+<p>其他配置语法–缓冲区：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	proxy_buffering on | off;</span><br><span class="line">Default:	</span><br><span class="line"><span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</span><br><span class="line">Context:	http, server, location</span><br></pre></td></tr></table></figure>
 <p>扩展：<code>proxy_buffer_size</code>, <code>proxy_busy_buffers_size</code>, <code>proxy_buffers</code></p>
-<p>开启缓冲区是指将客户端请求的数据缓存一些再发往服务端，内容存在内存中，当内存不够的时候，存在硬盘的临时文件目录下。</p>
-<p>跳转重定向：</p>
+<p>开启缓冲区是指将客户端请求的数据缓存一些（尽可能的收集完客户端的请求）再发往服务端，内容存在内存中，当内存不够的时候，存在硬盘的临时文件目录下。</p>
+<p>其他配置语法–跳转重定向：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	proxy_redirect default;</span><br><span class="line"><span class="attribute">proxy_redirect</span> <span class="literal">off</span>;</span><br><span class="line"><span class="attribute">proxy_redirect</span> <span class="literal">redirect</span> replacement;</span><br><span class="line">Default:	</span><br><span class="line"><span class="attribute">proxy_redirect</span> default;</span><br><span class="line">Context:	http, server, location</span><br></pre></td></tr></table></figure>
 <p>处理301重定向请求。</p>
-<p>头信息：</p>
+<p>其他配置语法–头信息：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	proxy_set_header field value;</span><br><span class="line">Default:	</span><br><span class="line"><span class="attribute">proxy_set_header</span> Host <span class="variable">$proxy_host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> Connection close;</span><br><span class="line">Context:	http, server, location</span><br></pre></td></tr></table></figure>
 <p>扩展配置: <code>proxy_set_body</code>,  <code>proxy_hide_header</code>。</p>
 <p>设置经过代理服务器的IP。</p>
-<p>超时：</p>
+<p>其他配置语法–超时：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	proxy_connect_timeout time;</span><br><span class="line">Default:	</span><br><span class="line"><span class="attribute">proxy_connect_timeout</span> <span class="number">60s</span>;</span><br><span class="line">Context:	http, server, location</span><br></pre></td></tr></table></figure>
 <p>扩展：<code>proxy_read_timeout</code>, <code>proxy_send_timeout</code></p>
+<p>代理服务器到真正服务器之间的超时关系。</p>
 <p>一般配置代理如下：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_redirect</span> default;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_set_header</span> Host <span class="variable">$http_host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_connect_timeout</span> <span class="number">30</span>;</span><br><span class="line"><span class="attribute">proxy_send_timeout</span> <span class="number">60</span>;</span><br><span class="line"><span class="attribute">proxy_read_timeout</span> <span class="number">60</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_buffer_size</span> <span class="number">32k</span>;</span><br><span class="line"><span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">proxy_buffers</span> <span class="number">4</span> <span class="number">128k</span>;</span><br><span class="line"><span class="attribute">proxy_busy_buffers_size</span> <span class="number">256k</span>;</span><br><span class="line"><span class="attribute">proxy_max_temp_file_size</span> <span class="number">256k</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_redirect</span> default;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_set_header</span> Host <span class="variable">$http_host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>; <span class="comment"># 将真实的IP带到后端</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_connect_timeout</span> <span class="number">30</span>;</span><br><span class="line"><span class="attribute">proxy_send_timeout</span> <span class="number">60</span>;</span><br><span class="line"><span class="attribute">proxy_read_timeout</span> <span class="number">60</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_buffer_size</span> <span class="number">32k</span>;</span><br><span class="line"><span class="comment"># 作用：Nginx使用该大小申请read_buf，即大小指定了 upstream header 最大长度，如果响应头超过了这个长度，Nginx会报upstream sent too big header错误，然后client收到的是502。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</span><br><span class="line"><span class="comment"># 作用：该指令开启从后端被代理服务器的响应body缓冲。</span></span><br><span class="line"><span class="comment">#如果proxy_buffering开启,nginx假定被代理的后端服务器会以最快速度响应,并把内容保存在由指令proxy_buffer_size 和 proxy_buffers 指定的缓冲区里边。</span></span><br><span class="line"><span class="comment">#如果响应body无法放在内存里边,那么部分内容会被写到磁盘上。</span></span><br><span class="line"><span class="comment">#如果proxy_buffering被关闭了,那么响应body会按照获取body的多少立刻同步传送到客户端。</span></span><br><span class="line"><span class="comment">#nginx不尝试计算被代理服务器整个响应body的大小,nginx能从服务器接受的最大数据,是由指令 proxy_buffer_size指定的。</span></span><br><span class="line"><span class="comment">#对于基于长轮询(long-polling)的Comet 应用来说,关闭 proxy_buffering 是重要的,不然异步响应将被缓存导致Comet无法工作。</span></span><br><span class="line"><span class="comment">#但是无论proxy_buffering是否开启，proxy_buffer_size都是生效的</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_buffers</span> <span class="number">4</span> <span class="number">128k</span>;</span><br><span class="line"><span class="comment"># 作用：设置存储被代理服务器响应的body所占用的buffer个数和每个buffer大小。具体的意思是说，开辟4个长度为128k大小的read_buf用来存储body，当然不是连接建立初始化时就开辟4个，而是当当前buf不够存响应body时才会新申请一个，最多申请4个buf。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_busy_buffers_size</span> <span class="number">256k</span>;</span><br><span class="line"><span class="comment"># 作用：proxy_busy_buffers_size不是独立的空间，他是proxy_buffers和proxy_buffer_size的一部分。</span></span><br><span class="line"><span class="comment"># nginx会在没有完全读完后端响应就开始向客户端传送数据，所以它会划出一部分busy状态的buffer来专门向客户端传送数据(建议为proxy_buffers中单个缓冲区的2倍)，然后它继续从后端取数据。</span></span><br><span class="line"><span class="comment"># proxy_busy_buffer_size参数用来设置处于busy状态的buffer有多大。</span></span><br><span class="line"><span class="comment"># 1）如果完整数据大小小于busy_buffer大小，当数据传输完成后，马上传给客户端；</span></span><br><span class="line"><span class="comment"># 2）如果完整数据大小不小于busy_buffer大小，则装满busy_buffer后，马上传给客户端；</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_max_temp_file_size</span> <span class="number">256k</span>;</span><br><span class="line"><span class="comment"># 作用：设置临时文件的总大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过 proxy_temp_path 设置临时文件位置</span></span><br><span class="line"><span class="comment"># 语法：proxy_temp_path  path [level1 level2 level3]</span></span><br><span class="line"><span class="comment"># 默认值：proxy_temp_path proxy_temp</span></span><br><span class="line"><span class="comment"># 上下文：http,server,location</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 作用：定义proxy的临时文件存在目录以及目录的层级。</span></span><br></pre></td></tr></table></figure>
 <h6 id="Uwsgi反向代理模式"><a href="#Uwsgi反向代理模式" class="headerlink" title="Uwsgi反向代理模式"></a>Uwsgi反向代理模式</h6><p>我们看下UWSGI的配置场景</p>
 <p>为什么WEB框架要使用uwsgi？</p>
 <p>优势：安全（对于Django需要普通用户启动），效率</p>
