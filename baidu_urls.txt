@@ -1,1 +1,1 @@
-https://zhaobugs.com/2020/05/30/从入门到高可用分布式实践-第八篇-下/
+https://zhaobugs.com/2020/11/17/利用-dev-urandom文件创建随机数/
