@@ -95,13 +95,14 @@
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fzomjbx3d7j31c40mg7wh.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fzomn3vbmnj31f20j6dvv.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fzomp0xh5ej31eu0j0k9s.jpg">
+<meta property="og:image" content="https://s3.ax1x.com/2020/11/23/DYWrW9.png">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fzoprh4ixvj317y0hsaov.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fzopwo7wulj316q0h07ip.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fzopyoipi2j30tu0fujy1.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fzopz3rydwj317m0b2dlc.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fzoq8tb480j31760ggaj9.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fzoqd41hswj318o0gg4ae.jpg">
-<meta property="og:updated_time" content="2019-01-30T09:18:43.901Z">
+<meta property="og:updated_time" content="2020-11-23T14:59:46.504Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL数据库架构--SQL查询优化">
 <meta name="twitter:description" content="上篇我们学习了如何对索引进行了优化，知道了为什么不能随便创建索引以及如何利用索引进行高效查询。 这节我们要学习查询优化，索引优化，库表结构优化中给的查询优化。 获取有性能问题SQL的三种方法要想对SQL查询进行优化，我们要首先知道哪些SQL是有问题的：  通过用户反馈获取存在性能问题的SQL 通过慢查询日志获取存在性能问题的SQL 实时获取存在性能问题的SQL  通过慢查询日志进行查询优化慢查询日">
@@ -425,7 +426,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,687 字
+                  3,701 字
                 </span>
               
 
@@ -592,6 +593,10 @@
 <li><p>对in()条件进行优化</p>
 </li>
 </ul>
+<p><a href="https://imgchr.com/i/DYWrW9" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/11/23/DYWrW9.png" alt="DYWrW9.png"></a></p>
+<blockquote>
+<p>explain输出的图解</p>
+</blockquote>
 <p>以上就是MySQL查询优化器对查询进行的优化，经过查询优化器改写之后将会生成一个执行计划，接下来MySQL服务器就可以根据执行计划调用存储引擎的API，来通过存储引擎获取数据。</p>
 <h6 id="如何确定查询处理各个阶段所消耗的时间"><a href="#如何确定查询处理各个阶段所消耗的时间" class="headerlink" title="如何确定查询处理各个阶段所消耗的时间"></a>如何确定查询处理各个阶段所消耗的时间</h6><p>SQL优化的目的就是减少查询所消耗的时间 加快查询的响应速度。</p>
 <p><strong>方法一：使用profile</strong></p>
@@ -627,6 +632,8 @@
 <p>汇总表就是提前以要统计的数据进行汇总并记录到表中以备后用</p>
 <p>  <img src="https://ws4.sinaimg.cn/large/006tNc79gy1fzoqd41hswj318o0gg4ae.jpg" alt="image-20190130171636241"></p>
 <p>x  </p>
+<p>参考阅读：</p>
+<p><a href="http://weikeqin.com/2020/02/05/mysql-explain/" target="_blank" rel="noopener">mysql explain 详解</a></p>
 
       
     </div>
@@ -794,7 +801,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">159</span>
+                  <span class="site-state-item-count">160</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

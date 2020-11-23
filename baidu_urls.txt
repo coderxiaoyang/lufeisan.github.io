@@ -1,1 +1,1 @@
-https://zhaobugs.com/2020/11/17/利用-dev-urandom文件创建随机数/
+https://zhaobugs.com/2020/11/23/Mysql执行计划explain图解/
