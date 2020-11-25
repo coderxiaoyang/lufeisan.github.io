@@ -81,24 +81,24 @@
 
 
 
-<meta name="description" content="所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。 负载均衡的分类： 按照地域广度：GLSB，SLB  GSLB（Global Server Load Balance）全局负载均衡。 参考阅读文章 全局负载均衡GSLB   SLB（Server Load Balance）负载均衡。 图片中的VIP是指虚拟IP的意思：从图中可以看出，负载均衡设备可以">
+<meta name="description" content="所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。 负载均衡的分类：按照地域广度：GSLB，SLB GSLB, Global Server Load Balance, 即全局负载均衡。   张三通过调度节点获取到最近的应用服务 成功访问 而不是直接访问应用服务中心节点  由于现实中存在各种不稳定因素，比如某个服务器集群所在的数据中心断电，洪水或者地">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-Nginx作为负载均衡服务">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/11/Nginx之旅-Nginx作为负载均衡服务/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。 负载均衡的分类： 按照地域广度：GLSB，SLB  GSLB（Global Server Load Balance）全局负载均衡。 参考阅读文章 全局负载均衡GSLB   SLB（Server Load Balance）负载均衡。 图片中的VIP是指虚拟IP的意思：从图中可以看出，负载均衡设备可以">
+<meta property="og:description" content="所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。 负载均衡的分类：按照地域广度：GSLB，SLB GSLB, Global Server Load Balance, 即全局负载均衡。   张三通过调度节点获取到最近的应用服务 成功访问 而不是直接访问应用服务中心节点  由于现实中存在各种不稳定因素，比如某个服务器集群所在的数据中心断电，洪水或者地">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fy2xiw58ukj31h40ogtj8.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fy2xtosq70j31f40i07at.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fy2xxxczwpj30y20caqdu.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fy2yxls2crj30y00f4wrd.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fy2z1tfy7jj31e40nik8h.jpg">
-<meta property="og:updated_time" content="2018-12-12T03:33:55.529Z">
+<meta property="og:image" content="https://static01.imgkr.com/temp/e9dc50835bf748c5898c3ac5ec4e383f.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/384cbd3cd2c94a59b9aec5ab6a21ec4a.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/63af97db13824890b64fafb376a30fb5.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/fd36cc8958604b1a935c76e4b8f20f56.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/3b923e7aa3004797899ad3880c763d68.png">
+<meta property="og:updated_time" content="2020-11-25T16:30:03.549Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为负载均衡服务">
-<meta name="twitter:description" content="所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。 负载均衡的分类： 按照地域广度：GLSB，SLB  GSLB（Global Server Load Balance）全局负载均衡。 参考阅读文章 全局负载均衡GSLB   SLB（Server Load Balance）负载均衡。 图片中的VIP是指虚拟IP的意思：从图中可以看出，负载均衡设备可以">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNbRwly1fy2xiw58ukj31h40ogtj8.jpg">
+<meta name="twitter:description" content="所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。 负载均衡的分类：按照地域广度：GSLB，SLB GSLB, Global Server Load Balance, 即全局负载均衡。   张三通过调度节点获取到最近的应用服务 成功访问 而不是直接访问应用服务中心节点  由于现实中存在各种不稳定因素，比如某个服务器集群所在的数据中心断电，洪水或者地">
+<meta name="twitter:image" content="https://static01.imgkr.com/temp/e9dc50835bf748c5898c3ac5ec4e383f.png">
 
 
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,096 字
+                  1,671 字
                 </span>
               
 
@@ -434,7 +434,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -456,23 +456,36 @@
 
       
         <p>所谓的负载均衡就是将前端的请求均分或者按照规则分配给后端不同的服务。并且能够减少宕机导致的请求无效。</p>
-<p>负载均衡的分类：</p>
-<p>按照地域广度：GLSB，SLB</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fy2xiw58ukj31h40ogtj8.jpg" alt="image-20181211172228047"></p>
-<p>GSLB（Global Server Load Balance）全局负载均衡。</p>
+<h5 id="负载均衡的分类："><a href="#负载均衡的分类：" class="headerlink" title="负载均衡的分类："></a>负载均衡的分类：</h5><p>按照地域广度：GSLB，SLB</p>
+<p><strong>GSLB, Global Server Load Balance, 即全局负载均衡。</strong></p>
+<p><img src="https://static01.imgkr.com/temp/e9dc50835bf748c5898c3ac5ec4e383f.png" alt="image-20181211172228047"></p>
+<blockquote>
+<p>张三通过调度节点获取到最近的应用服务 成功访问 而不是直接访问应用服务中心节点</p>
+</blockquote>
+<p>由于现实中存在各种不稳定因素，比如某个服务器集群所在的数据中心断电，洪水或者地震造成数据中心瘫痪等等。在一个数据中心内，无论采用怎样的技术，总可能存在一些不可抗因素，导致其瘫痪。所以通常会把服务器分散部署到多个数据中心，以最大程度减小灾害对服务质量产生影响的概率和程度。</p>
+<p>另外，<strong>CDN</strong>系统总是希望用距离用户最近的设备为其提供服务，这也需要在不同地域部署多个节点。</p>
+<p>GSLB系统就是针对这个问题的。它负责多个CDN节点之间相互协作，将各节点和设备的负载保持在一个有利于提供优质服务的水平。GSLB的负载均衡结果可能直接将用户分配到RS，也可能将用户交付到下一层次的负载均衡系统。</p>
+<p>经过多年发展，已有多种调度机制可实现CDN的全局负载均衡。其中最常用的是基于DNS的GSLB。</p>
 <p>参考阅读文章 <a href="https://jjayyyyyyy.github.io/2017/05/17/GSLB.html" target="_blank" rel="noopener">全局负载均衡GSLB</a> </p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fy2xtosq70j31f40i07at.jpg" alt="image-20181211173252614"></p>
-<p>SLB（Server Load Balance）负载均衡。</p>
-<p>图片中的<code>VIP</code>是指虚拟IP的意思：从图中可以看出，负载均衡设备可以在用户请求到达服务器之前将其截获，然后将其分发到合适的后端服务器。也就是说，客户端发出的请求，首先会到负载均衡设备的IP地址上。因为该IP地址并不负责处理实际的业务，所以通常将该地址称为【虚拟IP】(Virtual IP, <strong>VIP</strong>)。</p>
+<p><strong>SLB（Server Load Balance）负载均衡。</strong></p>
+<p><img src="https://static01.imgkr.com/temp/384cbd3cd2c94a59b9aec5ab6a21ec4a.png" alt="image-20181211173252614"></p>
+<p>图片中的<code>VIP</code>是指虚拟IP的意思：从图中可以看出，负载均衡设备可以在用户请求到达服务器之前将其截获，然后将其分发到合适的后端服务器。</p>
+<p>也就是说，客户端发出的请求，首先会到负载均衡设备的IP地址上。因为该IP地址并不负责处理实际的业务，所以通常将该地址称为【虚拟IP】(Virtual IP, <strong>VIP</strong>)。</p>
+<p>后端真正的业务服务器被称为【真实服务器】(Real Server, <strong>RS</strong>)，其IP地址被称为【真实IP】(Real IP, <strong>RIP</strong>)，负责处理业务。</p>
+<p>举个例子，VIP 就像是前台招待，会告诉你办什么事该去哪个房间。而RIP是内部实际办业务的房间号。</p>
+<p>利用负载均衡，很大程度上可以避免单个服务器过载或者闲置，前者会引起服务能力下降，后者则没有充分利用资源。因此，为了达到更好的系统处理能力，需要进行以下两个步骤：</p>
+<ol>
+<li>在集群前端部署负载均衡设备</li>
+<li>根据预先配置的均衡策略，在集群中智能分发用户请求</li>
+</ol>
 <p>按照网络模型层：四层负载均衡，七层负载均衡</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fy2xxxczwpj30y20caqdu.jpg" alt="image-20181211173657613"></p>
-<p>四层负载均衡是在传输层上进行<code>TCP</code>, <code>IP</code>的包转发来实现负载均衡。</p>
-<p>从底层控制，效率很高。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fy2yxls2crj30y00f4wrd.jpg" alt="image-20181211181114882"></p>
+<p><img src="https://static01.imgkr.com/temp/63af97db13824890b64fafb376a30fb5.png" alt="image-20181211173657613"></p>
+<p>四层负载均衡是在传输层上进行<code>TCP</code>, <code>IP</code>的包转发（不需要进行复杂的逻辑）来实现负载均衡。从底层控制，效率很高。</p>
+<p><img src="https://static01.imgkr.com/temp/fd36cc8958604b1a935c76e4b8f20f56.png" alt="image-20181211181114882"></p>
 <p>七层负载均衡是在应用层上，能够对应用层数据做一些操作。Nginx就是一个七层负载均衡的SLB。</p>
 <h6 id="配置场景"><a href="#配置场景" class="headerlink" title="配置场景"></a>配置场景</h6><p>Nginx作为负载均衡最重要的两点是<code>proxy_pass</code>和<code>upstream server</code>。</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fy2z1tfy7jj31e40nik8h.jpg" alt="image-20181211181517439"></p>
-<p>通过Nginx作为代理转发到真正运行服务的服务器上。</p>
+<p><img src="https://static01.imgkr.com/temp/3b923e7aa3004797899ad3880c763d68.png" alt="image-20181211181517439"></p>
+<p>通过Nginx作为代理转发到真正运行服务的服务器上（由<code>upstream</code>指定的服务组）。</p>
 <p>推荐阅读文章：<a href="http://www.ttlsa.com/nginx/using-nginx-as-http-loadbalancer/" target="_blank" rel="noopener">使用nginx作为HTTP负载均衡</a></p>
 <p>upstream的配置语法：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: upstream name &#123;...&#125;</span><br><span class="line">Default: --</span><br><span class="line">Context: http</span><br></pre></td></tr></table></figure>
@@ -480,11 +493,11 @@
 <p>需要配置在 http 层 server 外</p>
 </blockquote>
 <p>下面的场景是两台云主机，在一台云主机上开启三个服务，不同的服务对于不同的端口。一台云主机做Nginx负载均衡。</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="attribute">upstream</span> imooc &#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">116.62.103.228:8001</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">116.62.103.228:8002</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">116.62.103.228:8003</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        proxy_pass http://imooc;  // 转发</span><br><span class="line">        <span class="attribute">include</span> proxy_params;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> imooc &#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">116.62.103.228:8001</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">116.62.103.228:8002</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">116.62.103.228:8003</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  	<span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        proxy_pass http://imooc;  // 转发</span><br><span class="line">        <span class="attribute">include</span> proxy_params;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面我们给<code>upstream</code>起个名字为<code>imooc</code>，将所有的请求都转发到这个<code>imooc</code>。</p>
-<p>默认情况下是按照轮询来做负载均衡的。</p>
+<p>默认情况下是按照轮询来做负载均衡的。负载均衡能感知服务是否正常，不正常则不再轮询。</p>
 <p>upstream举例：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> backend1.example.com weight=<span class="number">5</span>;</span><br><span class="line">    <span class="attribute">server</span> backend2.example.com:<span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">server</span> unix:/tmp/backend3;</span><br><span class="line">    </span><br><span class="line">    <span class="attribute">server</span> backup1.example.com:<span class="number">8080</span> backup;</span><br><span class="line">    <span class="attribute">server</span> backup2.example.com:<span class="number">8080</span> backup;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> backend1.example.com weight=<span class="number">5</span>; <span class="comment"># 域名</span></span><br><span class="line">    <span class="attribute">server</span> backend2.example.com:<span class="number">8080</span>; <span class="comment"># 域名加端口</span></span><br><span class="line">    <span class="attribute">server</span> unix:/tmp/backend3; <span class="comment"># unix</span></span><br><span class="line">    </span><br><span class="line">    <span class="attribute">server</span> backup1.example.com:<span class="number">8080</span> backup;</span><br><span class="line">    <span class="attribute">server</span> backup2.example.com:<span class="number">8080</span> backup;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面是一个<code>upstream</code>的配置示例，我们看下有哪些具体参数。</p>
 <table>
 <thead>
@@ -516,7 +529,7 @@
 </tr>
 </tbody>
 </table>
-<p><code>backup</code>是指其他服务器不能正常提供服务的时候，会承担起提供服务的角色，当其他服务能够再次提供正常服务的时候，会再次变为预备状态。</p>
+<p><code>backup</code>是指其他服务器不能正常提供服务的时候，会承担起提供服务的角色，当其他服务能够再次提供正常服务的时候，<strong>会再次变为预备状态</strong>。</p>
 <h6 id="轮询策略与加权轮询"><a href="#轮询策略与加权轮询" class="headerlink" title="轮询策略与加权轮询"></a>轮询策略与加权轮询</h6><p> <code>Nginx</code>的默认轮询规则是基于请求来实现的，我们看看全部有哪些调度算法。</p>
 <table>
 <thead>
@@ -554,8 +567,10 @@
 </table>
 <p>轮询和加权轮询都是基于请求来分配的。</p>
 <p>配置<code>ip_hash</code>：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> imooc &#123;</span><br><span class="line">    ip_hash; // 直接添加这个配置即可</span><br><span class="line">    <span class="attribute">server</span> <span class="number">116.62.103.228:8001</span> down;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">116.62.103.228:8002</span> backup;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">116.62.103.228:8003</span> max_fails=<span class="number">1</span> fail_timeout=<span class="number">10s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果走代理就会出现问题。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> imooc &#123;</span><br><span class="line">    ip_hash; # 直接添加这个配置即可 基于 remote_addrr</span><br><span class="line">    <span class="attribute">server</span> <span class="number">116.62.103.228:8001</span> down;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">116.62.103.228:8002</span> backup;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">116.62.103.228:8003</span> max_fails=<span class="number">1</span> fail_timeout=<span class="number">10s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 如果走代理就会出现问题。</p>
+</blockquote>
 <p>配置<code>url_hash</code>：</p>
 <p> 如何自定义<code>hash</code>关键数值</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Syntax: hash key [consistent];</span><br><span class="line">Default: --</span><br><span class="line">Context: upstream</span><br><span class="line">在版本 1.7.2 之后才出现的。</span><br></pre></td></tr></table></figure>
@@ -813,7 +828,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#配置场景"><span class="nav-number">1.</span> <span class="nav-text">配置场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#轮询策略与加权轮询"><span class="nav-number">2.</span> <span class="nav-text">轮询策略与加权轮询</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#负载均衡的分类："><span class="nav-number">1.</span> <span class="nav-text">负载均衡的分类：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#配置场景"><span class="nav-number">1.1.</span> <span class="nav-text">配置场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#轮询策略与加权轮询"><span class="nav-number">1.2.</span> <span class="nav-text">轮询策略与加权轮询</span></a></li></ol></li></ol></div>
             
 
           </div>

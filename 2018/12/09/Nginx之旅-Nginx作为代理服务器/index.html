@@ -104,7 +104,10 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/11/09/BTcZW9.jpg">
 <meta property="og:image" content="https://s1.ax1x.com/2020/11/09/BT2BGQ.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/11/09/BT2cq0.png">
-<meta property="og:updated_time" content="2020-11-09T01:04:14.606Z">
+<meta property="og:image" content="https://static01.imgkr.com/temp/ae64e48585d64a48ab58e171e4e84ccc.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/f924da3662bb4400a6fd3c3003879145.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/18d23dfb95164ae0a1b45e594cc26092.png">
+<meta property="og:updated_time" content="2020-11-25T15:43:41.664Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Nginx作为代理服务器">
 <meta name="twitter:description" content="这个小节我们学习下Nginx的代理服务。 在没有代理的情况下 客户端是直接和服务端进行直接连接。当存在代理的时候所有的请求和想要都需要经过代理。  按照应用分类可以分为正向代理和反向代理。 正向代理  当我们在一个局域网内想上外网或者想翻墙的时候就需要一个正向代理。代理服务器会通过DNS解析域名请求服务返回给客户端。正向代理代理的是客户端，为客户端提供服务。代理请求DNS服务器。 反向代理  反向">
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,589 字
+                  3,614 字
                 </span>
               
 
@@ -600,13 +603,16 @@
 </blockquote>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	 fastcgi_param  parameter value [if_not_empty];</span><br><span class="line">Default: —</span><br><span class="line">Context: http,server, location</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>通过 fastcgi_param 设置变量，并将设置的变量传递到后端的FastCGI serve。<br><a href="https://imgchr.com/i/BT2BGQ" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/11/09/BT2BGQ.png" alt="BT2BGQ.png"></a></p>
+<p>通过 fastcgi_param 设置变量，并将设置的变量传递到后端的FastCGI serve。</p>
 </blockquote>
-<p><a href="https://imgchr.com/i/BT2cq0" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/11/09/BT2cq0.png" alt="BT2cq0.png"></a></p>
-<h6 id="Uwsgi反向代理模式"><a href="#Uwsgi反向代理模式" class="headerlink" title="Uwsgi反向代理模式"></a>Uwsgi反向代理模式</h6><p>我们看下UWSGI的配置场景</p>
-<p>为什么WEB框架要使用uwsgi？</p>
-<p>优势：安全（对于Django需要普通用户启动），效率</p>
-<p>通过<code>Nginx</code>能够做到动静分离。</p>
+<p><img src="https://s1.ax1x.com/2020/11/09/BT2BGQ.png" alt="BT2BGQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/11/09/BT2cq0.png" alt="BT2cq0.png"></p>
+<h6 id="Uwsgi反向代理模式"><a href="#Uwsgi反向代理模式" class="headerlink" title="Uwsgi反向代理模式"></a>Uwsgi反向代理模式</h6><p>我们看下UWSGI的配置场景<br><a href="https://static01.imgkr.com/temp/ae64e48585d64a48ab58e171e4e84ccc.png" target="_blank" rel="noopener"><img src="https://static01.imgkr.com/temp/ae64e48585d64a48ab58e171e4e84ccc.png" alt="BT2cq0.png"></a></p>
+<p>uWSGI处在Nginx和WEB应用程序之间。</p>
+<p><strong>为什么WEB框架要使用uwsgi？</strong></p>
+<p>优势：安全（对于Django需要普通用户启动），效率<br><img src="https://static01.imgkr.com/temp/f924da3662bb4400a6fd3c3003879145.png" alt="BT2cq0.png"></p>
+<p>Nginx结合uwsgi能够实现动静分离 效率更高。通过<code>Nginx</code>能够做到动静分离。</p>
+<p><img src="https://static01.imgkr.com/temp/18d23dfb95164ae0a1b45e594cc26092.png" alt="BT2cq0.png"></p>
 
       
     </div>
