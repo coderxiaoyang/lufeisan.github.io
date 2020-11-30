@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="Nginx," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="最近需要写一个需求  根据UI设计的海报模板进行批量合成海报，经过一番谷歌大法好，查找到了几个比较好的参考文章，将使用总结一下。 首先就是安装库 1pip install Pillow 具体使用和代码解释 12345678910111213141516171819202122232425262728293031323334from PIL import Image, ImageFont, Imag">
-<meta name="keywords" content="Python">
+<meta name="description" content="Nginx动静分离基本概述动静分离: 通过中间件将动静分离和静态请求进行分离。 那为什么要通过中间件将动态请求和静态请求进行分离?  （对于一些静态资源的请求，不需要后台CPU的运算）减少不必要的请求消耗，同时能减少请求的延时。   动静分离只有好处: 动静分离后, 即使动态服务不可用, 但静态资源不会受到影响  一个实际配置123456789101112131415161718192021222">
+<meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Python的PIL库进行图片合成和在图片上写字">
-<meta property="og:url" content="https://zhaobugs.com/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/index.html">
+<meta property="og:title" content="Nginx之旅-Nginx动静分离">
+<meta property="og:url" content="https://zhaobugs.com/2018/12/11/Nginx之旅-Nginx动静分离/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="最近需要写一个需求  根据UI设计的海报模板进行批量合成海报，经过一番谷歌大法好，查找到了几个比较好的参考文章，将使用总结一下。 首先就是安装库 1pip install Pillow 具体使用和代码解释 12345678910111213141516171819202122232425262728293031323334from PIL import Image, ImageFont, Imag">
+<meta property="og:description" content="Nginx动静分离基本概述动静分离: 通过中间件将动静分离和静态请求进行分离。 那为什么要通过中间件将动态请求和静态请求进行分离?  （对于一些静态资源的请求，不需要后台CPU的运算）减少不必要的请求消耗，同时能减少请求的延时。   动静分离只有好处: 动静分离后, 即使动态服务不可用, 但静态资源不会受到影响  一个实际配置123456789101112131415161718192021222">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-21T06:03:52.480Z">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/01/DWao80.png">
+<meta property="og:updated_time" content="2020-11-30T16:28:41.701Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Python的PIL库进行图片合成和在图片上写字">
-<meta name="twitter:description" content="最近需要写一个需求  根据UI设计的海报模板进行批量合成海报，经过一番谷歌大法好，查找到了几个比较好的参考文章，将使用总结一下。 首先就是安装库 1pip install Pillow 具体使用和代码解释 12345678910111213141516171819202122232425262728293031323334from PIL import Image, ImageFont, Imag">
+<meta name="twitter:title" content="Nginx之旅-Nginx动静分离">
+<meta name="twitter:description" content="Nginx动静分离基本概述动静分离: 通过中间件将动静分离和静态请求进行分离。 那为什么要通过中间件将动态请求和静态请求进行分离?  （对于一些静态资源的请求，不需要后台CPU的运算）减少不必要的请求消耗，同时能减少请求的延时。   动静分离只有好处: 动静分离后, 即使动态服务不可用, 但静态资源不会受到影响  一个实际配置123456789101112131415161718192021222">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/01/DWao80.png">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/12/11/Nginx之旅-Nginx动静分离/"/>
 
 
 
 
 
-  <title>使用Python的PIL库进行图片合成和在图片上写字 | 码农小杨的笔记</title>
+  <title>Nginx之旅-Nginx动静分离 | 码农小杨的笔记</title>
   
 
 
@@ -303,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/12/11/Nginx之旅-Nginx动静分离/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">使用Python的PIL库进行图片合成和在图片上写字</h1>
+          <h1 class="post-title" itemprop="name headline">Nginx之旅-Nginx动静分离</h1>
         
 
         <div class="post-meta">
@@ -332,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-21T11:55:19+08:00">
-                2019-08-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-11T00:11:22+08:00">
+                2018-12-11
               </time>
             
 
@@ -355,8 +357,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
                   </a>
                 </span>
 
@@ -373,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/" itemprop="commentCount"></span>
+                <a href="/2018/12/11/Nginx之旅-Nginx动静分离/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/11/Nginx之旅-Nginx动静分离/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +384,7 @@
 
           
           
-             <span id="/2019/08/21/使用Python的PIL库进行图片合成和在图片上写字/" class="leancloud_visitors" data-flag-title="使用Python的PIL库进行图片合成和在图片上写字">
+             <span id="/2018/12/11/Nginx之旅-Nginx动静分离/" class="leancloud_visitors" data-flag-title="Nginx之旅-Nginx动静分离">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  361 字
+                  237 字
                 </span>
               
 
@@ -428,7 +430,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  1 分钟
                 </span>
               
             </div>
@@ -449,14 +451,16 @@
       
 
       
-        <p>最近需要写一个需求  根据UI设计的海报模板进行批量合成海报，经过一番谷歌大法好，查找到了几个比较好的参考文章，将使用总结一下。</p>
-<p>首先就是安装库</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Pillow</span><br></pre></td></tr></table></figure>
-<p>具体使用和代码解释</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageFont, ImageDraw</span><br><span class="line"></span><br><span class="line">regular_font = ImageFont.truetype(<span class="string">"PingFang-SC-Regular.ttf"</span>, size=<span class="number">28</span>, encoding=<span class="string">"utf-8"</span>) <span class="comment"># 指定字体 如果有多个需要创建多个</span></span><br><span class="line"></span><br><span class="line">im = Image.open(<span class="string">"poster.png"</span>)  <span class="comment"># 打开文件</span></span><br><span class="line"></span><br><span class="line">draw = ImageDraw.Draw(im)  <span class="comment"># 获得绘画对象 用于添加文字</span></span><br><span class="line"></span><br><span class="line">teacher_title = <span class="string">"人生苦短我用Python"</span></span><br><span class="line"><span class="comment"># 在指定位置开始绘画文字 </span></span><br><span class="line">draw.text((<span class="number">154</span>, <span class="number">76</span>), teacher_title, fill=<span class="string">"#222222"</span>, font=regular_font)  <span class="comment"># 利用ImageDraw的内置函数，在图片上写入文字</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定覆盖照片的区域</span></span><br><span class="line">box = (<span class="number">65</span>, <span class="number">194</span>, <span class="number">87</span>, <span class="number">214</span>)</span><br><span class="line"></span><br><span class="line">tmp_img = Image.open(<span class="string">'star.png'</span>)</span><br><span class="line">region = tmp_img</span><br><span class="line"><span class="comment"># 将覆盖的照片压缩或者放大成和上面 box指定相同大小的区域</span></span><br><span class="line">region = region.resize((box[<span class="number">2</span>] - box[<span class="number">0</span>], box[<span class="number">3</span>] - box[<span class="number">1</span>]))</span><br><span class="line"><span class="comment"># 可以将一个包含透明的图片当做遮罩层实现 图片变圆 等操作</span></span><br><span class="line">im.paste(region, box, region)</span><br><span class="line"></span><br><span class="line">box = (<span class="number">269</span>, <span class="number">944</span>, <span class="number">481</span>, <span class="number">1158</span>)</span><br><span class="line"></span><br><span class="line">tmp_img = Image.open(<span class="string">'code.jpg'</span>)</span><br><span class="line">region = tmp_img</span><br><span class="line">region = region.resize((box[<span class="number">2</span>] - box[<span class="number">0</span>], box[<span class="number">3</span>] - box[<span class="number">1</span>]))</span><br><span class="line">im.paste(region, box)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示生成的图片</span></span><br><span class="line">im.show()</span><br><span class="line"><span class="comment"># 保存图片</span></span><br><span class="line">im.save(<span class="string">'new_poster.png'</span>)</span><br></pre></td></tr></table></figure>
-<p>参考文章：</p>
-<p><a href="https://pillow.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">官网Pillow</a></p>
-<p><a href="https://www.cnblogs.com/lilinwei340/p/6474170.html" target="_blank" rel="noopener">python PIL实现图片合成</a></p>
+        <h5 id="Nginx动静分离基本概述"><a href="#Nginx动静分离基本概述" class="headerlink" title="Nginx动静分离基本概述"></a>Nginx动静分离基本概述</h5><p>动静分离: 通过中间件将动静分离和静态请求进行分离。</p>
+<p><strong>那为什么要通过中间件将动态请求和静态请求进行分离? </strong></p>
+<p>（对于一些静态资源的请求，不需要后台CPU的运算）减少不必要的请求消耗，同时能减少请求的延时。</p>
+<p><a href="https://imgchr.com/i/DWao80" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/01/DWao80.png" alt="DWao80.png"></a></p>
+<blockquote>
+<p>动静分离只有好处: 动静分离后, 即使动态服务不可用, 但静态资源不会受到影响</p>
+</blockquote>
+<h5 id="一个实际配置"><a href="#一个实际配置" class="headerlink" title="一个实际配置"></a>一个实际配置</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置动态服务的代理</span></span><br><span class="line">upstream java_api&#123;</span><br><span class="line">    server <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       <span class="number">80</span>;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    access_log  /var/log/nginx/log/host.access.log  main;</span><br><span class="line">    root /opt/app/code;  </span><br><span class="line">		</span><br><span class="line">		<span class="comment"># 动态服务的匹配</span></span><br><span class="line">    location ~ \.jsp$ &#123;</span><br><span class="line">        proxy_pass http://java_api;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">		</span><br><span class="line">		<span class="comment"># 静态服务的匹配</span></span><br><span class="line">    location ~ \.(jpg|png|gif)$ &#123;</span><br><span class="line">        expires <span class="number">1</span>h;</span><br><span class="line">        gzip on;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>推荐阅读：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/83666689" target="_blank" rel="noopener">Nginx实现动静分离</a></p>
 
       
     </div>
@@ -515,7 +519,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i>Nginx</a>
           
         </div>
       
@@ -528,8 +532,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/25/Python中的协程锁/" rel="next" title="Python中的协程锁">
-                <i class="fa fa-chevron-left"></i> Python中的协程锁
+              <a href="/2018/12/09/Nginx之旅-Nginx作为缓存服务器/" rel="next" title="Nginx之旅-Nginx作为缓存服务器">
+                <i class="fa fa-chevron-left"></i> Nginx之旅-Nginx作为缓存服务器
               </a>
             
           </div>
@@ -538,8 +542,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/02/使用Redis实现一个简单的限流/" rel="prev" title="使用Redis实现一个简单的限流">
-                使用Redis实现一个简单的限流 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/11/Nginx之旅-Nginx作为负载均衡服务/" rel="prev" title="Nginx之旅-Nginx作为负载均衡服务">
+                Nginx之旅-Nginx作为负载均衡服务 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -595,8 +599,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -683,6 +696,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx动静分离基本概述"><span class="nav-number">1.</span> <span class="nav-text">Nginx动静分离基本概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个实际配置"><span class="nav-number">2.</span> <span class="nav-text">一个实际配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
