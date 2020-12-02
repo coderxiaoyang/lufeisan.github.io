@@ -81,25 +81,26 @@
 
 
 
-<meta name="description" content="rewrite规则作用使用rewrite可以实现url重写以及对匹配的url重定向。 场景：  URL访问跳转，支持开发设计 页面跳转，兼容性支持，展示效果(避免长链接)等  SEO优化  维护 后台维护，流量转发等  安全（将动态请求伪装成静态请求）   rewrite配置语法123Syntax:	rewrite regex replacement [flag];Default:	—Contex">
+<meta name="description" content="rewrite规则作用使用rewrite可以实现url重写以及对匹配的url重定向。 场景：  URL访问跳转，支持开发设计 页面跳转，兼容性支持，展示效果(避免长链接)等  SEO优化  维护 后台维护，流量转发等  安全（将动态请求伪装成静态请求）   内置的全局变量   变量名 描述     $args 这个变量等于请求行中的参数，同$query_string   $content_leng">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-Rewrite规则">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/12/Nginx之旅-Rewrite规则/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="rewrite规则作用使用rewrite可以实现url重写以及对匹配的url重定向。 场景：  URL访问跳转，支持开发设计 页面跳转，兼容性支持，展示效果(避免长链接)等  SEO优化  维护 后台维护，流量转发等  安全（将动态请求伪装成静态请求）   rewrite配置语法123Syntax:	rewrite regex replacement [flag];Default:	—Contex">
+<meta property="og:description" content="rewrite规则作用使用rewrite可以实现url重写以及对匹配的url重定向。 场景：  URL访问跳转，支持开发设计 页面跳转，兼容性支持，展示效果(避免长链接)等  SEO优化  维护 后台维护，流量转发等  安全（将动态请求伪装成静态请求）   内置的全局变量   变量名 描述     $args 这个变量等于请求行中的参数，同$query_string   $content_leng">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fy4z2a208zj30jg06uwet.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fy4z4y0to0j30gk06g0sw.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fy4z62d39lj30j8070weu.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy525txv8hj313y0n2q6d.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy526dufauj30om08ydh0.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy55gsle32j313y05k752.jpg">
-<meta property="og:updated_time" content="2018-12-13T07:47:52.097Z">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/D4Ji79.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/D4JKne.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/D4JdBQ.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/D4JHgK.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/D4Ye5n.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/DoGd81.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/02/DoGDKK.png">
+<meta property="og:updated_time" content="2020-12-02T15:03:00.601Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-Rewrite规则">
-<meta name="twitter:description" content="rewrite规则作用使用rewrite可以实现url重写以及对匹配的url重定向。 场景：  URL访问跳转，支持开发设计 页面跳转，兼容性支持，展示效果(避免长链接)等  SEO优化  维护 后台维护，流量转发等  安全（将动态请求伪装成静态请求）   rewrite配置语法123Syntax:	rewrite regex replacement [flag];Default:	—Contex">
-<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fy4z2a208zj30jg06uwet.jpg">
+<meta name="twitter:description" content="rewrite规则作用使用rewrite可以实现url重写以及对匹配的url重定向。 场景：  URL访问跳转，支持开发设计 页面跳转，兼容性支持，展示效果(避免长链接)等  SEO优化  维护 后台维护，流量转发等  安全（将动态请求伪装成静态请求）   内置的全局变量   变量名 描述     $args 这个变量等于请求行中的参数，同$query_string   $content_leng">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/02/D4Ji79.png">
 
 
 
@@ -419,7 +420,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,082 字
+                  1,398 字
                 </span>
               
 
@@ -435,7 +436,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -456,7 +457,7 @@
       
 
       
-        <h6 id="rewrite规则作用"><a href="#rewrite规则作用" class="headerlink" title="rewrite规则作用"></a>rewrite规则作用</h6><p>使用<code>rewrite</code>可以实现<code>url</code>重写以及对匹配的<code>url</code>重定向。</p>
+        <h5 id="rewrite规则作用"><a href="#rewrite规则作用" class="headerlink" title="rewrite规则作用"></a>rewrite规则作用</h5><p>使用<code>rewrite</code>可以实现<code>url</code>重写以及对匹配的<code>url</code>重定向。</p>
 <p>场景：</p>
 <ol>
 <li><p>URL访问跳转，支持开发设计</p>
@@ -470,12 +471,106 @@
 <li><p>安全（将动态请求伪装成静态请求）</p>
 </li>
 </ol>
-<h6 id="rewrite配置语法"><a href="#rewrite配置语法" class="headerlink" title="rewrite配置语法"></a>rewrite配置语法</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	rewrite regex replacement [flag];</span><br><span class="line">Default:	—</span><br><span class="line">Context:	server, location, if</span><br></pre></td></tr></table></figure>
+<h5 id="内置的全局变量"><a href="#内置的全局变量" class="headerlink" title="内置的全局变量"></a>内置的全局变量</h5><table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$args</td>
+<td>这个变量等于请求行中的参数，同$query_string</td>
+</tr>
+<tr>
+<td>$content_length</td>
+<td>请求头中的Content-length字段</td>
+</tr>
+<tr>
+<td>$content_type</td>
+<td>请求头中的Content-Type字段</td>
+</tr>
+<tr>
+<td>$document_root</td>
+<td>当前请求在root指令中指定的值</td>
+</tr>
+<tr>
+<td>$host</td>
+<td>请求主机头字段，否则为服务器名称</td>
+</tr>
+<tr>
+<td>$http_user_agent</td>
+<td>客户端agent信息</td>
+</tr>
+<tr>
+<td>$http_cookie</td>
+<td>客户端cookie信息</td>
+</tr>
+<tr>
+<td>$limit_rate</td>
+<td>这个变量可以限制连接速率</td>
+</tr>
+<tr>
+<td>$request_method</td>
+<td>客户端请求的动作，通常为GET或POST</td>
+</tr>
+<tr>
+<td>$remote_addr</td>
+<td>客户端的IP地址</td>
+</tr>
+<tr>
+<td>$remote_port</td>
+<td>客户端的端口</td>
+</tr>
+<tr>
+<td>$remote_user</td>
+<td>已经经过Auth Basic Module验证的用户名</td>
+</tr>
+<tr>
+<td>$request_filename</td>
+<td>当前请求的文件路径，由root或alias指令与URI请求生成</td>
+</tr>
+<tr>
+<td>$scheme</td>
+<td>HTTP方法（如http，https）</td>
+</tr>
+<tr>
+<td>$server_protocol</td>
+<td>请求使用的协议，通常是HTTP/1.0或HTTP/1.1</td>
+</tr>
+<tr>
+<td>$server_addr</td>
+<td>服务器地址，在完成一次系统调用后可以确定这个值</td>
+</tr>
+<tr>
+<td>$server_name</td>
+<td>服务器名称</td>
+</tr>
+<tr>
+<td>$server_port</td>
+<td>请求到达服务器的端口号</td>
+</tr>
+<tr>
+<td>$request_uri</td>
+<td>包含请求参数的原始URI，不包含主机名，如：”/foo/bar.php?arg=baz”</td>
+</tr>
+<tr>
+<td>$uri</td>
+<td>不带请求参数的当前URI，$uri不包含主机名，如”/foo/bar.html”</td>
+</tr>
+<tr>
+<td>$document_uri</td>
+<td>与$uri相同</td>
+</tr>
+</tbody>
+</table>
+<h5 id="rewrite配置语法"><a href="#rewrite配置语法" class="headerlink" title="rewrite配置语法"></a>rewrite配置语法</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	rewrite regex replacement [flag];</span><br><span class="line">Default:	—</span><br><span class="line">Context:	server, location, if</span><br></pre></td></tr></table></figure>
 <p>If the specified regular expression matches a request URI, URI is changed as specified in the <code>replacement</code> string. </p>
 <p>例子：配置所有的的请求到维护页面</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^(.*)$</span> /pages/maintain.html <span class="literal">break</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^(.*)$</span>  /pages/maintain.html <span class="literal">break</span>;</span><br></pre></td></tr></table></figure>
 <p>😊这个知识点不错，可以在XX期间使用。</p>
-<h6 id="rewrite正则表达式"><a href="#rewrite正则表达式" class="headerlink" title="rewrite正则表达式"></a>rewrite正则表达式</h6><table>
+<h5 id="rewrite正则表达式"><a href="#rewrite正则表达式" class="headerlink" title="rewrite正则表达式"></a>rewrite正则表达式</h5><table>
 <thead>
 <tr>
 <th style="text-align:center">符号</th>
@@ -537,7 +632,7 @@
 </tr>
 </tbody>
 </table>
-<h6 id="rewrite规则中的flag"><a href="#rewrite规则中的flag" class="headerlink" title="rewrite规则中的flag"></a>rewrite规则中的flag</h6><p>我们看下<code>rewrite</code>的一些规则</p>
+<h5 id="rewrite规则中的flag"><a href="#rewrite规则中的flag" class="headerlink" title="rewrite规则中的flag"></a>rewrite规则中的flag</h5><p>我们看下<code>rewrite</code>的一些规则</p>
 <table>
 <thead>
 <tr>
@@ -564,41 +659,46 @@
 </tr>
 </tbody>
 </table>
-<p><code>permanent</code>是永久重定向，客户端在收到对应的请求后，除非清理缓存，否则请求将永久重定向到返回的URL。</p>
-<p><code>redirect</code>是临时返回，客户端请求每次都是到服务端进行一次转发。</p>
+<p><code>permanent</code>是<strong>永久重定向</strong>，客户端在收到对应的请求后，除非清理缓存，否则请求将永久重定向到返回的URL。</p>
+<p><code>redirect</code>是<strong>临时返回</strong>，客户端请求每次都是到服务端进行一次转发。</p>
 <p>🌰</p>
 <p>我们先看下配置</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/host.access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /opt/app/code;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> <span class="regexp">~ ^/break</span> &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/break</span> /test/ <span class="literal">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> <span class="regexp">~ ^/last</span> &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/last</span> /test/ <span class="literal">last</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /test/ &#123;</span><br><span class="line">        <span class="attribute">default_type</span> application/json;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">200</span> <span class="string">'&#123;"status":"successs"&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>当直接访问<code>/test/</code>路径的时候返回</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fy4z2a208zj30jg06uwet.jpg" alt="image-20181213114630571"></p>
+<p><a href="https://imgchr.com/i/D4Ji79" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/D4Ji79.png" alt="D4Ji79.png"></a></p>
 <p>当访问<code>/break</code>路径的时候</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fy4z4y0to0j30gk06g0sw.jpg" alt="image-20181213114904246"></p>
+<p><a href="https://imgchr.com/i/D4JKne" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/D4JKne.png" alt="D4JKne.png"></a></p>
 <p>当访问<code>/last</code>的时候</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fy4z62d39lj30j8070weu.jpg" alt="image-20181213115008526"></p>
-<p>为什么会出现上面的情况呢？</p>
-<p>这是因为当匹配到<code>break</code>的<code>location</code>的时候回去家目录下查找对应的文件路径，不会执行下面的<code>location</code>，但是我们没有创建对应的文件路径，因此就会报错。</p>
-<p>当匹配到<code>last</code>的<code>location</code>的时候回再向下匹配，这时会匹配待<code>/test</code>对应的<code>location</code>所以能够正常返回。</p>
+<p><a href="https://imgchr.com/i/D4JdBQ" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/D4JdBQ.png" alt="D4JdBQ.png"></a></p>
+<p><strong>为什么会出现上面的情况呢？</strong></p>
+<p>这是因为当匹配到<code>break</code>的<code>location</code>的时候回去家目录下(root目录)查找对应的访问路径是否存在，不会执行下面的<code>location</code>，但是我们没有创建对应的文件路径，因此就会报错。</p>
+<p>当匹配到<code>last</code>的<code>location</code>的时候回再向下匹配，这时会匹配待<code>/test</code>对应的<code>location</code>所以能够正常返回（会重新请求一次）。</p>
 <p>推荐阅读：</p>
 <p><a href="http://blog.51cto.com/unixman/1711943" target="_blank" rel="noopener">Nginx 中last和break 及 permanent 和 redirect </a></p>
 <p> <a href="https://www.cnblogs.com/tongxiaoda/p/7452033.html" target="_blank" rel="noopener">Nginx配置中last和break及permanent和redirect的区别</a></p>
 <p>接着看下<code>redirect</code>的配置实例</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/last</span> &#123;</span><br><span class="line">    <span class="comment"># rewrite ^/last /test/ last;</span></span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/last</span> /test/ <span class="literal">redirect</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy525txv8hj313y0n2q6d.jpg" alt="image-20181213133342093"></p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy526dufauj30om08ydh0.jpg" alt="image-20181213133414459"></p>
+<p><a href="https://imgchr.com/i/D4JHgK" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/D4JHgK.png" alt="D4JHgK.png"></a></p>
+<p><a href="https://imgchr.com/i/D4Ye5n" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/D4Ye5n.png" alt="D4Ye5n.png"></a></p>
 <p>发起了两次请求，第一次的请求返回的状态码是302，并且在返回头里制定了再次请求的<code>Location</code>。</p>
+<blockquote>
+<p>redirect 是客户端发起两次请求  last客户端只发起一次请求</p>
+</blockquote>
 <p>看看<code>redirect</code>和<code>permanent</code>的区别：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/imooc</span> &#123;</span><br><span class="line">    <span class="comment"># rewrite ^/imooc http://www.imooc.com/ permanent;</span></span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/imooc</span> http://www.imooc.com/ <span class="literal">redirect</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>配置完之后访问<code>/imooc</code>之后会调到慕课网。然后关闭服务端的<code>Nginx</code>服务，再次访问的时候就不会跳转。</p>
 <p>现在修改配置如下</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/imooc</span> &#123;</span><br><span class="line">    <span class="comment"># rewrite ^/imooc http://www.imooc.com/ permanent;</span></span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/imooc</span> http://www.imooc.com/ <span class="literal">redirect</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy55gsle32j313y05k752.jpg" alt="image-20181213152802563"></p>
-<p>配置完之后访问<code>/imooc</code>之后会调到慕课网。然后关闭服务端的<code>Nginx</code>服务，再次访问的时候同样可以成功跳转到慕课网，然后清空浏览器数据，再次访问就会访问失败。原因就是永久重定向浏览器会保存重定向结果，只要不清数据浏览器再次访问都是重定向的URL。</p>
-<h6 id="rewrite规则场景"><a href="#rewrite规则场景" class="headerlink" title="rewrite规则场景"></a>rewrite规则场景</h6><p>下面我们看下几个老师配置的重定向规则</p>
+<p>配置完之后访问<code>/imooc</code>之后会调到慕课网。然后关闭服务端的<code>Nginx</code>服务，再次访问的时候同样可以成功跳转到慕课网，然后清空浏览器数据，再次访问就会访问失败。</p>
+<p>原因就是<strong>永久重定向浏览器会保存重定向结果，只要不清数据浏览器再次访问都是重定向的URL</strong>。</p>
+<h5 id="rewrite规则场景"><a href="#rewrite规则场景" class="headerlink" title="rewrite规则场景"></a>rewrite规则场景</h5><p>下面我们看下几个老师配置的重定向规则</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/course-(\d+)-(\d+)-(\d+)\.html$</span> /course/<span class="variable">$1</span>/<span class="variable">$2</span>/course_<span class="variable">$3</span>.html;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$http_user_agent</span> $* Chrome)&#123;</span><br><span class="line">       	<span class="attribute">rewrite</span><span class="regexp"> ^nginx</span> https://www.baidu.com/ <span class="literal">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    	</span><br><span class="line">    <span class="attribute">if</span> (!-f <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/(.*)$</span> http://www.baidu.com/<span class="variable">$1</span> <span class="literal">redirect</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="attribute">index</span> index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>第二个是当客户端是Chrome的时候进行匹配。</p>
 <p>第三个是请求一个文件路径，当文件路径不存在的情况下进行匹配。<code>-f</code>就是判断文件路径是否存在。</p>
-<h6 id="rewrite规则优先级"><a href="#rewrite规则优先级" class="headerlink" title="rewrite规则优先级"></a>rewrite规则优先级</h6><p><code>rewrite</code>的规则在不同的上下文下，执行的优先级是不同的。</p>
+<h5 id="rewrite规则优先级"><a href="#rewrite规则优先级" class="headerlink" title="rewrite规则优先级"></a>rewrite规则优先级</h5><p><code>rewrite</code>的规则在不同的上下文下，执行的优先级是不同的。</p>
 <p>基本优先级是：执行<code>server</code>块的<code>rewrite</code>指令 –&gt; 执行<code>location</code>匹配 –&gt; 执行选定的<code>location</code>中的<code>rewrite</code></p>
+<h5 id="优雅的Rewrite规则书写"><a href="#优雅的Rewrite规则书写" class="headerlink" title="优雅的Rewrite规则书写"></a>优雅的Rewrite规则书写</h5><p><a href="https://imgchr.com/i/DoGd81" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/DoGd81.png" alt="DoGd81.png"></a></p>
+<p><a href="https://imgchr.com/i/DoGDKK" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/02/DoGDKK.png" alt="DoGDKK.png"></a></p>
 
       
     </div>
@@ -766,7 +866,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">163</span>
+                  <span class="site-state-item-count">164</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -844,7 +944,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#rewrite规则作用"><span class="nav-number">1.</span> <span class="nav-text">rewrite规则作用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#rewrite配置语法"><span class="nav-number">2.</span> <span class="nav-text">rewrite配置语法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#rewrite正则表达式"><span class="nav-number">3.</span> <span class="nav-text">rewrite正则表达式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#rewrite规则中的flag"><span class="nav-number">4.</span> <span class="nav-text">rewrite规则中的flag</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#rewrite规则场景"><span class="nav-number">5.</span> <span class="nav-text">rewrite规则场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#rewrite规则优先级"><span class="nav-number">6.</span> <span class="nav-text">rewrite规则优先级</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#rewrite规则作用"><span class="nav-number">1.</span> <span class="nav-text">rewrite规则作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内置的全局变量"><span class="nav-number">2.</span> <span class="nav-text">内置的全局变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rewrite配置语法"><span class="nav-number">3.</span> <span class="nav-text">rewrite配置语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rewrite正则表达式"><span class="nav-number">4.</span> <span class="nav-text">rewrite正则表达式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rewrite规则中的flag"><span class="nav-number">5.</span> <span class="nav-text">rewrite规则中的flag</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rewrite规则场景"><span class="nav-number">6.</span> <span class="nav-text">rewrite规则场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rewrite规则优先级"><span class="nav-number">7.</span> <span class="nav-text">rewrite规则优先级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优雅的Rewrite规则书写"><span class="nav-number">8.</span> <span class="nav-text">优雅的Rewrite规则书写</span></a></li></ol></div>
             
 
           </div>
