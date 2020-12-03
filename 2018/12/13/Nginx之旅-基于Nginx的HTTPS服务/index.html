@@ -81,26 +81,27 @@
 
 
 
-<meta name="description" content="终于到了配置HTTPS了，想想之前面试还被问到了💪 HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现 对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图">
+<meta name="description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现：对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-基于Nginx的HTTPS服务">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="终于到了配置HTTPS了，想想之前面试还被问到了💪 HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现 对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图">
+<meta property="og:description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现：对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5g7m6op9j31980h677y.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5gbix7fyj318g0i8aes.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5geiqwtwj319e0eqwi8.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fy5goky6jlj31f60gqn21.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5gz9ipjnj31fg0dm7av.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fy6e06s83hj31440owmzr.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy6efasaetj31ck0fagoq.jpg">
-<meta property="og:updated_time" content="2018-12-14T09:55:58.115Z">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHEDXj.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHEbAx.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHEvge.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHVNr9.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHVDPK.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHZyF0.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHZ5wR.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHmmKe.png">
+<meta property="og:updated_time" content="2020-12-03T17:08:30.905Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-基于Nginx的HTTPS服务">
-<meta name="twitter:description" content="终于到了配置HTTPS了，想想之前面试还被问到了💪 HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现 对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图">
-<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5g7m6op9j31980h677y.jpg">
+<meta name="twitter:description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现：对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/04/DHEDXj.png">
 
 
 
@@ -420,7 +421,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,853 字
+                  2,304 字
                 </span>
               
 
@@ -436,7 +437,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -457,50 +458,59 @@
       
 
       
-        <p>终于到了配置HTTPS了，想想之前面试还被问到了💪</p>
-<h6 id="HTTPS原理和作用"><a href="#HTTPS原理和作用" class="headerlink" title="HTTPS原理和作用"></a>HTTPS原理和作用</h6><p><strong>为什么需要HTTPS呢？</strong></p>
+        <h5 id="HTTPS原理和作用"><a href="#HTTPS原理和作用" class="headerlink" title="HTTPS原理和作用"></a>HTTPS原理和作用</h5><p>为什么需要HTTPS呢？</p>
 <p>原因：HTTP不安全</p>
 <ol>
 <li>传输数据容易被中间人盗用，信息泄露</li>
 <li>数据内容劫持，篡改</li>
 </ol>
 <p>HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议</p>
-<p><strong>HTTPS协议的实现</strong></p>
-<p>对传输内容进行加密以及身份验证</p>
+<p><strong>HTTPS协议的实现</strong>：对传输内容进行加密以及身份验证</p>
 <p>对称加密和非对称加密的含义</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5g7m6op9j31980h677y.jpg" alt="image-20181213213941642"></p>
+<p><a href="https://imgchr.com/i/DHEDXj" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHEDXj.png" alt="DHEDXj.png"></a></p>
 <p>上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy5gbix7fyj318g0i8aes.jpg" alt="image-20181213214331833"></p>
+<p><a href="https://imgchr.com/i/DHEbAx" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHEbAx.png" alt="DHEbAx.png"></a></p>
 <p>上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，私钥用于解密。</p>
 <p>非对称加密的加密算法，特点是私钥加密后的密文，只要是公钥，都可以解密，但是公钥加密后的密文，只有私钥可以解密。</p>
-<p>HTTPS加密协议原理</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5geiqwtwj319e0eqwi8.jpg" alt="image-20181213214624801"></p>
+<p><strong>HTTPS加密协议原理</strong></p>
+<p><a href="https://imgchr.com/i/DHEvge" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHEvge.png" alt="DHEvge.png"></a></p>
 <p>HTTPS加密既有对称加密，又有非对称加密。</p>
 <p>在一开始的时候进行一次非对称加密，服务端将公钥发送给客户端，以后的数据传输都是利用这个公钥进行加密传输。</p>
 <p>这是因为非对称的性能要求高，在第一次进行非对称加密之后，完全可以进行对称加密数据传输了。</p>
 <p><strong>中间人伪造客户端和服务端</strong></p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fy5goky6jlj31f60gqn21.jpg" alt="image-20181213215604955"></p>
+<p><a href="https://imgchr.com/i/DHVNr9" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHVNr9.png" alt="DHVNr9.png"></a></p>
 <p>对于上图这种中间人，在客户端发送数据到服务端，以及服务端发送数据到客户端的时候都能够劫持。这样多次数据连接都能被劫持。</p>
+<p>针对SSL的中间人攻击方式主要有两类，分别是SSL劫持攻击和SSL剥离攻击：</p>
+<p><strong>SSL劫持攻击</strong></p>
+<p>SSL劫持攻击即SSL证书欺骗攻击，攻击者为了获得HTTPS传输的明文数据，需要先将自己接入到客户端和目标网站之间；在传输过程中伪造服务器的证书，将服务器的公钥替换成自己的公钥，这样，中间人就可以得到明文传输带Key1、Key2和Pre-Master-Key，从而窃取客户端和服务端的通信数据<br> 但是对于客户端来说，如果中间人伪造了证书，在校验证书过程中会提示证书错误，由用户选择继续操作还是返回，由于大多数用户的安全意识不强，会选择继续操作，此时，中间人就可以获取浏览器和服务器之间的通信数据</p>
+<p><strong>SSL剥离攻击</strong></p>
+<p>这种攻击方式也需要将攻击者设置为中间人，之后见HTTPS范文替换为HTTP返回给浏览器，而中间人和服务器之间仍然保持HTTPS服务器。由于HTTP是明文传输的，所以中间人可以获取客户端和服务器传输数据</p>
 <p>不过如果我们利用了CA证书就能解决这个问题。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fy5gz9ipjnj31fg0dm7av.jpg" alt="image-20181213220613309"></p>
+<p><a href="https://imgchr.com/i/DHVDPK" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHVDPK.png" alt="DHVDPK.png"></a></p>
 <p>这是因为，服务端返回给客户端的不再是公钥而是CA证书。客户端会和第三方签名机构进行校验CA证书。CA证书里面有对应的公钥。</p>
 <p>相比之前只发送公钥比，这种就很安全。因为服务端事先会和第三方机构进行对应的签名和授权。</p>
 <p>这样利用CA证书，就能完全预防中间人劫持。</p>
-<h6 id="证书签名生成CA证书"><a href="#证书签名生成CA证书" class="headerlink" title="证书签名生成CA证书"></a>证书签名生成CA证书</h6><p>生成的是自签证书</p>
-<p><strong>生成密钥和CA证书</strong></p>
+<h5 id="证书签名生成CA证书"><a href="#证书签名生成CA证书" class="headerlink" title="证书签名生成CA证书"></a>证书签名生成CA证书</h5><p>生成的是自签证书</p>
+<p>下面我们生成密钥和CA证书：</p>
 <p>首先检查模块是否安装</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# openssl version</span><br><span class="line">OpenSSL 1.0.2k-fips  26 Jan 2017</span><br></pre></td></tr></table></figure>
 <p>Nginx对应模块是否加载</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># nginx -V</span></span><br><span class="line">--with-http_ssl_module</span><br></pre></td></tr></table></figure>
-<p>步骤一：生成key密钥</p>
+<p>步骤一：（利用openssl）生成key密钥</p>
 <p>步骤二：生成证书签名请求文件（csr文件）</p>
 <p>上述两步完成之后就可以一起打包发送到对应的结构 关于网站和公司信息进行CA证书签名，机构将返回CA证书。</p>
 <p>步骤三：生成证书签名文件（CA文件）</p>
-<h6 id="证书签名生成和Nginx的HTTPS服务场景"><a href="#证书签名生成和Nginx的HTTPS服务场景" class="headerlink" title="证书签名生成和Nginx的HTTPS服务场景"></a>证书签名生成和Nginx的HTTPS服务场景</h6><p>生成key文件</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># cd /etc/nginx/</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou nginx]<span class="comment"># mkdir ssl_key</span></span><br><span class="line">[root@hongshaorou nginx]<span class="comment"># cd ssl_key/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成key密钥</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl genrsa -idea -out hongsr.key 1024</span></span><br><span class="line">Generating RSA private key, <span class="number">1024</span> bit long modulus</span><br><span class="line">............++++++</span><br><span class="line">..............++++++</span><br><span class="line">e is <span class="number">65537</span> (<span class="number">0</span>x10001)</span><br><span class="line"><span class="comment"># 根据提示输入密码</span></span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line">Verifying - Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成key文件</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># ls</span></span><br><span class="line">hongsr.key</span><br></pre></td></tr></table></figure>
+<h5 id="证书签名生成和Nginx的HTTPS服务场景"><a href="#证书签名生成和Nginx的HTTPS服务场景" class="headerlink" title="证书签名生成和Nginx的HTTPS服务场景"></a>证书签名生成和Nginx的HTTPS服务场景</h5><blockquote>
+<p>注意：一般生成的文件放在<code>/etc/nginx/ssl</code>目录下，这是个好的习惯。</p>
+</blockquote>
+<p>生成key文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># cd /etc/nginx/</span></span><br><span class="line"></span><br><span class="line">[root@hongshaorou nginx]<span class="comment"># mkdir ssl_key</span></span><br><span class="line">[root@hongshaorou nginx]<span class="comment"># cd ssl_key/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成key密钥   idea 对称加密  1024 加密位数 位数越高 精度越高</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl genrsa -idea -out hongsr.key 1024</span></span><br><span class="line">Generating RSA private key, <span class="number">1024</span> bit long modulus</span><br><span class="line">............++++++</span><br><span class="line">..............++++++</span><br><span class="line">e is <span class="number">65537</span> (<span class="number">0</span>x10001)</span><br><span class="line"><span class="comment"># 根据提示输入密码</span></span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line">Verifying - Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成key文件</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># ls</span></span><br><span class="line">hongsr.key</span><br></pre></td></tr></table></figure>
 <p>生成证书签名请求文件</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl req -new -key hongsr.key  -out hongsr.csr</span></span><br><span class="line"></span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line"><span class="keyword">For</span> some fields there will be a default value,</span><br><span class="line"><span class="keyword">If</span> you enter <span class="string">'.'</span>, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (<span class="number">2</span> letter code) [XX]:CN</span><br><span class="line">State or Province Name (full name) []:Zhejiang</span><br><span class="line">Locality Name (eg, city) [Default City]:Hangzhou</span><br><span class="line">Organization Name (eg, company) [Default Company Ltd]:dabaojian</span><br><span class="line">Organizational Unit Name (eg, section) []:imooc</span><br><span class="line">Common Name (eg, your name or your server<span class="string">'s hostname) []:hongshaorou.com</span></span><br><span class="line"><span class="string">Email Address []:123456@qq.com</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Please enter the following '</span>extra<span class="string">' attributes</span></span><br><span class="line"><span class="string">to be sent with your certificate request</span></span><br><span class="line"><span class="string">A challenge password []:</span></span><br><span class="line"><span class="string">An optional company name []:imooc</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 生成csr文件</span></span><br><span class="line"><span class="string">[root@hongshaorou ssl_key]# ls</span></span><br><span class="line"><span class="string">hongsr.csr  hongsr.key</span></span><br></pre></td></tr></table></figure>
-<p>生成证书</p>
+<blockquote>
+<p>生成这两个文件就可以打包发给三方机构了</p>
+</blockquote>
+<p>生成自签名证书</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ssl_key]<span class="comment"># openssl x509 -req -days 3650 -in hongsr.csr -signkey hongsr.key -out hongsr.crt</span></span><br><span class="line">Signature ok</span><br><span class="line">subject=/C=CN/ST=Zhejiang/L=Hangzhou/O=dabaojian/OU=imooc/CN=hongshaorou.com/emailAddress=<span class="number">123456</span>@qq.com</span><br><span class="line">Getting Private key</span><br><span class="line">Enter pass phrase <span class="keyword">for</span> hongsr.key:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后生成证书</span></span><br><span class="line">[root@hongshaorou ssl_key]<span class="comment"># ls</span></span><br><span class="line">hongsr.crt  hongsr.csr  hongsr.key</span><br></pre></td></tr></table></figure>
 <p>其中的<code>-days 3650</code> 签名证书的过期时间，默认过期时间是一个月。</p>
 <p><strong>Nginx的HTTPS语法配置</strong></p>
@@ -520,9 +530,9 @@
 <p>其他命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//停止 需要输入设置的key密码</span><br><span class="line">nginx -s stop -c /etc/nginx/nginx.conf</span><br><span class="line">//启动</span><br><span class="line">nginx -c /etc/nginx/nginx.conf</span><br><span class="line">//检查语法</span><br><span class="line">nignx -tc /etc/nginx/nginx.cof</span><br><span class="line">//查看端口是否启用</span><br><span class="line">netstat -luntp |grep 443</span><br></pre></td></tr></table></figure>
 <p>访问页面<code>https://192.168.205.10/admin.html</code>将会出现下面的情形</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fy6e06s83hj31440owmzr.jpg" alt="image-20181214170949930"></p>
+<p><a href="https://imgchr.com/i/DHZyF0" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHZyF0.png" alt="DHZyF0.png"></a></p>
 <p>之所以是这样是因为我们的证书是自己的咩有拿到去第三方机构认证，点击高级继续前往将会访问到真正的页面。</p>
-<h6 id="配置苹果要求的HTTPS服务"><a href="#配置苹果要求的HTTPS服务" class="headerlink" title="配置苹果要求的HTTPS服务"></a>配置苹果要求的HTTPS服务</h6><p>下面是苹果公司要求HTTPS要实现的技术细节。</p>
+<h5 id="配置苹果要求的HTTPS服务"><a href="#配置苹果要求的HTTPS服务" class="headerlink" title="配置苹果要求的HTTPS服务"></a>配置苹果要求的HTTPS服务</h5><p>下面是苹果公司要求HTTPS要实现的技术细节。</p>
 <ul>
 <li>服务器所有的连接使用TLS1.2以上的版本(openssl1.0.2)</li>
 <li>https证书必须使用SHA256以上的哈希算法签名</li>
@@ -533,20 +543,21 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou nginx]# openssl version</span><br><span class="line">OpenSSL 1.0.2k-fips  26 Jan 2017</span><br></pre></td></tr></table></figure>
 <p>符合要求不要升级</p>
 <p>查看加密算法</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy6efasaetj31ck0fagoq.jpg" alt="image-20181214172423565"></p>
-<p>加密算法是256，但是位数不是2048。</p>
+<p><a href="https://imgchr.com/i/DHZ5wR" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHZ5wR.png" alt="DHZ5wR.png"></a></p>
+<p>加密算法是256，位数是2048。</p>
 <p>重新生成证书</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ssl_key]# openssl req -days 36500 -x509 -sha256 -nodes -newkey rsa:2048 -keyout hongsr.key -out hongsr.crt</span><br></pre></td></tr></table></figure>
 <p>重启</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ssl_key]# nginx -t</span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf test is successful</span><br><span class="line">[root@hongshaorou ssl_key]#</span><br><span class="line">[root@hongshaorou ssl_key]# nginx -s reload -c /etc/nginx/nginx.conf</span><br><span class="line">[root@hongshaorou ssl_key]# netstat  -tlunp | grep 443</span><br><span class="line">tcp        0      0 0.0.0.0:443             0.0.0.0:*               LISTEN      1744/nginx: worker</span><br></pre></td></tr></table></figure>
-<p>这种配置方式，在重启停止nginx不需要输入key的密码，因为在生成的时候配置了一个参数 -keyout 重新生成新的文件</p>
-<p><strong>生成没有保护码的key</strong><br>生成没有保护码 key 的方式</p>
+<p>这种配置方式，在重启停止nginx不需要输入key的密码，因为在生成的时候配置了一个参数 -keyout 重新生成新的（没有保护码的）文件</p>
+<p>SSL证书去除私钥密码保护 生成没有保护码 key 的方式（通过拷贝的方式去掉密码保护码）:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in ./applelife.key -out ./applelife_nopass.key</span><br></pre></td></tr></table></figure>
-<h6 id="HTTPS服务优化"><a href="#HTTPS服务优化" class="headerlink" title="HTTPS服务优化"></a>HTTPS服务优化</h6><ul>
-<li>激活keepalive长连接</li>
+<h5 id="HTTPS服务优化"><a href="#HTTPS服务优化" class="headerlink" title="HTTPS服务优化"></a>HTTPS服务优化</h5><ul>
+<li>激活keepalive长连接 （连接认证是需要消耗cpu资源的）减少握手</li>
 <li>设置ssl session缓存</li>
 </ul>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">192.33.2.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#让长连接保持更长</span></span><br><span class="line">    <span class="attribute">keepalive</span> <span class="number">100</span>;</span><br><span class="line">    <span class="attribute">ssl</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#设置缓存10M  大约可以存储 8000到10000 个会话</span></span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">    <span class="comment">#配置10分钟 session过期</span></span><br><span class="line">    <span class="attribute">ssl_session_timeout</span>  <span class="number">10m</span>;       </span><br><span class="line"></span><br><span class="line">    <span class="comment">#证书文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/nginx/ssl_key/applelife.crt;</span><br><span class="line">    <span class="comment">#key文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl_key/applelife.key;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ssl session缓存作用：用于缓存 https建立连接后的session key，减少后续因为断开后需要重新建连造成的性能损耗。<br><a href="https://imgchr.com/i/DHmmKe" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHmmKe.png" alt="DHmmKe.png"></a></p>
 
       
     </div>
@@ -792,7 +803,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTPS原理和作用"><span class="nav-number">1.</span> <span class="nav-text">HTTPS原理和作用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#证书签名生成CA证书"><span class="nav-number">2.</span> <span class="nav-text">证书签名生成CA证书</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#证书签名生成和Nginx的HTTPS服务场景"><span class="nav-number">3.</span> <span class="nav-text">证书签名生成和Nginx的HTTPS服务场景</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置苹果要求的HTTPS服务"><span class="nav-number">4.</span> <span class="nav-text">配置苹果要求的HTTPS服务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTPS服务优化"><span class="nav-number">5.</span> <span class="nav-text">HTTPS服务优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTPS原理和作用"><span class="nav-number">1.</span> <span class="nav-text">HTTPS原理和作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#证书签名生成CA证书"><span class="nav-number">2.</span> <span class="nav-text">证书签名生成CA证书</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#证书签名生成和Nginx的HTTPS服务场景"><span class="nav-number">3.</span> <span class="nav-text">证书签名生成和Nginx的HTTPS服务场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置苹果要求的HTTPS服务"><span class="nav-number">4.</span> <span class="nav-text">配置苹果要求的HTTPS服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTPS服务优化"><span class="nav-number">5.</span> <span class="nav-text">HTTPS服务优化</span></a></li></ol></div>
             
 
           </div>
