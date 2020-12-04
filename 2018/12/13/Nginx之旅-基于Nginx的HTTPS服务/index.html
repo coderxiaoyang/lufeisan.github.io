@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现：对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，">
+<meta name="description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 要说清楚 HTTPS 协议的实现原理，至少需要如下几个背景知识。  大致了解几个基本术语（HTTPS、SSL、TLS）的含义 大致了解 HTTP 和 TCP 的关系（尤其是“短连接”VS“长连接”） 大致了">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx之旅-基于Nginx的HTTPS服务">
 <meta property="og:url" content="https://zhaobugs.com/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现：对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，">
+<meta property="og:description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 要说清楚 HTTPS 协议的实现原理，至少需要如下几个背景知识。  大致了解几个基本术语（HTTPS、SSL、TLS）的含义 大致了解 HTTP 和 TCP 的关系（尤其是“短连接”VS“长连接”） 大致了">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHEDXj.png">
 <meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHEbAx.png">
@@ -97,10 +97,10 @@
 <meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHZyF0.png">
 <meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHZ5wR.png">
 <meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DHmmKe.png">
-<meta property="og:updated_time" content="2020-12-03T17:08:30.905Z">
+<meta property="og:updated_time" content="2020-12-04T06:34:56.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-基于Nginx的HTTPS服务">
-<meta name="twitter:description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 HTTPS协议的实现：对传输内容进行加密以及身份验证 对称加密和非对称加密的含义  上图就是一个典型的对称加密，加密方和解密方用的是相同的密钥。  上图是典型的非对称加密，使用的是不同的密钥。公钥用于加密，">
+<meta name="twitter:description" content="HTTPS原理和作用为什么需要HTTPS呢？ 原因：HTTP不安全  传输数据容易被中间人盗用，信息泄露 数据内容劫持，篡改  HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议 要说清楚 HTTPS 协议的实现原理，至少需要如下几个背景知识。  大致了解几个基本术语（HTTPS、SSL、TLS）的含义 大致了解 HTTP 和 TCP 的关系（尤其是“短连接”VS“长连接”） 大致了">
 <meta name="twitter:image" content="https://s3.ax1x.com/2020/12/04/DHEDXj.png">
 
 
@@ -421,7 +421,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,304 字
+                  3,017 字
                 </span>
               
 
@@ -437,7 +437,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10 分钟
+                  13 分钟
                 </span>
               
             </div>
@@ -465,6 +465,14 @@
 <li>数据内容劫持，篡改</li>
 </ol>
 <p>HTTPS是能够解决上述问题的，是因为HTTPS利用了加密的协议</p>
+<p>要说清楚 HTTPS 协议的实现原理，至少需要如下几个背景知识。</p>
+<ol>
+<li>大致了解几个基本术语（HTTPS、SSL、TLS）的含义</li>
+<li>大致了解 HTTP 和 TCP 的关系（尤其是“短连接”VS“长连接”）</li>
+<li>大致了解加密算法的概念（尤其是“对称加密与非对称加密”的区别）</li>
+<li>大致了解 CA 证书的用途</li>
+<li>TCP通信协议的几次握手</li>
+</ol>
 <p><strong>HTTPS协议的实现</strong>：对传输内容进行加密以及身份验证</p>
 <p>对称加密和非对称加密的含义</p>
 <p><a href="https://imgchr.com/i/DHEDXj" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHEDXj.png" alt="DHEDXj.png"></a></p>
@@ -485,6 +493,9 @@
 <p>SSL劫持攻击即SSL证书欺骗攻击，攻击者为了获得HTTPS传输的明文数据，需要先将自己接入到客户端和目标网站之间；在传输过程中伪造服务器的证书，将服务器的公钥替换成自己的公钥，这样，中间人就可以得到明文传输带Key1、Key2和Pre-Master-Key，从而窃取客户端和服务端的通信数据<br> 但是对于客户端来说，如果中间人伪造了证书，在校验证书过程中会提示证书错误，由用户选择继续操作还是返回，由于大多数用户的安全意识不强，会选择继续操作，此时，中间人就可以获取浏览器和服务器之间的通信数据</p>
 <p><strong>SSL剥离攻击</strong></p>
 <p>这种攻击方式也需要将攻击者设置为中间人，之后见HTTPS范文替换为HTTP返回给浏览器，而中间人和服务器之间仍然保持HTTPS服务器。由于HTTP是明文传输的，所以中间人可以获取客户端和服务器传输数据</p>
+<p>SSL(Secure Socket Layer 安全套接层)是基于HTTPS下的一个协议加密层，最初是由网景公司（Netscape）研发，后被IETF（The Internet Engineering Task Force - 互联网工程任务组）标准化后写入（RFCRequest For Comments 请求注释），RFC里包含了很多互联网技术的规范！</p>
+<p>起初是因为HTTP在传输数据时使用的是明文（虽然说POST提交的数据时放在报体里看不到的，但是还是可以通过抓包工具窃取到）是不安全的，为了解决这一隐患网景公司推出了SSL安全套接字协议层，SSL是基于HTTP之下TCP之上的一个协议层，是基于HTTP标准并对TCP传输数据时进行加密，所以HPPTS是HTTP+SSL/TCP的简称。</p>
+<p>由于HTTPS的推出受到了很多人的欢迎，在SSL更新到3.0时，IETF对SSL3.0进行了标准化，并添加了少数机制(但是几乎和SSL3.0无差异)，标准化后的IETF更名为TLS1.0(Transport Layer Security 安全传输层协议)，可以说TLS就是SSL的新版本3.1，并同时发布“RFC2246-TLS加密协议详解”，如果想更深层次的了解TLS的工作原理可以去RFC的官方网站：<a href="http://www.rfc-editor.org，搜索RFC2246即可找到RFC文档！" target="_blank" rel="noopener">www.rfc-editor.org，搜索RFC2246即可找到RFC文档！</a></p>
 <p>不过如果我们利用了CA证书就能解决这个问题。</p>
 <p><a href="https://imgchr.com/i/DHVDPK" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHVDPK.png" alt="DHVDPK.png"></a></p>
 <p>这是因为，服务端返回给客户端的不再是公钥而是CA证书。客户端会和第三方签名机构进行校验CA证书。CA证书里面有对应的公钥。</p>
@@ -552,12 +563,21 @@
 <p>这种配置方式，在重启停止nginx不需要输入key的密码，因为在生成的时候配置了一个参数 -keyout 重新生成新的（没有保护码的）文件</p>
 <p>SSL证书去除私钥密码保护 生成没有保护码 key 的方式（通过拷贝的方式去掉密码保护码）:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in ./applelife.key -out ./applelife_nopass.key</span><br></pre></td></tr></table></figure>
-<h5 id="HTTPS服务优化"><a href="#HTTPS服务优化" class="headerlink" title="HTTPS服务优化"></a>HTTPS服务优化</h5><ul>
-<li>激活keepalive长连接 （连接认证是需要消耗cpu资源的）减少握手</li>
-<li>设置ssl session缓存</li>
+<h5 id="HTTPS服务优化"><a href="#HTTPS服务优化" class="headerlink" title="HTTPS服务优化"></a>HTTPS服务优化</h5><p><strong>减少 CPU 运算量</strong></p>
+<p>SSL 的运行计算需要消耗额外的 CPU 资源，一般多核处理器系统会运行多个工作进程(<a href="http://nginx.org/en/docs/ngx_core_module.html#worker_processes" target="_blank" rel="noopener">worker processes </a>)，进程的数量不会少于可用的 CPU 核数。SSL 通讯过程中『握手』阶段的运算最占用 CPU 资源，有两个方法可以减少每台客户端的运算量：</p>
+<ul>
+<li><strong>激活 <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#keepalive_timeout" target="_blank" rel="noopener">keepalive</a> 长连接，一个连接发送更多个请求</strong></li>
+<li><strong>复用 SSL 会话参数，在并行并发的连接数中避免进行多次 SSL『握手』</strong>（设置ssl session缓存）</li>
 </ul>
+<p>这些会话会存储在一个 SSL 会话缓存里面，通过命令 <a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_cache" target="_blank" rel="noopener">ssl_session_cache</a> 配置，可以使缓存在机器间共享，然后利用客戶端在『握手』阶段使用的 <code>seesion id</code> 去查询服务端的 session cathe(如果服务端设置有的话)，简化『握手』阶段。</p>
+<p>1M 的会话缓存大概包含 4000 個会话，默认的缓存超时时间为 5 分钟，可以通过使用 <a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_timeout" target="_blank" rel="noopener">ssl_session_timeout</a> 命令设置缓存超时时间。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">192.33.2.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#让长连接保持更长</span></span><br><span class="line">    <span class="attribute">keepalive</span> <span class="number">100</span>;</span><br><span class="line">    <span class="attribute">ssl</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#设置缓存10M  大约可以存储 8000到10000 个会话</span></span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">    <span class="comment">#配置10分钟 session过期</span></span><br><span class="line">    <span class="attribute">ssl_session_timeout</span>  <span class="number">10m</span>;       </span><br><span class="line"></span><br><span class="line">    <span class="comment">#证书文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/nginx/ssl_key/applelife.crt;</span><br><span class="line">    <span class="comment">#key文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl_key/applelife.key;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>ssl session缓存作用：用于缓存 https建立连接后的session key，减少后续因为断开后需要重新建连造成的性能损耗。<br><a href="https://imgchr.com/i/DHmmKe" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DHmmKe.png" alt="DHmmKe.png"></a></p>
+<p>推荐阅读:</p>
+<p><a href="https://aotu.io/notes/2016/08/16/nginx-https/index.html" target="_blank" rel="noopener">Nginx 配置 HTTPS 服务器</a></p>
+<p><a href="http://blog.timd.cn/nginx-https/" target="_blank" rel="noopener">HTTPS协议和原理</a></p>
+<p><a href="https://www.jianshu.com/p/a825de42ccbc" target="_blank" rel="noopener">MITM攻击(中间人攻击)</a></p>
+<p><a href="https://juejin.cn/post/6844903609138692110" target="_blank" rel="noopener">菜鸟学网络之 —— 长连接和短连接</a></p>
 
       
     </div>
