@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="网上看到的一个不错的帖子 记录下 新建一个Python文件输入以下内容： 123e = &amp;#123;&apos;合作社&apos;, &apos;经济&apos;, &apos;财税&apos;, &apos;账&apos;, &apos;旅行社&apos;, &apos;维修&apos;, &apos;押运&apos;, &apos;管理咨询&apos;, &apos;基业&apos;, &apos;养生&apos;, &apos;雕塑&apos;, &apos;上海警&apos;, &apos;首饰&apos;, &apos;商行&apos;, &apos;电脑&apos;, &apos;人才网&apos;, &apos;素食&apos;, &apos;日用制品&apos;, &apos;铝制品&apos;, &apos;百货&apos;, &apos;银行&apos;, &apos;产业园&apos;, &apos;商学院&apos;, &apos;驾">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python源文件一行字符过长造成的问题">
+<meta property="og:url" content="https://zhaobugs.com/2019/12/04/Python源文件一行字符过长造成的问题/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="网上看到的一个不错的帖子 记录下 新建一个Python文件输入以下内容： 123e = &amp;#123;&apos;合作社&apos;, &apos;经济&apos;, &apos;财税&apos;, &apos;账&apos;, &apos;旅行社&apos;, &apos;维修&apos;, &apos;押运&apos;, &apos;管理咨询&apos;, &apos;基业&apos;, &apos;养生&apos;, &apos;雕塑&apos;, &apos;上海警&apos;, &apos;首饰&apos;, &apos;商行&apos;, &apos;电脑&apos;, &apos;人才网&apos;, &apos;素食&apos;, &apos;日用制品&apos;, &apos;铝制品&apos;, &apos;百货&apos;, &apos;银行&apos;, &apos;产业园&apos;, &apos;商学院&apos;, &apos;驾">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/04/DbqLUs.png">
+<meta property="og:updated_time" content="2020-12-04T10:37:36.523Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python源文件一行字符过长造成的问题">
+<meta name="twitter:description" content="网上看到的一个不错的帖子 记录下 新建一个Python文件输入以下内容： 123e = &amp;#123;&apos;合作社&apos;, &apos;经济&apos;, &apos;财税&apos;, &apos;账&apos;, &apos;旅行社&apos;, &apos;维修&apos;, &apos;押运&apos;, &apos;管理咨询&apos;, &apos;基业&apos;, &apos;养生&apos;, &apos;雕塑&apos;, &apos;上海警&apos;, &apos;首饰&apos;, &apos;商行&apos;, &apos;电脑&apos;, &apos;人才网&apos;, &apos;素食&apos;, &apos;日用制品&apos;, &apos;铝制品&apos;, &apos;百货&apos;, &apos;银行&apos;, &apos;产业园&apos;, &apos;商学院&apos;, &apos;驾">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/04/DbqLUs.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2019/12/04/Python源文件一行字符过长造成的问题/"/>
+
+
+
+
+
+  <title>Python源文件一行字符过长造成的问题 | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/12/04/Python源文件一行字符过长造成的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python源文件一行字符过长造成的问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-04T18:20:42+08:00">
+                2019-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/04/Python源文件一行字符过长造成的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/12/04/Python源文件一行字符过长造成的问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/12/04/Python源文件一行字符过长造成的问题/" class="leancloud_visitors" data-flag-title="Python源文件一行字符过长造成的问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,620 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>网上看到的一个不错的帖子 记录下</p>
+<p>新建一个Python文件输入以下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e = &#123;<span class="string">'合作社'</span>, <span class="string">'经济'</span>, <span class="string">'财税'</span>, <span class="string">'账'</span>, <span class="string">'旅行社'</span>, <span class="string">'维修'</span>, <span class="string">'押运'</span>, <span class="string">'管理咨询'</span>, <span class="string">'基业'</span>, <span class="string">'养生'</span>, <span class="string">'雕塑'</span>, <span class="string">'上海警'</span>, <span class="string">'首饰'</span>, <span class="string">'商行'</span>, <span class="string">'电脑'</span>, <span class="string">'人才网'</span>, <span class="string">'素食'</span>, <span class="string">'日用制品'</span>, <span class="string">'铝制品'</span>, <span class="string">'百货'</span>, <span class="string">'银行'</span>, <span class="string">'产业园'</span>, <span class="string">'商学院'</span>, <span class="string">'驾驶培训'</span>, <span class="string">'生活'</span>, <span class="string">'潜水服务'</span>, <span class="string">'电视台'</span>, <span class="string">'贸易'</span>, <span class="string">'副食'</span>, <span class="string">'铝业'</span>, <span class="string">'风投'</span>, <span class="string">'财经'</span>, <span class="string">'警察协会'</span>, <span class="string">'试验'</span>, <span class="string">'展会'</span>, <span class="string">'金融'</span>, <span class="string">'陶艺'</span>, <span class="string">'营业部'</span>, <span class="string">'眼镜'</span>, <span class="string">'物业'</span>, <span class="string">'飞手'</span>, <span class="string">'实验'</span>, <span class="string">'幼教'</span>, <span class="string">'超市'</span>, <span class="string">'植保机用户'</span>, <span class="string">'农服'</span>, <span class="string">'教育'</span>, <span class="string">'会展'</span>, <span class="string">'销售'</span>, <span class="string">'果业'</span>, <span class="string">'保险'</span>, <span class="string">'生态园'</span>, <span class="string">'企业管理'</span>, <span class="string">'印刷'</span>, <span class="string">'电力局'</span>, <span class="string">'传播'</span>, <span class="string">'贷'</span>, <span class="string">'拆迁'</span>, <span class="string">'装饰'</span>, <span class="string">'养老'</span>, <span class="string">'人寿'</span>, <span class="string">'生活馆'</span>, <span class="string">'财务'</span>, <span class="string">'餐饮'</span>, <span class="string">'咨询服务'</span>, <span class="string">'出品'</span>, <span class="string">'个体'</span>, <span class="string">'办公'</span>, <span class="string">'自由职业'</span>, <span class="string">'动漫'</span>, <span class="string">'中央'</span>, <span class="string">'商务'</span>, <span class="string">'老年人'</span>, <span class="string">'农资'</span>, <span class="string">'新华社'</span>, <span class="string">'博览会'</span>, <span class="string">'新华网'</span>, <span class="string">'珠宝'</span>, <span class="string">'航展'</span>, <span class="string">'工贸'</span>, <span class="string">'专利'</span>, <span class="string">'市政'</span>, <span class="string">'体验'</span>, <span class="string">'网吧'</span>, <span class="string">'水敏纸检测喷潵效果'</span>, <span class="string">'破产'</span>, <span class="string">'大申网'</span>, <span class="string">'促进会'</span>, <span class="string">'酒业'</span>, <span class="string">'烟草'</span>, <span class="string">'家政'</span>, <span class="string">'威海警'</span>, <span class="string">'自来水'</span>, <span class="string">'代理'</span>, <span class="string">'售货'</span>, <span class="string">'创意'</span>, <span class="string">'基金'</span>, <span class="string">'进出口'</span>, <span class="string">'融资'</span>, <span class="string">'银联'</span>, <span class="string">'制衣'</span>, <span class="string">'暂无'</span>, <span class="string">'成人'</span>, <span class="string">'影视'</span>, <span class="string">'VC'</span>, <span class="string">'英烈'</span>, <span class="string">'风水'</span>, <span class="string">'营销'</span>, <span class="string">'摄影'</span>, <span class="string">'小公司'</span>, <span class="string">'广告'</span>, <span class="string">'国贸'</span>, <span class="string">'服饰'</span>, <span class="string">'招聘'</span>, <span class="string">'创业'</span>, <span class="string">'新闻'</span>, <span class="string">'兽药'</span>, <span class="string">'体育节'</span>, <span class="string">'母婴'</span>, <span class="string">'还没定'</span>, <span class="string">'农村信用合作社'</span>, <span class="string">'人力'</span>, <span class="string">'国际货运'</span>, <span class="string">'职业技能'</span>, <span class="string">'知识产权'</span>, <span class="string">'酒店'</span>, <span class="string">'理发'</span>, <span class="string">'中财'</span>, <span class="string">'经营'</span>, <span class="string">'体检'</span>, <span class="string">'证券'</span>, <span class="string">'宾馆'</span>, <span class="string">'科贸'</span>, <span class="string">'经销'</span>, <span class="string">'个人'</span>, <span class="string">'报社'</span>, <span class="string">'宇辰世纪'</span>, <span class="string">'旅游'</span>, <span class="string">'展览'</span>, <span class="string">'演出'</span>, <span class="string">'宇辰网'</span>, <span class="string">'出版社'</span>, <span class="string">'媒体'</span>, <span class="string">'认证咨询'</span>, <span class="string">'电子商务'</span>, <span class="string">'孵化'</span>, <span class="string">'化妆'</span>, <span class="string">'职业学院'</span>, <span class="string">'拍卖'</span>, <span class="string">'葬'</span>, <span class="string">'杂货'</span>, <span class="string">'五金'</span>, <span class="string">'传媒'</span>, <span class="string">'配件店'</span>, <span class="string">'应用服务'</span>, <span class="string">'妈妈'</span>, <span class="string">'助理'</span>, <span class="string">'新华书店'</span>, <span class="string">'卫视'</span>, <span class="string">'路店'</span>, <span class="string">'驾驶员培训'</span>, <span class="string">'道具'</span>, <span class="string">'世强'</span>, <span class="string">'小卖部'</span>, <span class="string">'待业'</span>, <span class="string">'医院'</span>, <span class="string">'外贸转卖'</span>, <span class="string">'培训'</span>, <span class="string">'会所'</span>, <span class="string">'趣味'</span>, <span class="string">'门诊'</span>, <span class="string">'资产管理'</span>, <span class="string">'日用品'</span>, <span class="string">'……'</span>, <span class="string">'资本'</span>, <span class="string">'礼仪'</span>, <span class="string">'商贸'</span>, <span class="string">'供电局'</span>, <span class="string">'管理局'</span>, <span class="string">'文化'</span>, <span class="string">'用户'</span>, <span class="string">'协会'</span>, <span class="string">'政府'</span>, <span class="string">'商旅'</span>, <span class="string">'展览会'</span>, <span class="string">'个体户'</span>, <span class="string">'食物'</span>, <span class="string">'小学'</span>, <span class="string">'云知声'</span>, <span class="string">'地铁店'</span>, <span class="string">'信用社'</span>, <span class="string">'CCTV'</span>, <span class="string">'园林'</span>, <span class="string">'墓'</span>, <span class="string">'学校'</span>, <span class="string">'杂志'</span>, <span class="string">'区块链'</span>, <span class="string">'商店'</span>, <span class="string">'俱乐部'</span>, <span class="string">'财富'</span>, <span class="string">'食品'</span>, <span class="string">'股权'</span>, <span class="string">'便利店'</span>, <span class="string">'投资'</span>, <span class="string">'机关'</span>, <span class="string">'租赁'</span>, <span class="string">'茶业'</span>, <span class="string">'农夫'</span>, <span class="string">'种业'</span>, <span class="string">'职业技术学院'</span>, <span class="string">'连锁'</span>, <span class="string">'政界'</span>, <span class="string">'金属'</span>, <span class="string">'电商'</span>, <span class="string">'政治'</span>, <span class="string">'Suffice Ind. Tech. Ltd.'</span>, <span class="string">'装潢'</span>, <span class="string">'犬业'</span>, <span class="string">'城管'</span>, <span class="string">'纤维'</span>, <span class="string">'新媒体'</span>, <span class="string">'交易中心'</span>, <span class="string">'经贸'</span>, <span class="string">'分店'</span>, <span class="string">'报纸'</span>, <span class="string">'#NAME?'</span>, <span class="string">'质量检测'</span>, <span class="string">'社区'</span>, <span class="string">'资讯'</span>, <span class="string">'劳务'</span>, <span class="string">'担保'</span>&#125;</span><br><span class="line"></span><br><span class="line">print(e)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 上面 e 内容在一行 未分行</p>
+</blockquote>
+<p>然后直接运行该源文件, 就得到了以下报错:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SyntaxError: Non-UTF<span class="number">-8</span> code starting <span class="keyword">with</span> <span class="string">'\xe7'</span> <span class="keyword">in</span> file  on line <span class="number">1</span>, but no encoding declared; see http://python.org/dev/peps/pep<span class="number">-0263</span>/ <span class="keyword">for</span> details</span><br></pre></td></tr></table></figure>
+<p>为什么会出现这种报错呢？我们看看一位大佬的想法：</p>
+<p>应该是Python在解析源码时出问题了，涉及到的代码在decoding_fgets。</p>
+<p>Python 解析源码时通过 decoding_fgets 读取一行源码至 buffer 中，decoding_fgets 可能使用两种方式从文件中读取源码：</p>
+<p>1.假如在文件开头指定了文件编码或者文件包含 utf-8 BOM，则使用 io.open以该编码打开文件，使用 readline 方法读取一行源码。</p>
+<p>2.假如没有指定编码，则使用 Py_UniversalNewlineFgets 读取一行源码。</p>
+<p>使用方式1读取源码没有任何问题。</p>
+<p>当使用方式2时，Python 会通过valid_utf8检查读取到的代码的编码是不是合法的 utf8，一般情况下这也没有问题，但是 buffer 的初始长度是1024字节，如果一行代码太长（超过1023字节），则需要分多次读取，buffer 长度每次递增1024。运气差的情况下，分次读取时正好把一个汉字的字节给切分开，这就会导致编码错误。</p>
+<p>我们按照第一种思路加上编码声明试下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">e = &#123;<span class="string">'合作社'</span>, <span class="string">'经济'</span>, <span class="string">'财税'</span>, <span class="string">'账'</span>, <span class="string">'旅行社'</span>, <span class="string">'维修'</span>, <span class="string">'押运'</span>, <span class="string">'管理咨询'</span>, <span class="string">'基业'</span>, <span class="string">'养生'</span>, <span class="string">'雕塑'</span>, <span class="string">'上海警'</span>, <span class="string">'首饰'</span>, <span class="string">'商行'</span>, <span class="string">'电脑'</span>, <span class="string">'人才网'</span>, <span class="string">'素食'</span>, <span class="string">'日用制品'</span>, <span class="string">'铝制品'</span>, <span class="string">'百货'</span>, <span class="string">'银行'</span>, <span class="string">'产业园'</span>, <span class="string">'商学院'</span>, <span class="string">'驾驶培训'</span>, <span class="string">'生活'</span>, <span class="string">'潜水服务'</span>, <span class="string">'电视台'</span>, <span class="string">'贸易'</span>, <span class="string">'副食'</span>, <span class="string">'铝业'</span>, <span class="string">'风投'</span>, <span class="string">'财经'</span>, <span class="string">'警察协会'</span>, <span class="string">'试验'</span>, <span class="string">'展会'</span>, <span class="string">'金融'</span>, <span class="string">'陶艺'</span>, <span class="string">'营业部'</span>, <span class="string">'眼镜'</span>, <span class="string">'物业'</span>, <span class="string">'飞手'</span>, <span class="string">'实验'</span>, <span class="string">'幼教'</span>, <span class="string">'超市'</span>, <span class="string">'植保机用户'</span>, <span class="string">'农服'</span>, <span class="string">'教育'</span>, <span class="string">'会展'</span>, <span class="string">'销售'</span>, <span class="string">'果业'</span>, <span class="string">'保险'</span>, <span class="string">'生态园'</span>, <span class="string">'企业管理'</span>, <span class="string">'印刷'</span>, <span class="string">'电力局'</span>, <span class="string">'传播'</span>, <span class="string">'贷'</span>, <span class="string">'拆迁'</span>, <span class="string">'装饰'</span>, <span class="string">'养老'</span>, <span class="string">'人寿'</span>, <span class="string">'生活馆'</span>, <span class="string">'财务'</span>, <span class="string">'餐饮'</span>, <span class="string">'咨询服务'</span>, <span class="string">'出品'</span>, <span class="string">'个体'</span>, <span class="string">'办公'</span>, <span class="string">'自由职业'</span>, <span class="string">'动漫'</span>, <span class="string">'中央'</span>, <span class="string">'商务'</span>, <span class="string">'老年人'</span>, <span class="string">'农资'</span>, <span class="string">'新华社'</span>, <span class="string">'博览会'</span>, <span class="string">'新华网'</span>, <span class="string">'珠宝'</span>, <span class="string">'航展'</span>, <span class="string">'工贸'</span>, <span class="string">'专利'</span>, <span class="string">'市政'</span>, <span class="string">'体验'</span>, <span class="string">'网吧'</span>, <span class="string">'水敏纸检测喷潵效果'</span>, <span class="string">'破产'</span>, <span class="string">'大申网'</span>, <span class="string">'促进会'</span>, <span class="string">'酒业'</span>, <span class="string">'烟草'</span>, <span class="string">'家政'</span>, <span class="string">'威海警'</span>, <span class="string">'自来水'</span>, <span class="string">'代理'</span>, <span class="string">'售货'</span>, <span class="string">'创意'</span>, <span class="string">'基金'</span>, <span class="string">'进出口'</span>, <span class="string">'融资'</span>, <span class="string">'银联'</span>, <span class="string">'制衣'</span>, <span class="string">'暂无'</span>, <span class="string">'成人'</span>, <span class="string">'影视'</span>, <span class="string">'VC'</span>, <span class="string">'英烈'</span>, <span class="string">'风水'</span>, <span class="string">'营销'</span>, <span class="string">'摄影'</span>, <span class="string">'小公司'</span>, <span class="string">'广告'</span>, <span class="string">'国贸'</span>, <span class="string">'服饰'</span>, <span class="string">'招聘'</span>, <span class="string">'创业'</span>, <span class="string">'新闻'</span>, <span class="string">'兽药'</span>, <span class="string">'体育节'</span>, <span class="string">'母婴'</span>, <span class="string">'还没定'</span>, <span class="string">'农村信用合作社'</span>, <span class="string">'人力'</span>, <span class="string">'国际货运'</span>, <span class="string">'职业技能'</span>, <span class="string">'知识产权'</span>, <span class="string">'酒店'</span>, <span class="string">'理发'</span>, <span class="string">'中财'</span>, <span class="string">'经营'</span>, <span class="string">'体检'</span>, <span class="string">'证券'</span>, <span class="string">'宾馆'</span>, <span class="string">'科贸'</span>, <span class="string">'经销'</span>, <span class="string">'个人'</span>, <span class="string">'报社'</span>, <span class="string">'宇辰世纪'</span>, <span class="string">'旅游'</span>, <span class="string">'展览'</span>, <span class="string">'演出'</span>, <span class="string">'宇辰网'</span>, <span class="string">'出版社'</span>, <span class="string">'媒体'</span>, <span class="string">'认证咨询'</span>, <span class="string">'电子商务'</span>, <span class="string">'孵化'</span>, <span class="string">'化妆'</span>, <span class="string">'职业学院'</span>, <span class="string">'拍卖'</span>, <span class="string">'葬'</span>, <span class="string">'杂货'</span>, <span class="string">'五金'</span>, <span class="string">'传媒'</span>, <span class="string">'配件店'</span>, <span class="string">'应用服务'</span>, <span class="string">'妈妈'</span>, <span class="string">'助理'</span>, <span class="string">'新华书店'</span>, <span class="string">'卫视'</span>, <span class="string">'路店'</span>, <span class="string">'驾驶员培训'</span>, <span class="string">'道具'</span>, <span class="string">'世强'</span>, <span class="string">'小卖部'</span>, <span class="string">'待业'</span>, <span class="string">'医院'</span>, <span class="string">'外贸转卖'</span>, <span class="string">'培训'</span>, <span class="string">'会所'</span>, <span class="string">'趣味'</span>, <span class="string">'门诊'</span>, <span class="string">'资产管理'</span>, <span class="string">'日用品'</span>, <span class="string">'……'</span>, <span class="string">'资本'</span>, <span class="string">'礼仪'</span>, <span class="string">'商贸'</span>, <span class="string">'供电局'</span>, <span class="string">'管理局'</span>, <span class="string">'文化'</span>, <span class="string">'用户'</span>, <span class="string">'协会'</span>, <span class="string">'政府'</span>, <span class="string">'商旅'</span>, <span class="string">'展览会'</span>, <span class="string">'个体户'</span>, <span class="string">'食物'</span>, <span class="string">'小学'</span>, <span class="string">'云知声'</span>, <span class="string">'地铁店'</span>, <span class="string">'信用社'</span>, <span class="string">'CCTV'</span>, <span class="string">'园林'</span>, <span class="string">'墓'</span>, <span class="string">'学校'</span>, <span class="string">'杂志'</span>, <span class="string">'区块链'</span>, <span class="string">'商店'</span>, <span class="string">'俱乐部'</span>, <span class="string">'财富'</span>, <span class="string">'食品'</span>, <span class="string">'股权'</span>, <span class="string">'便利店'</span>, <span class="string">'投资'</span>, <span class="string">'机关'</span>, <span class="string">'租赁'</span>, <span class="string">'茶业'</span>, <span class="string">'农夫'</span>, <span class="string">'种业'</span>, <span class="string">'职业技术学院'</span>, <span class="string">'连锁'</span>, <span class="string">'政界'</span>, <span class="string">'金属'</span>, <span class="string">'电商'</span>, <span class="string">'政治'</span>, <span class="string">'Suffice Ind. Tech. Ltd.'</span>, <span class="string">'装潢'</span>, <span class="string">'犬业'</span>, <span class="string">'城管'</span>, <span class="string">'纤维'</span>, <span class="string">'新媒体'</span>, <span class="string">'交易中心'</span>, <span class="string">'经贸'</span>, <span class="string">'分店'</span>, <span class="string">'报纸'</span>, <span class="string">'#NAME?'</span>, <span class="string">'质量检测'</span>, <span class="string">'社区'</span>, <span class="string">'资讯'</span>, <span class="string">'劳务'</span>, <span class="string">'担保'</span>&#125;</span><br><span class="line"></span><br><span class="line">print(e)</span><br></pre></td></tr></table></figure>
+<p>这样的确不再报错了</p>
+<p>第二种格式化代码试下<br><a href="https://imgchr.com/i/DbqLUs" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/04/DbqLUs.png" alt="DbqLUs.png"></a></p>
+<p>这样也不再报错了</p>
+<p>从这个问题我们学到了CPython读取源文件是这么读取的，如果按照 PEP8 规范老老实实写上 声明源文件编码的 Shebang(即使是 Python3 也应该如此), 代码规范按照 PEP8 限制下最大长度就不会出现这个问题。</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/07/自定义Tornado请求日志格式/" rel="next" title="自定义Tornado请求日志格式">
+                <i class="fa fa-chevron-left"></i> 自定义Tornado请求日志格式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/05/Python异常记录Traceback模块详解/" rel="prev" title="Python异常记录Traceback模块详解">
+                Python异常记录Traceback模块详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">165</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
