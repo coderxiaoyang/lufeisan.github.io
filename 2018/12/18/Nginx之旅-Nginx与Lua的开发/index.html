@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="MySQL," />
+  <meta name="keywords" content="Nginx," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="影响性能的几个方面1. 服务器硬件的影响包括：CPU，内存，磁盘IO等 2.服务器的操作系统的影响 3.数据库存储引擎的选择（插件式存储引擎） MyISAM：不支持事务，表级锁。InnoDB：事务级存储引擎，完美支持行级锁，事务AICD特性。 4.数据库服务器的配置参数（影响最为关键） 不同的配置参数对性能的影响不同。 5.数据库结构设计和SQL语句的影响数据库的优化重点在于数据库表结构设计和SQ">
-<meta name="keywords" content="MySQL">
+<meta name="description" content="Lua简介Lua是一个简洁、轻量、可扩展的脚本语言 Lua教程 Nginx和Lua的结合能够充分结合Nginx的并发处理epoll优势和Lua的轻量实现简单的功能且高并发的场景。 Lua 基础语法安装解释器 1[root@hongshaorou ~]# yum install lua 可以直接在shell环境下运行 1234[root@hongshaorou ~]# luaLua 5.1.4  C">
+<meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL数据库架构--什么影响了MySQL性能-上">
-<meta property="og:url" content="https://zhaobugs.com/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/index.html">
+<meta property="og:title" content="Nginx之旅-Nginx与Lua的开发">
+<meta property="og:url" content="https://zhaobugs.com/2018/12/18/Nginx之旅-Nginx与Lua的开发/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="影响性能的几个方面1. 服务器硬件的影响包括：CPU，内存，磁盘IO等 2.服务器的操作系统的影响 3.数据库存储引擎的选择（插件式存储引擎） MyISAM：不支持事务，表级锁。InnoDB：事务级存储引擎，完美支持行级锁，事务AICD特性。 4.数据库服务器的配置参数（影响最为关键） 不同的配置参数对性能的影响不同。 5.数据库结构设计和SQL语句的影响数据库的优化重点在于数据库表结构设计和SQ">
+<meta property="og:description" content="Lua简介Lua是一个简洁、轻量、可扩展的脚本语言 Lua教程 Nginx和Lua的结合能够充分结合Nginx的并发处理epoll优势和Lua的轻量实现简单的功能且高并发的场景。 Lua 基础语法安装解释器 1[root@hongshaorou ~]# yum install lua 可以直接在shell环境下运行 1234[root@hongshaorou ~]# luaLua 5.1.4  C">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-09T16:33:57.557Z">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/08/DzryOs.png">
+<meta property="og:updated_time" content="2020-12-07T17:05:32.222Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL数据库架构--什么影响了MySQL性能-上">
-<meta name="twitter:description" content="影响性能的几个方面1. 服务器硬件的影响包括：CPU，内存，磁盘IO等 2.服务器的操作系统的影响 3.数据库存储引擎的选择（插件式存储引擎） MyISAM：不支持事务，表级锁。InnoDB：事务级存储引擎，完美支持行级锁，事务AICD特性。 4.数据库服务器的配置参数（影响最为关键） 不同的配置参数对性能的影响不同。 5.数据库结构设计和SQL语句的影响数据库的优化重点在于数据库表结构设计和SQ">
+<meta name="twitter:title" content="Nginx之旅-Nginx与Lua的开发">
+<meta name="twitter:description" content="Lua简介Lua是一个简洁、轻量、可扩展的脚本语言 Lua教程 Nginx和Lua的结合能够充分结合Nginx的并发处理epoll优势和Lua的轻量实现简单的功能且高并发的场景。 Lua 基础语法安装解释器 1[root@hongshaorou ~]# yum install lua 可以直接在shell环境下运行 1234[root@hongshaorou ~]# luaLua 5.1.4  C">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/08/DzryOs.png">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2018/12/18/Nginx之旅-Nginx与Lua的开发/"/>
 
 
 
 
 
-  <title>MySQL数据库架构--什么影响了MySQL性能-上 | 码农小杨的笔记</title>
+  <title>Nginx之旅-Nginx与Lua的开发 | 码农小杨的笔记</title>
   
 
 
@@ -303,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/12/18/Nginx之旅-Nginx与Lua的开发/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL数据库架构--什么影响了MySQL性能-上</h1>
+          <h1 class="post-title" itemprop="name headline">Nginx之旅-Nginx与Lua的开发</h1>
         
 
         <div class="post-meta">
@@ -332,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-09T23:05:57+08:00">
-                2018-01-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-18T13:25:08+08:00">
+                2018-12-18
               </time>
             
 
@@ -355,8 +357,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
                   </a>
                 </span>
 
@@ -373,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/" itemprop="commentCount"></span>
+                <a href="/2018/12/18/Nginx之旅-Nginx与Lua的开发/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/18/Nginx之旅-Nginx与Lua的开发/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +384,7 @@
 
           
           
-             <span id="/2018/01/09/MySQL数据库架构-什么影响了MySQL性能/" class="leancloud_visitors" data-flag-title="MySQL数据库架构--什么影响了MySQL性能-上">
+             <span id="/2018/12/18/Nginx之旅-Nginx与Lua的开发/" class="leancloud_visitors" data-flag-title="Nginx之旅-Nginx与Lua的开发">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,019 字
+                  1,122 字
                 </span>
               
 
@@ -428,7 +430,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -449,138 +451,119 @@
       
 
       
-        <h6 id="影响性能的几个方面"><a href="#影响性能的几个方面" class="headerlink" title="影响性能的几个方面"></a>影响性能的几个方面</h6><p><strong>1. 服务器硬件的影响</strong><br>包括：CPU，内存，磁盘IO等</p>
-<p><strong>2.服务器的操作系统的影响</strong></p>
-<p><strong>3.数据库存储引擎的选择（插件式存储引擎）</strong></p>
-<p><code>MyISAM</code>：不支持事务，表级锁。<br><code>InnoDB</code>：事务级存储引擎，完美支持行级锁，事务<code>AICD</code>特性。</p>
-<p><strong>4.数据库服务器的配置参数（影响最为关键）</strong></p>
-<p>不同的配置参数对性能的影响不同。</p>
-<p><strong>5.数据库结构设计和SQL语句的影响</strong><br>数据库的优化重点在于数据库表结构设计和SQL语句的编写和优化</p>
-<h5 id="服务器硬件对性能的影响和优化"><a href="#服务器硬件对性能的影响和优化" class="headerlink" title="服务器硬件对性能的影响和优化"></a>服务器硬件对性能的影响和优化</h5><h6 id="CPU资源和可用内存大小"><a href="#CPU资源和可用内存大小" class="headerlink" title="CPU资源和可用内存大小"></a>CPU资源和可用内存大小</h6><p>当我们要使用的热数据大小远远超过内存大小的时候<code>I/O</code>系统可能就会成为我们系统的瓶颈。</p>
-<p>因此CPU和可用内存大小，网络和磁盘I/O是影响性能的服务器硬件。</p>
-<p><strong>如何选择CPU？</strong><br>CPU的频率和核心数的选择：</p>
-<p>一些进程绝大多数时间在计算上，称为计算密集型（CPU密集型）computer-bound。<br>有一些进程则在input和output上花费了大多时间，称为I/O密集型，I/O-bound。比如搜索引擎蜘蛛大多时间是在等待相应这种就属于I/O密集型。</p>
-<p>当应用是CPU密集型的时候，为了加快SQL语句的运行速度，应该选择更好的CPU而不是更多的。</p>
-<p>衡量数据库处理能力的指标：QPS（同时处理SQL的数量是秒级别的）<br>当对并发量有要求的时候，则是增加核数。 </p>
-<blockquote>
-<p>64位架构CPU上使用32位的服务器版本时（MySQL是单线程的）</p>
-</blockquote>
-<p><strong>如何选择内存？（内存的I/O远大于其他的）</strong><br>把数据缓存到内存中进行读取，可以大大提升数据库的性能</p>
-<p>在常用的MySQL存储引擎中:</p>
-<p>MyISAM：<br>会将索引缓存到内存<br>将数据通过操作系统进行缓存</p>
-<p>InnoDB：<br>会同时在内存中缓存数据和索引，从而提高数据库的效率</p>
-<p>我们需要明白一点，内存对性能的影响是有限的，并不能无限的增加性能。<br>数据库可以利用的内存是有限的，一般当缓存的数据和磁盘的数据一样时，即所有的数据被缓存到内存后，再增加内存的大小是没有意义的。</p>
-<p>缓存不仅对读进行方便对写也是很方便。我们可以将多次写操作放到缓存中，然后一次写入到磁盘中。</p>
-<blockquote>
-<p> 内存的主频和服务器的主频一致，频率越高读取速度越快</p>
-</blockquote>
-<p><strong>磁盘的配置和选择</strong></p>
-<p>数据最终还是要保存到磁盘上，因此磁盘<code>I/O</code>还是影响数据库性能主要因素之一。</p>
-<p>常用磁盘I/O：</p>
-<ul>
-<li><p>使用传统机器硬盘</p>
-</li>
-<li><p>使用RAID增强传统机器硬盘的性能</p>
-</li>
-<li><p>使用固态存储SSD和PCIe卡</p>
-</li>
-<li><p>使用网络存储NAS和SAN</p>
-</li>
-</ul>
-<p>传统机器磁盘：最常见，使用最多，价格低，存储空间大，读写较慢（读写速度却决于工作机制）</p>
-<p>传统机器硬盘读取数据的过程：</p>
+        <h5 id="Lua简介"><a href="#Lua简介" class="headerlink" title="Lua简介"></a>Lua简介</h5><p><code>Lua</code>是一个简洁、轻量、可扩展的脚本语言 <a href="http://www.runoob.com/lua/lua-tutorial.html" target="_blank" rel="noopener">Lua教程</a></p>
+<p><code>Nginx</code>和<code>Lua</code>的结合能够充分结合<code>Nginx</code>的并发处理<code>epoll</code>优势和<code>Lua</code>的轻量实现简单的功能且高并发的场景。</p>
+<h5 id="Lua-基础语法"><a href="#Lua-基础语法" class="headerlink" title="Lua 基础语法"></a>Lua 基础语法</h5><p>安装解释器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# yum install lua</span><br></pre></td></tr></table></figure>
+<p>可以直接在shell环境下运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]# lua</span><br><span class="line">Lua 5.1.4  Copyright (C) 1994-2008 Lua.org, PUC-Rio</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">print</span>(<span class="string">"hello world"</span>)</span></span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<p>也可以执行脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> test.lua</span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/lua</span></span><br><span class="line">print("hello world")</span><br><span class="line"></span><br><span class="line">[root@hongshaorou ~]# lua test.lua</span><br><span class="line">hello world</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者赋予执行权限</span></span><br><span class="line">[root@hongshaorou ~]# chmod a+rx test.lua</span><br><span class="line">[root@hongshaorou ~]# ./test.lua</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<p><strong>注释</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--  行注释</span><br><span class="line">--[[</span><br><span class="line"> 块注释   </span><br><span class="line">--]]</span><br></pre></td></tr></table></figure>
+<p><strong>变量</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'alo\n123"'</span></span><br><span class="line">a = <span class="string">"alo\n123\""</span></span><br><span class="line">a = <span class="string">"\97lo\10\04923"</span><span class="string">'	# 包括AscII码</span></span><br><span class="line"><span class="string">a = [[alo123"]]</span></span><br></pre></td></tr></table></figure>
+<p>布尔值只有<code>nil</code>和<code>false</code>是<code>false</code>，数字0,<code>&#39;&#39;</code>空字符串（’\0`’)都是true。</p>
+<p>lua中的变量如果没有特殊说明，全是全局变量，局部变量前面加个local。</p>
+<p><strong>while循环语句</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sum = <span class="number">0</span> </span><br><span class="line">num = <span class="number">1</span> </span><br><span class="line"><span class="keyword">while</span> num &lt;= <span class="number">100</span> <span class="keyword">do</span> </span><br><span class="line">  sum = sum + num </span><br><span class="line">  num = num + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"><span class="built_in">print</span>(<span class="string">"sum = "</span>, sum)</span><br></pre></td></tr></table></figure>
+<p>Lua没有 ++ 或是 +=这样的操作</p>
+<p><strong>if-else判断语句</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> age == <span class="number">40</span> <span class="keyword">and</span> sex == <span class="string">"Male"</span> <span class="keyword">then</span> </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"大于40的男人"</span>)</span><br><span class="line"><span class="keyword">elseif</span> asg &gt; <span class="number">60</span> <span class="keyword">and</span> sex ~= <span class="string">"Femal"</span> <span class="keyword">then</span> </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"非女人且大于60"</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">local</span> age = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Your age id"</span>..age)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><code>~=</code>是不等于</p>
+<p>字符串拼接操作符是<code>..</code></p>
+<p><code>io</code>库分别从<code>stdin</code>和<code>stdout</code>读写的函数为<code>read</code>和<code>write</code>。</p>
+<h5 id="Nginx-Lua环境"><a href="#Nginx-Lua环境" class="headerlink" title="Nginx + Lua环境"></a>Nginx + Lua环境</h5><p>因为Nginx默认是不支持Lua的扩展模块的，我们需要下载一个笔Lua更高效的解释器–LuaJIT。</p>
 <ol>
-<li>移动磁头到磁盘表面上的正确位置</li>
-<li>等待磁盘旋转，使所需的数据在磁头之下</li>
-<li>等待磁盘旋转过去，所有所需的数据都被磁头读出</li>
+<li>安装LuaJIT环境，比自带的lua解析器扩展模块多并且高效</li>
 </ol>
-<p>1，2步称为访问时间，3步称为传输速度</p>
-<p>磁盘执行这些步骤有多快，也就决定了磁盘的读写速度。</p>
-<p>如何选择传统机器磁盘：</p>
-<ol>
-<li><p>磁盘容量</p>
-</li>
-<li><p>传输速度</p>
-</li>
-<li><p>访问时间快的</p>
-</li>
-<li><p>主轴转速快的</p>
-</li>
-<li><p>物理尺寸（越小的时间越短）</p>
-</li>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang download]<span class="comment"># wget http://luajit.org/download/LuaJIT-2.0.2.tar.gz</span></span><br><span class="line">--<span class="number">2020</span>-<span class="number">12</span>-<span class="number">08</span> <span class="number">00</span>:<span class="number">20</span>:<span class="number">23</span>--  http://luajit.org/download/LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz</span><br><span class="line">Resolving luajit.org (luajit.org)... <span class="number">163.172</span>.<span class="number">177.144</span></span><br><span class="line">Connecting to luajit.org (luajit.org)|<span class="number">163.172</span>.<span class="number">177.144</span>|:<span class="number">80</span>... connected.</span><br><span class="line">HTTP request sent, awaiting response... <span class="number">200</span> OK</span><br><span class="line">Length: <span class="number">843031</span> (<span class="number">823</span>K) [application/octet-stream]</span><br><span class="line">Saving to: ‘LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz’</span><br><span class="line"></span><br><span class="line"><span class="number">100</span>%[==================================================================================================================&gt;] <span class="number">843</span>,<span class="number">031</span>     <span class="number">5.66</span>KB/s   <span class="keyword">in</span> <span class="number">4</span>m <span class="number">46</span>s</span><br><span class="line"></span><br><span class="line"><span class="number">2020</span>-<span class="number">12</span>-<span class="number">08</span> <span class="number">00</span>:<span class="number">25</span>:<span class="number">11</span> (<span class="number">2.88</span> KB/s) - ‘LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>.tar.gz’ saved [<span class="number">843031</span>/<span class="number">843031</span>]</span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># tar -zxvf LuaJIT-2.0.2.tar.gz </span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># cd LuaJIT-2.0.2/</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># ls</span></span><br><span class="line">COPYRIGHT  doc  dynasm  etc  Makefile  README  src</span><br><span class="line"></span><br><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># make install  PREFIX=/usr/local/LuaJIT</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># export LUAJIT_LIB=/usr/local/LuaJIT/lib</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># export LUAJIT_INC=/usr/local/LuaJIT/include/luajit-2.0</span></span><br></pre></td></tr></table></figure>
+<p>下载ngx_devel_kit和lua-nginx-module</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># cd /opt/download</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># wget https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># tar -zxvf v0.3.0.tar.gz</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># wget https://github.com/openresty/lua-nginx-module/archive/v0.10.9rc7.tar.gz</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># tar -zxvf v0.10.9rc7.tar.gz</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>重新编译Nginx 将ngx_devel_kit模块和lua-nginx-module模块编译进nginx</li>
 </ol>
-<p>使用RAID增加传统机器硬盘的性能:</p>
-<p>什么是RAID：<br>RAID是磁盘冗余队列的简称（Redundant Arrays of Independent Disks）简单的说RAID的作用就是将多个容量较小的磁盘组成一组容量更大的磁盘，并提供数据冗余来保证数据完整性的技术。（增加传输速率）<br>RAID1（日志）的读写比RAID0（临时的）要快，RAID5的写较慢（要写校验位）读较快（使用在从服务器）。</p>
-<p>使用固态存储SSD或PCIe卡</p>
-<p>相比机械磁盘固态磁盘有更好的随机读写性能</p>
-<p>相比机械磁盘固态磁盘能更好的支持并发</p>
-<p>相比机械磁盘固态磁盘更容易损坏</p>
-<p>使用场景：</p>
-<p>适用于存在大量随机I/O的场景</p>
-<p> 使用于解决单线程负载的I/O瓶颈</p>
-<p>使用网络存储SAN和NAS<br>SAN（Storage Area Network）和NAS（Network-Attached Storage）是两种外部文件存储设备加载到服务器上的方法。</p>
-<p>关于SAN：<br>SAN设备通过光纤连接到服务器，设备通过光纤接口访问，服务器可以将其当作硬盘使用。<br>SAN能够支持大量顺序读写，这些读写I/O能够缓存和I/O合并。然而随机读写慢，不如本地RAID磁盘。</p>
-<p>关于NAS：<br>NAS设备使用网络连接，通过基于文件的协议如NFS或SMB来访问。（受限于网络）</p>
-<p>适用场景：数据库备份。</p>
-<p><strong>网络对性能的影响</strong></p>
-<p>网络性能的限制：质量  带宽</p>
-<p>建议：</p>
-<ul>
-<li>采用高性能和高带宽的网络接口设备和交换机</li>
-<li>多网卡进行绑定，增强可用性和带宽</li>
-<li>尽可能的进行网络隔离（内外网隔离，企业网和管理的网络隔离）</li>
-</ul>
-<p><strong>服务器硬件对性能的影响的总结：</strong></p>
-<p>CPU</p>
-<ul>
-<li>64位的CPU一定要工作在64位的系统下</li>
-<li>对于并发比较高的场景CPU的数量比频率重要</li>
-<li>对于CPU密集型场景和复杂SQL则频率越高越好</li>
-</ul>
-<p>内存</p>
-<ul>
-<li>选择主板所能使用的最高频率的内存</li>
-<li>内存的大小对性能很重要，所以尽可能的大（足够的内存可以把大量的随机I/O变成顺序I/O，并对读写数据进行缓存，把多次写变成一次写）</li>
-</ul>
-<p>I/O子系统</p>
-<ul>
-<li>PCIe-&gt;SSD-&gt;Raid10-&gt;磁盘-&gt;SAN（随机读写性能依次减少）</li>
-</ul>
-<h6 id="操作系统对性能的影响"><a href="#操作系统对性能的影响" class="headerlink" title="操作系统对性能的影响"></a>操作系统对性能的影响</h6><p>Windows ：数据库中对大小写不敏感，而Linux则是敏感的，配置参数强制为小写</p>
-<p>下面我们以Centos系统为例：</p>
-<p><strong>内核相关参数（/etc/sysctl.conf）</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">net.core.somaxconn = 65535     # 端口的最大监听数量</span><br><span class="line">net.core.netdev_max_backlog = 65535 # 进入包的最大设备队列</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 65535 # 进入SYN包的最大请求队列.默认1024</span><br><span class="line"></span><br><span class="line">net.ipv4.tcp_fin_timeout = 10 # 表示如果套接字由本端要求关闭，这个参数决定了它保持在FIN-WAIT-2状态的时间。</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1 # 该文件表示是否允许重新应用处于TIME-WAIT状态的socket用于新的TCP连接。</span><br><span class="line">net.ipv4.tcp_tw_recycle = 1 # 表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。</span><br><span class="line">以上三个加速tcp连接的回收 防止连接被占满</span><br><span class="line"></span><br><span class="line">net.core.wmem_default = 87380 </span><br><span class="line">net.core.wmem_max = 16777216</span><br><span class="line">net.core.rmem_default = 87380 </span><br><span class="line">net.core.rmem_default = 16777216 </span><br><span class="line">以上四个参数设定了TCP接受和发送缓冲区的默认值和最大值</span><br><span class="line"></span><br><span class="line">net.ipv4.tcp_keepalive_time =120 </span><br><span class="line">net.ipv4.tcp_keepalive_intvl = 30 </span><br><span class="line">net.ipv4.tcp_keepalive_probes = 3</span><br><span class="line">以上三个参数用于减少失效连接占据tcp的资源，加快资源回收</span><br></pre></td></tr></table></figure>
-<p>有关内存的几个参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kernel.shmmax = 4294967295</span><br></pre></td></tr></table></figure>
-<p>Linux内核参数中最重要的参数之一，用于定义单个共享内存段的最大值。<br>注意：<br>这个参数应该设置足够大，以便能够在一个共享内存段下容纳整个的Innodb缓冲池的大小。<br>这个值的大小对于64位Linux系统，可取的最大值为物理内存值 -1byte，建议值为大于物理内存的一半，一般取值大于Innodb缓冲池的大小即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.swappiness = 0</span><br></pre></td></tr></table></figure>
-<p>这个参数决定了当内存不足的时候会对性能产生比较明显的影响<br>该参数设置为0表示除非虚拟内存完全满了，否则不会使用交换分区。</p>
-<p><strong>增加资源限制（/etc/security/limit.conf）</strong><br>这个文件实际上是Linux PAM也就是插入式认证模块的配置文件。<br>可以配置打开文件数的设置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* soft  nofile  65535 </span><br><span class="line">* hard nofile  65535</span><br></pre></td></tr></table></figure>
-<p>以上两个参数用于打开文件数的限制，加到limit.conf文件的末尾即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* 表示对所有用户有效</span><br><span class="line">soft 指的是当前系统生效的设置（对于同一资源，soft的值不能比hard高）</span><br><span class="line">hard 表明系统中所能设定的最大值</span><br><span class="line">nofile 表示所限制的资源是打开文件的最大数目</span><br><span class="line">65535 就是限制的数量</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看已经编译的模块</span></span><br><span class="line">nginx -V</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载nginx</span></span><br><span class="line">[root@xiaoyang download]<span class="comment"># wget http://nginx.org/download/nginx-1.12.1.tar.gz</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># tar -zxvf nginx-1.12.1.tar.gz </span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># cd /opt/download/nginx-1.12.1</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># ./configure --prefix=/etc/nginx ...(省略其他编译项) --add-module=/opt/download/ngx_devel_kit-0.3.0 --add-module=/opt/download/lua-nginx-module-0.10.9rc7</span></span><br><span class="line"></span><br><span class="line">[root@xiaoyang download]<span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>注意：这个文件的修改需要重启系统</p>
+<p> 添加ngx_devel_kit模块和lua-nginx-module模块添加到编译参数</p>
 </blockquote>
-<p><strong>磁盘调度策略（/sys/block/devname/queue/scheduler)</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat   /sys/block/devname/queue/scheduler</span><br><span class="line">noop anticipatory  deadline [cfq]</span><br></pre></td></tr></table></figure>
-<p>noop（电梯式调度策略）<br>NOOP实现了一个FIFO队列，它像电梯的工作方式一样对I/O请求进行组织，当有一个新的请求到来时，它将请求合并到最近的请求之后，以此来保证请求同一个介质。NOOP倾向于饿死读而利于写，因此NOOP对于闪存设备，RAM以及嵌入式是最好的选择。</p>
-<p>deadline（介质时间调度策略）<br>Deadline确保了在一个截至时间内服务请求，这个截至时间是可调整的，而默认读期限短于写期限。这样就防止了写操作因为不能被读取而饿死的现象。Deadline对数据库类应用是最好的选择。</p>
-<p>anticipatory（预料I/O调度策略）<br>本质上与Deadline一样，但在最后一次读操作后，要等待6ms，才能继续进行对其他I/O请求进行调度。它会在每个6ms中插入新的I/O操作，而会将一些小写入流合并成一个大写入流，用写入延时换取最大的写入吞吐量。AS适合于写入较多的环境，比如文件服务器，AS对数据库环境表现很差。</p>
-<p>通过下面方法修改磁盘策略：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo  deadline &gt;  /sys/block/devname/queue/scheduler</span><br></pre></td></tr></table></figure>
-<p><strong>文件系统对性能的影响</strong></p>
-<p>windows 有FAT NTFS   </p>
-<p>Llinux 有EXT3 EXT4 XFS</p>
-<p>EXT3/4 系统的挂载参数（/etc/fstab）中进行设置，</p>
-<p>data参数，data=wtiteback  | ordered | journal 这三个参数代表不同的日志策略，</p>
-<p>其中 writeback 意味着只有原数据写入日志，原数据写入和数据写入并不是同步的，这是最快的一种配置，因为Innodb有自己的事务日志，所以选择Innodb是最好的选择</p>
-<p>ordered选项只会记录原数据，但提供了一些一致性的保证，在写原数据之前的会先写数据，使他们保持一致，这个选项比writeback 慢一些，但是如果出现崩溃呢更加安全</p>
-<p>journal提供了原子日志的一种行为，在数据写入到最终位置之前，将记录到日志中，这个选项对Innodb来说是没有必要的，在这三个选项中最慢的一个</p>
-<p>noatime，nodiratime，用于禁止记录文件的访问时间和读取目录的时间，禁用了这两个时间的选项后，可以减少一些，写的操作。系统在读取文件和目录时候，不必写操作来记录以上两个时间</p>
-<p>下面是一个完整的 fstab文件的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dev/sda1/ext4   noatime,nodiratime,data = writeback 1 1</span><br></pre></td></tr></table></figure>
-<p>在这里可以看到使用了ext4这个文件系统，并且启用了 notime nodiratime这个选项，这是一种常用的文件配置方式</p>
+<p>加载lua库，加入到ld.so.conf文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># echo "/usr/local/LuaJIT/lib" &gt;&gt; /etc/ld.so.conf</span></span><br><span class="line">[root@xiaoyang LuaJIT-<span class="number">2.0</span>.<span class="number">2</span>]<span class="comment"># ldconfig</span></span><br></pre></td></tr></table></figure>
+<h5 id="nginx调用lua模块指令"><a href="#nginx调用lua模块指令" class="headerlink" title="nginx调用lua模块指令"></a>nginx调用lua模块指令</h5><p>nginx的可插拔模块化加载执行，共11个处理阶段</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>set_by_lua <br>set_by_lua_file</td>
+<td>设置nginx变量，可以实现复杂的复杂逻辑</td>
+</tr>
+<tr>
+<td>access_by_lua<br>access_by_lua_file</td>
+<td>请求访问阶段处理，用于访问控制</td>
+</tr>
+<tr>
+<td>content_by_lua <br>content_by_lua_file</td>
+<td>内容处理容器，介绍请求处理并输出响应</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>File 表示Lua文件</p>
+</blockquote>
+<h5 id="Lua调用nginx的api"><a href="#Lua调用nginx的api" class="headerlink" title="Lua调用nginx的api"></a>Lua调用nginx的api</h5><table>
+<thead>
+<tr>
+<th>api</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ngx.var</td>
+<td>nginx变量</td>
+</tr>
+<tr>
+<td>ngx.req.get_headers</td>
+<td>获取请求头</td>
+</tr>
+<tr>
+<td>ngx.req.get_uri_args</td>
+<td>获取url请求参数</td>
+</tr>
+<tr>
+<td>ngx.redirect</td>
+<td>重定向</td>
+</tr>
+<tr>
+<td>ngx.print</td>
+<td>输出响应内容体</td>
+</tr>
+<tr>
+<td>ngx.say</td>
+<td>通ngx.print,但是最后会输出一个换行符</td>
+</tr>
+<tr>
+<td>ngx.header</td>
+<td>输出响应头</td>
+</tr>
+<tr>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<h5 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h5><p>按照一定的关系区别 分部分的代码进行上线  使代码的发布能平滑过渡线上</p>
+<p>我们可以使用以下场景区分用户访问不同的代码</p>
+<ol>
+<li>用户的信息cookie等信息区别</li>
+<li>根据用户的ip地址</li>
+</ol>
+<p><a href="https://imgchr.com/i/DzryOs" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/08/DzryOs.png" alt="DzryOs.png"></a></p>
+<p>上面的一个灰度发布使用Lua访问memcache进行查询校验哪些IP能够访问新的代码。</p>
 
       
     </div>
@@ -639,7 +622,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i>MySQL</a>
+            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i>Nginx</a>
           
         </div>
       
@@ -652,8 +635,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/09/MySQL数据库架构-入门/" rel="next" title="MySQL数据库架构--入门">
-                <i class="fa fa-chevron-left"></i> MySQL数据库架构--入门
+              <a href="/2018/12/13/Nginx之旅-基于Nginx的HTTPS服务/" rel="next" title="Nginx之旅-基于Nginx的HTTPS服务">
+                <i class="fa fa-chevron-left"></i> Nginx之旅-基于Nginx的HTTPS服务
               </a>
             
           </div>
@@ -662,8 +645,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/10/MySQL数据库架构-什么影响了MySQL性能-中/" rel="prev" title="MySQL数据库架构--什么影响了MySQL性能-中">
-                MySQL数据库架构--什么影响了MySQL性能-中 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/20/SQLAlchemy使用遇见问题/" rel="prev" title="SQLAlchemy使用遇见问题">
+                SQLAlchemy使用遇见问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -826,7 +809,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#影响性能的几个方面"><span class="nav-number">1.</span> <span class="nav-text">影响性能的几个方面</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器硬件对性能的影响和优化"><span class="nav-number"></span> <span class="nav-text">服务器硬件对性能的影响和优化</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#CPU资源和可用内存大小"><span class="nav-number">1.</span> <span class="nav-text">CPU资源和可用内存大小</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#操作系统对性能的影响"><span class="nav-number">2.</span> <span class="nav-text">操作系统对性能的影响</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Lua简介"><span class="nav-number">1.</span> <span class="nav-text">Lua简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Lua-基础语法"><span class="nav-number">2.</span> <span class="nav-text">Lua 基础语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx-Lua环境"><span class="nav-number">3.</span> <span class="nav-text">Nginx + Lua环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nginx调用lua模块指令"><span class="nav-number">4.</span> <span class="nav-text">nginx调用lua模块指令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Lua调用nginx的api"><span class="nav-number">5.</span> <span class="nav-text">Lua调用nginx的api</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#灰度发布"><span class="nav-number">6.</span> <span class="nav-text">灰度发布</span></a></li></ol></div>
             
 
           </div>
