@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="很多小伙伴在云主机上安装Python一直不成功，这篇文章我们一起来在centos主机上安装一下。希望你能按照这边文章一次安装成功。 安装依赖包1[root@hongshaorou ~]# yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc gcc-c++ li">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T14:26:23.547Z">
+<meta property="og:updated_time" content="2020-12-11T12:22:42.071Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Centos安装Python3">
 <meta name="twitter:description" content="很多小伙伴在云主机上安装Python一直不成功，这篇文章我们一起来在centos主机上安装一下。希望你能按照这边文章一次安装成功。 安装依赖包1[root@hongshaorou ~]# yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc gcc-c++ li">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  410 字
+                  411 字
                 </span>
               
 
@@ -454,7 +454,7 @@
 <p>然后将实现安装好的软件包拷到云主机上</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp Python-3.7.0.tgz root@111.22.168.233:/root/</span><br></pre></td></tr></table></figure>
 <h6 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h6><p>解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxf Python-3.7.0.tgz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxf  cd Python-3.7.0.tgz</span><br></pre></td></tr></table></figure>
 <p>进入到解压后的目录</p>
 <p>检查环境</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local</span><br></pre></td></tr></table></figure>
