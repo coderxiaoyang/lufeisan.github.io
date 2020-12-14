@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="项目高并发的时候很容易出现数据库插入相同的数据，虽然可以使用唯一索引避免插入相同数据，但是不断的程序报错也是我们要避免的。 MySQL中的插入更新使用 insert ... on duplicate key update .. 语法可以避免上述情况，举个例子 1234567drop table if exists `test`;create table `test` (	`id` int(11)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-19T02:56:57.528Z">
+<meta property="og:updated_time" content="2020-12-14T09:40:15.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQLAlchemy中实现更新不存在即插入">
 <meta name="twitter:description" content="项目高并发的时候很容易出现数据库插入相同的数据，虽然可以使用唯一索引避免插入相同数据，但是不断的程序报错也是我们要避免的。 MySQL中的插入更新使用 insert ... on duplicate key update .. 语法可以避免上述情况，举个例子 1234567drop table if exists `test`;create table `test` (	`id` int(11)">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  736 字
+                  839 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -467,11 +467,13 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy.dialects.mysql <span class="keyword">import</span> insert</span><br><span class="line"></span><br><span class="line">insert_stmt = insert(my_table).values(</span><br><span class="line">    id=<span class="string">'some_existing_id'</span>,</span><br><span class="line">    data=<span class="string">'inserted value'</span>)</span><br><span class="line"></span><br><span class="line">on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(</span><br><span class="line">    data=insert_stmt.inserted.data,</span><br><span class="line">    status=<span class="string">'U'</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">conn.execute(on_duplicate_key_stmt)</span><br></pre></td></tr></table></figure>
 <p>上面代码的意思是 当你有一个已经存在的主键<code>some_existing_id</code>的时候，你去执行上面的插入操作的时候 将会执行下面的对应主键的更新操作。</p>
 <p>官方代码总是很抽象，我们来个实际的例子吧。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy.dialects.mysql <span class="keyword">import</span> insert</span><br><span class="line"></span><br><span class="line">db_client = get_db_client()</span><br><span class="line"></span><br><span class="line">insert_stmt = insert(table_sa).values(**data)</span><br><span class="line"></span><br><span class="line">on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(</span><br><span class="line">    **data</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> db_client.execute(on_duplicate_key_stmt)</span><br></pre></td></tr></table></figure>
-<p>上个代码其中的<code>data</code>是一个字典，其中的<code>key</code>是数据库对用的字段。意思是当我插入到数据中的时候，当存在重复的唯一键的时候，将会直接更新数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy.dialects.mysql <span class="keyword">import</span> insert</span><br><span class="line"></span><br><span class="line">db_client = get_db_client()</span><br><span class="line"></span><br><span class="line">insert_stmt = insert(table_sa).values(**data) <span class="comment"># 如果是批量数据 这里的 data应该是一个 列表不再是字典</span></span><br><span class="line"></span><br><span class="line">update_data = &#123;</span><br><span class="line">  <span class="string">"some_data"</span>: insert_stmt.inserted.some_data,</span><br><span class="line">  <span class="string">"some_value"</span>: getattr(insert_stmt.inserted, <span class="string">"some_value"</span>),</span><br><span class="line">  <span class="string">"update_time"</span>: func.current_timestamp(),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(</span><br><span class="line">    **update_data</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> db_client.execute(on_duplicate_key_stmt)</span><br></pre></td></tr></table></figure>
+<p>上个代码其中的<code>data</code>是一个字典，其中的<code>key</code>是数据库对用的字段。意思是当我插入到数据中的时候，当存在重复的唯一键的时候，将会直接更新数据。需要更新的内容通过<code>update_data</code>指定，其中的的字段通过<code>insert_stmt.inserted.some_data</code>获取，也可以设置其他属性比如<code>data</code>中没有的<code>update_time</code>。</p>
 <blockquote>
 <p>注意：想要使用上面的方法，我们需要创建一个唯一索引(即使是联合唯一索引也行)</p>
 </blockquote>
+<p>推荐阅读:</p>
+<p><a href="https://wxnacy.com/2019/02/24/mysql-insert-on-duplicate-key-update/" target="_blank" rel="noopener">Mysql insert … on duplicate key update 的用法及在 SQLAlchemy 中的使用</a></p>
 
       
     </div>
@@ -639,7 +641,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">167</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

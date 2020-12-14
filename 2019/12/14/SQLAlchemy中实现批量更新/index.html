@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux," />
+  <meta name="keywords" content="SQLAlchemy," />
 
 
 
@@ -81,18 +81,21 @@
 
 
 
-<meta name="description" content="一、需求将数据同步HTML模板生成PDF 二、wkhtmltopdfwkhtmltopdf 不是程序，而是 软件。能够安装在 linux 或者 windows 服务器上通过命令行将任意html页面转pdf。基本上样式是一样的，不会有很大的偏差。 wkhtmltopdf 官网地址： https://wkhtmltopdf.org/ wkhtmltopdf 命令手册：https://wkhtmltop">
-<meta name="keywords" content="Linux">
+<meta name="description" content="​        如果在MySQL中你想批量更新一些已经准备好的数据而不是简单的UPDATE SET的话，还是有点小难办的。去网上查询会建议你使用INSERT ... ON DUPLICATE KEY UPDATE等方法。 虽然INSERT ... ON DUPLICATE KEY UPDATE不失为一个好的方法，但是总觉得怪怪的，我认真谷歌了一下发现SQLAlchemy官方还是支持批量更新的实现">
+<meta name="keywords" content="SQLAlchemy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux上使用wkhtmltopdf将网页转为pdf">
-<meta property="og:url" content="https://zhaobugs.com/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/index.html">
+<meta property="og:title" content="SQLAlchemy中实现批量更新">
+<meta property="og:url" content="https://zhaobugs.com/2019/12/14/SQLAlchemy中实现批量更新/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="一、需求将数据同步HTML模板生成PDF 二、wkhtmltopdfwkhtmltopdf 不是程序，而是 软件。能够安装在 linux 或者 windows 服务器上通过命令行将任意html页面转pdf。基本上样式是一样的，不会有很大的偏差。 wkhtmltopdf 官网地址： https://wkhtmltopdf.org/ wkhtmltopdf 命令手册：https://wkhtmltop">
+<meta property="og:description" content="​        如果在MySQL中你想批量更新一些已经准备好的数据而不是简单的UPDATE SET的话，还是有点小难办的。去网上查询会建议你使用INSERT ... ON DUPLICATE KEY UPDATE等方法。 虽然INSERT ... ON DUPLICATE KEY UPDATE不失为一个好的方法，但是总觉得怪怪的，我认真谷歌了一下发现SQLAlchemy官方还是支持批量更新的实现">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-20T13:28:38.305Z">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/14/ruhVRs.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/14/ruhloF.png">
+<meta property="og:updated_time" content="2020-12-14T15:20:48.239Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux上使用wkhtmltopdf将网页转为pdf">
-<meta name="twitter:description" content="一、需求将数据同步HTML模板生成PDF 二、wkhtmltopdfwkhtmltopdf 不是程序，而是 软件。能够安装在 linux 或者 windows 服务器上通过命令行将任意html页面转pdf。基本上样式是一样的，不会有很大的偏差。 wkhtmltopdf 官网地址： https://wkhtmltopdf.org/ wkhtmltopdf 命令手册：https://wkhtmltop">
+<meta name="twitter:title" content="SQLAlchemy中实现批量更新">
+<meta name="twitter:description" content="​        如果在MySQL中你想批量更新一些已经准备好的数据而不是简单的UPDATE SET的话，还是有点小难办的。去网上查询会建议你使用INSERT ... ON DUPLICATE KEY UPDATE等方法。 虽然INSERT ... ON DUPLICATE KEY UPDATE不失为一个好的方法，但是总觉得怪怪的，我认真谷歌了一下发现SQLAlchemy官方还是支持批量更新的实现">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/14/ruhVRs.png">
 
 
 
@@ -122,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2019/12/14/SQLAlchemy中实现批量更新/"/>
 
 
 
 
 
-  <title>Linux上使用wkhtmltopdf将网页转为pdf | 码农小杨的笔记</title>
+  <title>SQLAlchemy中实现批量更新 | 码农小杨的笔记</title>
   
 
 
@@ -303,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2019/12/14/SQLAlchemy中实现批量更新/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux上使用wkhtmltopdf将网页转为pdf</h1>
+          <h1 class="post-title" itemprop="name headline">SQLAlchemy中实现批量更新</h1>
         
 
         <div class="post-meta">
@@ -332,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-18T22:13:44+08:00">
-                2019-06-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-14T18:18:57+08:00">
+                2019-12-14
               </time>
             
 
@@ -355,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/SQLAlchemy/" itemprop="url" rel="index">
+                    <span itemprop="name">SQLAlchemy</span>
                   </a>
                 </span>
 
@@ -373,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/" itemprop="commentCount"></span>
+                <a href="/2019/12/14/SQLAlchemy中实现批量更新/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/12/14/SQLAlchemy中实现批量更新/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +385,7 @@
 
           
           
-             <span id="/2019/06/18/Linux上使用wkhtmltopdf将网页转为pdf/" class="leancloud_visitors" data-flag-title="Linux上使用wkhtmltopdf将网页转为pdf">
+             <span id="/2019/12/14/SQLAlchemy中实现批量更新/" class="leancloud_visitors" data-flag-title="SQLAlchemy中实现批量更新">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  465 字
+                  329 字
                 </span>
               
 
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  1 分钟
                 </span>
               
             </div>
@@ -449,29 +452,20 @@
       
 
       
-        <h5 id="一、需求"><a href="#一、需求" class="headerlink" title="一、需求"></a>一、需求</h5><p>将数据同步HTML模板生成PDF</p>
-<h5 id="二、wkhtmltopdf"><a href="#二、wkhtmltopdf" class="headerlink" title="二、wkhtmltopdf"></a>二、wkhtmltopdf</h5><p><code>wkhtmltopdf</code> 不是程序，而是 <strong>软件</strong>。能够安装在 linux 或者 windows 服务器上通过命令行将任意html页面转pdf。基本上样式是一样的，不会有很大的偏差。</p>
-<p><code>wkhtmltopdf</code> 官网地址： <a href="https://wkhtmltopdf.org/" target="_blank" rel="noopener">https://wkhtmltopdf.org/</a></p>
-<p><code>wkhtmltopdf</code> 命令手册：<a href="https://wkhtmltopdf.org/usage/wkhtmltopdf.txt" target="_blank" rel="noopener">https://wkhtmltopdf.org/usage/wkhtmltopdf.txt</a></p>
-<h5 id="三、安装使用"><a href="#三、安装使用" class="headerlink" title="三、安装使用"></a>三、安装使用</h5><p>下面的安装使用是在Centos系统</p>
-<p>安装<code>wkhtmltopdf</code></p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># yum install wkhtmltopdf</span></span><br></pre></td></tr></table></figure>
-<p>安装完成之后执行下转换命令</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># wkhtmltopdf www.baidu.com baidu.pdf</span></span><br><span class="line">wkhtmltopdf: cannot connect to X server</span><br></pre></td></tr></table></figure>
-<p>报错是需要安装另一个第三方包  不同系统参考<a href="https://unix.stackexchange.com/questions/192642/wkhtmltopdf-qxcbconnection-could-not-connect-to-display" target="_blank" rel="noopener">wkhtmltopdf - QXcbConnection: Could not connect to display</a>文章安装。</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># yum install xorg-x11-server-Xvfb</span></span><br></pre></td></tr></table></figure>
-<p>安装完成之后再次执行转换命令</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hongshaorou ~]<span class="comment"># xvfb-run wkhtmltopdf www.baidu.com baidu.pdf</span></span><br><span class="line">Loading page (<span class="number">1</span>/<span class="number">2</span>)</span><br><span class="line">Printing pages (<span class="number">2</span>/<span class="number">2</span>)</span><br><span class="line">Done</span><br></pre></td></tr></table></figure>
-<h5 id="四、遇到的问题"><a href="#四、遇到的问题" class="headerlink" title="四、遇到的问题"></a>四、遇到的问题</h5><p>如果你是在macOS上完成上面的操作，基本可以完美生成PDF。但是，当你是在Linux的环境的时候，很大可能会遇见导出的PDF出现空白和乱码。这是因为缺少相应的字体导致的。</p>
+        <p>​        如果在MySQL中你想批量更新一些已经准备好的数据而不是简单的<code>UPDATE SET</code>的话，还是有点小难办的。去网上查询会建议你使用<code>INSERT ... ON DUPLICATE KEY UPDATE</code>等方法。</p>
+<p>虽然<code>INSERT ... ON DUPLICATE KEY UPDATE</code>不失为一个好的方法，但是总觉得怪怪的，我认真谷歌了一下发现SQLAlchemy官方还是支持批量更新的实现，只是最后将语句转化成了一条条的<code>UPDATE SET</code>语句。</p>
+<p>Stack Overflow的讨论话题<a href="https://stackoverflow.com/questions/25694234/bulk-update-in-sqlalchemy-core-using-where" target="_blank" rel="noopener">Bulk update in SQLAlchemy Core using WHERE</a></p>
+<p>我们看下例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy.sql.expression <span class="keyword">import</span> bindparam</span><br><span class="line">stmt = teacher.update().where(</span><br><span class="line">    teacher.c.id == bindparam(<span class="string">'_id'</span>) <span class="comment"># 这里是查询匹配条件 一般是主键或者唯一键等</span></span><br><span class="line">).values(</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'user_id'</span>: bindparam(<span class="string">'user_id'</span>),</span><br><span class="line">        <span class="string">'email_address'</span>: bindparam(<span class="string">'email_address'</span>),</span><br><span class="line">        <span class="string">'address'</span>: <span class="string">"皇后大道"</span>, <span class="comment"># 如果这里写了常量 下面匹配到的 address 字段 都要更新为皇后大道</span></span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">conn.execute(stmt, [</span><br><span class="line">    &#123;<span class="string">'user_id'</span>: <span class="number">1</span>, <span class="string">'email_address'</span>: <span class="string">'jack@yahoo.com'</span>, <span class="string">'_id'</span>: <span class="number">1</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'user_id'</span>: <span class="number">1</span>, <span class="string">'email_address'</span>: <span class="string">'jack@msn.com'</span>, <span class="string">'_id'</span>: <span class="number">2</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'user_id'</span>: <span class="number">2</span>, <span class="string">'email_address'</span>: <span class="string">'www@www.org'</span>, <span class="string">'_id'</span>: <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'user_id'</span>: <span class="number">2</span>, <span class="string">'email_address'</span>: <span class="string">'wendy@aol.com'</span>, <span class="string">'_id'</span>: <span class="number">4</span>&#125;,</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>后来查阅，原来程序在转换的时候需要对应的字体，以便用于文字渲染，但当你需要转换的html中包含本机环境没有的字体时，程序就会默认转为<strong>宋体</strong>来渲染，这其实应该是WebKit内核的设定，所以说，<code>你的机器上至少应该有宋体！！</code>，否则的话中文其实是没法显示的。</p>
+<p>上面 最后还是要拆成四条 <code>UPDATE SET</code>语句执行的</p>
 </blockquote>
-<p>我们需要下载对应的字体，下载地址：<a href="https://github.com/sonatype/maven-guide-zh/blob/master/content-zh/src/main/resources/fonts/simsun.ttc" target="_blank" rel="noopener">simsun.ttc</a></p>
-<p>下载好之后将字体放到<code>/usr/share/fonts/</code>目录下即可。</p>
-<p>参考文章：</p>
-<p><a href="[http://www.ptbird.cn/wkhtmltopdf-html-to-pdf.html](http://www.ptbird.cn/wkhtmltopdf-html-to-pdf.html">Linux上使用 wkhtmltopdf 将网页转成pdf</a>)</p>
-<p><a href="https://my.oschina.net/hexie/blog/1591687" target="_blank" rel="noopener">Docker快速验证HTML导出PDF高效方案</a></p>
-<p><a href="https://www.jianshu.com/p/28c9b8f4664b" target="_blank" rel="noopener">Docker微服务之Html转Pdf,Html转Image</a></p>
+<p>我们看下aiomysql相关的源码<br><a href="https://imgchr.com/i/ruhVRs" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/14/ruhVRs.png" alt="ruhVRs.png"></a></p>
+<p>当参数是多个值的时候 会执行<code>executemany</code>函数</p>
+<p><a href="https://imgchr.com/i/ruhloF" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/14/ruhloF.png" alt="ruhloF.png"></a></p>
+<p>推荐阅读:</p>
+<p><a href="https://tableplus.com/blog/2018/11/how-to-update-multiple-rows-at-once-in-mysql.html" target="_blank" rel="noopener">How to update multiple rows at once in MySQL?</a></p>
+<p><a href="https://tableplus.com/blog/2018/11/how-to-update-multiple-rows-at-once-in-mysql.html" target="_blank" rel="noopener">Inserts, Updates and Deletes</a></p>
 
       
     </div>
@@ -530,7 +524,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i>Linux</a>
+            <a href="/tags/SQLAlchemy/" rel="tag"><i class="fa fa-tag"></i>SQLAlchemy</a>
           
         </div>
       
@@ -543,8 +537,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/18/如何在-init-中设置能够await的类或实例属性/" rel="next" title="如何在__init__中设置能够await的类或实例属性">
-                <i class="fa fa-chevron-left"></i> 如何在__init__中设置能够await的类或实例属性
+              <a href="/2019/12/04/Python源文件一行字符过长造成的问题/" rel="next" title="Python源文件一行字符过长造成的问题">
+                <i class="fa fa-chevron-left"></i> Python源文件一行字符过长造成的问题
               </a>
             
           </div>
@@ -553,8 +547,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/21/Asyncio中将同步函数改为异步调用/" rel="prev" title="Asyncio中将同步函数改为异步调用">
-                Asyncio中将同步函数改为异步调用 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/05/Python异常记录Traceback模块详解/" rel="prev" title="Python异常记录Traceback模块详解">
+                Python异常记录Traceback模块详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -610,17 +604,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -707,22 +692,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、需求"><span class="nav-number">1.</span> <span class="nav-text">一、需求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、wkhtmltopdf"><span class="nav-number">2.</span> <span class="nav-text">二、wkhtmltopdf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三、安装使用"><span class="nav-number">3.</span> <span class="nav-text">三、安装使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四、遇到的问题"><span class="nav-number">4.</span> <span class="nav-text">四、遇到的问题</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
