@@ -90,7 +90,11 @@
 <meta property="og:description" content="相同server_name多个虚拟主机读取的优先级问题场景 123456789101112131415server &amp;#123;    listen 80;    server_name testserver1 www.imooc.com;    location &amp;#123;        ...    &amp;#125;&amp;#125;server &amp;#123;    listen 80;    ser">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s3.ax1x.com/2020/12/15/ruTRIK.png">
-<meta property="og:updated_time" content="2020-12-14T16:31:50.585Z">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/16/rQ0QQU.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/16/r1vYND.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/17/r3SvKs.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/17/r3pFGF.png">
+<meta property="og:updated_time" content="2020-12-16T16:24:59.264Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx之旅-架构篇-常见问题">
 <meta name="twitter:description" content="相同server_name多个虚拟主机读取的优先级问题场景 123456789101112131415server &amp;#123;    listen 80;    server_name testserver1 www.imooc.com;    location &amp;#123;        ...    &amp;#125;&amp;#125;server &amp;#123;    listen 80;    ser">
@@ -414,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  974 字
+                  2,010 字
                 </span>
               
 
@@ -430,7 +434,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -481,6 +485,70 @@
 <p>在第一级代理的时候，告诉代理设置一个请求头给传过来</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在一级代理设置 放到头信息中</span><br><span class="line">set x_real_ip = $remote_addr</span><br><span class="line"></span><br><span class="line">在服务器中获取到头信息</span><br><span class="line">$x_real_ip=IP1</span><br></pre></td></tr></table></figure>
 <h5 id="Nginx中常见错误码"><a href="#Nginx中常见错误码" class="headerlink" title="Nginx中常见错误码"></a>Nginx中常见错误码</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Nginx: 413 Request Entity Too Large  表示用户请求数据过大</span><br><span class="line">解决方式对文件上传进行限制  修改 client_max_body_size</span><br><span class="line"></span><br><span class="line">502 bad gateway 后端服务无响应 </span><br><span class="line">tomcat关闭等原因</span><br><span class="line"></span><br><span class="line">504 Gateway Time-out 后端服务执行超时</span><br><span class="line">后端服务是执行，但是可能是连接数据库耗时太长或其他原因导致超时 超过Nginx的默认等待时间是60s</span><br></pre></td></tr></table></figure>
+<h5 id="Nginx的性能优化"><a href="#Nginx的性能优化" class="headerlink" title="Nginx的性能优化"></a>Nginx的性能优化</h5><h6 id="性能优化考虑点"><a href="#性能优化考虑点" class="headerlink" title="性能优化考虑点"></a>性能优化考虑点</h6><ol>
+<li><p>当前系统结构瓶颈</p>
+<p>观察指标、压力测试</p>
+</li>
+<li><p>了解业务模式</p>
+<p>接口业务类型、系统层次化结构</p>
+</li>
+<li><p>性能与安全</p>
+</li>
+</ol>
+<h6 id="ab接口压力测试工具"><a href="#ab接口压力测试工具" class="headerlink" title="ab接口压力测试工具"></a>ab接口压力测试工具</h6><p>1、安装</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang ~]<span class="comment"># yum install httpd-tools</span></span><br></pre></td></tr></table></figure>
+<p>2、使用</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang ~]<span class="comment"># ab -n 2000 -c 2 http://127.0.0.1/</span></span><br><span class="line"></span><br><span class="line">-n 总的请求次数</span><br><span class="line">-c 并发数</span><br><span class="line">-k 是否开启长连接</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang ~]<span class="comment"># ab -n 100 -c 10 https://www.bilibili.com/</span></span><br><span class="line"><span class="comment"># 请求100 次 并发 10</span></span><br><span class="line">This is ApacheBench, Version <span class="number">2.3</span> &lt;<span class="variable">$Revision:</span> <span class="number">1430300</span> $&gt;</span><br><span class="line">Copyright <span class="number">1996</span> Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking www.bilibili.com (be patient).....done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        www.bilibili.com  <span class="comment"># 域名</span></span><br><span class="line">Server Port:            <span class="number">443</span></span><br><span class="line">SSL/TLS Protocol:       TLSv1.<span class="number">2</span>,ECDHE-RSA-AES128-GCM-SHA256,<span class="number">2048</span>,<span class="number">128</span></span><br><span class="line"></span><br><span class="line">Document Path:          / <span class="comment"># 路由</span></span><br><span class="line">Document Length:        <span class="number">177</span> bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      <span class="number">10</span></span><br><span class="line">Time taken <span class="keyword">for</span> tests:   <span class="number">4.722</span> seconds <span class="comment"># 总耗时</span></span><br><span class="line">Complete requests:      <span class="number">100</span></span><br><span class="line">Failed requests:        <span class="number">31</span></span><br><span class="line">   (Connect: <span class="number">0</span>, Receive: <span class="number">0</span>, Length: <span class="number">31</span>, Exceptions: <span class="number">0</span>)</span><br><span class="line">Write errors:           <span class="number">0</span></span><br><span class="line">Non-<span class="number">2</span>xx responses:      <span class="number">100</span></span><br><span class="line">Total transferred:      <span class="number">69484</span> bytes</span><br><span class="line">HTML transferred:       <span class="number">17852</span> bytes</span><br><span class="line">Requests per second:    <span class="number">21.18</span> [<span class="comment">#/sec] (mean) # 每秒处理请求数</span></span><br><span class="line">Time per request:       <span class="number">472.151</span> [ms] (mean) <span class="comment"># 客户端请求服务器耗时</span></span><br><span class="line">Time per request:       <span class="number">47.215</span> [ms] (mean, across all concurrent requests) <span class="comment"># 服务器处理客户端请求耗时</span></span><br><span class="line">Transfer rate:          <span class="number">14.37</span> [Kbytes/sec] received</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>nginx访问静态资源的时候，是不需要后台服务进行资源处理的（静态资源应该有nginx直接处理）</p>
+</blockquote>
+<h6 id="系统与Nginx的性能优化"><a href="#系统与Nginx的性能优化" class="headerlink" title="系统与Nginx的性能优化"></a>系统与Nginx的性能优化</h6><p>网络、系统、服务、程序、数据库、底层服务</p>
+<h6 id="文件句柄设置"><a href="#文件句柄设置" class="headerlink" title="文件句柄设置"></a>文件句柄设置</h6><p><strong>文件句柄</strong></p>
+<p>Linux/Unix中一切皆文件，文件句柄就是一个索引</p>
+<p>每次请求都会新建一个文件句柄，而对于操作系统来说这个文件句柄不是无限大的，有默认值。</p>
+<p><strong>设置方式</strong></p>
+<p>系统全局性修改、用户局部性修改、进程局部性修改</p>
+<p>对于全局修改 在文件<code>/etc/security/limits.conf</code>中我们看下如下配置</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* soft nofile <span class="number">100001</span> <span class="comment"># 全局用户 软连接 文件句柄设置为 100001 超出也没事</span></span><br><span class="line">* hard nofile <span class="number">100002</span></span><br><span class="line"></span><br><span class="line">root soft nofile <span class="number">100001</span></span><br><span class="line">root hard nofile <span class="number">100002</span> <span class="comment"># 针对root 用户 硬连接 文件句柄 100002</span></span><br></pre></td></tr></table></figure>
+<p>我们也可以针对<code>Nginx</code>进程单独设置，比如在<code>/etc/nginx/nginx.conf</code>配置文件中加入如下配置</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">worker_rlimit_nofile <span class="number">65535</span>;</span><br></pre></td></tr></table></figure>
+<h6 id="CPU亲和配置"><a href="#CPU亲和配置" class="headerlink" title="CPU亲和配置"></a>CPU亲和配置</h6><p><strong>CPU的亲和</strong>：进程通常不会在处理器之间频繁的迁移，减少性能损耗。</p>
+<p>查看主机的物理CPU个数</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang ~]<span class="comment"># cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>查看CPU的核数</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@xiaoyang ~]<span class="comment"># cat /proc/cpuinfo | grep "cpu cores" | uniq</span></span><br><span class="line">cpu cores	: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>1 * 1 核</p>
+</blockquote>
+<p><a href="https://imgchr.com/i/rQ0QQU" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/16/rQ0QQU.png" alt="rQ0QQU.png"></a></p>
+<h5 id="基于Nginx架构的安全篇"><a href="#基于Nginx架构的安全篇" class="headerlink" title="基于Nginx架构的安全篇"></a>基于Nginx架构的安全篇</h5><h6 id="恶意行为控制手段"><a href="#恶意行为控制手段" class="headerlink" title="恶意行为控制手段"></a>恶意行为控制手段</h6><ol>
+<li><p>常见的恶意行为</p>
+<p>爬虫行为和恶意抓取、资源盗用</p>
+</li>
+</ol>
+<p>下面是三种常用的恶意行为控制手段：</p>
+<p>基础防盗链功能–目的不让恶意用户能够轻易爬取网站对外数据</p>
+<p><code>secure_link_module</code>–对数据安全性提高 加密验证和失效性 适合核心重要数据</p>
+<p><code>access_module</code>–对后台、部分用户服务的数据提供IP防控</p>
+<h6 id="攻击手段之暴力破解"><a href="#攻击手段之暴力破解" class="headerlink" title="攻击手段之暴力破解"></a>攻击手段之暴力破解</h6><ol start="2">
+<li><p>常见的攻击手段</p>
+<p><strong>后台密码撞库</strong>–通过猜测密码字典不断对后台系统尝试性登录，从而获取后台登录密码</p>
+</li>
+</ol>
+<p>防范手段：</p>
+<p>方法一：加大后台登录密码的复杂度</p>
+<p>方法二：<code>access_module</code>对后台登录IP进行防控</p>
+<p>方法三：预警机制（检测到多次登录不成功就告警）</p>
+<p>​        <strong>文件上传漏洞</strong>–利用这些可以上传的接口将恶意代码植入到服务器中，再通过url去访问以执行代码</p>
+<p>如将一些恶意的php代码放到伪造好的照片之中，然后上传到服务器。<br><a href="https://imgchr.com/i/r1vYND" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/16/r1vYND.png" alt="r1vYND.png"></a></p>
+<p>​        <strong>SQL注入</strong>–利用未过滤/未审核用户输入的攻击方法，让应用运行本不应该运行的SQL语句。</p>
+<p><a href="https://imgchr.com/i/r3SvKs" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/17/r3SvKs.png" alt="r3SvKs.png"></a></p>
+<blockquote>
+<p># 在SQL中代表着注释</p>
+</blockquote>
+<h6 id="Nginx-LUA实现waf防火墙"><a href="#Nginx-LUA实现waf防火墙" class="headerlink" title="Nginx+LUA实现waf防火墙"></a>Nginx+LUA实现waf防火墙</h6><p><a href="https://imgchr.com/i/r3pFGF" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/17/r3pFGF.png" alt="r3pFGF.png"></a></p>
+<p>一个大牛的waf项目：<a href="https://github.com/loveshell/ngx_lua_waf" target="_blank" rel="noopener">https://github.com/loveshell/ngx_lua_waf</a></p>
 
       
     </div>
@@ -648,7 +716,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-count">169</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -726,7 +794,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#相同server-name多个虚拟主机读取的优先级"><span class="nav-number">1.</span> <span class="nav-text">相同server_name多个虚拟主机读取的优先级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个虚拟主机下多个location匹配优先级"><span class="nav-number">2.</span> <span class="nav-text">一个虚拟主机下多个location匹配优先级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx的try-files的使用"><span class="nav-number">3.</span> <span class="nav-text">Nginx的try_files的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx的alias和root区别"><span class="nav-number">4.</span> <span class="nav-text">Nginx的alias和root区别</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#如何获取用户真实的ip信息"><span class="nav-number">4.1.</span> <span class="nav-text">如何获取用户真实的ip信息</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx中常见错误码"><span class="nav-number">5.</span> <span class="nav-text">Nginx中常见错误码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#相同server-name多个虚拟主机读取的优先级"><span class="nav-number">1.</span> <span class="nav-text">相同server_name多个虚拟主机读取的优先级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个虚拟主机下多个location匹配优先级"><span class="nav-number">2.</span> <span class="nav-text">一个虚拟主机下多个location匹配优先级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx的try-files的使用"><span class="nav-number">3.</span> <span class="nav-text">Nginx的try_files的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx的alias和root区别"><span class="nav-number">4.</span> <span class="nav-text">Nginx的alias和root区别</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#如何获取用户真实的ip信息"><span class="nav-number">4.1.</span> <span class="nav-text">如何获取用户真实的ip信息</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx中常见错误码"><span class="nav-number">5.</span> <span class="nav-text">Nginx中常见错误码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nginx的性能优化"><span class="nav-number">6.</span> <span class="nav-text">Nginx的性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#性能优化考虑点"><span class="nav-number">6.1.</span> <span class="nav-text">性能优化考虑点</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ab接口压力测试工具"><span class="nav-number">6.2.</span> <span class="nav-text">ab接口压力测试工具</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#系统与Nginx的性能优化"><span class="nav-number">6.3.</span> <span class="nav-text">系统与Nginx的性能优化</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件句柄设置"><span class="nav-number">6.4.</span> <span class="nav-text">文件句柄设置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CPU亲和配置"><span class="nav-number">6.5.</span> <span class="nav-text">CPU亲和配置</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基于Nginx架构的安全篇"><span class="nav-number">7.</span> <span class="nav-text">基于Nginx架构的安全篇</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#恶意行为控制手段"><span class="nav-number">7.1.</span> <span class="nav-text">恶意行为控制手段</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#攻击手段之暴力破解"><span class="nav-number">7.2.</span> <span class="nav-text">攻击手段之暴力破解</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Nginx-LUA实现waf防火墙"><span class="nav-number">7.3.</span> <span class="nav-text">Nginx+LUA实现waf防火墙</span></a></li></ol></li></ol></div>
             
 
           </div>

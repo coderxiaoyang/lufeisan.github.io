@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="其他," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Web 防火墙（WAF）是什么？WAF，全称为：Web Application Firewall，即 Web 应用防火墙。对此，维基百科是这么解释的：Web应用程序防火墙过滤，监视和阻止与Web应用程序之间的HTTP流量。WAF与常规防火墙的区别在于，WAF能够过滤特定Web应用程序的内容，而常规防火墙则充当服务器之间的安全门。通过检查HTTP流量，它可以防止源自Web应用程序安全漏洞的攻击，例如">
+<meta name="keywords" content="其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web 防火墙（WAF）是什么？和传统防火墙区别是什么？">
+<meta property="og:url" content="https://zhaobugs.com/2020/06/17/Web防火墙是什么？/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="Web 防火墙（WAF）是什么？WAF，全称为：Web Application Firewall，即 Web 应用防火墙。对此，维基百科是这么解释的：Web应用程序防火墙过滤，监视和阻止与Web应用程序之间的HTTP流量。WAF与常规防火墙的区别在于，WAF能够过滤特定Web应用程序的内容，而常规防火墙则充当服务器之间的安全门。通过检查HTTP流量，它可以防止源自Web应用程序安全漏洞的攻击，例如">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/17/rGc2fU.jpg">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/17/rGg58S.jpg">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/17/rGgD3D.jpg">
+<meta property="og:updated_time" content="2020-12-17T15:51:14.887Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web 防火墙（WAF）是什么？和传统防火墙区别是什么？">
+<meta name="twitter:description" content="Web 防火墙（WAF）是什么？WAF，全称为：Web Application Firewall，即 Web 应用防火墙。对此，维基百科是这么解释的：Web应用程序防火墙过滤，监视和阻止与Web应用程序之间的HTTP流量。WAF与常规防火墙的区别在于，WAF能够过滤特定Web应用程序的内容，而常规防火墙则充当服务器之间的安全门。通过检查HTTP流量，它可以防止源自Web应用程序安全漏洞的攻击，例如">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/17/rGc2fU.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/06/17/Web防火墙是什么？/"/>
+
+
+
+
+
+  <title>Web 防火墙（WAF）是什么？和传统防火墙区别是什么？ | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/06/17/Web防火墙是什么？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web 防火墙（WAF）是什么？和传统防火墙区别是什么？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-17T23:33:51+08:00">
+                2020-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/17/Web防火墙是什么？/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/17/Web防火墙是什么？/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/06/17/Web防火墙是什么？/" class="leancloud_visitors" data-flag-title="Web 防火墙（WAF）是什么？和传统防火墙区别是什么？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,013 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Web-防火墙（WAF）是什么？"><a href="#Web-防火墙（WAF）是什么？" class="headerlink" title="Web 防火墙（WAF）是什么？"></a>Web 防火墙（WAF）是什么？</h3><p>WAF，全称为：Web Application Firewall，即 Web 应用<a href="https://www.hack520.com/topic/firewall/" target="_blank" rel="noopener">防火墙</a>。对此，维基百科是这么解释的：Web应用程序防火墙过滤，<a href="https://www.hack520.com/topic/monitor/" target="_blank" rel="noopener">监视</a>和阻止与Web应用程序之间的HTTP流量。WAF与常规防火墙的区别在于，WAF能够过滤特定Web应用程序的内容，而常规防火墙则充当服务器之间的安全门。通过检查HTTP流量，它可以防止源自Web应用程序安全漏洞的攻击，例如SQL注入、跨站点脚本，文件包含和安全性错误配置。</p>
+<p><a href="https://imgchr.com/i/rGc2fU" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/17/rGc2fU.jpg" alt="rGc2fU.jpg"></a></p>
+<p>​        WAF的出现是由于传统防火墙无法对应用层的攻击进行有效抵抗，并且IPS也无法从根本上防护应用层的攻击。因此出现了保护Web应用安全的Web应用防火墙系统(简称“WAF”)。WAF是一种基础的安全保护模块，通过特征提取和分块检索技术进行特征匹配，主要针对 HTTP 访问的 Web 程序保护。WAF部署在Web应用程序前面，在用户请求到达 Web 服务器前对用户请求进行扫描和过滤，分析并校验每个用户请求的网络包，确保每个用户请求有效且安全，对无效或有攻击行为的请求进行阻断或隔离。</p>
+<p>　　WAF主要提供对Web应用层数据的解析，对不同的编码方式做强制多重转换还原为攻击明文，把变形后的字符组合后再分析，能够较好的抵御来自Web层的组合攻击主要抵御算法为基于上下文的语义分析。</p>
+<p>　　WAF是随着目前Web一个用的日益流行，实现Web应用防护的一类新型安全产品，它与传统的IPS在某些防护效果上有功能重叠的部分（例如防止SQL注入攻击），但两款产品在工作原理、市场定位、功能特点、部署模式等方面存在显著差异。可以说，WAF防火墙是对运营Web应用的具备一定防护能力的网络环境的Web攻击防护能力的必要增强。IPS和IDS是该网络环境必备的基础设备。</p>
+<p>　　Web防火墙，主要是对Web特有入侵方式的加强防护，如DDOS防护、SQL注入、XML注入、XSS等。由于是应用层而非网络层的入侵，从技术角度都应该称为Web IPS，而不是Web防火墙。这里之所以叫做Web防火墙，是因为大家比较好理解，业界流行的称呼而已。由于重点是防SQL注入，也有人称为SQL防火墙。</p>
+<p>　　Web防火墙产品部署在Web服务器的前面，串行接入，不仅在硬件性能上要求高，而且不能影响Web服务，所以HA功能、Bypass功能都是必须的，而且还要与负载均衡、Web Cache等Web服务器前的常见的产品协调部署。</p>
+<p><a href="https://imgchr.com/i/rGg58S" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/17/rGg58S.jpg" alt="rGg58S.jpg"></a></p>
+<p>Web防火墙的主要技术的对入侵的检测能力，尤其是对Web服务入侵的检测，不同的厂家技术差别很大，不能以厂家特征库大小来衡量，主要的还是看测试效果，从厂家技术特点来说，有下面几种方式：</p>
+<p>　　代理服务：代理方式本身就是一种安全网关，基于会话的双向代理，中断了用户与服务器的直接连接，适用于各种加密协议，这也是Web的Cache应用中最常用的技术。代理方式防止了入侵者的直接进入，对DDOS攻击可以抑制，对非预料的“特别”行为也有所抑制。Netcontinuum(梭子鱼)公司的WAF就是这种技术的代表。</p>
+<p>　　特征识别：识别出入侵者是防护他的前提。特征就是攻击者的“指纹”，如缓冲区溢出时的Shellcode，SQL注入中常见的“真表达(1=1)”…应用信息没有“标准”，但每个软件、行为都有自己的特有属性，病毒与蠕虫的识别就采用此方式，麻烦的就是每种攻击都自己的特征，数量比较庞大，多了也容易相象，误报的可能性也大。虽然目前恶意代码的特征指数型地增长，安全界声言要淘汰此项技术，但目前应用层的识别还没有特别好的方式。</p>
+<p>　　算法识别：特征识别有缺点，人们在寻求新的方式。对攻击类型进行归类，相同类的特征进行模式化，不再是单个特征的比较，算法识别有些类似模式识别，但对攻击方式依赖性很强，如SQL注入、DDOS、XSS等都开发了相应的识别算法。算法识别是进行语义理解，而不是靠“长相”识别。</p>
+<p>　　模式匹配：是IDS中“古老”的技术，把攻击行为归纳成一定模式，匹配后能确定是入侵行为，当然模式的定义有很深的学问，各厂家都隐秘为“专利”。协议模式是其中简单的，是按标准协议的规程来定义模式;行为模式就复杂一些，</p>
+<p>　　Web防火墙最大的挑战是识别率，这并不是一个容易测量的指标，因为漏网进去的入侵者，并非都大肆张扬，比如给网页挂马，你很难察觉进来的是那一个，不知道当然也无法统计。对于已知的攻击方式，可以谈识别率;对未知的攻击方式，你也只好等他自己“跳”出来才知道。</p>
+<p><a href="https://imgchr.com/i/rGgD3D" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/17/rGgD3D.jpg" alt="rGgD3D.jpg"></a></p>
+<h3 id="WAF与网络防火墙的区别"><a href="#WAF与网络防火墙的区别" class="headerlink" title="WAF与网络防火墙的区别"></a>WAF与网络防火墙的区别</h3><p>​        网络防火墙作为访问控制设备，主要工作在OSI模型三、四层，基于IP报文进行检测。只是对端口做限制，对TCP协议做封堵。其产品设计无需理解HTTP会话，也就决定了无法理解Web应用程序语言如HTML、SQL语言。因此，它不可能对HTTP通讯进行输入验证或攻击规则分析。针对Web网站的恶意攻击绝大部分都将封装为HTTP请求，从80或443端口顺利通过防火墙检测。</p>
+<p>　　一些定位比较综合、提供丰富功能的防火墙，也具备一定程度的应用层防御能力，如能根据TCP会话异常性及攻击特征阻止网络层的攻击，通过IP分拆和组合也能判断是否有攻击隐藏在多个数据包中，但从根本上说他仍然无法理解HTTP会话，难以应对如SQL注入、跨站脚本、cookie窃取、网页篡改等应用层攻击。</p>
+<p>　　Web应用防火墙能在应用层理解分析HTTP会话，因此能有效的防止各类应用层攻击，同时他向下兼容，具备网络防火墙的功能。</p>
+<p>　　传统防火墙可保护服务器之间的信息流，而Web应用程序防火墙则能够过滤特定Web应用程序的流量。网络防火墙和Web应用程序防火墙是互补的，可以协同工作。</p>
+<p>　　传统的安全方法包括网络防火墙，入侵检测系统（IDS）和入侵防御系统（IPS）。它们可有效阻止开放系统互连（OSI）模型下端（L3-L4）周边的不良L3-L4流量。传统防火墙无法检测Web应用程序中的攻击，因为它们不了解在OSI模型的第7层发生的超文本传输协议（HTTP）。它们还仅允许从HTTP服务器发送和接收请求的网页的端口打开或关闭。这就是为什么Web应用程序防火墙可以有效防止SQL注入，会话劫持和跨站点脚本（XSS）等攻击。</p>
+<p>推荐阅读：</p>
+<p><a href="https://www.tianmaying.com/tutorial/IPSWAF" target="_blank" rel="noopener">IPS与WAF的对比</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/96942352" target="_blank" rel="noopener">什么是IDS、IPS及它们之间的区别</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/其他/" rel="tag"><i class="fa fa-tag"></i>其他</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/30/从入门到高可用分布式实践-第八篇-下/" rel="next" title="从入门到高可用分布式实践-集群-下">
+                <i class="fa fa-chevron-left"></i> 从入门到高可用分布式实践-集群-下
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/17/利用-dev-urandom文件创建随机数/" rel="prev" title="利用/dev/urandom文件创建随机数">
+                利用/dev/urandom文件创建随机数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">169</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-防火墙（WAF）是什么？"><span class="nav-number">1.</span> <span class="nav-text">Web 防火墙（WAF）是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WAF与网络防火墙的区别"><span class="nav-number">2.</span> <span class="nav-text">WAF与网络防火墙的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
