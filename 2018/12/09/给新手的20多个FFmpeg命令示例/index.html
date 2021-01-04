@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="在这个指南中，我将用示例来阐明如何使用 FFmpeg 媒体框架来做各种各样的音频、视频转码和转换的操作。我已经为初学者汇集了最常用的 20 多个 FFmpeg 命令，我将不时地添加更多的示例来保持更新这个指南。请给这个指南加书签，以后回来检查更新。让我们开始吧，如果你还没有在你的 Linux 系统中安装 FFmpeg，参考下面的指南。  在 Linux 中安装 FFmpeg  针对初学者的 20">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-12-11T07:02:36.142Z">
+<meta property="og:updated_time" content="2021-01-04T05:49:09.600Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="命令示例">
 <meta name="twitter:description" content="在这个指南中，我将用示例来阐明如何使用 FFmpeg 媒体框架来做各种各样的音频、视频转码和转换的操作。我已经为初学者汇集了最常用的 20 多个 FFmpeg 命令，我将不时地添加更多的示例来保持更新这个指南。请给这个指南加书签，以后回来检查更新。让我们开始吧，如果你还没有在你的 Linux 系统中安装 FFmpeg，参考下面的指南。  在 Linux 中安装 FFmpeg  针对初学者的 20">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,834 字
+                  4,134 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  16 分钟
+                  17 分钟
                 </span>
               
             </div>
@@ -554,6 +554,9 @@
 <p>比如说你想要一个来自视频的位置 (200,150)，且具有 640 像素宽度和 480 像素高度的视频，命令应该是：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -i input.mp4 -filter:v &quot;crop=640:480:200:150&quot; output.mp4</span><br></pre></td></tr></table></figure>
 <p>请注意，剪切视频将影响质量。除非必要，请勿剪切。</p>
+<blockquote>
+<p>如果x y不写的话，默认居中剪切</p>
+</blockquote>
 <h5 id="11、转换一个视频的具体的部分"><a href="#11、转换一个视频的具体的部分" class="headerlink" title="11、转换一个视频的具体的部分"></a><code>11、转换一个视频的具体的部分</code></h5><p>有时，你可能想仅转换视频文件的一个具体的部分到不同的格式。以示例说明，下面的命令将转换所给定视频input.mp4 文件的开始 10 秒到视频 .avi 格式。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -i input.mp4 -t 10 output.avi</span><br></pre></td></tr></table></figure>
 <p>在这里，我们以秒具体说明时间。此外，以 <code>hh.mm.ss</code> 格式具体说明时间也是可以的。</p>
@@ -618,7 +621,13 @@
 <ul>
 <li><a href="https://link.zhihu.com/?target=https%3A//www.ostechnix.com/create-video-pdf-files-linux/" target="_blank" rel="noopener">在 Linux 中如何从 PDF 文件中创建一个视频</a></li>
 </ul>
-<h5 id="22、获取帮助"><a href="#22、获取帮助" class="headerlink" title="22、获取帮助"></a><code>22、获取帮助</code></h5><p>在这个指南中，我已经覆盖大多数常常使用的 FFmpeg 命令。它有很多不同的选项来做各种各样的高级功能。要学习更多用法，请参考手册页。</p>
+<h5 id="22关于转码"><a href="#22关于转码" class="headerlink" title="22关于转码"></a><code>22关于转码</code></h5><p>若要转换编码格式，我们将运用<code>“-c”</code>来使用ffmpeg支持的编解码器。</p>
+<p><code>“-c”</code>参数包括了音视频的全部编解码器，所以以前的<code>“-c copy”</code>是复制音视频编码的意思。当然我们也可以直接用<code>“-c copy”</code>转码音频，没有视频也没关系。</p>
+<p>要只对视频里的画面或者声音进行操作的话，我们可以用<code>“-c:v”</code>来限定只处理视频画面，<code>“-c:a”</code>来限定只处理视频里的音频声音，<code>“-c:s”</code>来限定只处理字幕。</p>
+<p>经常用的比如<code>“-c:v libx264”</code>，表示将编码格式转换成h264；<code>“-c:a libmp3lame</code>”，表示将编码格式转换成mp3。</p>
+<p>这里的<code>“libx264”</code>、<code>“libmp3lame”</code>是编码器的名字（文末再说编码器名怎么得知）。简单形象地说，“容器格式、编码格式、编码器”的一个可行搭配是<code>“avi、（h264、mp3）、（libx264、libmp3lame）”</code>。</p>
+<p>我们也可以用<code>“-c:v h264”</code>、<code>“-c:a mp3”</code>来进行上述操作，这样的话不用知道编码器名也可以。</p>
+<h5 id="23、获取帮助"><a href="#23、获取帮助" class="headerlink" title="23、获取帮助"></a><code>23、获取帮助</code></h5><p>在这个指南中，我已经覆盖大多数常常使用的 FFmpeg 命令。它有很多不同的选项来做各种各样的高级功能。要学习更多用法，请参考手册页。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man ffmpeg</span><br></pre></td></tr></table></figure>
 <p>这就是全部了。我希望这个指南将帮助你入门 FFmpeg。如果你发现这个指南有用，请在你的社交和专业网络上分享它。更多好东西将要来。敬请期待！</p>
 <p>谢谢！</p>
@@ -629,6 +638,7 @@
 <p><a href="https://longrm.com/2019/08/08/2019-08-08-ffmpeg-practice/" target="_blank" rel="noopener">练习使用FFmpeg将视频转码为hls，并添加水印</a></p>
 <p><a href="https://blog.csdn.net/qiuchangyong/article/details/100188989" target="_blank" rel="noopener">ffmpeg视频切片、缩放与裁剪输出m3u8流</a></p>
 <p><a href="https://blog.csdn.net/yu540135101/article/details/84311244" target="_blank" rel="noopener">ffmpeg实例，crop裁剪相关</a></p>
+<p><a href="https://blog.csdn.net/lipengshiwo/article/details/79252028" target="_blank" rel="noopener">FFmpeg命令参数解释和功能命令汇总</a></p>
 
       
     </div>
@@ -874,7 +884,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#针对初学者的-20-多个-FFmpeg-命令"><span class="nav-number">1.</span> <span class="nav-text">针对初学者的 20 多个 FFmpeg 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、获取音频-视频文件信息"><span class="nav-number">1.1.</span> <span class="nav-text">1、获取音频/视频文件信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、转换视频文件到不同的格式"><span class="nav-number">1.2.</span> <span class="nav-text">2、转换视频文件到不同的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、转换视频文件到音频文件"><span class="nav-number">1.3.</span> <span class="nav-text">3、转换视频文件到音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、更改视频文件的分辨率"><span class="nav-number">1.4.</span> <span class="nav-text">4、更改视频文件的分辨率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、压缩视频文件"><span class="nav-number">1.5.</span> <span class="nav-text">5、压缩视频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、压缩音频文件"><span class="nav-number">1.6.</span> <span class="nav-text">6、压缩音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、从一个视频文件移除音频流"><span class="nav-number">1.7.</span> <span class="nav-text">7、从一个视频文件移除音频流</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、从一个媒体文件移除视频流"><span class="nav-number">1.8.</span> <span class="nav-text">8、从一个媒体文件移除视频流</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9、从视频中提取图像"><span class="nav-number">1.9.</span> <span class="nav-text">9、从视频中提取图像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10、裁剪视频"><span class="nav-number">1.10.</span> <span class="nav-text">10、裁剪视频</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#11、转换一个视频的具体的部分"><span class="nav-number">1.11.</span> <span class="nav-text">11、转换一个视频的具体的部分</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12、设置视频的屏幕高宽比"><span class="nav-number">1.12.</span> <span class="nav-text">12、设置视频的屏幕高宽比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#13、添加海报图像到音频文件"><span class="nav-number">1.13.</span> <span class="nav-text">13、添加海报图像到音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14、使用开始和停止时间剪下一段媒体文件"><span class="nav-number">1.14.</span> <span class="nav-text">14、使用开始和停止时间剪下一段媒体文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#15、切分视频文件为多个部分"><span class="nav-number">1.15.</span> <span class="nav-text">15、切分视频文件为多个部分</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#16、接合或合并多个视频部分到一个"><span class="nav-number">1.16.</span> <span class="nav-text">16、接合或合并多个视频部分到一个</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17、添加字幕到一个视频文件"><span class="nav-number">1.17.</span> <span class="nav-text">17、添加字幕到一个视频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#18、预览或测试视频或音频文件"><span class="nav-number">1.18.</span> <span class="nav-text">18、预览或测试视频或音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19、增加-减少视频播放速度"><span class="nav-number">1.19.</span> <span class="nav-text">19、增加/减少视频播放速度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#20、创建动画的-GIF"><span class="nav-number">1.20.</span> <span class="nav-text">20、创建动画的 GIF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#21、从-PDF-文件中创建视频"><span class="nav-number">1.21.</span> <span class="nav-text">21、从 PDF 文件中创建视频</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22、获取帮助"><span class="nav-number">1.22.</span> <span class="nav-text">22、获取帮助</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#针对初学者的-20-多个-FFmpeg-命令"><span class="nav-number">1.</span> <span class="nav-text">针对初学者的 20 多个 FFmpeg 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、获取音频-视频文件信息"><span class="nav-number">1.1.</span> <span class="nav-text">1、获取音频/视频文件信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、转换视频文件到不同的格式"><span class="nav-number">1.2.</span> <span class="nav-text">2、转换视频文件到不同的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、转换视频文件到音频文件"><span class="nav-number">1.3.</span> <span class="nav-text">3、转换视频文件到音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、更改视频文件的分辨率"><span class="nav-number">1.4.</span> <span class="nav-text">4、更改视频文件的分辨率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、压缩视频文件"><span class="nav-number">1.5.</span> <span class="nav-text">5、压缩视频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、压缩音频文件"><span class="nav-number">1.6.</span> <span class="nav-text">6、压缩音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、从一个视频文件移除音频流"><span class="nav-number">1.7.</span> <span class="nav-text">7、从一个视频文件移除音频流</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、从一个媒体文件移除视频流"><span class="nav-number">1.8.</span> <span class="nav-text">8、从一个媒体文件移除视频流</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9、从视频中提取图像"><span class="nav-number">1.9.</span> <span class="nav-text">9、从视频中提取图像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10、裁剪视频"><span class="nav-number">1.10.</span> <span class="nav-text">10、裁剪视频</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#11、转换一个视频的具体的部分"><span class="nav-number">1.11.</span> <span class="nav-text">11、转换一个视频的具体的部分</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12、设置视频的屏幕高宽比"><span class="nav-number">1.12.</span> <span class="nav-text">12、设置视频的屏幕高宽比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#13、添加海报图像到音频文件"><span class="nav-number">1.13.</span> <span class="nav-text">13、添加海报图像到音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14、使用开始和停止时间剪下一段媒体文件"><span class="nav-number">1.14.</span> <span class="nav-text">14、使用开始和停止时间剪下一段媒体文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#15、切分视频文件为多个部分"><span class="nav-number">1.15.</span> <span class="nav-text">15、切分视频文件为多个部分</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#16、接合或合并多个视频部分到一个"><span class="nav-number">1.16.</span> <span class="nav-text">16、接合或合并多个视频部分到一个</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17、添加字幕到一个视频文件"><span class="nav-number">1.17.</span> <span class="nav-text">17、添加字幕到一个视频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#18、预览或测试视频或音频文件"><span class="nav-number">1.18.</span> <span class="nav-text">18、预览或测试视频或音频文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19、增加-减少视频播放速度"><span class="nav-number">1.19.</span> <span class="nav-text">19、增加/减少视频播放速度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#20、创建动画的-GIF"><span class="nav-number">1.20.</span> <span class="nav-text">20、创建动画的 GIF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#21、从-PDF-文件中创建视频"><span class="nav-number">1.21.</span> <span class="nav-text">21、从 PDF 文件中创建视频</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22关于转码"><span class="nav-number">1.22.</span> <span class="nav-text">22关于转码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#23、获取帮助"><span class="nav-number">1.23.</span> <span class="nav-text">23、获取帮助</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -902,7 +912,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
