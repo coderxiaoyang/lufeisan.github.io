@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="在这个指南中，我将用示例来阐明如何使用 FFmpeg 媒体框架来做各种各样的音频、视频转码和转换的操作。我已经为初学者汇集了最常用的 20 多个 FFmpeg 命令，我将不时地添加更多的示例来保持更新这个指南。请给这个指南加书签，以后回来检查更新。让我们开始吧，如果你还没有在你的 Linux 系统中安装 FFmpeg，参考下面的指南。  在 Linux 中安装 FFmpeg  针对初学者的 20">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-01-04T05:49:09.600Z">
+<meta property="og:updated_time" content="2021-01-05T09:15:51.206Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="命令示例">
 <meta name="twitter:description" content="在这个指南中，我将用示例来阐明如何使用 FFmpeg 媒体框架来做各种各样的音频、视频转码和转换的操作。我已经为初学者汇集了最常用的 20 多个 FFmpeg 命令，我将不时地添加更多的示例来保持更新这个指南。请给这个指南加书签，以后回来检查更新。让我们开始吧，如果你还没有在你的 Linux 系统中安装 FFmpeg，参考下面的指南。  在 Linux 中安装 FFmpeg  针对初学者的 20">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,134 字
+                  4,206 字
                 </span>
               
 
@@ -476,6 +476,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -i video.flv video.mpeg</span><br></pre></td></tr></table></figure>
 <p><strong>如果你想维持你的源视频文件的质量</strong>，使用 <code>-qscale 0</code> 参数：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -i input.webm -qscale 0 output.mp4</span><br></pre></td></tr></table></figure>
+<p>也可以尝试使用<code>-crf 0</code>和<code>-qp 0</code>保持源视频文件的质量</p>
+<p>如果你使用<code>-qscale 0</code>   有时会提示你<code>ffmpeg Please use -q:a or -q:v, -qscale is ambiguous</code></p>
+<p>如果按照提示改用<code>-q:a  0</code>或者 <code>-q:v 0</code>也可以保持画质不错的</p>
 <p>为检查 FFmpeg 的支持格式的列表，运行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -formats</span><br></pre></td></tr></table></figure>
 <h5 id="3、转换视频文件到音频文件"><a href="#3、转换视频文件到音频文件" class="headerlink" title="3、转换视频文件到音频文件"></a><code>3、转换视频文件到音频文件</code></h5><p>我转换一个视频文件到音频文件，只需具体指明输出格式，像 .mp3，或 .ogg，或其它任意音频格式。</p>
