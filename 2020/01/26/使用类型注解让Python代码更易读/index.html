@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我们知道 Python 是一种动态语言，在声明一个变量时我们不需要显式地声明它的类型，例如下面的例子： 12a = 2print(&apos;1 + a =&apos;, 1 + a) 运行结果： 11 + a = 3 这里我们首先声明了一个变量 a，并将其赋值为了 2，然后将最后的结果打印出来，程序输出来了正确的结果。但在这个过程中，我们没有声明它到底是什么类型。 但如果这时候我们将 a 变成一个字符串类型，结果会">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用类型注解让Python代码更易读">
+<meta property="og:url" content="https://zhaobugs.com/2020/01/26/使用类型注解让Python代码更易读/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="我们知道 Python 是一种动态语言，在声明一个变量时我们不需要显式地声明它的类型，例如下面的例子： 12a = 2print(&apos;1 + a =&apos;, 1 + a) 运行结果： 11 + a = 3 这里我们首先声明了一个变量 a，并将其赋值为了 2，然后将最后的结果打印出来，程序输出来了正确的结果。但在这个过程中，我们没有声明它到底是什么类型。 但如果这时候我们将 a 变成一个字符串类型，结果会">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-01-26T15:14:30.391Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用类型注解让Python代码更易读">
+<meta name="twitter:description" content="我们知道 Python 是一种动态语言，在声明一个变量时我们不需要显式地声明它的类型，例如下面的例子： 12a = 2print(&apos;1 + a =&apos;, 1 + a) 运行结果： 11 + a = 3 这里我们首先声明了一个变量 a，并将其赋值为了 2，然后将最后的结果打印出来，程序输出来了正确的结果。但在这个过程中，我们没有声明它到底是什么类型。 但如果这时候我们将 a 变成一个字符串类型，结果会">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/01/26/使用类型注解让Python代码更易读/"/>
+
+
+
+
+
+  <title>使用类型注解让Python代码更易读 | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/01/26/使用类型注解让Python代码更易读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用类型注解让Python代码更易读</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-26T22:44:52+08:00">
+                2020-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/26/使用类型注解让Python代码更易读/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/01/26/使用类型注解让Python代码更易读/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/01/26/使用类型注解让Python代码更易读/" class="leancloud_visitors" data-flag-title="使用类型注解让Python代码更易读">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,388 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  18 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们知道 Python 是一种动态语言，在声明一个变量时我们不需要显式地声明它的类型，例如下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2</span></span><br><span class="line">print(<span class="string">'1 + a ='</span>, <span class="number">1</span> + a)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + a = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>这里我们首先声明了一个变量 <code>a</code>，并将其赋值为了 2，然后将最后的结果打印出来，程序输出来了正确的结果。但在这个过程中，我们没有声明它到底是什么类型。</p>
+<p>但如果这时候我们将 <code>a</code> 变成一个字符串类型，结果会是怎样的呢？改写如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'2'</span></span><br><span class="line">print(<span class="string">'1 + a ='</span>, <span class="number">1</span> + a)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">TypeError</span>: unsupported operand type(s) <span class="keyword">for</span> +: <span class="string">'int'</span> and <span class="string">'str'</span></span><br></pre></td></tr></table></figure>
+<p>直接报错了，错误原因是我们进行了字符串类型的变量和数值类型变量的加和，两种数据类型不同，是无法进行相加的。</p>
+<p>如果我们将上面的语句改写成一个方法定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>这里定义了一个方法，传入一个参数，然后将其加 1 并返回。</p>
+<p>如果这时候如果用下面的方式调用，传入的参数是一个数值类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>则可以正常输出结果 3。但如果我们传入的参数并不是我们期望的类型，比如传入一个字符类型，那么就会同样报刚才类似的错误。</p>
+<p>但又由于 Python 的特性，很多情况下我们并不用去声明它的类型，因此从方法定义上面来看，我们实际上是不知道一个方法的参数到底应该传入什么类型的。</p>
+<p>这样其实就造成了很多不方便的地方，在某些情况下一些复杂的方法，如果不借助于一些额外的说明，我们是不知道参数到底是什么类型的。</p>
+<p>因此，Python 中的类型注解就显得比较重要了。</p>
+<h2 id="类型注解"><a href="#类型注解" class="headerlink" title="类型注解"></a><strong>类型注解</strong></h2><p>在 Python 3.5 中，Python  PEP 484 引入了类型注解（type hints），在 Python 3.6 中，PEP 526 又进一步引入了变量注解（Variable Annotations），所以上面的代码我们改写成如下写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a: int = <span class="number">2</span></span><br><span class="line">print(<span class="string">'5 + a ='</span>, <span class="number">5</span> + a)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a: int)</span> -&gt; int:</span></span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>具体的语法是可以归纳为两点：</p>
+<ul>
+<li>在声明变量时，变量的后面可以加一个冒号，后面再写上变量的类型，如 <code>int</code>、<code></code>list 等等。</li>
+<li>在声明方法返回值的时候，可以在方法的后面加一个箭头，后面加上返回值的类型，如<code>int</code>、<code>list</code>等等。</li>
+</ul>
+<p>在 PEP 8 中，具体的格式是这样规定的：</p>
+<ul>
+<li>在声明变量类型时，变量后方紧跟一个冒号，冒号后面跟一个空格，再跟上变量的类型。</li>
+<li>在声明方法返回值的时候，箭头左边是方法定义，箭头右边是返回值的类型，箭头左右两边都要留有空格。</li>
+</ul>
+<p>有了这样的声明，以后我们如果看到这个方法的定义，我们就知道传入的参数类型了，如调用<code>add</code>方法的时候，我们就知道传入的需要是一个数值类型的变量，而不是字符串类型，非常直观。</p>
+<p>但值得注意的是，这种类型和变量注解实际上只是一种类型提示，对运行实际上是没有影响的，比如调用<code>add</code>方法的时候，我们传入的不是<code>int</code> 类型，而是一个<code>float</code>类型，它也不会报错，也不会对参数进行类型转换，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add(<span class="number">1.5</span>)</span><br></pre></td></tr></table></figure>
+<p>我们传入的是一个 float 类型的数值 1.5，看下运行结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.5</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，运行结果正常输出，而且 1.5 并没有经过强制类型转换变成 1，否则结果会变成 2。</p>
+<p>因此，类型和变量注解只是提供了一种提示，对于运行实际上没有任何影响。</p>
+<p>不过有了类型注解，一些 IDE 是可以识别出来并提示的，比如 PyCharm 就可以识别出来在调用某个方法的时候参数类型不一致，会提示 WARNING。</p>
+<p>比如上面的调用，如果在 PyCharm 中，就会有如下提示内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Expected type <span class="string">'int'</span>, got <span class="string">'float'</span> instead</span><br><span class="line">This inspection detects type errors <span class="keyword">in</span> <span class="function"><span class="keyword">function</span> <span class="title">call</span> <span class="title">expressions</span>. <span class="title">Due</span> <span class="title">to</span> <span class="title">dynamic</span> <span class="title">dispatch</span> <span class="title">and</span> <span class="title">duck</span> <span class="title">typing</span>, <span class="title">this</span> <span class="title">is</span> <span class="title">possible</span> <span class="title">in</span> <span class="title">a</span> <span class="title">limited</span> <span class="title">but</span> <span class="title">useful</span> <span class="title">number</span> <span class="title">of</span> <span class="title">cases</span>. <span class="title">Types</span> <span class="title">of</span> <span class="title">function</span> <span class="title">parameters</span> <span class="title">can</span> <span class="title">be</span> <span class="title">specified</span> <span class="title">in</span> <span class="title">docstrings</span> <span class="title">or</span> <span class="title">in</span> <span class="title">Python</span> 3 <span class="title">function</span> <span class="title">annotations</span>.</span></span><br></pre></td></tr></table></figure>
+<p>另外也有一些库是支持类型检查的，比如 mypy，安装之后，利用 mypy 即可检查出 Python 脚本中不符合类型注解的调用情况。</p>
+<p>上面只是用一个简单的 int 类型做了实例，下面我们再看下一些相对复杂的数据结构，例如列表、元组、字典等类型怎么样来声明。</p>
+<p>可想而知了，列表用 list 表示，元组用 tuple 表示，字典用 dict 来表示，那么很自然地，在声明的时候我们就很自然地写成这样了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">names: list = [<span class="string">'Germey'</span>, <span class="string">'Guido'</span>]</span><br><span class="line">version: tuple = (<span class="number">3</span>, <span class="number">7</span>, <span class="number">4</span>)</span><br><span class="line">operations: dict = &#123;<span class="string">'show'</span>: <span class="keyword">False</span>, <span class="string">'sort'</span>: <span class="keyword">True</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>这么看上去没有问题，确实声明为了对应的类型，但实际上并不能反映整个列表、元组的结构，比如我们只通过类型注解是不知道<code>names</code>里面的元素是什么类型的，只知道<code>names</code> 是一个列表<code>list</code> 类型，实际上里面都是字符串 <code>str</code>类型。我们也不知道 <code>version</code> 这个元组的每一个元素是什么类型的，实际上是<code>int</code> 类型。但这些信息我们都无从得知。因此说，仅仅凭借<code>list</code>、<code>tuple</code>这样的声明是非常“弱”的，我们需要一种更强的类型声明。</p>
+<p>这时候我们就需要借助于 <code>typing</code> 模块了，它提供了非常“强“的类型支持，比如 <code>List[str]</code>、<code>Tuple[int, int, int]</code> 则可以表示由<code>str</code>类型的元素组成的列表和由 <code>int</code>类型的元素组成的长度为 3 的元组。所以上文的声明写法可以改写成下面的样子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List, Tuple, Dict</span><br><span class="line"></span><br><span class="line">names: List[str] = [<span class="string">'Germey'</span>, <span class="string">'Guido'</span>]</span><br><span class="line">version: Tuple[int, int, int] = (<span class="number">3</span>, <span class="number">7</span>, <span class="number">4</span>)</span><br><span class="line">operations: Dict[str, bool] = &#123;<span class="string">'show'</span>: <span class="keyword">False</span>, <span class="string">'sort'</span>: <span class="keyword">True</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>这样一来，变量的类型便可以非常直观地体现出来了。</p>
+<p>目前<code>typing</code>模块也已经被加入到 Python 标准库中，不需要安装第三方模块，我们就可以直接使用了。</p>
+<h2 id="typing"><a href="#typing" class="headerlink" title="typing"></a><strong>typing</strong></h2><p>下面我们再来详细看下<code>typing</code>模块的具体用法，这里主要会介绍一些常用的注解类型，如<code>List</code>、<code>Tuple</code>、<code>Dict</code>、<code>Sequence</code>等等，了解了每个类型的具体使用方法，我们可以得心应手的对任何变量进行声明了。</p>
+<p>在引入的时候就直接通过<code>typing</code>模块引入就好了，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List, Tuple</span><br></pre></td></tr></table></figure>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a><strong>List</strong></h3><p><code>List</code>、列表，是<code>list</code>的泛型，基本等同于<code>list</code>，其后紧跟一个方括号，里面代表了构成这个列表的元素类型，如由数字构成的列表可以声明为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span>: List[int or float] = [<span class="number">2</span>, <span class="number">3.5</span>]</span><br></pre></td></tr></table></figure>
+<p>另外还可以嵌套声明都是可以的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span>: List[List[int]] = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">3</span>]]</span><br></pre></td></tr></table></figure>
+<h3 id="Tuple、NamedTuple"><a href="#Tuple、NamedTuple" class="headerlink" title="Tuple、NamedTuple"></a><strong>Tuple、NamedTuple</strong></h3><p><code>Tuple</code>、元组，是<code>tuple</code> 的泛型，其后紧跟一个方括号，方括号中按照顺序声明了构成本元组的元素类型，如 <code>Tuple[X, Y]</code> 代表了构成元组的第一个元素是 X 类型，第二个元素是 Y 类型。</p>
+<p>比如想声明一个元组，分别代表姓名、年龄、身高，三个数据类型分别为<code>str</code>、<code>int</code>、<code>float</code>，那么可以这么声明：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person: Tuple[str, int, float] = (<span class="string">'Mike'</span>, <span class="number">22</span>, <span class="number">1.75</span>)</span><br></pre></td></tr></table></figure>
+<p>同样地也可以使用类型嵌套。</p>
+<p><code>NamedTuple</code>，是 <code>collections.namedtuple</code> 的泛型，实际上就和<code>namedtuple</code> 用法完全一致，但个人其实并不推荐使用 <code>NamedTuple</code>，推荐使用<code>attrs</code>这个库来声明一些具有表征意义的类。</p>
+<h3 id="Dict、Mapping、MutableMapping"><a href="#Dict、Mapping、MutableMapping" class="headerlink" title="Dict、Mapping、MutableMapping"></a><strong>Dict、Mapping、MutableMapping</strong></h3><p><code>Dict</code>、字典，是<code>dict</code>的泛型；<code>Mapping</code>，映射，是 <code>collections.abc.Mapping</code> 的泛型。根据官方文档，<code>Dict</code>推荐用于注解返回类型，<code>Mapping</code>推荐用于注解参数。它们的使用方法都是一样的，其后跟一个中括号，中括号内分别声明键名、键值的类型，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(rect: Mapping[str, int])</span> -&gt; Dict[str, int]:</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">'width'</span>: rect[<span class="string">'width'</span>] + <span class="number">100</span>, <span class="string">'height'</span>: rect[<span class="string">'width'</span>] + <span class="number">100</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>这里将 <code>Dict</code> 用作了返回值类型注解，将<code>Mapping</code> 用作了参数类型注解。</p>
+<p><code>MutableMapping</code> 则是<code>Mapping</code> 对象的子类，在很多库中也经常用 <code>MutableMapping</code>来代替<code>Mapping</code>。</p>
+<h3 id="Set、AbstractSet"><a href="#Set、AbstractSet" class="headerlink" title="Set、AbstractSet"></a><strong>Set、AbstractSet</strong></h3><p><code>Set</code>、集合，是 <code>set</code>的泛型；<code>AbstractSet</code>是 <code>collections.abc.Set</code> 的泛型。根据官方文档，<code>Set</code>推荐用于注解返回类型，<code>AbstractSet</code> 用于注解参数。它们的使用方法都是一样的，其后跟一个中括号，里面声明集合中元素的类型，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def describe(s: AbstractSet[int]) -&gt; <span class="built_in">Set</span>[int]:</span><br><span class="line">    <span class="keyword">return</span> set(s)</span><br></pre></td></tr></table></figure>
+<p>这里将<code>Set</code> 用作了返回值类型注解，将 <code>AbstractSet</code>用作了参数类型注解。</p>
+<h3 id="Sequence"><a href="#Sequence" class="headerlink" title="Sequence"></a><strong>Sequence</strong></h3><p><code>Sequence</code>，是 <code>collections.abc.Sequence</code> 的泛型，在某些情况下，我们可能并不需要严格区分一个变量或参数到底是列表<code>list</code>类型还是元组 <code>tuple</code>类型，我们可以使用一个更为泛化的类型，叫做<code>Sequence</code>，其用法类似于 <code>List</code>，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(elements: Sequence[float])</span> -&gt; List[float]:</span></span><br><span class="line">    <span class="keyword">return</span> [x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> elements]</span><br></pre></td></tr></table></figure>
+<h3 id="NoReturn"><a href="#NoReturn" class="headerlink" title="NoReturn"></a><strong>NoReturn</strong></h3><p><code>NoReturn</code>，当一个方法没有返回结果时，为了注解它的返回类型，我们可以将其注解为<code>NoReturn</code>，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span> -&gt; NoReturn:</span></span><br><span class="line">    print(<span class="string">'hello'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Any"><a href="#Any" class="headerlink" title="Any"></a><strong>Any</strong></h3><p><code>Any</code>，是一种特殊的类型，它可以代表所有类型，静态类型检查器的所有类型都与<code>Any</code> 类型兼容，所有的无参数类型注解和返回类型注解的都会默认使用<code>Any</code>类型，也就是说，下面两个方法的声明是完全等价的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a: Any)</span> -&gt; Any:</span></span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>原理类似于<code>object</code>，所有的类型都是<code>object</code>的子类。但如果我们将参数声明为<code>object</code>类型，静态参数类型检查便会抛出错误，而<code>Any</code>则不会，具体可以参考官方文档的说明：<a href="https://docs.python.org/zh-cn/3/library/typing.html?highlight=typing#the-any-type。" target="_blank" rel="noopener">https://docs.python.org/zh-cn/3/library/typing.html?highlight=typing#the-any-type。</a></p>
+<h3 id="TypeVar"><a href="#TypeVar" class="headerlink" title="TypeVar"></a><strong>TypeVar</strong></h3><p><code>TypeVar</code>，我们可以借助它来自定义兼容特定类型的变量，比如有的变量声明为<code>int</code>、<code>float</code>、<code>None</code>都是符合要求的，实际就是代表任意的数字或者空内容都可以，其他的类型则不可以，比如列表<code>list</code>、字典<code>dict</code>等等，像这样的情况，我们可以使用<code>TypeVar</code>来表示。</p>
+<p>例如一个人的身高，便可以使用<code>int</code> 或<code>float</code>或 <code>None</code>来表示，但不能用 <code>dict</code> 来表示，所以可以这么声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">height = <span class="number">1.75</span></span><br><span class="line">Height = TypeVar(<span class="string">'Height'</span>, int, float, <span class="keyword">None</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_height</span><span class="params">()</span> -&gt; Height:</span></span><br><span class="line">    <span class="keyword">return</span> height</span><br></pre></td></tr></table></figure>
+<p>这里我们使用<code>TypeVar</code>声明了一个<code>Height</code>类型，然后将其用于注解方法的返回结果。</p>
+<h3 id="NewType"><a href="#NewType" class="headerlink" title="NewType"></a><strong>NewType</strong></h3><p><code>NewType</code>，我们可以借助于它来声明一些具有特殊含义的类型，例如像<code>Tuple</code> 的例子一样，我们需要将它表示为<code>Person</code>，即一个人的含义，但但从表面上声明为<code>Tuple</code> 并不直观，所以我们可以使用<code>NewType</code> 为其声明一个类型，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Person = NewType(<span class="string">'Person'</span>, Tuple[str, int, float])</span><br><span class="line">person = Person((<span class="string">'Mike'</span>, <span class="number">22</span>, <span class="number">1.75</span>))</span><br></pre></td></tr></table></figure>
+<p>这里实际上<code>person</code> 就是一个<code>tuple</code>类型，我们可以对其像<code>tuple</code> 一样正常操作。</p>
+<h3 id="Callable"><a href="#Callable" class="headerlink" title="Callable"></a><strong>Callable</strong></h3><p><code>Callable</code>，可调用类型，它通常用来注解一个方法，比如我们刚才声明了一个<code>add</code>方法，它就是一个 <code>Callable</code>类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(Callable, type(add), isinstance(add, Callable))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typing.Callable &lt;<span class="class"><span class="keyword">class</span> '<span class="title">function</span>'&gt; <span class="title">True</span></span></span><br></pre></td></tr></table></figure>
+<p>在这里虽然二者<code>add</code>利用<code>type</code>方法得到的结果是<code>function</code>，但实际上利用<code>isinstance</code>方法判断确实是 <code>True</code>。</p>
+<p><code>Callable</code>在声明的时候需要使用 <code>Callable[[Arg1Type, Arg2Type, ...], ReturnType]</code> 这样的类型注解，将参数类型和返回值类型都要注解出来，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date</span><span class="params">(year: int, month: int, day: int)</span> -&gt; str:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f'<span class="subst">&#123;year&#125;</span>-<span class="subst">&#123;month&#125;</span>-<span class="subst">&#123;day&#125;</span>'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_date_fn</span><span class="params">()</span> -&gt; Callable[[int, int, int], str]:</span></span><br><span class="line">    <span class="keyword">return</span> date</span><br></pre></td></tr></table></figure>
+<p>这里首先声明了一个方法<code>date</code>，接收三个<code>int</code>参数，返回一个 <code>str</code>结果，<code>get_date_fn</code>方法返回了这个方法本身，它的返回值类型就可以标记为 <code>Callable</code>，中括号内分别标记了返回的方法的参数类型和返回值类型。</p>
+<h3 id="Union"><a href="#Union" class="headerlink" title="Union"></a><strong>Union</strong></h3><p><code>Union</code>，联合类型，<code>Union[X, Y]</code> 代表要么是 X 类型，要么是 Y 类型。</p>
+<p>联合类型的联合类型等价于展平后的类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Union[Union[int, str], float] == Union[int, str, float]</span><br></pre></td></tr></table></figure>
+<p>仅有一个参数的联合类型会坍缩成参数自身，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Union[int] == int</span><br></pre></td></tr></table></figure>
+<p>多余的参数会被跳过，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Union[int, str, int] == Union[int, str]</span><br></pre></td></tr></table></figure>
+<p>在比较联合类型的时候，参数顺序会被忽略，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Union[int, str] == Union[str, int]</span><br></pre></td></tr></table></figure>
+<p>这个在一些方法参数声明的时候比较有用，比如一个方法，要么传一个字符串表示的方法名，要么直接把方法传过来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(fn: Union[str, Callable])</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(fn, str):</span><br><span class="line">        <span class="comment"># str2fn and process</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> isinstance(fn, Callable):</span><br><span class="line">        fn()</span><br></pre></td></tr></table></figure>
+<p>这样的声明在一些类库方法定义的时候十分常见。</p>
+<h3 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a><strong>Optional</strong></h3><p><code>Optional</code>，意思是说这个参数可以为空或已经声明的类型，即 <code>Optional[X]</code> 等价于 <code>Union[X, None]</code>。</p>
+<p>但值得注意的是，这个并不等价于可选参数，当它作为参数类型注解的时候，不代表这个参数可以不传递了，而是说这个参数可以传为<code>None</code>。</p>
+<blockquote>
+<p>如果还是想不传 还是需要设置 默认值为 None</p>
+</blockquote>
+<p>如当一个方法执行结果，如果执行完毕就不返回错误信息， 如果发生问题就返回错误信息，则可以这么声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">judge</span><span class="params">(result: bool)</span> -&gt; Optional[str]:</span></span><br><span class="line">    <span class="keyword">if</span> result: <span class="keyword">return</span> <span class="string">'Error Occurred'</span></span><br></pre></td></tr></table></figure>
+<h3 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a><strong>Generator</strong></h3><p>如果想代表一个生成器类型，可以使用 <code>Generator</code>，它的声明比较特殊，其后的中括号紧跟着三个参数，分别代表<code>YieldType</code>、<code>SendType</code>、<code>ReturnType</code>，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo_round</span><span class="params">()</span> -&gt; Generator[int, float, str]:</span></span><br><span class="line">    sent = <span class="keyword">yield</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> sent &gt;= <span class="number">0</span>:</span><br><span class="line">        sent = <span class="keyword">yield</span> round(sent)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Done'</span></span><br></pre></td></tr></table></figure>
+<p>在这里<code>yield</code>关键字后面紧跟的变量的类型就是<code>YieldType</code>，<code>yield</code>返回的结果的类型就是<code>SendType</code>，最后生成器 <code>return</code>的内容就是<code>ReturnType</code>。</p>
+<p>当然很多情况下，生成器往往只需要<code>yield</code> 内容就够了，我们是不需要 <code>SendType</code>和<code>ReturnType</code> 的，可以将其设置为空，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">infinite_stream</span><span class="params">(start: int)</span> -&gt; Generator[int, <span class="keyword">None</span>, <span class="keyword">None</span>]:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> start</span><br><span class="line">        start += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="案例实战"><a href="#案例实战" class="headerlink" title="案例实战"></a><strong>案例实战</strong></h2><p>接下来让我们看一个实际的项目，看看经常用到的类型一般是怎么使用的。</p>
+<p>这里我们看的库是 <code>requests-html</code>，是由 <code>Kenneth Reitz</code>所开发的，其 GitHub 地址为：<a href="https://github.com/psf/requests-html，下面我们主要看看它的源代码中一些类型是如何声明的。" target="_blank" rel="noopener">https://github.com/psf/requests-html，下面我们主要看看它的源代码中一些类型是如何声明的。</a></p>
+<p>这个库的源代码其实就一个文件，那就是 <a href="https://github.com/psf/requests-html/blob/master/requests_html.py，我们看一下它里面的一些`" target="_blank" rel="noopener">https://github.com/psf/requests-html/blob/master/requests_html.py，我们看一下它里面的一些`</a> typing` 的定义和方法定义。</p>
+<p>首先<code>Typing</code> 的定义部分如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Set, Union, List, MutableMapping, Optional</span><br><span class="line"></span><br><span class="line">_Find = Union[List[<span class="string">'Element'</span>], <span class="string">'Element'</span>]</span><br><span class="line">_XPath = Union[List[str], List[<span class="string">'Element'</span>], str, <span class="string">'Element'</span>]</span><br><span class="line">_Result = Union[List[<span class="string">'Result'</span>], <span class="string">'Result'</span>]</span><br><span class="line">_HTML = Union[str, bytes]</span><br><span class="line">_BaseHTML = str</span><br><span class="line">_UserAgent = str</span><br><span class="line">_DefaultEncoding = str</span><br><span class="line">_URL = str</span><br><span class="line">_RawHTML = bytes</span><br><span class="line">_Encoding = str</span><br><span class="line">_LXML = HtmlElement</span><br><span class="line">_Text = str</span><br><span class="line">_Search = Result</span><br><span class="line">_Containing = Union[str, List[str]]</span><br><span class="line">_Links = Set[str]</span><br><span class="line">_Attrs = MutableMapping</span><br><span class="line">_Next = Union[<span class="string">'HTML'</span>, List[str]]</span><br><span class="line">_NextSymbol = List[str]</span><br></pre></td></tr></table></figure>
+<p>这里可以看到主要用到的类型有 <code>Set</code>、<code>Union</code>、<code>List</code>、<code>MutableMapping</code>、<code>Optional</code>，这些在上文都已经做了解释，另外这里使用了多次 <code>Union</code> 来声明了一些新的类型，如 <code>_Find</code> 则要么是是 <code>Element</code> 对象的列表，要么是单个<code>Element</code>对象，<code>_Result</code> 则要么是<code>Result</code>对象的列表，要么是单个<code>Result</code>对象。另外 <code>_Attrs</code> 其实就是字典类型，这里用 <code>MutableMapping</code>来表示了，没有用<code>Dict</code>，也没有用<code>Mapping</code>。</p>
+<p>接下来再看一个<code>Element</code> 类的声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Element</span><span class="params">(BaseParser)</span>:</span></span><br><span class="line">    <span class="string">"""An element of HTML.</span></span><br><span class="line"><span class="string">    :param element: The element from which to base the parsing upon.</span></span><br><span class="line"><span class="string">    :param url: The URL from which the HTML originated, used for ``absolute_links``.</span></span><br><span class="line"><span class="string">    :param default_encoding: Which encoding to default to.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    __slots__ = [</span><br><span class="line">        <span class="string">'element'</span>, <span class="string">'url'</span>, <span class="string">'skip_anchors'</span>, <span class="string">'default_encoding'</span>, <span class="string">'_encoding'</span>,</span><br><span class="line">        <span class="string">'_html'</span>, <span class="string">'_lxml'</span>, <span class="string">'_pq'</span>, <span class="string">'_attrs'</span>, <span class="string">'session'</span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *, element, url: _URL, default_encoding: _DefaultEncoding = None)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        super(Element, self).__init__(element=element, url=url, default_encoding=default_encoding)</span><br><span class="line">        self.element = element</span><br><span class="line">        self.tag = element.tag</span><br><span class="line">        self.lineno = element.sourceline</span><br><span class="line">        self._attrs = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span> -&gt; str:</span></span><br><span class="line">        attrs = [<span class="string">'&#123;&#125;=&#123;&#125;'</span>.format(attr, repr(self.attrs[attr])) <span class="keyword">for</span> attr <span class="keyword">in</span> self.attrs]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"&lt;Element &#123;&#125; &#123;&#125;&gt;"</span>.format(repr(self.element.tag), <span class="string">' '</span>.join(attrs))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">attrs</span><span class="params">(self)</span> -&gt; _Attrs:</span></span><br><span class="line">        <span class="string">"""Returns a dictionary of the attributes of the :class:`Element &lt;Element&gt;`</span></span><br><span class="line"><span class="string">        (`learn more &lt;https://www.w3schools.com/tags/ref_attributes.asp&gt;`_).</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self._attrs <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            self._attrs = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> self.element.items()&#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Split class and rel up, as there are ussually many of them:</span></span><br><span class="line">            <span class="keyword">for</span> attr <span class="keyword">in</span> [<span class="string">'class'</span>, <span class="string">'rel'</span>]:</span><br><span class="line">                <span class="keyword">if</span> attr <span class="keyword">in</span> self._attrs:</span><br><span class="line">                    self._attrs[attr] = tuple(self._attrs[attr].split())</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self._attrs</span><br></pre></td></tr></table></figure>
+<p>这里 <code>__init__</code> 方法接收非常多的参数，同时使用 <code>_URL</code> 、<code>_DefaultEncoding</code> 进行了参数类型注解，另外 attrs 方法使用了 <code>_Attrs</code> 进行了返回结果类型注解。</p>
+<p>整体看下来，每个参数的类型、返回值都进行了清晰地注解，代码可读性大大提高。</p>
+<p>以上便是类型注解和<code>typing</code> 模块的详细介绍。</p>
+<p>官方文档：<a href="https://docs.python.org/zh-cn/3/library/typing.html" target="_blank" rel="noopener">typing — 类型提示支持</a></p>
+<p>文章原文: <a href="https://cloud.tencent.com/developer/article/1480818" target="_blank" rel="noopener">使用类型注解让Python代码更易读</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/24/Python的列表-和-操作的区别/" rel="next" title="Python的列表+和+=操作的区别">
+                <i class="fa fa-chevron-left"></i> Python的列表+和+=操作的区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/02/Linux查找目录下包含有某字符串的所有文件/" rel="prev" title="Linux查找目录下包含有某字符串的所有文件">
+                Linux查找目录下包含有某字符串的所有文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">172</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类型注解"><span class="nav-number">1.</span> <span class="nav-text">类型注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#typing"><span class="nav-number">2.</span> <span class="nav-text">typing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-number">2.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tuple、NamedTuple"><span class="nav-number">2.2.</span> <span class="nav-text">Tuple、NamedTuple</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dict、Mapping、MutableMapping"><span class="nav-number">2.3.</span> <span class="nav-text">Dict、Mapping、MutableMapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set、AbstractSet"><span class="nav-number">2.4.</span> <span class="nav-text">Set、AbstractSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sequence"><span class="nav-number">2.5.</span> <span class="nav-text">Sequence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoReturn"><span class="nav-number">2.6.</span> <span class="nav-text">NoReturn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Any"><span class="nav-number">2.7.</span> <span class="nav-text">Any</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TypeVar"><span class="nav-number">2.8.</span> <span class="nav-text">TypeVar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NewType"><span class="nav-number">2.9.</span> <span class="nav-text">NewType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Callable"><span class="nav-number">2.10.</span> <span class="nav-text">Callable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Union"><span class="nav-number">2.11.</span> <span class="nav-text">Union</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Optional"><span class="nav-number">2.12.</span> <span class="nav-text">Optional</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generator"><span class="nav-number">2.13.</span> <span class="nav-text">Generator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例实战"><span class="nav-number">3.</span> <span class="nav-text">案例实战</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
