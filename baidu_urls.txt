@@ -1,1 +1,1 @@
-https://zhaobugs.com/2020/11/17/利用-dev-urandom文件创建随机数/
+https://zhaobugs.com/2021/01/01/使用异步服务器Uvicorn启动fastapi/
