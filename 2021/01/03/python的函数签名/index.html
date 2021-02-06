@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名`">
+<meta name="description" content="我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名signature。那什么是函数签名呢？ 函数签名对象，表示调用函数的方式，即定义了函数的输入和输出。 在Python中，可以使用标准库inspect的一些方法或类，来操作或创建函数签名。 获取函数签名及参数使用标准库的signature方法，获取函数签名对象；通过函数签名的parameters属性，获取函数参数。 1234567891">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python的函数签名">
 <meta property="og:url" content="https://zhaobugs.com/2021/01/03/python的函数签名/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名`">
+<meta property="og:description" content="我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名signature。那什么是函数签名呢？ 函数签名对象，表示调用函数的方式，即定义了函数的输入和输出。 在Python中，可以使用标准库inspect的一些方法或类，来操作或创建函数签名。 获取函数签名及参数使用标准库的signature方法，获取函数签名对象；通过函数签名的parameters属性，获取函数参数。 1234567891">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-06T16:32:21.633Z">
+<meta property="og:updated_time" content="2021-02-06T16:56:18.216Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python的函数签名">
-<meta name="twitter:description" content="我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名`">
+<meta name="twitter:description" content="我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名signature。那什么是函数签名呢？ 函数签名对象，表示调用函数的方式，即定义了函数的输入和输出。 在Python中，可以使用标准库inspect的一些方法或类，来操作或创建函数签名。 获取函数签名及参数使用标准库的signature方法，获取函数签名对象；通过函数签名的parameters属性，获取函数参数。 1234567891">
 
 
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  31 字
+                  625 字
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -449,7 +449,17 @@
       
 
       
-        <p>我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名`</p>
+        <p>我们在上篇如何根据函数类型注释来实现检测功能中使用到了函数签名<code>signature</code>。那什么是函数签名呢？</p>
+<p>函数签名对象，表示调用函数的方式，即定义了函数的输入和输出。</p>
+<p>在Python中，可以使用标准库<code>inspect</code>的一些方法或类，来操作或创建函数签名。</p>
+<h4 id="获取函数签名及参数"><a href="#获取函数签名及参数" class="headerlink" title="获取函数签名及参数"></a>获取函数签名及参数</h4><p>使用标准库的<code>signature</code>方法，获取函数签名对象；通过函数签名的<code>parameters</code>属性，获取函数参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意是小写的signature</span></span><br><span class="line">In [<span class="number">38</span>]: <span class="keyword">from</span> inspect <span class="keyword">import</span> signature</span><br><span class="line"></span><br><span class="line">In [<span class="number">39</span>]: <span class="function"><span class="keyword">def</span> <span class="title">foobar</span><span class="params">(a: int, b: str, c: float = <span class="number">3.2</span>)</span> -&gt; tuple:</span></span><br><span class="line">    ...:     <span class="keyword">return</span> a, b, c</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取函数签名</span></span><br><span class="line">In [<span class="number">40</span>]: foobar_sig = signature(foobar)</span><br><span class="line"></span><br><span class="line">In [<span class="number">41</span>]: foobar_sig</span><br><span class="line">Out[41]: &lt;Signature (a: int, b: str, c: float = 3.2) -&gt; tuple&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过函数签名的parameters属性，可以获取函数参数</span></span><br><span class="line">In [<span class="number">42</span>]: foobar_sig.parameters</span><br><span class="line">Out[<span class="number">42</span>]:</span><br><span class="line">mappingproxy(&#123;<span class="string">'a'</span>: &lt;Parameter <span class="string">"a: int"</span>&gt;,</span><br><span class="line">              <span class="string">'b'</span>: &lt;Parameter <span class="string">"b: str"</span>&gt;,</span><br><span class="line">              <span class="string">'c'</span>: &lt;Parameter <span class="string">"c: float = 3.2"</span>&gt;&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="创建函数签名"><a href="#创建函数签名" class="headerlink" title="创建函数签名"></a>创建函数签名</h4><p>使用类<code>Parameter</code>的实例创建函数参数列表；使用<code>Signature</code>类，接受函数参数列表，实例化出函数签名实例。·</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意是首字母大写的Signature</span></span><br><span class="line">In [<span class="number">43</span>]: <span class="keyword">from</span> inspect <span class="keyword">import</span> Signature, Parameter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个函数参数列表，列表内的元素由类Parameter的实例组成</span></span><br><span class="line"><span class="comment"># Parameter实例化时，依次接受参数名、参数类型、默认值和参数注解</span></span><br><span class="line"><span class="comment"># 默认值和参数类型默认为空，这里的空值不是None，而是Parameter.empty，代表没有值</span></span><br><span class="line">In [<span class="number">44</span>]: parms = [Parameter(<span class="string">'x'</span>, Parameter.POSITIONAL_OR_KEYWORD),</span><br><span class="line">    ...:          Parameter(<span class="string">'y'</span>, Parameter.POSITIONAL_OR_KEYWORD),</span><br><span class="line">    ...:          Parameter(<span class="string">'z'</span>, Parameter.KEYWORD_ONLY, default=<span class="number">9</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用Signature类，接受函数参数列表，实例化出函数签名实例</span></span><br><span class="line">In [<span class="number">45</span>]: sig = Signature(parms)</span><br></pre></td></tr></table></figure>
+<h4 id="检查函数参数是否匹配签名"><a href="#检查函数参数是否匹配签名" class="headerlink" title="检查函数参数是否匹配签名"></a>检查函数参数是否匹配签名</h4><p>使用函数签名的<code>bind</code>的方法，检查函数参数是否匹配签名。</p>
+<p>延续上面的例子，通过函数签名的<code>bind</code>方法，接受函数参数，如果匹配，返回参数<code>BoundArguments</code>实例，如果不匹配，则抛出<code>TypeError</code>，并给出详细的异常信息。</p>
+<p>通过<code>BoundArguments</code>实例的属性，可以获取函数签名、参数的值等内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">46</span>]: bound_args_01 = sig.bind(<span class="number">1</span>, <span class="number">2</span>, z=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">47</span>]: bound_args_01</span><br><span class="line">Out[<span class="number">47</span>]: &lt;BoundArguments (x=<span class="number">1</span>, y=<span class="number">2</span>, z=<span class="number">3</span>)&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">48</span>]: bound_args_02 = sig.bind(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">49</span>]: bound_args_02</span><br><span class="line">Out[<span class="number">49</span>]: &lt;BoundArguments (x=<span class="number">1</span>, y=<span class="number">2</span>)&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少位置参数</span></span><br><span class="line">In [<span class="number">50</span>]: bound_args_03 = sig.bind(<span class="number">1</span>)</span><br><span class="line">TypeError: missing a required argument: <span class="string">'y'</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -531,6 +541,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/" rel="prev" title="在FastAPI中如何使用pydantic的BaseModel验证Form请求">
+                在FastAPI中如何使用pydantic的BaseModel验证Form请求 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -584,8 +598,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -604,7 +627,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">176</span>
+                  <span class="site-state-item-count">177</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -672,6 +695,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取函数签名及参数"><span class="nav-number">1.</span> <span class="nav-text">获取函数签名及参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建函数签名"><span class="nav-number">2.</span> <span class="nav-text">创建函数签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查函数参数是否匹配签名"><span class="nav-number">3.</span> <span class="nav-text">检查函数参数是否匹配签名</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="fastapi," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="Python中的变量Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。 Python中is和==的区别is主要用于判断两个变量是不是同一个对象（指向同一个对象） 12345678910111213# b 和 a指向同一个内存地址块In [1]: a = [1,2,3,4]">
-<meta name="keywords" content="Python">
+<meta name="description" content="在使用FastAPI的时候，如果我们想使用Form表单提交数据这个时候使用示例如下： 12345678from fastapi import FastAPI, Formapp = FastAPI()@app.post(&quot;/login/&quot;)async def login(username: str = Form(...), password: str = Form(...)):    return">
+<meta name="keywords" content="fastapi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python的对象引用、可变性和垃圾回收">
-<meta property="og:url" content="https://zhaobugs.com/2018/06/15/Python的对象引用、可变性和垃圾回收/index.html">
+<meta property="og:title" content="在FastAPI中如何使用pydantic的BaseModel验证Form请求">
+<meta property="og:url" content="https://zhaobugs.com/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="Python中的变量Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。 Python中is和==的区别is主要用于判断两个变量是不是同一个对象（指向同一个对象） 12345678910111213# b 和 a指向同一个内存地址块In [1]: a = [1,2,3,4]">
+<meta property="og:description" content="在使用FastAPI的时候，如果我们想使用Form表单提交数据这个时候使用示例如下： 12345678from fastapi import FastAPI, Formapp = FastAPI()@app.post(&quot;/login/&quot;)async def login(username: str = Form(...), password: str = Form(...)):    return">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-15T02:34:16.514Z">
+<meta property="og:updated_time" content="2021-02-06T17:12:30.141Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python的对象引用、可变性和垃圾回收">
-<meta name="twitter:description" content="Python中的变量Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。 Python中is和==的区别is主要用于判断两个变量是不是同一个对象（指向同一个对象） 12345678910111213# b 和 a指向同一个内存地址块In [1]: a = [1,2,3,4]">
+<meta name="twitter:title" content="在FastAPI中如何使用pydantic的BaseModel验证Form请求">
+<meta name="twitter:description" content="在使用FastAPI的时候，如果我们想使用Form表单提交数据这个时候使用示例如下： 12345678from fastapi import FastAPI, Formapp = FastAPI()@app.post(&quot;/login/&quot;)async def login(username: str = Form(...), password: str = Form(...)):    return">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://zhaobugs.com/2018/06/15/Python的对象引用、可变性和垃圾回收/"/>
+  <link rel="canonical" href="https://zhaobugs.com/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/"/>
 
 
 
 
 
-  <title>Python的对象引用、可变性和垃圾回收 | 码农小杨的笔记</title>
+  <title>在FastAPI中如何使用pydantic的BaseModel验证Form请求 | 码农小杨的笔记</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/06/15/Python的对象引用、可变性和垃圾回收/">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小码农">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python的对象引用、可变性和垃圾回收</h1>
+          <h1 class="post-title" itemprop="name headline">在FastAPI中如何使用pydantic的BaseModel验证Form请求</h1>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T09:41:02+08:00">
-                2018-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-03T00:57:41+08:00">
+                2021-01-03
               </time>
             
 
@@ -355,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/fastapi/" itemprop="url" rel="index">
+                    <span itemprop="name">fastapi</span>
                   </a>
                 </span>
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/15/Python的对象引用、可变性和垃圾回收/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/15/Python的对象引用、可变性和垃圾回收/" itemprop="commentCount"></span>
+                <a href="/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2018/06/15/Python的对象引用、可变性和垃圾回收/" class="leancloud_visitors" data-flag-title="Python的对象引用、可变性和垃圾回收">
+             <span id="/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/" class="leancloud_visitors" data-flag-title="在FastAPI中如何使用pydantic的BaseModel验证Form请求">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  753 字
+                  489 字
                 </span>
               
 
@@ -449,21 +449,19 @@
       
 
       
-        <h4 id="Python中的变量"><a href="#Python中的变量" class="headerlink" title="Python中的变量"></a>Python中的变量</h4><p>Python中的变量和java中的是不一样的，java中的变量是一个类型指定的容器，里面存放指定类型的数据。而Python中的变量是一个指针或者说是一个便利贴用于指向某个对象。</p>
-<h4 id="Python中is和-的区别"><a href="#Python中is和-的区别" class="headerlink" title="Python中is和==的区别"></a>Python中is和==的区别</h4><p>is主要用于判断两个变量是不是同一个对象（指向同一个对象）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># b 和 a指向同一个内存地址块</span></span><br><span class="line">In [<span class="number">1</span>]: a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>] </span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: b = a </span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: b <span class="keyword">is</span> a</span><br><span class="line">Out[<span class="number">3</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: id(b) </span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">4399472584</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: id(a)</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">4399472584</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存地址块不一样 因此是两个对象 但是存储的值是相同的 因此 == 是True</span></span><br><span class="line">In [<span class="number">6</span>]: b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: b <span class="keyword">is</span> a</span><br><span class="line">Out[<span class="number">8</span>]: <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: id(b)</span><br><span class="line">Out[<span class="number">9</span>]: <span class="number">4399015176</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: id(a)</span><br><span class="line">Out[<span class="number">10</span>]: <span class="number">4398993864</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: b == a</span><br><span class="line">Out[<span class="number">11</span>]: <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
-<p>我们是不是可以认为通过赋值就是两个不同的对象呢？</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">12</span>]: a = <span class="number">256</span> </span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: b = <span class="number">256</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: a <span class="keyword">is</span> b </span><br><span class="line">Out[<span class="number">14</span>]: <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: b = <span class="number">257</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: b = <span class="number">257</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: a <span class="keyword">is</span> b </span><br><span class="line">Out[<span class="number">17</span>]: <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: a = <span class="string">"abcd"</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">19</span>]: b = <span class="string">"abcd"</span> </span><br><span class="line"></span><br><span class="line">In [<span class="number">20</span>]: a <span class="keyword">is</span> b </span><br><span class="line">Out[<span class="number">20</span>]: <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
-<p>以上代码的原理是Python的内部优化机制，对于部分整型和部门短的字符串，第一次赋值时候回开辟一个内存块，再次赋值时候会指向同一个内存块，因此是同一个对象。</p>
-<h4 id="Python中的del语句和垃圾回收"><a href="#Python中的del语句和垃圾回收" class="headerlink" title="Python中的del语句和垃圾回收"></a>Python中的del语句和垃圾回收</h4><p><strong>引用计数</strong></p>
-<p>当给一个对象分配一个新名称或者将一个对象放入一个容器（列表、元组或字典）时，该对象的引用计数都会增加。</p>
-<p>当使用del对对象显示销毁或者引用超出作用于或者被重新赋值时，该对象的引用计数就会减少。</p>
-<p>可以使用sys.getrefcount()函数来获取对象的当前引用计数。多数情况下，引用计数要比我们猜测的大的 多。对于不可变数据（数字和字符串），解释器会在程序的不同部分共享内存，以便节约内存。</p>
-<p><strong>垃圾回收</strong></p>
-<p>当一个对象的引用计数归零时，它将被垃圾收集机制处理掉。</p>
-<p>当两个对象a和b相互引用时，del语句可以减少a和b的引用计数，并销毁用于引用底层对象的名称。然而由于每个对象都包含一个对其他对象的应用，因此引用计数不会归零，对象也不会销毁。（从而导致内存泄露）。为解决这一问题，解释器会定期执行一个循环检测器，搜索不可访问对象的循环并删除它们</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获得某个类的初始化默认值</span></span><br><span class="line">Object.__init__.defaults__</span><br></pre></td></tr></table></figure>
+        <p>在使用FastAPI的时候，如果我们想使用Form表单提交数据这个时候使用示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, Form</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post("/login/")</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(username: str = Form<span class="params">(...)</span>, password: str = Form<span class="params">(...)</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"username"</span>: username&#125;</span><br></pre></td></tr></table></figure>
+<p>但是这种方式当参数过多，或者更高级的验证的时候就会显得复杂，能不能使用<code>pydantic</code>的<code>BaseModel</code>验证<code>Form</code>请求呢？</p>
+<p>多方查找终于在 stackoverflow 找到了这个问答：<a href="https://stackoverflow.com/questions/60127234/fastapi-form-data-with-pydantic-model" target="_blank" rel="noopener">fastapi form data with pydantic model</a></p>
+<p>这个文档再FastAPI的官方github上引出了一个issue：<a href="https://github.com/tiangolo/fastapi/issues/2387" target="_blank" rel="noopener">multipart/form-data: Unable to parse complex types in a request form</a></p>
+<p>从issue中我选择了一个最优的解决方案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">as_form</span><span class="params">(cls: Type[BaseModel])</span> -&gt; Type[BaseModel]:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Adds an `as_form` class method to decorated models. The `as_form` class</span></span><br><span class="line"><span class="string">    method can be used with `FastAPI` endpoints.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        cls: The model class to decorate.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        The decorated class.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_form_parameter</span><span class="params">(field: ModelField)</span> -&gt; Any:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Converts a field from a `Pydantic` model to the appropriate `FastAPI`</span></span><br><span class="line"><span class="string">        parameter type.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            field: The field to convert.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            Either the result of `Form`, if the field is not a sub-model, or</span></span><br><span class="line"><span class="string">            the result of `Depends` if it is.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 支持字段的类型还是 BaseModel</span></span><br><span class="line">        <span class="keyword">if</span> issubclass(field.type_, BaseModel):</span><br><span class="line">            <span class="comment"># This is a sub-model.</span></span><br><span class="line">            <span class="keyword">assert</span> hasattr(field.type_, <span class="string">"as_form"</span>), (</span><br><span class="line">                <span class="string">f"Sub-model class for <span class="subst">&#123;field.name&#125;</span> field must be decorated with"</span></span><br><span class="line">                <span class="string">f" `as_form` too."</span></span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> Depends(field.type_.as_form)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> Form(field.default) <span class="keyword">if</span> <span class="keyword">not</span> field.required <span class="keyword">else</span> Form(...)</span><br><span class="line"></span><br><span class="line">    new_params = [</span><br><span class="line">        inspect.Parameter(</span><br><span class="line">            field.alias,</span><br><span class="line">            inspect.Parameter.POSITIONAL_ONLY,</span><br><span class="line">            default=make_form_parameter(field),</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">for</span> field <span class="keyword">in</span> cls.__fields__.values()</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">_as_form</span><span class="params">(**data)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> cls(**data)</span><br><span class="line"></span><br><span class="line">    sig = inspect.signature(_as_form)</span><br><span class="line">    sig = sig.replace(parameters=new_params)</span><br><span class="line">    _as_form.__signature__ = sig</span><br><span class="line">    setattr(cls, <span class="string">"as_form"</span>, _as_form)</span><br><span class="line">    <span class="keyword">return</span> cls</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面这个装饰器还支持参数类型递归</p>
+</blockquote>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@as_form</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Nested</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    foo: int</span><br><span class="line">    bar: str</span><br><span class="line"></span><br><span class="line"><span class="meta">@as_form</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Outer</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    inner: Inner</span><br><span class="line">    baz: float</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post("/test")</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">test_form</span><span class="params">(form: Outer = Depends<span class="params">(Outer.as_form)</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"foo"</span>: form.inner.foo, <span class="string">"bar"</span>: form.inner.bar, <span class="string">"baz"</span>: form.baz&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们提交的Form表单也能使用<code>pydantic</code>的<code>BaseModel</code>验证了。</p>
 
       
     </div>
@@ -522,7 +520,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+            <a href="/tags/fastapi/" rel="tag"><i class="fa fa-tag"></i>fastapi</a>
           
         </div>
       
@@ -535,8 +533,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/14/深入理解Python的dict和set/" rel="next" title="深入理解Python的dict和set">
-                <i class="fa fa-chevron-left"></i> 深入理解Python的dict和set
+              <a href="/2021/01/03/python的函数签名/" rel="next" title="python的函数签名">
+                <i class="fa fa-chevron-left"></i> python的函数签名
               </a>
             
           </div>
@@ -544,10 +542,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/15/python的元类编程/" rel="prev" title="python的元类编程">
-                python的元类编程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -602,17 +596,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -699,22 +684,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中的变量"><span class="nav-number">1.</span> <span class="nav-text">Python中的变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中is和-的区别"><span class="nav-number">2.</span> <span class="nav-text">Python中is和==的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python中的del语句和垃圾回收"><span class="nav-number">3.</span> <span class="nav-text">Python中的del语句和垃圾回收</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

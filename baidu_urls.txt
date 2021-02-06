@@ -1,1 +1,1 @@
-https://zhaobugs.com/2021/01/03/python的函数签名/
+https://zhaobugs.com/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/
