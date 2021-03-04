@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="FastAPI," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="1. 简介使用Python类型注解进行数据验证和设置管理。 Pydantic 在运行时强制执行类型提示，并在数据无效时提供用户友好的错误信息。 定义数据如何表示为纯粹和规范的 Python ，并使用 pydantic 对其进行验证。 1.1 示例：123456789101112131415161718192021222324252627282930313233from datetime impor">
+<meta name="keywords" content="FastAPI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pydantic官方文档">
+<meta property="og:url" content="https://zhaobugs.com/2021/01/04/Pydantic官方文档/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="1. 简介使用Python类型注解进行数据验证和设置管理。 Pydantic 在运行时强制执行类型提示，并在数据无效时提供用户友好的错误信息。 定义数据如何表示为纯粹和规范的 Python ，并使用 pydantic 对其进行验证。 1.1 示例：123456789101112131415161718192021222324252627282930313233from datetime impor">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-03-02T12:29:24.918Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pydantic官方文档">
+<meta name="twitter:description" content="1. 简介使用Python类型注解进行数据验证和设置管理。 Pydantic 在运行时强制执行类型提示，并在数据无效时提供用户友好的错误信息。 定义数据如何表示为纯粹和规范的 Python ，并使用 pydantic 对其进行验证。 1.1 示例：123456789101112131415161718192021222324252627282930313233from datetime impor">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2021/01/04/Pydantic官方文档/"/>
+
+
+
+
+
+  <title>Pydantic官方文档 | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2021/01/04/Pydantic官方文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小码农">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Pydantic官方文档</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-04T10:56:50+08:00">
+                2021-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FastAPI/" itemprop="url" rel="index">
+                    <span itemprop="name">FastAPI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/01/04/Pydantic官方文档/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/01/04/Pydantic官方文档/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/01/04/Pydantic官方文档/" class="leancloud_visitors" data-flag-title="Pydantic官方文档">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,417 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>使用Python类型注解进行数据验证和设置管理。</p>
+<p>Pydantic 在运行时强制执行类型提示，并在数据无效时提供用户友好的错误信息。</p>
+<p>定义数据如何表示为纯粹和规范的 Python ，并使用 pydantic 对其进行验证。</p>
+<h3 id="1-1-示例："><a href="#1-1-示例：" class="headerlink" title="1.1 示例："></a>1.1 示例：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List, Optional</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    id: int</span><br><span class="line">    name = <span class="string">'John Doe'</span></span><br><span class="line">    signup_ts: Optional[datetime] = <span class="keyword">None</span></span><br><span class="line">    friends: List[int] = []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">external_data = &#123;</span><br><span class="line">    <span class="string">'id'</span>: <span class="string">'123'</span>,</span><br><span class="line">    <span class="string">'signup_ts'</span>: <span class="string">'2019-06-01 12:22'</span>,</span><br><span class="line">    <span class="string">'friends'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="string">'3'</span>],</span><br><span class="line">&#125;</span><br><span class="line">user = User(**external_data)</span><br><span class="line">print(user.id)</span><br><span class="line"><span class="comment">#&gt; 123</span></span><br><span class="line">print(repr(user.signup_ts))</span><br><span class="line"><span class="comment">#&gt; datetime.datetime(2019, 6, 1, 12, 22)</span></span><br><span class="line">print(user.friends)</span><br><span class="line"><span class="comment">#&gt; [1, 2, 3]</span></span><br><span class="line">print(user.dict())</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    'id': 123,</span></span><br><span class="line"><span class="string">    'signup_ts': datetime.datetime(2019, 6, 1, 12, 22),</span></span><br><span class="line"><span class="string">    'friends': [1, 2, 3],</span></span><br><span class="line"><span class="string">    'name': 'John Doe',</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<p>这里发生了什么：</p>
+<ul>
+<li><p><code>id</code>是<code>int</code>类型；注释声明告诉pydantic该字段是必须的。</p>
+<blockquote>
+<p> 如果可能，字符串、字节或浮点数将强制转换为<code>int</code>，否则将引发异常。</p>
+</blockquote>
+</li>
+<li><p><code>name</code> 从默认值推断为其为<code>str</code>类型，该字段不是必须的，因为它有默认值。</p>
+</li>
+<li><p><code>signup_ts</code> 是 <code>datetime</code> 类型，该字段不是必须的，默认值为 <code>None</code>。</p>
+<blockquote>
+<p>pydantic会将表示<code>unix</code>时间戳（例如1496498400）的 <code>int</code> 类型或表示时间和日期的字符串处理成<code>datetime</code> 类型。</p>
+</blockquote>
+</li>
+<li><p><code>friends</code> 使用Python的<code>typing</code> 系统，需要一个整数列表，就像<code>id</code> 字段一样，类整数的对象将会被转换为整数。</p>
+</li>
+</ul>
+<p>如果验证失败，pydantic会抛出一个错误，列出错误的原因：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> ValidationError</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    User(signup_ts=<span class="string">'broken'</span>, friends=[<span class="number">1</span>, <span class="number">2</span>, <span class="string">'not number'</span>])</span><br><span class="line"><span class="keyword">except</span> ValidationError <span class="keyword">as</span> e:</span><br><span class="line">    print(e.json())</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"loc"</span>: [</span><br><span class="line">      <span class="string">"id"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"msg"</span>: <span class="string">"field required"</span>,</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"value_error.missing"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"loc"</span>: [</span><br><span class="line">      <span class="string">"signup_ts"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"msg"</span>: <span class="string">"invalid datetime format"</span>,</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"value_error.datetime"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"loc"</span>: [</span><br><span class="line">      <span class="string">"friends"</span>,</span><br><span class="line">      <span class="number">2</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"msg"</span>: <span class="string">"value is not a valid integer"</span>,</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"type_error.integer"</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-基本原理"><a href="#1-2-基本原理" class="headerlink" title="1.2 基本原理"></a>1.2 基本原理</h3><p>pydantic使用了一些很酷的新语言特性，但我为什么要使用它呢？</p>
+<ul>
+<li><p>与你的IDE/linter/brain配合得很好</p>
+<p>不需要学习新的模式定义微语言。如果您知道如何使用 Python 的类型提示，也就知道如何使用 pydantic。</p>
+<p>因为pydantic数据结构只是您使用类型注解定义的类的实例，所以自动完成、linting、mypy、IDE(尤其是 PyCharm)和您的直觉都应该能够正确地处理经过验证的数据。</p>
+</li>
+<li><p>多用途</p>
+<p>pydantic的 <a href="https://pydantic-docs.helpmanual.io/usage/settings/" target="_blank" rel="noopener">BaseSettings</a> 类允许在 “验证此请求数据” 上下文和 “加载我的系统设置” 上下文中使用。主要区别在于，系统设置可以从环境变量读取，并且通常需要更复杂的对象，如DSN和Python对象。</p>
+</li>
+<li><p>快速</p>
+<p>pydantic比其他所有测试库都要快。</p>
+</li>
+<li><p>可以验证复杂结构</p>
+<p>使用<a href="https://pydantic-docs.helpmanual.io/usage/models/#recursive-models" target="_blank" rel="noopener">递归pydantic模型</a>、typing 的标准类型 (如 <code>List</code>、<code>Tuple</code>和<code>Dict</code>等) 和验证器，可以很清晰且容易地定义、验证和解析复杂数据模式。</p>
+</li>
+<li><p>可拓展</p>
+<p>pydantic允许定义<a href="https://pydantic-docs.helpmanual.io/usage/types/#custom-data-types" target="_blank" rel="noopener">自定义数据类型</a>，或者您可以使用被 validator 装饰器装饰的模型上的方法来扩展验证。</p>
+</li>
+<li><p>dataclasses 集成</p>
+<p>和 BaseModel 一样，pydantic提供了一个 <a href="https://pydantic-docs.helpmanual.io/usage/dataclasses/" target="_blank" rel="noopener">dataclass</a> 装饰器，它创建带有输入数据解析和验证的(几乎)普通的Python数据类。</p>
+</li>
+</ul>
+<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pydantic</span><br></pre></td></tr></table></figure>
+<p>Pydantic除了Python3.6、3.7、3.8 或 3.9（和Python3.6中的 dataclasses 包）之外，不需要其他依赖项。</p>
+<p>Pydantic 可以可选的使用 Cython 进行编译，将会带来 30%-50%的性能提升。</p>
+<p>PyPI可以为Linux、MacOS和64位Windows提供二进制文件。如果您是手动安装，请在安装pydantic之前安装 cython，这样编译就会自动进行。</p>
+<p>要测试pydantic 是否已经编译，可以使用如下方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pydantic</span><br><span class="line">print(<span class="string">'compiled:'</span>, pydantic.compiled)</span><br></pre></td></tr></table></figure>
+<p>Pydantic 有三个可选依赖：</p>
+<ul>
+<li>如果需要<code>email</code>验证，可以添加<code>email-validator</code>。</li>
+<li>要在 Python3.8之前的版本中使用<code>Literal</code>，需要安装<code>typing-extensions</code>。</li>
+<li>使用<code>Settings</code>的 <code>dotenv</code>文件支持需要安装<code>python-dotenv</code>。</li>
+</ul>
+<p>要将这些与 pydantic 一起安装，可以使用如下方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pip install pydantic[email]</span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">pip install pydantic[dotenv]</span><br><span class="line"><span class="comment"># or just</span></span><br><span class="line">pip install pydantic[email,dotenv]</span><br></pre></td></tr></table></figure>
+<p>当然，你可以使用 <code>pip install email-validator</code> 和/或 <code>pip install typing_extensions</code> 手动安装这些依赖。</p>
+<p>如果想从存储库直接安装 pydantic，可以使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install git+git://github.com/samuelcolvin/pydantic@master<span class="comment">#egg=pydantic</span></span><br><span class="line"><span class="comment"># or with extras</span></span><br><span class="line">pip install git+git://github.com/samuelcolvin/pydantic@master<span class="comment">#egg=pydantic[email,dotenv]</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-用法详解"><a href="#3-用法详解" class="headerlink" title="3. 用法详解"></a>3. 用法详解</h2><h3 id="3-1-模型"><a href="#3-1-模型" class="headerlink" title="3.1 模型"></a>3.1 模型</h3><p>在pydantic中定义对象的主要方法是通过模型(模型只是继承自 BaseModel 的类)。</p>
+<p>您可以将模型看作严格类型语言中的类型，或者看作API中单个端点的需求。</p>
+<p>不受信任的数据可以传递给模型，在解析和验证之后，pydantic保证结果模型实例的字段将符合模型上定义的字段类型。</p>
+<blockquote>
+<p>pydantic主要是一个解析库，而<strong>不是验证库</strong>。验证是达到目的的一种手段：构建符合所提供的类型和约束的模型。</p>
+<p>换句话说，pydantic保证输出模型的类型和约束，而不是输入数据。</p>
+</blockquote>
+<h4 id="3-1-1-基本模型的使用"><a href="#3-1-1-基本模型的使用" class="headerlink" title="3.1.1 基本模型的使用"></a>3.1.1 基本模型的使用</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    id: int</span><br><span class="line">    name = <span class="string">'Jane Doe'</span></span><br></pre></td></tr></table></figure>
+<p>在这里，User 是具有两个字段的模型，其中字段 id 是整数类型，并且是必需的；name 字段是字符串类型，但不是必需的(它有默认值)。name 的类型是从其默认值推断来的，因此，类型注解不是必需的(但是，当某些字段没有类型注解时，请注意关于字段顺序的警告)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user = User(id=<span class="string">'123'</span>)</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>user</code> 是 <code>User</code> 的一个实例。对象的初始化会执行所有解析和验证，如果没有引发 <code>ValidationError</code> 异常，则表明结果模型实例是有效的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> user.id == <span class="number">123</span></span><br></pre></td></tr></table></figure>
+<p>模型的字段可以作为<code>User</code> 对象的普通属性访问。字符串 ‘123’ 根据字段类型被强制转换为 <code>int</code> 类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> user.name == <span class="string">'Jane Doe'</span></span><br></pre></td></tr></table></figure>
+<p>初始化 <code>User</code> 对象时未设置 <code>name</code> 的值，所以它的值是默认值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> user.__fields_set__ == &#123;<span class="string">'id'</span>&#125;</span><br></pre></td></tr></table></figure>
+<p><code>User</code> 对象初始化时提供的字段：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> user.dict() == dict(user) == &#123;<span class="string">'id'</span>: <span class="number">123</span>, <span class="string">'name'</span>: <span class="string">'Jane Doe'</span>&#125;</span><br></pre></td></tr></table></figure>
+<p><code>.dict()</code> 或 <code>dict(user)</code> 都将会提供一个字段的字典，但 <code>.dict()</code> 可以接受许多其他参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.id = <span class="number">321</span></span><br><span class="line"><span class="keyword">assert</span> user.id == <span class="number">321</span></span><br></pre></td></tr></table></figure>
+<p>这个模型是可变模型，所以字段值可以更改。</p>
+<h5 id="3-1-1-1-模型属性"><a href="#3-1-1-1-模型属性" class="headerlink" title="3.1.1.1 模型属性"></a>3.1.1.1 模型属性</h5><p>上面的例子只展示了模型所能做的事情的冰山一角。模型具有以下方法和属性：</p>
+<ul>
+<li><p><code>dict()</code></p>
+<p>返回模型的字段和值的字典。参见 <a href="# 3.6.1 model.dict(…">导出模型</a>)。</p>
+</li>
+<li><p><code>json()</code></p>
+<p>返回表示<code>dict()</code>的 JSON 字符串。参见 <a href="# 3.6.1 model.dict(…">导出模型</a>)。</p>
+</li>
+<li><p><code>copy()</code></p>
+<p>返回模型的副本(默认情况下为浅副本)。参见 <a href="# 3.6.1 model.dict(…">导出模型</a>)。</p>
+</li>
+<li><p><code>parse_obj()</code></p>
+<p>如果一个对象不是字典，可以使用该方法将其加载到具有错误处理的模型中。参见 <a href="# 3.1.5 帮助函数">帮助函数</a>。</p>
+</li>
+<li><p><code>parse_raw()</code></p>
+<p>用于加载多种格式字符串的实用程序。参见 <a href="# 3.1.5 帮助函数">帮助函数</a>。</p>
+</li>
+<li><p><code>parse_file()</code></p>
+<p>与<code>parse_raw()</code>类似，但是作用于文件路径。参见 <a href="# 3.1.5 帮助函数">帮助函数</a>。</p>
+</li>
+<li><p><code>from_orm()</code></p>
+<p>从任意类加载数据到模型中。参见 <a href="# 3.1.3 ORM 模式">ORM 模式</a>。</p>
+</li>
+<li><p><code>schema()</code></p>
+<p>返回一个将模型表示为 JSON 模式的字典。参见 <a href="# 3.5 模式">模式</a>。</p>
+</li>
+<li><p><code>schema_json()</code></p>
+<p>返回表示<code>schema()</code>的 JSON 字符串。参见 <a href="# 3.5 模式">模式</a>。</p>
+</li>
+<li><p><code>construct()</code></p>
+<p>用于创建模型而不执行验证的类方法；参见 <a href="# 3.1.5.1 创建未经验证的模型">创建未经验证的模型</a>。</p>
+</li>
+<li><p><code>__fields_set__</code></p>
+<p>当模型实例初始化时设置的字段名称集合。</p>
+</li>
+<li><p><code>__config__</code></p>
+<p>模型的配置类。参见 <a href="# 3.4 模型配置">模型配置</a>。</p>
+</li>
+</ul>
+<h4 id="3-1-2-递归模型"><a href="#3-1-2-递归模型" class="headerlink" title="3.1.2 递归模型"></a>3.1.2 递归模型</h4><p>可以通过在注解中使用模型本身作为类型来定义更复杂的分层数据结构。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    count: int</span><br><span class="line">    size: float = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bar</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    apple = <span class="string">'x'</span></span><br><span class="line">    banana = <span class="string">'y'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Spam</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    foo: Foo</span><br><span class="line">    bars: List[Bar]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">m = Spam(foo=&#123;<span class="string">'count'</span>: <span class="number">4</span>&#125;, bars=[&#123;<span class="string">'apple'</span>: <span class="string">'x1'</span>&#125;, &#123;<span class="string">'apple'</span>: <span class="string">'x2'</span>&#125;])</span><br><span class="line">print(m)</span><br><span class="line"><span class="comment">#&gt; foo=Foo(count=4, size=None) bars=[Bar(apple='x1', banana='y'),</span></span><br><span class="line"><span class="comment">#&gt; Bar(apple='x2', banana='y')]</span></span><br><span class="line">print(m.dict())</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    'foo': &#123;'count': 4, 'size': None&#125;,</span></span><br><span class="line"><span class="string">    'bars': [</span></span><br><span class="line"><span class="string">        &#123;'apple': 'x1', 'banana': 'y'&#125;,</span></span><br><span class="line"><span class="string">        &#123;'apple': 'x2', 'banana': 'y'&#125;,</span></span><br><span class="line"><span class="string">    ],</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<p>对于自引用模型，参见 <a href="# 3.10 延迟注解">延迟注解</a>。</p>
+<h4 id="3-1-3-ORM-模式"><a href="#3-1-3-ORM-模式" class="headerlink" title="3.1.3 ORM 模式"></a>3.1.3 ORM 模式</h4><p>可以从任意类实例创建Pydantic模型，以支持映射到ORM对象的模型。</p>
+<p>要达到这个目的，需要：</p>
+<ul>
+<li><p>模型的内部类 <a href="# 3.4 模型配置"><code>Config</code></a> 的 <code>orm_mode</code> 属性必须设置为 <code>True</code>。</p>
+</li>
+<li><p>必须使用特殊的构造函数 <code>from_orm</code> 来创建模型实例。</p>
+</li>
+</ul>
+<p>这里的示例使用SQLAlchemy，但是相同的方法应该适用于任何ORM。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> Column, Integer, String</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.dialects.postgresql <span class="keyword">import</span> ARRAY</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.declarative <span class="keyword">import</span> declarative_base</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, constr</span><br><span class="line"></span><br><span class="line">Base = declarative_base()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CompanyOrm</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'companies'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>, nullable=<span class="keyword">False</span>)</span><br><span class="line">    public_key = Column(String(<span class="number">20</span>), index=<span class="keyword">True</span>, nullable=<span class="keyword">False</span>, unique=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">63</span>), unique=<span class="keyword">True</span>)</span><br><span class="line">    domains = Column(ARRAY(String(<span class="number">255</span>)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CompanyModel</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    id: int</span><br><span class="line">    public_key: constr(max_length=<span class="number">20</span>)</span><br><span class="line">    name: constr(max_length=<span class="number">63</span>)</span><br><span class="line">    domains: List[constr(max_length=<span class="number">255</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Config</span>:</span></span><br><span class="line">        orm_mode = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">co_orm = CompanyOrm(</span><br><span class="line">    id=<span class="number">123</span>,</span><br><span class="line">    public_key=<span class="string">'foobar'</span>,</span><br><span class="line">    name=<span class="string">'Testing'</span>,</span><br><span class="line">    domains=[<span class="string">'example.com'</span>, <span class="string">'foobar.com'</span>],</span><br><span class="line">)</span><br><span class="line">print(co_orm)</span><br><span class="line"><span class="comment">#&gt; &lt;models_orm_mode.CompanyOrm object at 0x7efde1c2ed30&gt;</span></span><br><span class="line">co_model = CompanyModel.from_orm(co_orm)</span><br><span class="line">print(co_model)</span><br><span class="line"><span class="comment">#&gt; id=123 public_key='foobar' name='Testing' domains=['example.com',</span></span><br><span class="line"><span class="comment">#&gt; 'foobar.com']</span></span><br></pre></td></tr></table></figure>
+<h5 id="3-1-3-1-保留名称"><a href="#3-1-3-1-保留名称" class="headerlink" title="3.1.3.1 保留名称"></a>3.1.3.1 保留名称</h5><p>您可能想使用保留的SQLAlchemy字段命名列。在这种情况下，可以使用字段别名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> typing</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, Field</span><br><span class="line"><span class="keyword">import</span> sqlalchemy <span class="keyword">as</span> sa</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.declarative <span class="keyword">import</span> declarative_base</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyModel</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    metadata: typing.Dict[str, str] = Field(alias=<span class="string">'metadata_'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Config</span>:</span></span><br><span class="line">        orm_mode = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BaseModel = declarative_base()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SQLModel</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'my_table'</span></span><br><span class="line">    id = sa.Column(<span class="string">'id'</span>, sa.Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    <span class="comment"># 'metadata' is reserved by SQLAlchemy, hence the '_'</span></span><br><span class="line">    metadata_ = sa.Column(<span class="string">'metadata'</span>, sa.JSON)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sql_model = SQLModel(metadata_=&#123;<span class="string">'key'</span>: <span class="string">'val'</span>&#125;, id=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">pydantic_model = MyModel.from_orm(sql_model)</span><br><span class="line"></span><br><span class="line">print(pydantic_model.dict())</span><br><span class="line"><span class="comment">#&gt; &#123;'metadata': &#123;'key': 'val'&#125;&#125;</span></span><br><span class="line">print(pydantic_model.dict(by_alias=<span class="keyword">True</span>))</span><br><span class="line"><span class="comment">#&gt; &#123;'metadata_': &#123;'key': 'val'&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的示例之所以能够工作，是因为对于字段填充，别名优先于字段名。访问 <code>SQLModel</code> 的 <code>metadata</code> 属性将导致<code>ValidationError</code>。</p>
+</blockquote>
+<h5 id="3-1-3-2-递归-ORM-模型"><a href="#3-1-3-2-递归-ORM-模型" class="headerlink" title="3.1.3.2 递归 ORM 模型"></a>3.1.3.2 递归 ORM 模型</h5><p>ORM实例将使用 <code>from_orm</code> 递归解析，也可以在顶层解析。</p>
+<p>这里使用一个普通类来演示这个原理，但是可以使用任何ORM类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PetCls</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *, name: str, species: str)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.species = species</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonCls</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *, name: str, age: float = None, pets: List[PetCls])</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.pets = pets</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pet</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    name: str</span><br><span class="line">    species: str</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Config</span>:</span></span><br><span class="line">        orm_mode = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    name: str</span><br><span class="line">    age: float = <span class="keyword">None</span></span><br><span class="line">    pets: List[Pet]</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Config</span>:</span></span><br><span class="line">        orm_mode = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bones = PetCls(name=<span class="string">'Bones'</span>, species=<span class="string">'dog'</span>)</span><br><span class="line">orion = PetCls(name=<span class="string">'Orion'</span>, species=<span class="string">'cat'</span>)</span><br><span class="line">anna = PersonCls(name=<span class="string">'Anna'</span>, age=<span class="number">20</span>, pets=[bones, orion])</span><br><span class="line">anna_model = Person.from_orm(anna)</span><br><span class="line">print(anna_model)</span><br><span class="line"><span class="comment">#&gt; name='Anna' age=20.0 pets=[Pet(name='Bones', species='dog'),</span></span><br><span class="line"><span class="comment">#&gt; Pet(name='Orion', species='cat')]</span></span><br></pre></td></tr></table></figure>
+<p>Pydantic使用 <code>GetterDict</code> 类处理任意类，该类试图为任何类提供一个类似于字典的接口。可以通过将 <code>GetterDict</code> 的自定义子类设置为 <code>Config.getter_dict</code>的值来覆盖默认行为(参考 <a href="# 3.4 模型配置">模型配置</a>)。</p>
+<p>您还可以使用带有 <code>pre=True</code> 的 <code>root_validators</code>定制类验证。在这种情况下，<code>validator</code> 函数将被传递一个可以复制和修改的<code>GetterDict</code>实例。</p>
+<h4 id="3-1-4-错误处理"><a href="#3-1-4-错误处理" class="headerlink" title="3.1.4 错误处理"></a>3.1.4 错误处理</h4><p>每当在正在验证的数据中发现错误时，pydantic都会引发 <code>ValidationError</code>。</p>
+<blockquote>
+<p> 验证代码不应该引发 <code>ValidationError</code> 本身，而是引发 <code>ValueError</code>、<code>TypeError</code> 或 <code>AssertionError</code>(或 <code>ValueError</code> 或<code>TypeError</code> 的子类)，这些异常将被捕获并用于填充 <code>ValidationError</code>。</p>
+</blockquote>
+<p>无论发现的错误数量如何，都只会出现一个异常，<code>ValidationError</code> 将包含关于所有错误及其发生方式的信息。</p>
+<p>你可以通过几种方式访问这些错误：</p>
+<ul>
+<li><p><code>e.errors()</code></p>
+<p>返回输入数据中发现的错误的列表。</p>
+</li>
+<li><p><code>e.json()</code></p>
+<p>返回一个表示 <code>errors</code> 的 JSON。</p>
+</li>
+<li><p><code>str(e)</code></p>
+<p>返回人类可读的错误表示。</p>
+</li>
+</ul>
+<p>每一个错误对象包含：</p>
+<ul>
+<li><p><code>loc</code></p>
+<p>错误的位置列表。列表中的第一项将是发生错误的字段，如果该字段是<a href="# 3.1.2 递归模型">子模型</a>，则将出现后续项以指示错误的嵌套位置。</p>
+</li>
+<li><p><code>type</code></p>
+<p>计算机可读的错误类型的标识符。</p>
+</li>
+<li><p><code>msg</code></p>
+<p>人类可读的错误解释。</p>
+</li>
+<li><p><code>ctx</code></p>
+<p>包含呈现错误消息所需的值的可选对象。</p>
+</li>
+</ul>
+<p>下面是一个示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, ValidationError, conint</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Location</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    lat = <span class="number">0.1</span></span><br><span class="line">    lng = <span class="number">10.1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    is_required: float</span><br><span class="line">    gt_int: conint(gt=<span class="number">42</span>)</span><br><span class="line">    list_of_ints: List[int] = <span class="keyword">None</span></span><br><span class="line">    a_float: float = <span class="keyword">None</span></span><br><span class="line">    recursive_model: Location = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = dict(</span><br><span class="line">    list_of_ints=[<span class="string">'1'</span>, <span class="number">2</span>, <span class="string">'bad'</span>],</span><br><span class="line">    a_float=<span class="string">'not a float'</span>,</span><br><span class="line">    recursive_model=&#123;<span class="string">'lat'</span>: <span class="number">4.2</span>, <span class="string">'lng'</span>: <span class="string">'New York'</span>&#125;,</span><br><span class="line">    gt_int=<span class="number">21</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    Model(**data)</span><br><span class="line"><span class="keyword">except</span> ValidationError <span class="keyword">as</span> e:</span><br><span class="line">    print(e)</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    5 validation errors for Model</span></span><br><span class="line"><span class="string">    is_required</span></span><br><span class="line"><span class="string">      field required (type=value_error.missing)</span></span><br><span class="line"><span class="string">    gt_int</span></span><br><span class="line"><span class="string">      ensure this value is greater than 42 (type=value_error.number.not_gt;</span></span><br><span class="line"><span class="string">    limit_value=42)</span></span><br><span class="line"><span class="string">    list_of_ints -&gt; 2</span></span><br><span class="line"><span class="string">      value is not a valid integer (type=type_error.integer)</span></span><br><span class="line"><span class="string">    a_float</span></span><br><span class="line"><span class="string">      value is not a valid float (type=type_error.float)</span></span><br><span class="line"><span class="string">    recursive_model -&gt; lng</span></span><br><span class="line"><span class="string">      value is not a valid float (type=type_error.float)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    Model(**data)</span><br><span class="line"><span class="keyword">except</span> ValidationError <span class="keyword">as</span> e:</span><br><span class="line">    print(e.json())</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    [</span></span><br><span class="line"><span class="string">      &#123;</span></span><br><span class="line"><span class="string">        "loc": [</span></span><br><span class="line"><span class="string">          "is_required"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "msg": "field required",</span></span><br><span class="line"><span class="string">        "type": "value_error.missing"</span></span><br><span class="line"><span class="string">      &#125;,</span></span><br><span class="line"><span class="string">      &#123;</span></span><br><span class="line"><span class="string">        "loc": [</span></span><br><span class="line"><span class="string">          "gt_int"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "msg": "ensure this value is greater than 42",</span></span><br><span class="line"><span class="string">        "type": "value_error.number.not_gt",</span></span><br><span class="line"><span class="string">        "ctx": &#123;</span></span><br><span class="line"><span class="string">          "limit_value": 42</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">      &#125;,</span></span><br><span class="line"><span class="string">      &#123;</span></span><br><span class="line"><span class="string">        "loc": [</span></span><br><span class="line"><span class="string">          "list_of_ints",</span></span><br><span class="line"><span class="string">          2</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "msg": "value is not a valid integer",</span></span><br><span class="line"><span class="string">        "type": "type_error.integer"</span></span><br><span class="line"><span class="string">      &#125;,</span></span><br><span class="line"><span class="string">      &#123;</span></span><br><span class="line"><span class="string">        "loc": [</span></span><br><span class="line"><span class="string">          "a_float"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "msg": "value is not a valid float",</span></span><br><span class="line"><span class="string">        "type": "type_error.float"</span></span><br><span class="line"><span class="string">      &#125;,</span></span><br><span class="line"><span class="string">      &#123;</span></span><br><span class="line"><span class="string">        "loc": [</span></span><br><span class="line"><span class="string">          "recursive_model",</span></span><br><span class="line"><span class="string">          "lng"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "msg": "value is not a valid float",</span></span><br><span class="line"><span class="string">        "type": "type_error.float"</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    ]</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FastAPI/" rel="tag"><i class="fa fa-tag"></i>FastAPI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/03/在FastAPI中如何使用pydantic的BaseModel验证Form请求/" rel="next" title="在FastAPI中如何使用pydantic的BaseModel验证Form请求">
+                <i class="fa fa-chevron-left"></i> 在FastAPI中如何使用pydantic的BaseModel验证Form请求
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/05/关于FastAPI的一些知识总结/" rel="prev" title="关于FastAPI的一些知识总结">
+                关于FastAPI的一些知识总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="小码农" />
+            
+              <p class="site-author-name" itemprop="name">小码农</p>
+              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">180</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-简介"><span class="nav-number">1.</span> <span class="nav-text">1. 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-示例："><span class="nav-number">1.1.</span> <span class="nav-text">1.1 示例：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-基本原理"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 基本原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装"><span class="nav-number">2.</span> <span class="nav-text">2. 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-用法详解"><span class="nav-number">3.</span> <span class="nav-text">3. 用法详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-模型"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-基本模型的使用"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1 基本模型的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1-1-模型属性"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">3.1.1.1 模型属性</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-递归模型"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2 递归模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-ORM-模式"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.1.3 ORM 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-3-1-保留名称"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">3.1.3.1 保留名称</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-3-2-递归-ORM-模型"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">3.1.3.2 递归 ORM 模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-错误处理"><span class="nav-number">3.1.4.</span> <span class="nav-text">3.1.4 错误处理</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小码农</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
