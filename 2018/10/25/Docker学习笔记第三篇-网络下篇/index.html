@@ -327,7 +327,7 @@
     <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2018/10/25/Docker学习笔记第三篇-网络下篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小码农">
+      <meta itemprop="name" content="码农小杨">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/ava.jpg">
     </span>
@@ -552,7 +552,7 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-node1 labs]$ ls</span><br><span class="line">app.py  Dockerfile</span><br><span class="line">[vagrant@docker-node1 labs]$ cat Dockerfile</span><br><span class="line">FROM python:<span class="number">3.7</span></span><br><span class="line">LABEL maintaner=<span class="string">"hongshaorou"</span></span><br><span class="line">COPY . /app</span><br><span class="line">WORKDIR /app</span><br><span class="line">RUN pip install flask redis</span><br><span class="line">EXPOSE <span class="number">5000</span></span><br><span class="line">CMD [ <span class="string">"python"</span>, <span class="string">"app.py"</span> ]</span><br><span class="line">[vagrant@docker-node1 labs]$ docker build -t hongshaorou/flask-redis .</span><br><span class="line"></span><br><span class="line">[vagrant@docker-node1 labs]$ docker images</span><br><span class="line">REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">hongshaorou/flask-redis   latest              <span class="number">466</span>f8679b8a5        <span class="number">52</span> seconds ago      <span class="number">934</span>MB</span><br><span class="line">python                    <span class="number">3.7</span>                 <span class="number">2</span>cc378c061f7        <span class="number">35</span> hours ago        <span class="number">923</span>MB</span><br><span class="line">busybox                   latest              <span class="number">59788</span>edf1f3e        <span class="number">3</span> weeks ago         <span class="number">1.15</span>MB</span><br></pre></td></tr></table></figure>
 <p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwlrmlhwaqj31jy0yiai7.jpg" alt="image-20181026174359651"></p>
 <p>上面使用<code>-e</code>参数在运行容器的时候设定环境变量。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> curl 127.0.0.1:5000</span><br><span class="line">Hello Container World! I have been seen b'1' times and my hostname is 0290aa8efccf.</span><br><span class="line"><span class="meta">#</span>  curl 127.0.0.1:5000</span><br><span class="line">Hello Container World! I have been seen b'2' times and my hostname is 0290aa8efccf.</span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> curl 127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b'1' times and my hostname is 0290aa8efccf.</span><br><span class="line"><span class="meta">#</span><span class="bash">  curl 127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b'2' times and my hostname is 0290aa8efccf.</span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
 <p>在容器内访问我们的程序已经生效了。</p>
 <p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwlrr31ih3j31k20f8gpr.jpg" alt="image-20181026174818476"></p>
 <p>我们将5000端口映射到<code>docker</code>主机，这样可以在<code>docker</code>主机进行访问部署在容器中的程序。</p>
@@ -628,7 +628,7 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="小码农 微信支付"/>
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="码农小杨 微信支付"/>
         <p>微信支付</p>
       </div>
     
@@ -745,10 +745,10 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/ava.jpg"
-                alt="小码农" />
+                alt="码农小杨" />
             
-              <p class="site-author-name" itemprop="name">小码农</p>
-              <p class="site-description motion-element" itemprop="description">小码农一只</p>
+              <p class="site-author-name" itemprop="name">码农小杨</p>
+              <p class="site-description motion-element" itemprop="description">真想撸代码超过60岁</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -868,7 +868,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">小码农</span>
+  <span class="author" itemprop="copyrightHolder">码农小杨</span>
 
   
 </div>
