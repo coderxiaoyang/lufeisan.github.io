@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Python基础知识Python里面search()和match()的区别match()函数只检测RE是不是在string的开始位置匹配, search()会扫描整个string查找匹配   用Python匹配HTML tag的时候，&amp;lt;.*&amp;gt;和&amp;lt;.*?&amp;gt;有什么区别贪婪和非贪婪 *号是一个量词 量词后面加? 号表示 非贪婪,也就是尽可能少的匹配   什么是闭包?简单说,闭包就">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python面试求职知识点简单总结">
+<meta property="og:url" content="https://zhaobugs.com/2020/04/07/Python面试求职知识点简单总结/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="Python基础知识Python里面search()和match()的区别match()函数只检测RE是不是在string的开始位置匹配, search()会扫描整个string查找匹配   用Python匹配HTML tag的时候，&amp;lt;.*&amp;gt;和&amp;lt;.*?&amp;gt;有什么区别贪婪和非贪婪 *号是一个量词 量词后面加? 号表示 非贪婪,也就是尽可能少的匹配   什么是闭包?简单说,闭包就">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2018/gif/178857/1537450449821-e61ddc56-93b3-4227-846f-3c1db8ec36d3.gif">
+<meta property="og:updated_time" content="2021-04-07T15:18:52.105Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python面试求职知识点简单总结">
+<meta name="twitter:description" content="Python基础知识Python里面search()和match()的区别match()函数只检测RE是不是在string的开始位置匹配, search()会扫描整个string查找匹配   用Python匹配HTML tag的时候，&amp;lt;.*&amp;gt;和&amp;lt;.*?&amp;gt;有什么区别贪婪和非贪婪 *号是一个量词 量词后面加? 号表示 非贪婪,也就是尽可能少的匹配   什么是闭包?简单说,闭包就">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2018/gif/178857/1537450449821-e61ddc56-93b3-4227-846f-3c1db8ec36d3.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/04/07/Python面试求职知识点简单总结/"/>
+
+
+
+
+
+  <title>Python面试求职知识点简单总结 | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/04/07/Python面试求职知识点简单总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="码农小杨">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python面试求职知识点简单总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-07T11:48:33+08:00">
+                2020-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/07/Python面试求职知识点简单总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/07/Python面试求职知识点简单总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/04/07/Python面试求职知识点简单总结/" class="leancloud_visitors" data-flag-title="Python面试求职知识点简单总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  25,015 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  92 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Python基础知识"><a href="#Python基础知识" class="headerlink" title="Python基础知识"></a>Python基础知识</h2><h3 id="Python里面search-和match-的区别"><a href="#Python里面search-和match-的区别" class="headerlink" title="Python里面search()和match()的区别"></a>Python里面search()和match()的区别</h3><p>match()函数只检测RE是不是在string的开始位置匹配, search()会扫描整个string查找匹配  </p>
+<h3 id="用Python匹配HTML-tag的时候，-lt-gt-和-lt-gt-有什么区别"><a href="#用Python匹配HTML-tag的时候，-lt-gt-和-lt-gt-有什么区别" class="headerlink" title="用Python匹配HTML tag的时候，&lt;.*&gt;和&lt;.*?&gt;有什么区别"></a>用Python匹配HTML tag的时候，<code>&lt;.*&gt;</code>和<code>&lt;.*?&gt;</code>有什么区别</h3><p>贪婪和非贪婪 *号是一个量词 量词后面加? 号表示 非贪婪,也就是尽可能少的匹配  </p>
+<h3 id="什么是闭包"><a href="#什么是闭包" class="headerlink" title="什么是闭包?"></a>什么是闭包?</h3><p>简单说,闭包就是根据不同的配置信息得到不同的结果, 装饰器就是一种闭包, 闭包有效的减少了函数所需定义的参数数目。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">line_conf</span><span class="params">(a, b)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">line</span><span class="params">(x)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> a*x + b  </span><br><span class="line">    <span class="keyword">return</span> line  </span><br><span class="line"></span><br><span class="line">line1 = line_conf(<span class="number">1</span>, <span class="number">1</span>)  </span><br><span class="line">line2 = line_conf(<span class="number">4</span>, <span class="number">5</span>)  </span><br><span class="line">print(line1(<span class="number">5</span>), line2(<span class="number">5</span>))  </span><br><span class="line"><span class="comment"># (6, 25)</span></span><br></pre></td></tr></table></figure></p>
+<p>例子中, 如果没有闭包，我们需要每次创建直线函数的时候同时说明a,b,x。这样，我们就需要更多的参数传递，也减少了代码的可移植性。利用闭包，我们实际上创建了泛函。<br><a href="https://www.cnblogs.com/lirunzhou/p/5881812.html" target="_blank" rel="noopener">python闭包的理解说明</a>  </p>
+<h3 id="C-C-JAVA-Python之间的区别？"><a href="#C-C-JAVA-Python之间的区别？" class="headerlink" title="C++/C/JAVA/Python之间的区别？"></a>C++/C/JAVA/Python之间的区别？</h3><ul>
+<li>python： 快速开发应用程序  </li>
+<li>java：   健壮的大型软件  </li>
+<li>C++：    需求效率的软件  </li>
+<li>C：      操作系统及驱动  </li>
+</ul>
+<h3 id="内存管理和垃圾回收机制"><a href="#内存管理和垃圾回收机制" class="headerlink" title="内存管理和垃圾回收机制"></a>内存管理和垃圾回收机制</h3><p>Python GC主要使用引用计数（reference counting）来跟踪和回收垃圾。在引用计数的基础上，<br>通过“标记-清除”（mark and sweep）解决容器对象可能产生的循环引用问题，通过“分代回收”（generation）以空间换时间的方法提高垃圾回收效率。    </p>
+<p><strong>1. 内存管理&amp;引用计数</strong><br>python创建新对象都是在内存上开辟一个块, 每个对象只存有一份数据, 赋值和复制都是创建了新的引用, 使用的是对象和引用分离策略<br>在Python中，每个对象都有存有指向该对象的引用总数，即引用计数, 如果引用计数为0, 那这个对象就会被python垃圾回收机制回收  </p>
+<p><strong>2. 标记-清除机制</strong><br>基本思路是先按需分配，等到没有空闲内存的时候从寄存器和程序栈上的引用出发，遍历以对象为节点、以引用为边构成的图，把所有可以访问到的对象打上标记，然后清扫一遍内存空间，把所有没标记的对象释放。<br>同时为了保证效率, Python只会在垃圾达到一定阈值时，垃圾回收才会启动。  </p>
+<p><strong>3. 分代回收策略</strong><br>这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。Python默认定义了三代对象集合，索引数越大，对象存活时间越长。  </p>
+<h3 id="动态语言和静态语言的区别"><a href="#动态语言和静态语言的区别" class="headerlink" title="动态语言和静态语言的区别"></a>动态语言和静态语言的区别</h3><p>动态语言（弱类型语言）是一类在运行时可以改变其结构的语言：例如新的函数、对象、甚至代码可以被引进，已有的函数可以被删除或是其他结构上的变化<br>比如一个类中只定义了一个对象的名字和性别, 可以动态为其加入年龄属性<br>静态语言（强类型语言）是在编译时变量的数据类型即可确定的语言，多数静态类型语言要求在使用变量之前必须声明数据类型<br>强类型语言是一旦变量的类型被确定，就不能转化的语言。<br>弱类型语言则反之，一个变量的类型是由其应用上下文确定的。<br>静态语言的优势<br>由于类型的强制声明，使得IDE有很强的代码感知能力，故在实现复杂的业务逻辑、大型系统, 错误更容易被发现, 调试难度相对低；<br>由于静态语言相对比较封闭，使得第三方开发包对代码的侵害性可以降到最低；<br>动态语言的优势<br>思维不受束缚，可以任意发挥，把更多的精力放在产品本身上；<br>集中思考业务逻辑实现，思考过程即实现过程；但代码中的坑可能不被IDE发现, 后期调试相对费力  </p>
+<h3 id="Python中单下划线和双下划线"><a href="#Python中单下划线和双下划线" class="headerlink" title="Python中单下划线和双下划线"></a>Python中单下划线和双下划线</h3><p><code>__foo__</code>:一种约定,Python内部的名字,用来区别其他用户自定义的命名，以防冲突。<br><code>_foo</code>:一种约定,用来指定变量私有，程序员用来指定私有变量的一种方式<br><code>__foo</code>:这个有真正的意义:解析器用<code>__classname</code>、<code>__foo</code>来代替这个名字,以区别和其他类相同的命名。  </p>
+<h3 id="迭代器协议"><a href="#迭代器协议" class="headerlink" title="迭代器协议"></a>迭代器协议</h3><ol>
+<li>迭代器协议是指：对象必须提供一个next方法，执行该方法要么返回迭代中的下一项，要么就引起一个StopIteration异常，以终止迭代 （只能往后走不能往前退）  </li>
+<li>实现：对象内部定义一个<code>__iter__()</code>方法）  </li>
+<li>3.协议是一种约定，可迭代对象实现了迭代器协议，python的内部工具（如for循环，sum，min，max函数等)使用迭代器协议访问对象。  </li>
+</ol>
+<p><strong>for 循环机制 </strong><br>for循环的本质：循环所有对象，全都是使用迭代器协议。<br>for循环就是基于迭代器协议提供了一个统一的可以遍历所有对象的方法，即在遍历之前，先调用对象的<code>__iter__</code>方法将其转换成一个迭代器，然后使用迭代器协议去实现循环访问，这样所有的对象就都可以通过for循环来遍历了，<br>列表，字符串，元组，字典，集合，文件对象等本质上来说都不是可迭代对象，在使用for循环的时候内部是先调用他们内部的<em>iter</em>方法，使他们变成了可迭代对象，然后在使用可迭代对象的<em>next</em>方法依次循环元素，当元素循环完时，会触发StopIteration异常，for循环会捕捉到这种异常，终止迭代  </p>
+<p>访问方式常见的有下标方式访问、迭代器协议访问、for循环访问  </p>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>迭代器是访问集合元素的一种方式。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退<br>不像列表把所有元素一次性加载到内存，迭代器是以一种延迟计算（lazy evaluation）方式返回元素，不要求事先准备好整个迭代过程中所有的元素。迭代器仅仅在迭代到某个元素时才计算该元素，而在这之前或之后，元素可以不存在或者被销毁。这个特点使得它特别适合用于遍历一些巨大的或是无限的集合<br>迭代器有两个基本的方法 next方法：返回迭代器的下一个元素 __ 方法：返回迭代器对象本身  </p>
+<h3 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h3><p>语法上和函数类似：生成器函数和常规函数几乎是一样的。它们都是使用def语句进行定义，差别在于，生成器使用yield语句返回一个值，而常规函数使用return语句返回一个值（只要一个函数内出现了yield，那它就是一个生成器函数，执行这个函数就得到一个生成器）<br>自动实现迭代器协议：对于生成器，Python会自动实现迭代器协议，以便应用到迭代背景中（如for循环，sum函数）。由于生成器自动实现了迭代器协议，所以，我们可以调用它的next方法，并且，在没有值可以返回的时候，生成器自动产生StopIteration异常<br>状态挂起：生成器使用yield语句返回一个值。yield语句挂起该生成器函数的状态，保留足够的信息，以便之后从它离开的地方继续执行<br>生成器的唯一注意事项就是：生成器只能遍历一次。  </p>
+<h3 id="python语法糖"><a href="#python语法糖" class="headerlink" title="python语法糖"></a>python语法糖</h3><p>语法糖指那些没有给计算机语言添加新功能，而只是对人类来说更“甜蜜”的语法, 语法糖往往给程序员提供了更实用的编码方式，有益于更好的编码风格，更易读<br>举些例子吧：  </p>
+<ol>
+<li><code>c = [b,a][a&gt;b]</code> 取两个中的最大值  </li>
+<li><code>lambda</code>、<code>filter</code>、<code>map</code>、<code>reduce</code>函数  </li>
+<li><code></code>list1=[2*x+1 for x in range(10)]`  </li>
+<li>对列表<code>lst = [1, -2, 10, -12, -4, -5, 9, 2]</code>  实现排序，按照正的放前面，负的放后面，并且分别按绝对值从小到大。即输出：<code>[1, 2, 9, 10, -2, -4, -5, -12]</code>方法是：<code>lst.sort(key=lambda x: (x &lt; 0, abs(x)))</code>等同于：<code>lst.sort(key=lambda x: abs(x))</code>—&gt;<code>lst.sort(key=lambda x: x &lt; 0)</code>  </li>
+<li>装饰器  </li>
+</ol>
+<h3 id="Python的装饰器内部实现原理"><a href="#Python的装饰器内部实现原理" class="headerlink" title="Python的装饰器内部实现原理"></a>Python的装饰器内部实现原理</h3><p>装饰器本质上是一个Python函数，是闭包的一种实现, 它的作用是让其他函数在不需要做任何代码变动的前提下增加额外功能。<br>使用装饰器的时候, 解析器把被装饰的函数作为参数传递给装饰器, 然后再返回一个函数对象, 装饰器内部实现需要额外增加的功能和被装饰函数的功能,虽然被装饰函数的调用方法没有改变, 但实际上已经不是原来函数, 而变成了装饰器返回的函数对象<br>它经常用于有切面需求的场景，比如：插入日志、性能测试、事务处理、缓存、权限校验等场景。<br>什么是面向切面编程AOP?<br>这种在运行时，动态地将代码切入到类的指定方法、指定位置上的编程思想就是面向切面的编程。  </p>
+<h3 id="简述Python的作用域以及Python搜索变量的顺序"><a href="#简述Python的作用域以及Python搜索变量的顺序" class="headerlink" title="简述Python的作用域以及Python搜索变量的顺序"></a>简述Python的作用域以及Python搜索变量的顺序</h3><p>Python作用域简单说就是一个变量的命名空间。代码中变量被赋值的位置，就决定了哪些范围的对象可以访问这个变量，这个范围就是变量的作用域。<br>在Python中，只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域。<br>Python的变量名解析机制也称为 LEGB 法则：<code>本地作用域（Local）→当前作用域被嵌入的本地作用域（Enclosing locals）→全局/模块作用域（Global）→内置作用域（Built-in）</code>  </p>
+<h3 id="GIL线程全局锁"><a href="#GIL线程全局锁" class="headerlink" title="GIL线程全局锁"></a>GIL线程全局锁</h3><p>线程全局锁(Global Interpreter Lock),即Python为了保证线程安全而采取的独立线程运行的限制,说白了就是一个核只能在同一时间运行一个线程  </p>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>原因:  </p>
+<ul>
+<li>竞争资源  </li>
+<li>程序推进顺序不当<br>  必要条件:  </li>
+<li>互斥条件  </li>
+<li>请求和保持条件  </li>
+<li>不剥夺条件  </li>
+<li>环路等待条件<br>  处理死锁基本方法:  </li>
+<li>预防死锁(摒弃除1以外的条件)  </li>
+<li>避免死锁(银行家算法)  </li>
+<li>检测死锁(资源分配图)  </li>
+<li>解除死锁  </li>
+<li>剥夺资源  </li>
+<li>撤销进程  </li>
+</ul>
+<h3 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h3><p>先来先服务(FCFS, First Come First Serve)<br>短作业优先(SJF, Shortest Job First)<br>最高优先权调度(Priority Scheduling)<br>时间片轮转(RR, Round Robin)<br>多级反馈队列调度(multilevel feedback queue scheduling)  </p>
+<p>实时调度算法:<br>最早截至时间优先 EDF<br>最低松弛度优先 LLF  </p>
+<h3 id="什么lambda函数-匿名函数-匿名函数有什么局限性"><a href="#什么lambda函数-匿名函数-匿名函数有什么局限性" class="headerlink" title="什么lambda函数(匿名函数),匿名函数有什么局限性"></a>什么lambda函数(匿名函数),匿名函数有什么局限性</h3><p>匿名函数，也就是lambda函数，通常用在函数体比较简单的函数上。匿名函数顾名思义就是函数没有名字，因此不用担心函数名冲突。<br>不过Python对匿名函数的支持有限，只有一些简单的情况下可以使用匿名函数。  </p>
+<h3 id="KISS原则"><a href="#KISS原则" class="headerlink" title="KISS原则"></a>KISS原则</h3><p>KISS原则是英语 Keep It Simple, Stupid 的首字母缩写。<br>KISS原则是指在设计当中应当注重简约的原则。  </p>
+<h3 id="简述函数式编程"><a href="#简述函数式编程" class="headerlink" title="简述函数式编程"></a>简述函数式编程</h3><p>在函数式编程中，函数是基本单位，变量只是一个名称，而不是一个存储单元。<br>除了匿名函数外，Python还使用<code>fliter()</code>,<code>map()</code>,<code>reduce()</code>,<code>apply()</code>函数来支持函数式编程  </p>
+<h3 id="Python-copy-与deepcopy-区别"><a href="#Python-copy-与deepcopy-区别" class="headerlink" title="Python-copy()与deepcopy()区别"></a>Python-copy()与deepcopy()区别</h3><p>—–我们寻常意义的复制就是深复制，即将被复制对象完全再复制一遍作为独立的新个体单独存在。所以改变原有被复制对象不会对已经复制出来的新对象产生影响。<br>—–而浅复制并不会产生一个独立的对象单独存在，他只是将原有的数据块打上一个新标签，所以当其中一个标签被改变的时候，数据块就会发生变化，另一个标签也会随之改变。<br>浅拷贝只拷贝一层, 深拷贝拷贝全部<br>第一：非容器类型（不可变对象, 比如数字，字符串和其他原子类型的对象，例如代码，类型和range对象等）没有拷贝一说，浅拷贝是完全用切片操作来完成的。<br>第二：如果元组变量只包含原子类型对象，那么深拷贝将不会进行。  </p>
+<h3 id="如何捕获异常，常用的异常机制有哪些？"><a href="#如何捕获异常，常用的异常机制有哪些？" class="headerlink" title="如何捕获异常，常用的异常机制有哪些？"></a>如何捕获异常，常用的异常机制有哪些？</h3><p>如果我们没有对异常进行任何预防，那么在程序执行的过程中发生异常，就会中断程序，调用python默认的异常处理器，并在终端输出异常信息。<br><code>try...except...finally</code>语句:当try语句执行时发生异常，回到try语句层，寻找后面是否有except语句。<br>找到except语句后，会调用这个自定义的异常处理器。except将异常处理完毕后，程序继续往下执行。finally语句表示，无论异常发生与否，finally中的语句都要执行。<br>assert语句：判断assert后面紧跟的语句是True还是False，如果是True则继续执行print，如果是False则中断程序，调用默认的异常处理器，同时输出assert语句逗号后面的提示信息。<br>with语句：如果with语句或语句块中发生异常，会调用默认的异常处理器处理，但文件还是会正常关闭。  </p>
+<h3 id="有用过with-statement吗？它的好处是什么？具体如何实现？"><a href="#有用过with-statement吗？它的好处是什么？具体如何实现？" class="headerlink" title="有用过with statement吗？它的好处是什么？具体如何实现？"></a>有用过with statement吗？它的好处是什么？具体如何实现？</h3><p>with语句适用于对资源进行访问的场合，确保不管使用过程中是否发生异常都会执行必要的“清理”操作，释放资源，<br>比如文件使用后自动关闭、线程中锁的自动获取和释放等。  </p>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>多态\封装\组合\继承<br>迭代器和生成器  </p>
+<h3 id="Python的面向对象和Java面向对象的区别"><a href="#Python的面向对象和Java面向对象的区别" class="headerlink" title="Python的面向对象和Java面向对象的区别"></a>Python的面向对象和Java面向对象的区别</h3><p>python可面向对象编程，可以不按照面向对象编程。java就必须面向对象编程了，必须建个类  </p>
+<h3 id="Python的实例方法-类方法-静态方法之间的区别及调用关系"><a href="#Python的实例方法-类方法-静态方法之间的区别及调用关系" class="headerlink" title="Python的实例方法,类方法,静态方法之间的区别及调用关系"></a>Python的实例方法,类方法,静态方法之间的区别及调用关系</h3><p>在类里面定义的函数就是方法,类方法需要<code>@classmethod</code>修饰并且有个隐藏参数 <code>cls</code>,实例方法必须有个参数 <code>self</code>, 静态方法必须有<code>@staticmethod</code>修饰,类和实例都可以访问静态方法,实例可以访问实例方法也可以访问类方法,类可以访问类方法也可以访问实例方法。访问实例方法必须要带参数 <code>self</code>, 可以理解为类其实也是一个实例,类访问实例方法不带参数会报错的。类本身可以访问函数,实例却不行  </p>
+<h3 id="python新式类和旧式类的区别"><a href="#python新式类和旧式类的区别" class="headerlink" title="python新式类和旧式类的区别"></a>python新式类和旧式类的区别</h3><p>主要区别是多继承中，新式类采用广度优先搜索，而旧式类是采用深度优先搜索  </p>
+<h3 id="new-和-init-的区别"><a href="#new-和-init-的区别" class="headerlink" title="__new__和__init__的区别"></a><code>__new__</code>和<code>__init__</code>的区别</h3><p>创建一个新实例时调用<code>__new__</code>,初始化一个实例时用<code>__init__</code>,这是它们最本质的区别。<br><code>__new__</code>是一个静态方法,而<code>__init__</code>是一个实例方法。<br><code>__new__</code>方法会返回一个创建的实例,而<code>__init__</code>什么都不返回。<br>只有在<code>__new__</code>返回一个cls的实例时后面的<code>__init__</code>才能被调用。<br>单例模式的实现可以使用<code>__new__</code>方法  </p>
+<h3 id="单例模式new方法版本"><a href="#单例模式new方法版本" class="headerlink" title="单例模式new方法版本"></a>单例模式<strong>new</strong>方法版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kw)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(cls, <span class="string">'_instance'</span>):  </span><br><span class="line">            orig = super(Singleton, cls)  </span><br><span class="line">            cls._instance = orig.__new__(cls, *args, **kw)  </span><br><span class="line">        <span class="keyword">return</span> cls._instance  </span><br><span class="line">   </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span><span class="params">(Singleton)</span>:</span>  </span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<h3 id="单例模式装饰器版本"><a href="#单例模式装饰器版本" class="headerlink" title="单例模式装饰器版本"></a>单例模式装饰器版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">singleton</span><span class="params">(cls, *args, **kw)</span>:</span>  </span><br><span class="line">    instances = &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getinstance</span><span class="params">()</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances:  </span><br><span class="line">            instances[cls] = cls(*args, **kw)  </span><br><span class="line">        <span class="keyword">return</span> instances[cls]  </span><br><span class="line">    <span class="keyword">return</span> getinstance  </span><br><span class="line"></span><br><span class="line"><span class="meta">@singleton  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span>:</span>  </span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<h2 id="MySQL数据库相关"><a href="#MySQL数据库相关" class="headerlink" title="MySQL数据库相关"></a>MySQL数据库相关</h2><h3 id="MySQL练习题"><a href="#MySQL练习题" class="headerlink" title="MySQL练习题"></a>MySQL练习题</h3><p><a href="http://www.cnblogs.com/wupeiqi/articles/5748496.html" target="_blank" rel="noopener">MySQL练习题参考答案</a>  </p>
+<h3 id="内联，左外联，右外联，全连接，交叉连接-的区别"><a href="#内联，左外联，右外联，全连接，交叉连接-的区别" class="headerlink" title="内联，左外联，右外联，全连接，交叉连接 的区别"></a>内联，左外联，右外联，全连接，交叉连接 的区别</h3><p>典型多对多联表查询:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> man_to_women.nid,man.name <span class="keyword">as</span> mname, women.name <span class="keyword">as</span> wname <span class="keyword">from</span> man_to_women  </span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> man <span class="keyword">on</span> man_to_women.man_id = man.nid  </span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> women <span class="keyword">on</span> man_to_women.women_id = women.nid  </span><br><span class="line"><span class="keyword">where</span> man.name = <span class="string">'alex'</span></span><br></pre></td></tr></table></figure></p>
+<p>左联:显示左边表的所有数据,只显示右边表与左边表有关联的数据  </p>
+<h3 id="什么是视图？以及视图的使用场景有哪些？"><a href="#什么是视图？以及视图的使用场景有哪些？" class="headerlink" title="什么是视图？以及视图的使用场景有哪些？"></a>什么是视图？以及视图的使用场景有哪些？</h3><p>视图是一种虚拟的表，具有和物理表相同的功能<br>只暴露部分字段给访问者，所以就建一个虚表，就是视图。<br>查询的数据来源于不同的表，而查询者希望以统一的方式查询，这样也可以建立一个视图，把多个表查询结果联合起来，查询者只需要直接从视图中获取数据，不必考虑数据来源于不同表所带来的差异  </p>
+<h3 id="视图作用"><a href="#视图作用" class="headerlink" title="视图作用"></a>视图作用</h3><p>数据库视图隐藏了数据的复杂性。<br>数据库视图有利于控制用户对表中某些列的访问。<br>数据库视图使用户查询变得简单。  </p>
+<h3 id="说一下事务的特性？"><a href="#说一下事务的特性？" class="headerlink" title="说一下事务的特性？"></a>说一下事务的特性？</h3><p><strong>原子性(Atomicity)</strong>：事务中的全部操作在数据库中是不可分割的，要么全部完成，要么均不执行。<br><strong>一致性(Consistency)</strong>：几个并行执行的事务，其执行结果必须与按某一顺序串行执行的结果相一致。<br><strong>隔离性(Isolation)</strong>：事务的执行不受其他事务的干扰，事务执行的中间结果对其他事务必须是透明的。<br><strong>持久性(Durability)</strong>：对于任意已交事务，系统必须保证该事务对数据库的改变不被丢失，即使数据库出  </p>
+<h3 id="什么是存储过程"><a href="#什么是存储过程" class="headerlink" title="什么是存储过程"></a>什么是存储过程</h3><p><a href="https://www.ilwid.net/posts/3b0cd4ca.html#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B" target="_blank" rel="noopener">简述存储过程</a>  </p>
+<h3 id="创建一个完整的存储过程示例"><a href="#创建一个完整的存储过程示例" class="headerlink" title="创建一个完整的存储过程示例"></a>创建一个完整的存储过程示例</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$  # 修改结束符为$$, 以免程序把begin...end之间的;作为结束符  </span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">procedure</span> <span class="keyword">if</span> exitsts proc_p1 $$  # 如果已经存在proc_p1就先删除  </span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> proc_p1(  </span><br><span class="line">    <span class="keyword">in</span> i1 <span class="built_in">int</span>  # 需要一个<span class="built_in">int</span>类型的参数  </span><br><span class="line">)  </span><br><span class="line"><span class="keyword">begin</span>  # <span class="keyword">sql</span>逻辑代码要放在begin...end之间  </span><br><span class="line">    declare d1 int;  # 声明一个d1变量  </span><br><span class="line">    declare d2 int default 3;  # 声明一个默认值为3的d2变量  </span><br><span class="line">    <span class="keyword">set</span> d1 = i1 + i2;  </span><br><span class="line">    <span class="keyword">select</span> *<span class="keyword">from</span> man_to_women <span class="keyword">where</span> nid &gt; d1;  </span><br><span class="line"><span class="keyword">end</span> $$  </span><br><span class="line">deliniter ;  # 修改结束附为默认的分号,以免影响其他语句  </span><br><span class="line"></span><br><span class="line">  # 调用存储过程  </span><br><span class="line"><span class="keyword">call</span> proc_p1(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="sql注入原理"><a href="#sql注入原理" class="headerlink" title="sql注入原理"></a>sql注入原理</h3><p>sql注入漏洞产生的原因最常见的就是字符串拼接SQL语句,这种漏洞可以利用注释语句绕过验证<br>如 <code>select name from userinfo where name=&#39;alex&#39; and password = &#39;888&#39;</code><br>用户如果在name字段输入 <code>alex&#39; or 1=1 --f</code> 就可以成功绕过验证。<br>要解决这个问题就不能在程序中拼接sql语句,例如使用pymysql的execute方法,这个方法会自动对用户输入的引号特殊字符做转义  </p>
+<h3 id="简单说一说drop、delete与truncate的区别"><a href="#简单说一说drop、delete与truncate的区别" class="headerlink" title="简单说一说drop、delete与truncate的区别"></a>简单说一说drop、delete与truncate的区别</h3><p>delete和truncate只删除表的数据不删除表的结构<br>速度,一般来说: drop&gt; truncate &gt;delete<br>delete语句是del,这个操作会放到rollback segement中,事务提交之后才生效;<br>如果有相应的trigger,执行的时候将被触发。<br>truncate,drop是ddl, 操作立即生效,原数据不放到rollback segment中,不能回滚. 操作不触发trigger。<br>使用场景:<br>不再需要一张表的时候，用drop<br>想删除部分数据行时候，用delete，并且带上where子句<br>保留表而删除所有数据的时候用truncate  </p>
+<h3 id="数据库怎么优化查询效率？"><a href="#数据库怎么优化查询效率？" class="headerlink" title="数据库怎么优化查询效率？"></a>数据库怎么优化查询效率？</h3><p>通常会在WHERE、JOIN ON和ORDER BY使用到字段上加上索引。<br>避免查询时判断NULL，否则可能会导致全表扫描。<br>避免使用OR来连接查询条件，否则可能导致全表扫描，可以改用UNION或UNION ALL。<br>避免LIKE查询，否则可能导致全表扫描。<br>不使用SELECT *，只查询必须的字段，避免加载无用数据。<br>能用UNION ALL的时候就不用UNION，UNION过滤重复数据要耗费更多的cpu资源。<br>避免Update全部字段，否则频繁调用会引起明显的性能消耗，同时带来大 量日志  </p>
+<p>总结如下：<br>1、避免模糊查询，如OR、LIKE等，因为会导致全表扫描；<br>2、在常用字段加索引，例如WHERE、JOIN ON和ORDER BY使用到字段上应该加索引<br>3、尽量避免全局性的读写操作，例如SELECT * 、Update全部字段  </p>
+<h3 id="数据库优化方案？"><a href="#数据库优化方案？" class="headerlink" title="数据库优化方案？"></a>数据库优化方案？</h3><p>1.优化索引、SQL 语句、分析慢查询;<br>2.设计表的时候严格根据数据库的设计范式来设计数据库;<br>3.使用缓存，把经常访问到的数据而且不需要经常变化的 数据放在缓存中，能节约磁盘 IO;<br>4.优化硬件;采用 SSD，使用磁盘队列技术 (RAID0,RAID1,RDID5)等;<br>5.采用 MySQL 内部自带的表分区技术，把数据分层不同 的文件，能够提高磁盘的读取效率;<br>6.垂直分表;把一些不经常读的数据放在一张表里，节约 磁盘 I/O;<br>7.主从分离读写;采用主从复制把数据库的读操作和写入操作分离开来;<br>8.分库分表分机器(数据量特别大)，主要的的原理就是数据路由;<br>9.选择合适的表引擎，参数上的优化;<br>10.进行架构级别的缓存，静态化和分布式;<br>11.不采用全文索引;<br>12.采用更快的存储方式，例如 NoSQL 存储经常访问的数  </p>
+<h3 id="Mysql-几种锁的区别"><a href="#Mysql-几种锁的区别" class="headerlink" title="Mysql 几种锁的区别"></a>Mysql 几种锁的区别</h3><ul>
+<li>表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。  </li>
+<li>行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度也最高。  </li>
+<li><p>页面锁：开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般。  </p>
+<p>三种锁各有各的特点，若仅从锁的角度来说，表级锁更适合于以查询为主，只有少量按索引条件更新数据的应用，如WEB应用；行级锁更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用，如一些在线事务处理（OLTP）系统。  </p>
+</li>
+</ul>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://blog.csdn.net/weinierzui/article/details/71054964" target="_blank" rel="noopener">常见面试题整理–数据库篇</a>  </p>
+<h2 id="Redis基础及高可用、高并发、集群相关知识"><a href="#Redis基础及高可用、高并发、集群相关知识" class="headerlink" title="Redis基础及高可用、高并发、集群相关知识"></a>Redis基础及高可用、高并发、集群相关知识</h2><h3 id="什么是redis"><a href="#什么是redis" class="headerlink" title="什么是redis"></a>什么是redis</h3><p>redis是一个key-value存储系统.和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(列表)、set(集合)、zset(sorted set –有序集合)和hashs（哈希类型）<br>这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的.<br>在此基础上，redis支持各种不同方式的排序.与memcached一样，为了保证效率，数据都是缓存在内存中.<br>区别的是redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步.  </p>
+<h3 id="使用redis有哪些好处？"><a href="#使用redis有哪些好处？" class="headerlink" title="使用redis有哪些好处？"></a>使用redis有哪些好处？</h3><p>速度快，因为数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)<br>支持丰富数据类型，支持string，list，set，sorted set，hash<br>支持事务，操作都是原子性，所谓的原子性就是对数据的更改要么全部执行，要么全部不执行<br>丰富的特性：可用于缓存，消息，按key设置过期时间，过期后将会自动删除  </p>
+<h3 id="Redis解决秒杀-抢红包等高并发事务活动"><a href="#Redis解决秒杀-抢红包等高并发事务活动" class="headerlink" title="Redis解决秒杀/抢红包等高并发事务活动"></a>Redis解决秒杀/抢红包等高并发事务活动</h3><p>秒杀开始前30分钟把秒杀库存从数据库同步到Redis Sorted Set<br>用户秒杀库存放入秒杀限制数长度的Sorted Set<br>秒杀到指定秒杀数后，Sorted Set不在接受秒杀请求，并显示返回标识<br>秒杀活动完全结束后，同步Redis数据到数据库，秒杀正式结束  </p>
+<h3 id="redis数据超过可用内存的处理方式"><a href="#redis数据超过可用内存的处理方式" class="headerlink" title="redis数据超过可用内存的处理方式"></a>redis数据超过可用内存的处理方式</h3><p>1、修改redis.conf中的maxmemory-policy选项,设置删除redis键的淘汰规则<br>2、加内存<br>3、缩短（或设置）数据过期时间，以释放内存<br>4、redis集群<br>如果redis数据中，存的是关键数据，怕丢失的数据，那么，redis数据占用的内存，不要超过内存大小的70%（保险起见不要超过55%），以免内存不足！不要期望什么内存淘汰策略！它所做的居然是删数据！<br>如果数据是不怕丢的缓存数据，那么可以在redis.conf里，配置如下两项，进行内存数据淘汰（其实是删除）  </p>
+<h3 id="什么是高可用架构"><a href="#什么是高可用架构" class="headerlink" title="什么是高可用架构"></a>什么是高可用架构</h3><p>在介绍高可用架构的方案之前，先说一下什么是高可用架构，高可用架构应具备但不限于以下特征：<br>主从切换<br>很好理解，当其中一台机器的服务宕机后，对于服务调用者来说，能够迅速的切换到其他可用服务，从服务升级为主服务，这种切换速度应当控制在秒级别（几秒钟）。<br>当宕机的服务恢复之后，自动变为从服务，主从服务角色切换。主从切换一定是要付出代价的，所以当主服务恢复之后，也就不再替换现有的主服务。<br>负载均衡<br>当服务的请求量比较高的时候，一台服务不能满足需求，这时候需要多台机器提供同样的服务，将所有请求分发到不同机器上。<br>高可用架构中应该具有丰富的负载均衡策略和易调节负载的方式。<br>甚至可以自动化智能调节，例如由于机器性能的原因，响应时间可能不一样，这时候可以向性能差的机器少一点分发量，保证各个机器响应时间的均衡。<br>易横向扩展<br>当用户量越来越多，已有服务不能承载更多的用户的时候，便需要对服务进行扩展，扩展的方式最好是不触动原有服务，对于服务的调用者是透明的。  </p>
+<h3 id="Redis-高可用"><a href="#Redis-高可用" class="headerlink" title="Redis 高可用"></a>Redis 高可用</h3><p>高可用架构一般都要具备主从复制\切换、负载均衡、易于扩展等特性，如果节点较少可以直接使用Redis集群，Redis集群具备这些特性，只要有一半以上的节点正常就能提供服务；如果规模较大的时候，就可以引入sentinel“哨兵”组件，它能提供监控、提醒、自动故障迁移等服务<br><a href="http://blog.csdn.net/u013063153/article/details/71191138" target="_blank" rel="noopener">部署高可用的Redis集群架构</a>  </p>
+<h3 id="Redis-高并发"><a href="#Redis-高并发" class="headerlink" title="Redis 高并发"></a>Redis 高并发</h3><p>高并发下主要考虑的是Redis集群方案，把流量分散到不同的Redis机器中去。<br>Redis集群可以从横向和纵向两个方面考虑，增强整体的可用性。<br>横向可以从分库剥离，负载均衡，一致性算法方面进行考虑<br>纵向可以从副本集，持久化，灾备等方面进行考虑<br>（即横向集群方案做高并发，纵向做高可用）  </p>
+<h3 id="redis应用之利用redis高效统计访问量及访问的用户（计数）"><a href="#redis应用之利用redis高效统计访问量及访问的用户（计数）" class="headerlink" title="redis应用之利用redis高效统计访问量及访问的用户（计数）"></a>redis应用之利用redis高效统计访问量及访问的用户（计数）</h3><p>原理：利用setbit方法，设置一个二进制每一位都为0的变量如usercount，通过算法给每一个访客一个唯一的数字ID标识，然后给usercount设置该用户ID位为1即可，通过bitcount usercount命令获取usercount有多少个1即为访客总数。通过这个方法保存1亿个用户的访问数据（总访问量和来访的用户）只需要不足10m的空间，而且非常高效。 使用方法如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">set usercount <span class="number">0</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>OK  </span><br><span class="line">bitcount usercount  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span>  <span class="comment"># 0的二进制值为0110000，所以为2  </span></span><br><span class="line">setbit usercount <span class="number">2</span> <span class="number">0</span>  </span><br><span class="line">setbit usercount <span class="number">3</span> <span class="number">0</span>  <span class="comment"># 以上两句设置usercount的第2、3位为0，此时二进制值为 00000000  </span></span><br><span class="line">setbit usercount <span class="number">4999</span> <span class="number">1</span>  <span class="comment"># 假设ID为4999的用户来访，设置usercount 的第4999位为1  </span></span><br><span class="line">setbit usercount <span class="number">3582</span> <span class="number">1</span>  <span class="comment"># 假设ID为3582的用户来访，设置usercount 的第3582位为1  </span></span><br><span class="line">bitcount usercount  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span>  <span class="comment"># 此时共有4999、3582两个访客，因此总数为2  </span></span><br><span class="line">getbit usercount <span class="number">4999</span>   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span>  <span class="comment"># 获取ID为4999的用户的来访状态，如果值为1，则是访客，如果是0则是非访客</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="redis-和-mysql-的区别？"><a href="#redis-和-mysql-的区别？" class="headerlink" title="redis 和 mysql 的区别？"></a>redis 和 mysql 的区别？</h3><p>redis 是内存数据库，数据保存在内存中，速度快。<br>mysql 是关系型数据库，持久化存储，存放在磁盘里面，功能强大。检索的话，会涉及到一定的 IO，数据访问也就慢。<br>一般需要永久存储的数据使用MySQL,比如用户信息,文章等<br>而临时数据或者经常访问的数据就会使用redis,比如用户的session/排行榜/访问计数/Pub Sub 构建实时消息系统/缓存等  </p>
+<h3 id="Memcache与Redis的区别都有哪些？"><a href="#Memcache与Redis的区别都有哪些？" class="headerlink" title="Memcache与Redis的区别都有哪些？"></a>Memcache与Redis的区别都有哪些？</h3><p>1)、存储方式 Memecache把数据全部存在内存之中，断电后会挂掉，数据不能超过内存大小。Redis有部份存在硬盘上，这样能保证数据的持久性。<br>2)、数据支持类型 Memcache对数据类型支持相对简单。 Redis有复杂的数据类型。<br>3)、使用底层模型不同 它们之间底层实现方式 以及与客户端之间通信的应用协议不一样。Redis直接自己构建了VM机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。  </p>
+<p>  扩展阅读<br><a href="https://www.cnblogs.com/tuyile006/p/6382062.html" target="_blank" rel="noopener">Redis、Memcache和MongoDB的区别</a>  </p>
+<h3 id="Redis常见的性能问题和解决方法"><a href="#Redis常见的性能问题和解决方法" class="headerlink" title="Redis常见的性能问题和解决方法"></a>Redis常见的性能问题和解决方法</h3><p>1.Master最好不要做任何持久化工作，包括内存快照和AOF日志文件，特别是不要启用内存快照做持久化。<br>2.如果数据比较关键，某个Slave开启AOF备份数据，策略为每秒同步一次。<br>3.为了主从复制的速度和连接的稳定性，Slave和Master最好在同一个局域网内。<br>4.尽量避免在压力较大的主库上增加从库<br>5.为了Master的稳定性，主从复制不要用图状结构，用单向链表结构更稳定，即主从关系为：<code>Master&lt;--Slave1&lt;--Slave2&lt;--Slave3.......</code>，这样的结构也方便解决单点故障问题，实现Slave对Master的替换，也即，如果Master挂了，可以立马启用Slave1做Master，其他不变。  </p>
+<h3 id="mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据"><a href="#mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据" class="headerlink" title="mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据"></a>mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据</h3><p>相关知识：redis 内存数据集大小上升到一定大小的时候，就会施行数据淘汰策略（回收策略）。redis 提供 6种数据淘汰策略：<br>volatile-lru：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰<br>volatile-ttl：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰<br>volatile-random：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰<br>allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的数据淘汰<br>allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰<br>no-enviction（驱逐）：禁止驱逐数据  </p>
+<h3 id="redis的并发竞争问题如何解决"><a href="#redis的并发竞争问题如何解决" class="headerlink" title="redis的并发竞争问题如何解决?"></a>redis的并发竞争问题如何解决?</h3><p>Redis为单进程单线程模式，采用队列模式将并发访问变为串行访问。Redis本身没有锁的概念，Redis对于多个客户端连接并不存在竞争，但是在Jedis客户端对Redis进行并发访问时会发生连接超时、数据转换错误、阻塞、客户端关闭连接等问题，这些问题均是由于客户端连接混乱造成。对此有2种解决方法：<br>1.客户端角度，为保证每个客户端间正常有序与Redis进行通信，对连接进行池化，同时对客户端读写Redis操作采用内部锁synchronized。<br>2.服务器角度，利用setnx实现锁。<br>注：对于第一种，需要应用程序自己处理资源的同步，可以使用的方法比较通俗，可以使用synchronized也可以使用lock；第二种需要用到Redis的setnx命令，但是需要注意一些问题。  </p>
+<h3 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h3><p><a href="https://www.cnblogs.com/chenliangcl/p/7240350.html" target="_blank" rel="noopener">redis持久化的几种方式（RDB和AOF持久化的优劣比较）</a>  </p>
+<h3 id="Redis如果运行过程中崩溃了怎么办。"><a href="#Redis如果运行过程中崩溃了怎么办。" class="headerlink" title="Redis如果运行过程中崩溃了怎么办。"></a>Redis如果运行过程中崩溃了怎么办。</h3><p>这个问题面试官想问的是Redis的数据保障的方法，不然崩溃了除了重启还能怎么办？<br>Redis有提供数据持久化的功能，一种是快照，一种是AOF。<br>快照是在某一个时间点将所有数据写入到磁盘中，AOF是将被执行的命令复制到硬盘中，快照的文件体积要比AOF的文件体积小。前者在恢复时速度比后者快，但是因为是间隔持久化，所以会有一定量的数据丢失。后者因为是实时写入的，所以数据的完整性比较好，如果丢失的话一般也就丢失一秒的数据。<br>其次需要做主从复制，这样一份数据可以保存在多台服务器上，且可以避免Redis崩溃到重启完成这段时间内无法提供正常服务，同时从服务器可以分担主服务器的读压力。  </p>
+<h3 id="Redis集群"><a href="#Redis集群" class="headerlink" title="Redis集群"></a>Redis集群</h3><p>Redis集群创建步骤是<br>1、在至少3台服务器上安装redis服务<br>2、分别修改这些服务器上redis的配置文件并确保它们可以互相访问，然后启动它们<br>3、使用Redis 官方提供的redis-trib.rb工具的create命令创建集群  </p>
+<h3 id="简单说一下Redis集群的工作原理"><a href="#简单说一下Redis集群的工作原理" class="headerlink" title="简单说一下Redis集群的工作原理"></a>简单说一下Redis集群的工作原理</h3><p>redis cluster在设计的时候，就考虑到了去中心化，去中间件，也就是说，集群中的每个节点都是平等的关系，都是对等的，每个节点都保存各自的数据和整个集群的状态。每个节点都和其他所有节点连接，而且这些连接保持活跃，这样就保证了我们只需要连接集群中的任意一个节点，就可以获取到其他节点的数据。<br>Redis 集群没有并使用传统的一致性哈希来分配数据，而是采用另外一种叫做哈希槽 (hash slot)的方式来分配的。redis cluster 默认分配了 16384 个slot，当我们set一个key 时，会用CRC16算法来取模得到所属的slot，然后将这个key 分到哈希槽区间的节点上，具体算法就是：CRC16(key) % 16384。所以我们在测试的时候看到set 和 get 的时候，直接跳转到了7000端口的节点。<br>Redis 集群会把数据存在一个 master 节点，然后在这个 master 和其对应的salve 之间进行数据同步。当读取数据时，也根据一致性哈希算法到对应的 master 节点获取数据。只有当一个master 挂掉之后，才会启动一个对应的 salve 节点，充当 master 。<br>需要注意的是：必须要3个或以上的主节点，否则在创建集群时会失败，并且当存活的主节点数小于总节点数的一半时，整个集群就无法提供服务了。  </p>
+<h3 id="悲观锁和乐观锁区别，乐观锁适用于什么情况"><a href="#悲观锁和乐观锁区别，乐观锁适用于什么情况" class="headerlink" title="悲观锁和乐观锁区别，乐观锁适用于什么情况"></a>悲观锁和乐观锁区别，乐观锁适用于什么情况</h3><p>悲观锁，每次访问数据的时候都觉得会有别人修改它，所以每次拿数据时都会上锁，确保在自己使用的过程中不会被他人访问。乐观锁每次拿数据的时候都不会上锁，只在更新数据的时候去判断该数据是否被别人修改过。<br>大多数的关系数据库写入操作都是基于悲观锁，缺点在于如果持有锁的客户端运行的很慢，那么等待解锁的客户端被阻塞的时间就越长。Redis的事务是基于乐观锁的机制，不会在执行WATCH命令时对数据进行加锁，只是会在数据已经被其他客户端抢先修改了的情况下，通知执行WATCH命令的客户端。<br>乐观锁适用于读多写少的情况，因为在写操作比较频繁的时候，会不断地retry，从而降低性能。  </p>
+<h3 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h3><p>在并发读写数据库时，读操作可能会不一致的数据（脏读）。为了避免这种情况，需要实现数据库的并发访问控制，最简单的方式就是加锁访问。<br>由于，加锁会将读写操作串行化，所以不会出现不一致的状态。但是，读操作会被写操作阻塞，大幅降低读性能。<br>而其优化的手段就是，在进行写操作时，将数据copy一份，不会影响原有数据，然后进行修改，修改完成后原子替换掉旧的数据，而读操作只会读取原有数据。<br>通过这种方式实现写操作不会阻塞读操作，从而优化读效率。<br>MVCC全称是Multi-Version Concurrent Control，即多版本并发控制。<br>在MVCC协议下每个读操作会看到一个一致性的snapshot，并且可以实现非阻塞的读。MVCC允许数据具有多个版本，这个版本可以是时间戳或者是全局递增的事务ID，<br>在同一个时间点，不同的事务看到的数据是不同的。  </p>
+<h3 id="参考资料-1"><a href="#参考资料-1" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://www.ilwid.net/posts/1f8fcfbf.html" target="_blank" rel="noopener">数据库SQL优化大总结之 百万级数据库优化方案</a>  </p>
+<h2 id="多线程、多进程、协程、异步编程、I-O多路复用"><a href="#多线程、多进程、协程、异步编程、I-O多路复用" class="headerlink" title="多线程、多进程、协程、异步编程、I/O多路复用"></a>多线程、多进程、协程、异步编程、I/O多路复用</h2><h3 id="请简述线程、进程、协程的特性"><a href="#请简述线程、进程、协程的特性" class="headerlink" title="请简述线程、进程、协程的特性"></a>请简述线程、进程、协程的特性</h3><p>进程是系统进行资源分配和调度的最小单位,进程是线程的容器,一个进程可以包含多个线程,进程之间数据不能互相访问<br>线程是CPU调度的最小单位,线程是程序执行流的最小单元, 每一个进程都至少有一个线程, 线程之间数据可以共享<br>进程线程都是由操作系统调度,python中多线程和多进程都是通过切换上下文来实现,都会耗费额外的系统资源<br>协程由程序员调度, 由代码切换来控制, 系统并不知道协程的存在, 各种多并发异步非阻塞模块都是基于协程来实现的<br>进程和线程都面临着内核态和用户态的切换问题而耗费许多切换时间，而协程就是用户自己控制切换的时机，不再需要陷入系统的内核态。<br>Python里最常见的yield就是协程的思想  </p>
+<h3 id="线程有几种状态-生命周期是怎样的"><a href="#线程有几种状态-生命周期是怎样的" class="headerlink" title="线程有几种状态?生命周期是怎样的?"></a>线程有几种状态?生命周期是怎样的?</h3><p>线程有五种状态:创建、就绪、运行、阻塞、死亡。<br>调用start方法时，线程就会进入就绪状态。<br>在线程得到cpu时间片时进入运行状态。<br>线程调用yield方法可以让出cpu时间回到就绪状态。<br>线程运行时可能由于IO、调用sleep、wait、join方法或者无法获得同步锁等原因进入阻塞状态。<br>当线程获得到等待的资源资源或者引起阻塞的条件得到满足时，会从阻塞状态进入就绪状态。<br>当线程的run方法执行结束时，线程就进入死亡状态。  </p>
+<h3 id="进程间通讯的方式有哪些，各有什么优缺点："><a href="#进程间通讯的方式有哪些，各有什么优缺点：" class="headerlink" title="进程间通讯的方式有哪些，各有什么优缺点："></a>进程间通讯的方式有哪些，各有什么优缺点：</h3><p>1）管道：管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程之间使用。进程的亲缘关系通常是指父子进程关系。<br>2）有名管道（FIFO）：有名管道也是半双工的通信方式，但是允许在没有亲缘关系的进程之间使用，管道是先进先出的通信方式。<br>3）信号量：信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。<br>4）消息队列：消息队列是有消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。<br>5）信号 ( sinal ) ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。<br>6）共享内存( shared memory ) ：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号量，配合使用，来实现进程间的同步和通信。<br>7）套接字( socket ) ：套接字也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同机器间的进程通信。<br>8）文件  </p>
+<h3 id="线程池的原理："><a href="#线程池的原理：" class="headerlink" title="线程池的原理："></a>线程池的原理：</h3><p>既然是线程池（Thread pool），其实名字很形象，就是把指定数量的可用子线程放进一个”池里”，有任务时取出一个线程执行，任务执行完后，  并不立即销毁线程，而是放进线程池中，等待接收下一个任务。这样内存和cpu的开销也比较小，并且我们可以控制线程的数量。  </p>
+<h3 id="线程池的实现："><a href="#线程池的实现：" class="headerlink" title="线程池的实现："></a>线程池的实现：</h3><p>线程池有很多种实现方式，在python中，已经给我们提供了一个很好的实现方式：Queue-队列。因为python中Queue本身就是同步的，所以也就是线程安全的，所以我们可以放心的让多个线程共享一个Queue。<br>那么说到线程池，那么理应也得有一个任务池，任务池中存放着待执行的任务，各个线程到任务池中取任务执行，那么用Queue来实现任务池是最好不过的。  </p>
+<p><strong>线程安全和非线程安全 </strong></p>
+<p>线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。如Queue、logging<br>非线程安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是脏数据。如list、set、dict  </p>
+<h3 id="异步IO-IO多路复用的原理"><a href="#异步IO-IO多路复用的原理" class="headerlink" title="异步IO / IO多路复用的原理"></a>异步IO / IO多路复用的原理</h3><p><a href="http://www.cnblogs.com/alex3714/articles/5248247.html" target="_blank" rel="noopener">IO多路复用的原理详解</a><br><a href="http://www.cnblogs.com/alex3714/articles/5876749.html" target="_blank" rel="noopener">IO多路复用(番外篇)</a><br><a href="http://www.cnblogs.com/alex3714/articles/4372426.html" target="_blank" rel="noopener">Python Select epoll详解</a>  </p>
+<h3 id="简述事件驱动"><a href="#简述事件驱动" class="headerlink" title="简述事件驱动"></a>简述事件驱动</h3><ol>
+<li>有一个事件（消息）队列；  </li>
+<li>鼠标按下时，往这个队列中增加一个点击事件（消息）；  </li>
+<li>有个循环，不断从队列取出事件，根据不同的事件，调用不同的函数，如onClick()、onKeyDown()等；  </li>
+<li>事件（消息）一般都各自保存各自的处理函数指针，这样，每个消息都有独立的处理函数；  </li>
+</ol>
+<h3 id="简述I-O多路复用"><a href="#简述I-O多路复用" class="headerlink" title="简述I/O多路复用"></a>简述I/O多路复用</h3><p>I/O多路复用是指单个线程，通过记录跟踪每个I/O流(sock)的状态，来同时管理多个I/O流。即系统内核缓冲I/O数据，当某个I/O准备好后，系统通知应用程序该I/O可读或可写，这样应用程序可以马上完成相应的I/O操作，而不需要等待系统完成相应I/O操作，从而应用程序不必因等待I/O操作而阻塞。<br>与多进程和多线程技术相比，I/O多路复用技术的最大优势是系统开销小，系统不必创建进程/线程，也不必维护这些进程/线程，从而大大减小了系统的开销。比如高并发应用nginx就是用I/O多路复用,它的性能是极佳的。<br>目前支持I/O多路复用的系统调用有select，epoll，它们本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。  </p>
+<h3 id="I-O多路复用和异步I-O的区别"><a href="#I-O多路复用和异步I-O的区别" class="headerlink" title="I/O多路复用和异步I/O的区别"></a>I/O多路复用和异步I/O的区别</h3><p>I/O多路复用的本质是同步IO，是阻塞的，而异步I/O是非阻塞的。<br>阻塞、非阻塞、IO多路复用，都是同步IO，需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的；异步是非阻塞的，真正的异步IO需要CPU的深度参与。<br>使用 select，epoll 的IO多路复用的模型中，虽然进程大部分时间都不会阻塞，但是它仍然要求进程去主动的轮询，并且当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存。<br>而异步I/O则完全不同。用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，kernel会给用户进程发送一个signal，告诉它read操作完成了。<br>nginx、tornado、twised等应用，虽然我们习惯性地叫它们为异步IO，但是它们实际上是IO多路复用。因为它们的底层是基于select和epoll实现的。<br>真正的异步现在内核支持不完美，实际应用比较少，python中真正支持异步IO的模块是asyncio  </p>
+<h3 id="select-poll和epoll之间的异同"><a href="#select-poll和epoll之间的异同" class="headerlink" title="select,poll和epoll之间的异同"></a>select,poll和epoll之间的异同</h3><p>select，poll，epoll都是IO多路复用的机制。I/O多路复用就通过一种机制，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。但select，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。<br>所有的I/O都是轮询的方法,只不过实现的层面不同罢了。<br>Windows底层只支持select, Linux很早就支持epoll了,tornado底层使用的就是epoll的。<br>基本上select有3个缺点:  </p>
+<ul>
+<li>连接数受限（1024）  </li>
+<li>查找配对速度慢  </li>
+<li>数据由内核拷贝到用户态<br>poll改善了第一个缺点<br>epoll改了三个缺点。  </li>
+</ul>
+<h3 id="epoll中et和lt的区别与实现原理"><a href="#epoll中et和lt的区别与实现原理" class="headerlink" title="epoll中et和lt的区别与实现原理"></a>epoll中et和lt的区别与实现原理</h3><p>LT：水平触发，效率会低于ET触发，尤其在大并发，大流量的情况下。但是LT对代码编写要求比较低，不容易出现问题。LT模式服务编写上的表现是：只要有数据没有被获取，内核就不断通知你，因此不用担心事件丢失的情况。<br>ET：边缘触发，效率非常高，在并发，大流量的情况下，会比LT少很多epoll的系统调用，因此效率高。但是对编程要求高，需要细致的处理每个请求，否则容易发生丢失事件的情况。  </p>
+<h2 id="网络编程基础知识"><a href="#网络编程基础知识" class="headerlink" title="网络编程基础知识"></a>网络编程基础知识</h2><h3 id="解释下Http协议"><a href="#解释下Http协议" class="headerlink" title="解释下Http协议"></a>解释下Http协议</h3><p>HTTP是一个属于应用层的面向对象的协议，由于其简捷、快速的方式，适用于分布式超媒体信息系统。<br>HTTP协议的主要特点可概括如下：  </p>
+<ol>
+<li>支持客户/服务器模式。  </li>
+<li>简单快速：客户向服务器请求服务时，只需传送请求方法和路径。请求方法常用的有GET、HEAD、POST。每种方法规定了客户与服务器联系的类型不同。由于HTTP协议简单，使得HTTP服务器的程序规模小，因而通信速度很快。  </li>
+<li>灵活：HTTP允许传输任意类型的数据对象。正在传输的类型由Content-Type加以标记。  </li>
+<li>无连接：无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间。  </li>
+<li><p>无状态：HTTP协议是无状态协议。无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。  </p>
+<p><a href="https://www.cnblogs.com/ranyonsue/p/5984001.html" target="_blank" rel="noopener">关于HTTP协议，一篇就够了</a>  </p>
+</li>
+</ol>
+<h3 id="在浏览器地址栏键入URL，按下回车之后会经历以下流程："><a href="#在浏览器地址栏键入URL，按下回车之后会经历以下流程：" class="headerlink" title="在浏览器地址栏键入URL，按下回车之后会经历以下流程："></a>在浏览器地址栏键入URL，按下回车之后会经历以下流程：</h3><p>1、浏览器向 DNS 服务器请求解析该 URL 中的域名所对应的 IP 地址;<br>2、解析出 IP 地址后，根据该 IP 地址和默认端口 80，和服务器建立TCP连接;<br>3、浏览器发出读取文件(URL 中域名后面部分对应的文件)的HTTP 请求，该请求报文作为 TCP 三次握手的第三个报文的数据发送给服务器;<br>4、服务器对浏览器请求作出响应，并把对应的 html 文本发送给浏览器;<br>5、释放 TCP连接;<br>6、浏览器将该 html 文本并显示内容;  </p>
+<h3 id="HTTP之状态码"><a href="#HTTP之状态码" class="headerlink" title="HTTP之状态码"></a>HTTP之状态码</h3><p>状态代码有三位数字组成，第一个数字定义了响应的类别，共分五种类别:<br>1xx：指示信息–表示请求已接收，继续处理<br>2xx：成功–表示请求已被成功接收、理解、接受<br>3xx：重定向–要完成请求必须进行更进一步的操作<br>4xx：客户端错误–请求有语法错误或请求无法实现<br>5xx：服务器端错误–服务器未能实现合法的请求  </p>
+<h3 id="常见状态码："><a href="#常见状态码：" class="headerlink" title="常见状态码："></a>常见状态码：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">200</span> OK                        <span class="comment">//客户端请求成功  </span></span><br><span class="line"><span class="number">400</span> Bad Request               <span class="comment">//客户端请求有语法错误，不能被服务器所理解  </span></span><br><span class="line"><span class="number">401</span> Unauthorized              <span class="comment">//请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用   </span></span><br><span class="line"><span class="number">403</span> Forbidden                 <span class="comment">//服务器收到请求，但是拒绝提供服务  </span></span><br><span class="line"><span class="number">404</span> Not Found                 <span class="comment">//请求资源不存在，eg：输入了错误的URL  </span></span><br><span class="line"><span class="number">500</span> Internal Server <span class="built_in">Error</span>     <span class="comment">//服务器发生不可预期的错误  </span></span><br><span class="line"><span class="number">503</span> Server Unavailable        <span class="comment">//服务器当前不能处理客户端的请求，一段时间后可能恢复正常</span></span><br></pre></td></tr></table></figure>
+<h3 id="TCP（传输控制协议）与UDP（用户数据包协议）的区别；"><a href="#TCP（传输控制协议）与UDP（用户数据包协议）的区别；" class="headerlink" title="TCP（传输控制协议）与UDP（用户数据包协议）的区别；"></a>TCP（传输控制协议）与UDP（用户数据包协议）的区别；</h3><p>1）TCP提供面向连接的传输，通信前要先建立连接（三次握手机制）；UDP提供无连接的传输，通信前不需要建立连接。<br>2）TCP提供可靠的传输（有序，无差错，不丢失，不重复）；UDP提供不可靠的传输。<br>3）TCP面向字节流的传输，因此它能将信息分割成组，并在接收端将其重组；UDP是面向数据报的传输，没有分组开销。<br>4）TCP提供拥塞控制和流量控制机制；UDP不提供拥塞控制和流量控制机制。  </p>
+<h3 id="什么时候使用TCP协议，什么时候使用UDP协议；"><a href="#什么时候使用TCP协议，什么时候使用UDP协议；" class="headerlink" title="什么时候使用TCP协议，什么时候使用UDP协议；"></a>什么时候使用TCP协议，什么时候使用UDP协议；</h3><p>a. 对数据可靠性的要求。对数据要求高可靠性的应用需选择TCP协议，如验证，密码字段的传送都是不允许出错的，而对数据的可靠性要求不那么高的应用可选择UDP传送；<br>b. 应用的实时性。TCP协议在传送过程中要使用三次握手、重传确认等手段来保证数据传输的可靠性。使用TCP协议会有较大的延迟，因此不适合对实时性要求较高的应用，如VOIP、视频监控等。相反，UDP协议则在这些应用中能发挥很好的作用。<br>c. 网络的可靠性。由于TCP协议的提出主要是解决网络的可靠性问题，它通过各种机制来减少错误发生的概率，因此，在网络状况不是很好的情况下需选用TCP协议（如在广域网等情况），但是若在网络状况很好的情况下（如局域网等）就不需要采用TCP协议，而建议选择UDP协议来减少网络负荷。  </p>
+<p><strong>为什么早期QQ使用UDP协议  </strong><br>原因是因为当时没有epoll这种可以支持成千上万tcp并发连接的技术,所以他们使用了udp,然后在udp上面封装了一下,模拟了一下tcp,解决了大并发的问题,之后因为做的很nb了,虽然epoll这种技术出现了,还是没有改回使用tcp了.现在再做类似的东西就不需要使用udp了  </p>
+<h3 id="三次握手，四次挥手的详细过程以及作用；"><a href="#三次握手，四次挥手的详细过程以及作用；" class="headerlink" title="三次握手，四次挥手的详细过程以及作用；"></a>三次握手，四次挥手的详细过程以及作用；</h3><p><strong>三次握手</strong>：<br>第一次握手是客户端connect连接到server，server accept client的请求之后，向client端发送一个消息，相当于说我都准备好了，你连接上我了，这是第二次握手，第3次握手就是client向server发送的，就是对第二次握手消息的确认。之后client和server就开始通讯了。  </p>
+<p>  <strong>四次挥手</strong><br>由于TCP连接是全双工的，因此每个方向都必须单独进行关闭。这个原则是当一方完成它的数据发送任务后就能发送一个FIN来终止这个方向的连接。<br>收到一个 FIN只意味着这一方向上没有数据流动，一个TCP连接在收到一个FIN后仍能发送数据。首先进行关闭的一方将执行主动关闭，而另一方执行被动关闭。CP的连接的拆除需要发送四个包，因此称为四次挥手(four-way handshake)。客户端或服务器均可主动发起挥手动作，在socket编程中，任何一方执行close()操作即可产生挥手操作。<br>断开连接的一端发送close请求是第一次挥手，另外一端接收到断开连接的请求之后需要对close进行确认，发送一个消息，这是第二次挥手，发送了确认消息之后还要向对端发送close消息，要关闭对对端的连接，这是第3次挥手，而在最初发送断开连接的一端接收到消息之后，进入到一个很重要的状态time_wait状态，这个状态也是面试官经常问道的问题，最后一次挥手是最初发送断开连接的一端接收到消息之后。对消息的确认。  </p>
+<h3 id="TCP为什么不是两次连接？而是三次握手？"><a href="#TCP为什么不是两次连接？而是三次握手？" class="headerlink" title="TCP为什么不是两次连接？而是三次握手？"></a>TCP为什么不是两次连接？而是三次握手？</h3><p>如果A与B两个进程通信，如果仅是两次连接。可能出现的一种情况就是：A发送完请报文以后，由于网络情况不好，出现了网络拥塞，即B延时很长时间后收到报文，即此时A将此报文认定为失效的报文。B收到报文后，会向A发起连接。此时两次握手完毕，B会认为已经建立了连接可以通信，B会一直等到A发送的连接请求，而A对失效的报文回复自然不会处理。依次会陷入B忙等的僵局，造成资源的浪费。  </p>
+<h3 id="网络编程的一般步骤"><a href="#网络编程的一般步骤" class="headerlink" title="网络编程的一般步骤"></a>网络编程的一般步骤</h3><p>对于TCP连接：<br>1.服务器端： 1）创建套接字create；2）绑定端口号bind；3）监听连接listen；4）接受连接请求accept，并返回新的套接字；5）用新返回的套接字recv/send；6）关闭套接字。<br>2.客户端： 1）创建套接字create; 2）发起建立连接请求connect; 3）发送/接收数据send/recv；4）关闭套接字。<br>TCP总结：<br>Server端：create – bind – listen–  accept–  recv/send– close<br>Client端：create——- conncet——send/recv——close.  </p>
+<p>  对于UDP连接：<br>1.服务器端:1）创建套接字create；2）绑定端口号bind；3）接收/发送消息recvfrom/sendto；4）关闭套接字。<br>2.客户端:1）创建套接字create；2）发送/接收消息sendto/recvfrom；3）关闭套接字.<br>UDP总结:<br>Server端：create—-bind —-recvfrom/sendto—-close<br>Client端：create—-  sendto/recvfrom—-close.  </p>
+<h3 id="写一个简单的python-socket"><a href="#写一个简单的python-socket" class="headerlink" title="写一个简单的python socket"></a>写一个简单的python socket</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket  </span><br><span class="line"><span class="comment"># 服务端  </span></span><br><span class="line">s = socket.socket()  </span><br><span class="line">s.bind((<span class="string">'192.168.1.11'</span>, <span class="string">'1000'</span>))  </span><br><span class="line">s.listen()  </span><br><span class="line">conn, addr = s.accept()  </span><br><span class="line">data = s.recv(<span class="number">1024</span>)  </span><br><span class="line">print(data)  </span><br><span class="line">s.send(<span class="string">'ok'</span>)  </span><br><span class="line">s.close()      </span><br><span class="line"></span><br><span class="line">  <span class="comment"># 客户端  </span></span><br><span class="line">c = socket.socket()  </span><br><span class="line">c.connect((<span class="string">'192.168.1.11'</span>, <span class="string">'1000'</span>))  </span><br><span class="line">c.send(<span class="string">b'hello world'</span>)  </span><br><span class="line">data = c.recv(<span class="number">1024</span>)  </span><br><span class="line">print(<span class="string">'recv:'</span>,data)  </span><br><span class="line">c.close()</span><br></pre></td></tr></table></figure>
+<h3 id="GET和POST，有什么区别"><a href="#GET和POST，有什么区别" class="headerlink" title="GET和POST，有什么区别"></a>GET和POST，有什么区别</h3><p>根据HTTP协议,他们根本区别是，简单点儿说，GET用于获取数据，POST用于修改数据。<br>另外用法上, 一般GET使用URL或Cookie传参, 而POST将数据放在BODY中, 但HTTP协议没有这样的要求, 技术上说GET和POST与数据如何传递没有关系  </p>
+<h3 id="apache和nginx的区别"><a href="#apache和nginx的区别" class="headerlink" title="apache和nginx的区别"></a>apache和nginx的区别</h3><p>nginx 相对 apache 的优点：  </p>
+<ul>
+<li>轻量级，同样起web 服务，比apache 占用更少的内存及资源  </li>
+<li>抗并发，nginx 处理请求是异步非阻塞的，支持更多的并发连接，而apache 则是阻塞型的，在高并发下nginx 能保持低资源低消耗高性能  </li>
+<li>配置简洁  </li>
+<li>高度模块化的设计，编写模块相对简单  </li>
+<li>社区活跃<br>apache 相对nginx 的优点：  </li>
+<li>rewrite ，比nginx 的rewrite 强大  </li>
+<li>模块超多，基本想到的都可以找到  </li>
+<li>少bug ，nginx 的bug 相对较多  </li>
+<li>超稳定  </li>
+</ul>
+<h3 id="怎么保证密码保存和传输是安全的"><a href="#怎么保证密码保存和传输是安全的" class="headerlink" title="怎么保证密码保存和传输是安全的"></a>怎么保证密码保存和传输是安全的</h3><p>MD5+Salt+时间戳+sign，这个salt可以随机值(传递给服务端，服务端使用预先约定到的协议进行解密)  </p>
+<h3 id="CSRF和XSS区别"><a href="#CSRF和XSS区别" class="headerlink" title="CSRF和XSS区别"></a>CSRF和XSS区别</h3><p>CSRF重点在请求,XSS重点在脚本<br>CSRF(Cross-site request forgery)跨站请求伪造<br>XSS(Cross Site Scripting)跨站脚本攻击  </p>
+<h3 id="幂等-Idempotence"><a href="#幂等-Idempotence" class="headerlink" title="幂等 Idempotence"></a>幂等 Idempotence</h3><p>HTTP方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。(注意是副作用)<br>幂等与你是不是分布式高并发还有JavaEE都没有关系。关键是你的操作是不是幂等的。<br>一个幂等的操作典型如：把编号为5的记录的A字段设置为0这种操作不管执行多少次都是幂等的。<br>一个非幂等的操作典型如：把编号为5的记录的A字段增加1这种操作显然就不是幂等的。<br>要做到幂等性，从接口设计上来说不设计任何非幂等的操作即可。<br>譬如说需求是：当用户点击赞同时，将答案的赞同数量+1。<br>改为：当用户点击赞同时，确保答案赞同表中存在一条记录，用户、答案。赞同数量由答案赞同表统计出来。  </p>
+<h3 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h3><p>RPC（Remote Procedure Call Protocol）——远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。<br>RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。<br>RPC使得开发包括网络分布式多程序在内的应用程序更加容易。<br>总结:服务提供的两大流派.传统意义以方法调用为导向通称RPC。为了企业SOA,若干厂商联合推出webservice,制定了wsdl接口定义,传输soap.当互联网时代,臃肿SOA被简化为http+xml/json.但是简化出现各种混乱。以资源为导向,任何操作无非是对资源的增删改查，于是统一的REST出现了.<br>进化的顺序: RPC -&gt; SOAP -&gt; RESTful  </p>
+<h3 id="WSGI"><a href="#WSGI" class="headerlink" title="WSGI"></a>WSGI</h3><p>WSGI, Web Server Gateway Interface，是Python应用程序或框架和Web服务器之间的一种接口，<br>WSGI的其中一个目的就是让用户可以用统一的语言(Python)编写前后端。  </p>
+<h3 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h3><p>在GFW里屡见不鲜的中间人攻击（Man-in-the-middle attack，通常缩写为MITM）是指攻击者与通讯的两端分别创建独立的联系，并交换其所收到的数据，使通讯的两端认为他们正在通过一个私密的连接与对方直接对话，但事实上整个会话都被攻击者完全控制。  </p>
+<h2 id="Web-框架之-Django、Tornado"><a href="#Web-框架之-Django、Tornado" class="headerlink" title="Web 框架之 Django、Tornado"></a>Web 框架之 Django、Tornado</h2><h3 id="Django请求生命周期"><a href="#Django请求生命周期" class="headerlink" title="Django请求生命周期"></a>Django请求生命周期</h3><ol>
+<li>当用户在浏览器中输入url时，浏览器会生成请求头和请求体发给服务端。请求头和请求体中会包含浏览器的动作(action)，这个动作通常为get或者post，体现在url之中。  </li>
+<li>url经过Django中的wsgi，再经过Django的中间件,最后url到过路由映射表,在路由中一条一条进行匹配。一旦其中一条匹配成功就执行对应的视图函数,后面的路由就不再继续匹配了。  </li>
+<li>视图函数根据客户端的请求查询相应的数据。返回给Django，然后Django把客户端想要的数据做为一个字符串返回给客户端。  </li>
+<li>客户端浏览器接收到返回的数据，经过渲染后显示给用户。  </li>
+</ol>
+<h3 id="解释下django-debug-toolbar的使用"><a href="#解释下django-debug-toolbar的使用" class="headerlink" title="解释下django-debug-toolbar的使用"></a>解释下django-debug-toolbar的使用</h3><p>使用django开发站点时，可以使用<code>django-debug-toolbar</code>来进行调试。<br>在<code>settings.py</code>中添加<code>debug_toolbar.middleware.DebugToolbarMiddleware</code>到项目的<code>MIDDLEWARE_CLASSES</code> 内。  </p>
+<h3 id="如何进行Django单元测试"><a href="#如何进行Django单元测试" class="headerlink" title="如何进行Django单元测试"></a>如何进行Django单元测试</h3><p>单元测试存在的意义就是，可以让我们放心的重构代码，可以在重构代码的时候省下测试重构的代码能否正确运行的时间<br><a href="https://code.ziqiangxuetang.com/django/django-test.html" target="_blank" rel="noopener">Django 单元测试</a><br><a href="https://www.jianshu.com/p/34267dd79ad6" target="_blank" rel="noopener">Django单元测试基础知识</a>  </p>
+<h3 id="model之F-Q操作"><a href="#model之F-Q操作" class="headerlink" title="model之F/Q操作"></a>model之F/Q操作</h3><p>F操作,使用查询条件的值,F()允许Django在未实际链接数据的情况下具有对数据库字段的值的引用, Python都不需获取F内的值, 直接操作后保存, 用法场景例如 字段+1(加减乘除运算) 字段比较如日期比较<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> F, Q  </span><br><span class="line">models.UserInfo.objects.filter().update(salary=F(<span class="string">'salary'</span>)+<span class="number">500</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Q操作-构造搜索条件-用于构造复杂的查询条件如各种筛选过滤"><a href="#Q操作-构造搜索条件-用于构造复杂的查询条件如各种筛选过滤" class="headerlink" title="Q操作,构造搜索条件, 用于构造复杂的查询条件如各种筛选过滤"></a>Q操作,构造搜索条件, 用于构造复杂的查询条件如各种筛选过滤</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">con = Q()  </span><br><span class="line">q1 = Q()  </span><br><span class="line">q1.connector = <span class="string">'OR'</span>  </span><br><span class="line">q1.children.append((<span class="string">'id'</span>, <span class="number">1</span>))  </span><br><span class="line">q1.children.append((<span class="string">'id'</span>, <span class="number">2</span>))  </span><br><span class="line">q2 = Q()  </span><br><span class="line">q2.connector = <span class="string">'OR'</span>  </span><br><span class="line">q2.children.append((<span class="string">'status'</span>, <span class="string">'在线'</span>))  </span><br><span class="line">con.add(q1, <span class="string">'AND'</span>)  </span><br><span class="line">con.add(q2, <span class="string">'AND'</span>)  </span><br><span class="line">models.Tb1.objects.filter(con)</span><br></pre></td></tr></table></figure>
+<h3 id="simple-tag用法"><a href="#simple-tag用法" class="headerlink" title="simple_tag用法"></a>simple_tag用法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django <span class="keyword">import</span> template  </span><br><span class="line">register = template.Library()  </span><br><span class="line"></span><br><span class="line"><span class="meta">  @register.simple_tag  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>...</span></span><br></pre></td></tr></table></figure>
+<h3 id="ORM是什么？"><a href="#ORM是什么？" class="headerlink" title="ORM是什么？"></a>ORM是什么？</h3><p>ORM 全称是 Object/Relation Mapping,即对象/关系数据库映射。可以讲ORM理解成一种规范，它概述了这类框架的基本特征，完成面相对象的编程语言到关系数据库的映射。<br>ORM可以当成是应用程序和数据的桥梁。  </p>
+<p>  基本映射方式 ORM工具提供了持久化类和数据表之间的映射关系，通过这种映射关系的过度，程序员可以很方便地通过持久化类实现数据表的操作。实际上，所有的ORM工具大致都遵循相同的映射思路。<br>映射关系：<br>1、数据表映射类<br>持久化映射到一个数据表。程序使用这个持久化类来创建实例，修改属性，删除实例时，系统自动对这个表进行操作。<br>2、数据表的行映射对象（实例）<br>持久化类会生成很多实例，每个实例就对应数据表中的一行记录。<br>3、数据的列（字段）映射对象的属性<br>当程序修改某个持久化对象的指定属性时，ORM将会将其转换成对应数据表中的指定数据行、指定 列的操作。  </p>
+<h3 id="一般的ORM包括以下四部分："><a href="#一般的ORM包括以下四部分：" class="headerlink" title="一般的ORM包括以下四部分："></a>一般的ORM包括以下四部分：</h3><p>一个对持久类对象进行CRUD操作的API；<br>一个语言或API用来规定与类和类属性相关的查询；<br>一个规定mapping metadata的工具；<br>一种技术可以让ORM的实现同事务对象一起进行dirty checking, lazy association fetching以及其他的优化操作。  </p>
+<h3 id="使用ORM的好处"><a href="#使用ORM的好处" class="headerlink" title="使用ORM的好处"></a>使用ORM的好处</h3><p>应用程序不再直接访问底层数据库，而是以面向对象的操作转换成底层的SQL操作。<br>就是把持久化对象的保存、修改、删除等操作，转换成对数据库的操作。  </p>
+<h3 id="解释一下-Django-和-Tornado-的关系、差别"><a href="#解释一下-Django-和-Tornado-的关系、差别" class="headerlink" title="解释一下 Django 和 Tornado 的关系、差别"></a>解释一下 Django 和 Tornado 的关系、差别</h3><p>python web框架分两种, 一种是django 一种是其他, 其他里又分两种, 一种是tornado, 一种是其他<br>django最大的特点是大而全, Django的主要目的是简便、快速的开发数据库驱动的网站。它强调代码复用,多个组件可以很方便的以“插件”形式服务于整个框架<br>Tornado是异步非阻塞式服务器，速度快。底层基于epoll  </p>
+<h3 id="Django生产环境部署"><a href="#Django生产环境部署" class="headerlink" title="Django生产环境部署"></a>Django生产环境部署</h3><p>Django + Uwsgi（动态请求） + Nginx（静态请求） 实现生产环境部署<br><a href="https://www.cnblogs.com/alex3714/p/6538374.html" target="_blank" rel="noopener">Django + Uwsgi + Nginx 实现生产环境部署</a>  </p>
+<h3 id="Tornado-的核心是什么？"><a href="#Tornado-的核心是什么？" class="headerlink" title="Tornado 的核心是什么？"></a>Tornado 的核心是什么？</h3><p>Tornado 的核心是 ioloop 和 iostream 这两个模块，前者提供了一个高效的 I/O 事件循环，后者则封装了 一个无阻塞的 socket 。通过向 ioloop 中添加网络 I/O 事件，利用无阻塞的 socket ，再搭配相应的回调 函数，便可达到梦寐以求的高效异步执行。  </p>
+<h3 id="怎么使用Tornado-异步非阻塞"><a href="#怎么使用Tornado-异步非阻塞" class="headerlink" title="怎么使用Tornado 异步非阻塞"></a>怎么使用Tornado 异步非阻塞</h3><p>非阻塞这部分代码主要就在ioloop.py里<br>Future对象 代表将来执行或没有执行的任务的结果。<br>两大功能:<br>1\挂起当前请求,线程可以处理其他请求<br>2\如果给future设置值,当前挂起的请求返回并释放<br>事件循环  使用 gen.coroutine 装饰器<br>生成器  yield future  </p>
+<p> 异步非阻塞tornado模型中使用select或者epoll监听用户请求,当接收到用户请求的时候,首先生成一个Future对象,再把这个socket和future存入一个字典；hold住这个请求并把该请求交给相应的函数处理求,当该函数处理完成后会通过回调函数把结果和状态交给future对象, 这时tornado会把future的数据返回给用户,在这整个过程中, tornado程序是非阻塞的.  </p>
+<h3 id="Tornado-异步模式"><a href="#Tornado-异步模式" class="headerlink" title="Tornado 异步模式"></a>Tornado 异步模式</h3><p>当发送GET请求时，由于方法被 @gen.coroutine装饰且yield 一个 Future对象，那么Tornado会等待，<br>等待用户向future对象中放置数据或者发送信号，如果获取到数据或信号之后，就开始执行doing方法。<br>异步非阻塞体现在当在Tornaod等待用户向future对象中放置数据时，还可以处理其他请求。<br>注意：在等待用户向future对象中放置数据或信号时，此连接是不断开的。  </p>
+<h3 id="gen-coroutine的作用"><a href="#gen-coroutine的作用" class="headerlink" title="@gen.coroutine的作用"></a>@gen.coroutine的作用</h3><p>gen.coroutine主要是使用协程的方式实现类似异步的处理效果<br>它简化异步代码的编写，避免写回调函数，加快开发效率，提高代码可读性，通过结合 pyhton 的 yield 语句实现协程<br>通过 @gen.coroutine 修饰的函数返回值变为 Future, 在调用结束的时候会调用<br>Future.set_result，这样就会调用与 Future 相关联的回调  </p>
+<h2 id="前端知识之-jQuery、Ajax、JsonP等"><a href="#前端知识之-jQuery、Ajax、JsonP等" class="headerlink" title="前端知识之 jQuery、Ajax、JsonP等"></a>前端知识之 jQuery、Ajax、JsonP等</h2><h3 id="rgba-和opacity的透明效果有什么不同？"><a href="#rgba-和opacity的透明效果有什么不同？" class="headerlink" title="rgba()和opacity的透明效果有什么不同？"></a>rgba()和opacity的透明效果有什么不同？</h3><p>答案： rgba()和opacity都能实现透明效果，但最大的不同是opacity作用于元素，以及元素内的所有内容的透明度，<br>而rgba()只作用于元素的颜色或其背景色。（设置rgba透明的元素的子元素不会继承透明效果！）  </p>
+<h3 id="px和em的区别？"><a href="#px和em的区别？" class="headerlink" title="px和em的区别？"></a>px和em的区别？</h3><p>px和em都是长度单位，区别是，px的值是固定的，指定是多少就是多少，计算比较容易。em得值不是固定的，并且em会继承父级元素的字体大小。<br>浏览器的默认字体高都是16px。所以未经调整的浏览器都符合: 1em=16px。那么12px=0.75em, 10px=0.625em。  </p>
+<h3 id="javascript：获取所有的checkbox？"><a href="#javascript：获取所有的checkbox？" class="headerlink" title="javascript：获取所有的checkbox？"></a>javascript：获取所有的checkbox？</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> domList = <span class="built_in">document</span>.getElementsByTagName(‘input’)    </span><br><span class="line"><span class="comment">// checkbox属于input，所以通过getElementsByTagName即标签名获取所有的input数组，包含文本框text，单选按钮radio，复选框checkbox等等  </span></span><br><span class="line"><span class="keyword">var</span> checkBoxList = [];  <span class="comment">// 定义一个存储checkbox的空数组  </span></span><br><span class="line"><span class="keyword">var</span> len = domList.length;　　<span class="comment">//缓存到局部变量  // 第一步获取的数组的长度  </span></span><br><span class="line"><span class="keyword">while</span> (len--) &#123;　　<span class="comment">//使用while的效率会比for循环更高   // 开始循环判断  </span></span><br><span class="line">　　<span class="keyword">if</span> (domList[len].type == ‘checkbox’) &#123;   <span class="comment">// 如果类型为checkbox即为题目所需的复选框  </span></span><br><span class="line">  　　checkBoxList.push(domList[len]);          <span class="comment">// 就把那个元素加入到上面定义的数组中  </span></span><br><span class="line">　　&#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用js实现随机选取10–100之间的10个且不重复的数字，存入一个数组。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> randoms=[];  </span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">var</span> isExists = <span class="literal">false</span>;  </span><br><span class="line">    <span class="comment">// 获取一个10–100范围的数  </span></span><br><span class="line">    <span class="keyword">var</span> random = <span class="built_in">parseInt</span>(<span class="number">10</span> + (<span class="number">90</span> - <span class="number">10</span>) * (<span class="built_in">Math</span>.random()))  </span><br><span class="line">    <span class="comment">// 判断当前随机数是否已经存在  </span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; randoms.length; i++) &#123;  </span><br><span class="line">        <span class="keyword">if</span> (random === randoms[i]) &#123;  </span><br><span class="line">            isExists = <span class="literal">true</span>;  </span><br><span class="line">            <span class="keyword">break</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 如果不存在，则添加进去  </span></span><br><span class="line">    <span class="keyword">if</span> (!isExists)  </span><br><span class="line">        randoms.push(random);  </span><br><span class="line">    <span class="comment">// 如果有10位随机数了，就跳出  </span></span><br><span class="line">    <span class="keyword">if</span> (randoms.length === <span class="number">10</span>)  </span><br><span class="line">        <span class="keyword">break</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="window-onload与-document-ready-异同"><a href="#window-onload与-document-ready-异同" class="headerlink" title="window.onload与\$(document).ready()异同"></a>window.onload与\$(document).ready()异同</h3><p>原生JS的<code>window.onload</code>与Jquery的<code>$(document).ready(function(){})</code>有什么不同？如何用原生JS实现Jq的ready方法？<br><code>window.onload()</code>方法是必须等到页面内包括图片的所有元素加载完毕后才能执行。<br><code>$(document).ready()</code>是DOM结构绘制完毕后就执行，不必等到加载完毕。<code>$(document).ready(function(){})</code>能够简写成<code>$(function(){})</code>。  </p>
+<h3 id="JS作用域"><a href="#JS作用域" class="headerlink" title="JS作用域"></a>JS作用域</h3><ol>
+<li>JS以函数作为作用域  </li>
+<li>函数的作用域在未调用之前就已经创建  </li>
+<li>函数的作用域存在作用域链，并且也是在未调用之前创建  </li>
+<li>函数内局部变量提前声明  </li>
+</ol>
+<h3 id="以下代码的输出是什么"><a href="#以下代码的输出是什么" class="headerlink" title="以下代码的输出是什么?"></a>以下代码的输出是什么?</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">t1</span>(<span class="params">age</span>)</span>&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(age);  </span><br><span class="line">    <span class="keyword">var</span> age = <span class="number">27</span>;  </span><br><span class="line">    <span class="built_in">console</span>.log(age);  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">age</span>(<span class="params"></span>)</span>&#123;&#125;;  </span><br><span class="line">    <span class="built_in">console</span>.log(age);  </span><br><span class="line">&#125;  </span><br><span class="line">t1(<span class="number">3</span>)  </span><br><span class="line"><span class="comment">// 答案 function age() 27 27</span></span><br></pre></td></tr></table></figure>
+<h3 id="你为什么要使用jquery？"><a href="#你为什么要使用jquery？" class="headerlink" title="你为什么要使用jquery？"></a>你为什么要使用jquery？</h3><p>因为jQuery是轻量级的框架，它有强大的选择器，出色的DOM操作的封装，有可靠的事件处理机制(jQuery在处理事件绑定的时候相当的可靠)，完善的ajax(它的ajax封装的非常的好，不需要考虑复杂浏览器的兼容性和XMLHttpRequest对象的创建和使用的问题。) 出色的浏览器的兼容性。而且支持链式操作，隐式迭代。行为层和结构层的分离，还支持丰富的插件，jquery的文档也非常的丰富。  </p>
+<h3 id="讲一下jquery有哪些选择器？"><a href="#讲一下jquery有哪些选择器？" class="headerlink" title="讲一下jquery有哪些选择器？"></a>讲一下jquery有哪些选择器？</h3><p>jQuery中的选择器大致分为:基本选择器，层次选择器，过滤选择器，表单选择器  </p>
+<h3 id="你是如何使用jquery中的ajax的？"><a href="#你是如何使用jquery中的ajax的？" class="headerlink" title="你是如何使用jquery中的ajax的？"></a>你是如何使用jquery中的ajax的？</h3><p>如果是一些常规的ajax程序的话，使用<code>load()</code>,<code>$.get()</code>,<code>$.post()</code>,就可以搞定了，一般我会使用的是<code>$.post()</code> 方法。如果需要设定beforeSend(提交前回调函数),error(失败后处理),success(成功后处理)及complete(请求完成后处理)回调函数等，这个时候我会使用\$.ajax()  </p>
+<h3 id="jquery中-get-提交和-post-提交有区别吗？"><a href="#jquery中-get-提交和-post-提交有区别吗？" class="headerlink" title="jquery中$.get()提交和$.post()提交有区别吗？"></a><code>jquery中$.get()</code>提交和<code>$.post()</code>提交有区别吗？</h3><p><code>$.get()</code> 方法使用GET方法来进行异步请求的。<code>$.post()</code> 方法使用POST方法来进行异步请求的。<br>get请求会将参数跟在URL后进行传递，而POST请求则是作为HTTP消息的实体内容发送给Web服务器的，这种传递是对用户不可见的。<br>get方式传输的数据大小不能超过2KB 而POST要大的多<br>GET 方式请求的数据会被浏览器缓存起来，因此有安全问题。  </p>
+<h3 id="在jquery中你是如何去操作样式的？"><a href="#在jquery中你是如何去操作样式的？" class="headerlink" title="在jquery中你是如何去操作样式的？"></a>在jquery中你是如何去操作样式的？</h3><p>addClass() 来追加样式 ，removeClass() 来删除样式，toggle() 来切换样式, css直接设置样式<br>style设置单个样式  </p>
+<h3 id="你在jquery中使用过哪些插入节点的方法，它们的区别是什么？"><a href="#你在jquery中使用过哪些插入节点的方法，它们的区别是什么？" class="headerlink" title="你在jquery中使用过哪些插入节点的方法，它们的区别是什么？"></a>你在jquery中使用过哪些插入节点的方法，它们的区别是什么？</h3><p>append(),appendTo(),prepend(),prependTo(),after(),insertAfter()，before(),insertBefore() 大致可以分为 内部追加和外部追加append() 表式向每个元素内部追加内容。appendTo()表示 讲所有的元素追加到指定的元素中。例\$(A)appendTo(B) 是将A追加到B中下面的方法解释类似。  </p>
+<p>你使用过包裹节点的方法吗，包裹节点有方法有什么好处？<br>wrapAll(),wrap(), wrapInner()需要在文档中插入额外的结构化标记的时候可以使用这些包裹的方法应为它不会帛画原始文档的语义  </p>
+<h3 id="jquery中如何来获取或和设置属性？"><a href="#jquery中如何来获取或和设置属性？" class="headerlink" title="jquery中如何来获取或和设置属性？"></a>jquery中如何来获取或和设置属性？</h3><p>jQuery中可以用attr()方法来获取和设置元素属性removeAttr() 方法来删除元素属性  </p>
+<h3 id="如何来设置和获取HTML-和文本的值？"><a href="#如何来设置和获取HTML-和文本的值？" class="headerlink" title="如何来设置和获取HTML 和文本的值？"></a>如何来设置和获取HTML 和文本的值？</h3><p>html()方法 类似于innerHTML属性 可以用来读取或者设置某个元素中的HTML内容<br>注意：html() 可以用于xhtml文档 不能用于xml文档text() 类似于innerText属性 可以用来读取或设置某个元素中文本内容。val() 可以用来设置和获取元素的值  </p>
+<h3 id="jquery中有哪些方法可以遍历节点"><a href="#jquery中有哪些方法可以遍历节点" class="headerlink" title="jquery中有哪些方法可以遍历节点"></a>jquery中有哪些方法可以遍历节点</h3><p>children() 取得匹配元素的子元素集合,只考虑子元素不考虑后代元素 next() 取得匹配元素后面紧邻的同辈元素<br>prev() 取得匹配元素前面紧邻的同辈元素<br>siblings() 取得匹配元素前后的所有同辈元素<br>closest() 取得最近的匹配元素<br>find() 取得匹配元素中的元素集合 包括子代和后代  </p>
+<h3 id="radio单选组的第二个元素为当前选中值，该怎么去取？"><a href="#radio单选组的第二个元素为当前选中值，该怎么去取？" class="headerlink" title="radio单选组的第二个元素为当前选中值，该怎么去取？"></a>radio单选组的第二个元素为当前选中值，该怎么去取？</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'input[name=items]'</span>).get(<span class="number">1</span>).checked = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="你知道jQuery中的事件冒泡吗，它是怎么执行的，何如来停止冒泡事件"><a href="#你知道jQuery中的事件冒泡吗，它是怎么执行的，何如来停止冒泡事件" class="headerlink" title="你知道jQuery中的事件冒泡吗，它是怎么执行的，何如来停止冒泡事件"></a>你知道jQuery中的事件冒泡吗，它是怎么执行的，何如来停止冒泡事件</h3><p>知道,事件冒泡是从里面的往外面开始触发。在jQuery中提供了stopPropagation()方法可以停止冒泡。  </p>
+<h3 id="在jquery中你有没有编写过插件，插件有什么好处？它应该注意那些？"><a href="#在jquery中你有没有编写过插件，插件有什么好处？它应该注意那些？" class="headerlink" title="在jquery中你有没有编写过插件，插件有什么好处？它应该注意那些？"></a>在jquery中你有没有编写过插件，插件有什么好处？它应该注意那些？</h3><p>a) 插件的好处：对已有的一系列方法或函数的封装，以便在其他地方重新利用，方便后期维护和提高开发效率插件的分类：封装对象方法插件 、封装全局函数插件、选择器插件<br>b) 注意的地方：  </p>
+<ol>
+<li>插件的文件名推荐命名为<code>jquery.[插件名].js</code>，以免和其他的javaScript库插件混淆  </li>
+<li>所有的对象方法都应当附加到<code>jQuery.fn</code>对象上，而所有的全局函数都应当附加到jQuery对象本身上  </li>
+<li>插件应该返回一个jQuery对象，以保证插件的可链式操作  </li>
+<li>避免在插件内部使用\$作为jQuery对象的别名,而应使用完整的jQuery来表示，这样可以避免冲突或使用闭包来避免  </li>
+<li>所有的方法或函数插件，都应当一分好结尾，否则压缩的时候可能出现问题。在插件头部加上分号，这样可以避免他人的不规范代码给插件带来影响  </li>
+<li>在插件中通过<code>$.extent({})</code>封装全局函数,选择器插件，扩展已有的object对象通过<code>$.fn.extend({})</code>封装对象方法插件  </li>
+</ol>
+<h2 id="Ajax相关"><a href="#Ajax相关" class="headerlink" title="Ajax相关"></a>Ajax相关</h2><h3 id="Ajax相关知识点"><a href="#Ajax相关知识点" class="headerlink" title="Ajax相关知识点"></a>Ajax相关知识点</h3><p>Iframe伪造Ajax请求<br>FormData对象以及Ajax文件上传<br>Iframe文件上传<br>JSONP实现AJax跨域  </p>
+<h3 id="XMLHttpRequest对象发送请求"><a href="#XMLHttpRequest对象发送请求" class="headerlink" title="XMLHttpRequest对象发送请求"></a>XMLHttpRequest对象发送请求</h3><p>Ajax和XMLHttpRequest<br>从上面的解释中可以知道：ajax是一种技术方案，但并不是一种新技术。它依赖的是现有的CSS/HTML/Javascript，而其中最核心的依赖是浏览器提供的XMLHttpRequest对象，是这个对象使得浏览器可以发出HTTP请求与接收HTTP响应。<br>所以我用一句话来总结两者的关系：我们使用XMLHttpRequest对象来发送一个Ajax请求。  </p>
+<h3 id="什么是JSONP？"><a href="#什么是JSONP？" class="headerlink" title="什么是JSONP？"></a>什么是JSONP？</h3><p>由于同源策略的限制，XmlHttpRequest只允许请求当前源（域名、协议、端口）的资源，为了实现跨域请求，可以通过在页面动态创建script标签，通过通过src属性实现跨域请求，然后在服务端输出JSON数据并执行回调函数，从而解决了跨域的数据数据传输。  </p>
+<h3 id="ajax与jsonp跨域请求的异同再做一些补充说明："><a href="#ajax与jsonp跨域请求的异同再做一些补充说明：" class="headerlink" title="ajax与jsonp跨域请求的异同再做一些补充说明："></a>ajax与jsonp跨域请求的异同再做一些补充说明：</h3><p>1、ajax和jsonp这两种技术在调用方式上“看起来”很像，目的也一样，都是请求一个url，然后把服务器返回的数据进行处理，因此jquery和ext等框架都把jsonp作为ajax的一种形式进行了封装；<br>2、但ajax和jsonp其实本质上是不同的东西。ajax的核心是通过XmlHttpRequest获取非本页内容，而jsonp的核心则是动态添加<code>&lt;script&gt;</code>标签来调用服务器提供的js脚本。<br>3、所以说，其实ajax与jsonp的区别不在于是否跨域，ajax通过服务端代理一样可以实现跨域，jsonp本身也不排斥同域的数据的获取。<br>4、还有就是，jsonp是一种方式或者说非强制性协议，如同ajax一样，它也不一定非要用json格式来传递数据，如果你愿意，字符串都行，只不过这样不利于用jsonp提供公开服务。<br>总而言之，jsonp不是ajax的一个特例，哪怕jquery等巨头把jsonp封装进了ajax，也不能改变着一点！  </p>
+<h3 id="浅谈session实现原理-阿里面试题"><a href="#浅谈session实现原理-阿里面试题" class="headerlink" title="浅谈session实现原理(阿里面试题)"></a>浅谈session实现原理(阿里面试题)</h3><p>现在一般采用使用服务器端产生的Session结合浏览器的Cookie来识别用户和存储数据,<br>一般来说包括以下4个步骤：  </p>
+<ol>
+<li>服务器端的产生Session ID（一般可以使用UUID模块）  </li>
+<li>服务器端和客户端存储Session ID  </li>
+<li>从HTTP Header中提取Session ID(发送的是一个COOKIC值)  </li>
+<li>根据Session ID从服务器端的Hash中获取请求者身份信息  </li>
+</ol>
+<h3 id="cookie机制和session机制的区别"><a href="#cookie机制和session机制的区别" class="headerlink" title="cookie机制和session机制的区别"></a>cookie机制和session机制的区别</h3><p>cookie保存在客户端，而session保存在服务器端<br>cookie上的数据需要来回传输到服务器上,session会消耗服务器的性能<br>安全性要求不是很高的用户数据一般采用cookies,敏感数据使用session  </p>
+<h2 id="爬虫相关知识"><a href="#爬虫相关知识" class="headerlink" title="爬虫相关知识"></a>爬虫相关知识</h2><h3 id="Scrapy需要了解的类"><a href="#Scrapy需要了解的类" class="headerlink" title="Scrapy需要了解的类"></a>Scrapy需要了解的类</h3><p>去重 RepeatFilter()类<br>序列化 Pipeline()类<br>终止 DropItem()类<br>信号 - 预留钩子扩展 sinals  </p>
+<h3 id="Scrapy框架数据流（重要！面试官一般问：说说Scrapy原理）"><a href="#Scrapy框架数据流（重要！面试官一般问：说说Scrapy原理）" class="headerlink" title="Scrapy框架数据流（重要！面试官一般问：说说Scrapy原理）"></a>Scrapy框架数据流（重要！面试官一般问：说说Scrapy原理）</h3><p>Scrapy中的数据流由执行引擎控制，其过程如下：  </p>
+<ul>
+<li>引擎从Spiders中获取到的最初的要爬取的请求(Requests)。  </li>
+<li>引擎安排请求(Requests)到调度器中，并向调度器请求下一个要爬取的请求(Requests)。  </li>
+<li>调度器返回下一个要爬取的请求(Request)给请求。  </li>
+<li>引擎从上步中得到的请求(Requests)通过下载器中间件(Downloader Middlewares)发送给下载器(Downloader),这个过程中下载器中间件(Downloader Middlerwares)中的 process_request() 函数就会被调用。  </li>
+<li>一旦页面下载完毕，下载器生成一个该页面的Response，并将其通过下载中间件(Downloader Middlewares)中的 process_response() 函数，最后返回给引擎  </li>
+<li>引擎从下载器中得到上步中的Response并通过Spider中间件(Spider Middewares)发送给Spider处理，这个过程中Spider中间件(Spider Middlewares)中的 process_spider_input() 函数会被调用到。  </li>
+<li>Spider处理Response并通过Spider中间件(Spider Middlewares)返回爬取到的Item及(跟进的)新的Request给引擎，这个过程中Spider中间件(Spider Middlewares)的 process_spider_output() 函数会被调用到。  </li>
+<li>上步中Spider处理的结果可能是Item和Request，引擎将其爬取到的Item给Item管道(Piplline),将Requests发送给调度器，并向调度器请求可能存在的下一个要爬取的请求(Requests)  </li>
+<li>(从第二步)重复知道调度器中没有更多的请求(Requests)。  </li>
+</ul>
+<h3 id="反爬的一般手段"><a href="#反爬的一般手段" class="headerlink" title="反爬的一般手段"></a>反爬的一般手段</h3><ul>
+<li>遵守robots 协议  </li>
+<li>限制频率  </li>
+<li>图像识别验证码  </li>
+<li>多账号反爬  </li>
+<li>代理池  </li>
+<li>分布式爬虫  </li>
+<li>保存cookies,带上cookie去访问，或某些场景不要带cookies访问  </li>
+<li>一般来说移动端、app的页面反爬手段相对少  </li>
+<li><p>使用PhantomJS，Selenium模拟浏览器  </p>
+<p>参考:<a href="https://www.zhihu.com/question/28168585" target="_blank" rel="noopener">如何应对网站反爬虫策略？如何高效地爬大量数据?</a>  </p>
+</li>
+</ul>
+<h3 id="常见的反爬虫和应对方法？（爬虫与反爬虫的博弈）"><a href="#常见的反爬虫和应对方法？（爬虫与反爬虫的博弈）" class="headerlink" title="常见的反爬虫和应对方法？（爬虫与反爬虫的博弈）"></a>常见的反爬虫和应对方法？（爬虫与反爬虫的博弈）</h3><h4 id="通过Headers反爬虫"><a href="#通过Headers反爬虫" class="headerlink" title="通过Headers反爬虫"></a><strong>通过Headers反爬虫</strong></h4><p>从用户请求的Headers反爬虫是最常见的反爬虫策略。很多网站都会对Headers的User-Agent进行检测，还有一部分网站会对Referer进行检测（如一些资源网站的防盗链、知乎）。如果遇到了这类反爬虫机制，可以直接在爬虫中添加Headers，构造随机UA和Refer等参数即可绕过。  </p>
+<h4 id="基于用户行为反爬虫"><a href="#基于用户行为反爬虫" class="headerlink" title="基于用户行为反爬虫"></a><strong>基于用户行为反爬虫</strong></h4><p>还有一部分网站是通过检测用户行为，例如同一IP短时间内多次访问同一页面，或者同一账户短时间内多次进行相同操作。<br>大多数网站都是前一种情况，对于这种情况，使用IP代理就可以解决。可以专门写一个爬虫，爬取网上公开的代理ip，检测后全部保存起来。<br>对于第二种情况，可以在每次请求后随机间隔几秒再进行下一次请求。有些有逻辑漏洞的网站，可以通过请求几次，退出登录，重新登录来绕过。也可以采用多账号策略。  </p>
+<h4 id="动态页面的反爬虫"><a href="#动态页面的反爬虫" class="headerlink" title="动态页面的反爬虫"></a><strong>动态页面的反爬虫</strong></h4><p>上述的几种情况大多都是出现在静态页面，还有一部分网站，我们需要爬取的数据是通过ajax请求得到，或者通过JavaScript生成的。首先用Fiddler对网络请求进行分析。如果能够找到ajax请求返回的目标数据，就直接模拟ajax请求。<br>但是有些网站把ajax请求的所有参数全部加密了。这种情况可以初步分析JS文件看是否能找到解密方法进行解密，有的网站会进行JS混淆，这种情况可以尝试单独执行js解密会比较困难，一般做法是使用selenium模拟人为操作爬取数据。<br>用这套框架几乎能绕过大多数的反爬虫。利selenium+phantomJS能干很多事情，例如识别点触式（12306）或者滑动式的验证码，对页面表单进行暴力破解等。    </p>
+<h4 id="通过前端CSS和HTML标签进行干扰混淆进行反爬"><a href="#通过前端CSS和HTML标签进行干扰混淆进行反爬" class="headerlink" title="通过前端CSS和HTML标签进行干扰混淆进行反爬"></a><strong>通过前端CSS和HTML标签进行干扰混淆进行反爬</strong></h4><p>前端通过CSS和HTML标签进行干扰混淆关键数据，防止爬虫轻易获取数据<br><strong>1 . font-face，自定义字体干扰</strong><br>如列子：汽车之家论帖子，猫眼电影电影评分 <a href="http://maoyan.com/films/342601" target="_blank" rel="noopener">http://maoyan.com/films/342601</a><br>破解思路： 找到ttf字体文件地址，然后下载下来，使用font解析模块包对ttf文件进行解析，可以解析出一个字体编码的集合，与dom里的文字编码进行映射，然后根据编码在ttf里的序号进行映射出中文<br>可以使用FontForge/FontCreator工具打开ttf文件进行分析<br><strong>2 . 伪元素隐藏式</strong><br>通过伪元素来显示重要数据内容<br>如例子：<a href="https://car.autohome.com.cn/config/series/3170.html" target="_blank" rel="noopener">汽车之家</a><br>破解思路： 找到样式文件，然后根据HTML标签里class名称，匹配出CSS里对应class中content的内容进行替换<br><strong>3 . backgroud-image</strong><br>如例子：美团 价格显示<br>通过背景图片的position位置偏移量，显示数字/符号，如：价格，评分等<br>根据backgroud-postion值和图片数字进行映射<br><strong>4 . html标签干扰</strong><br>通过在重要数据的标签里加入一些有的没的隐藏内容的标签，干扰数据的获取<br>如例子：<a href="http://www.goubanjia.com/" target="_blank" rel="noopener">全网代理IP</a><br>破解思路： 过滤掉干扰混淆的HTML标签，或者只读取有效数据的HTML标签的内容.通过移除干扰标签里有display:none隐藏标签，然后再获取text就不会有干扰的内容了<br><strong>5 . 字体替换</strong><br>去哪儿手机版酒店价格获取，如何通过 css 计算元素的绝对定位<br>参考：<a href="https://www.v2ex.com/t/354305" target="_blank" rel="noopener">去哪儿 m 版酒店价格获取，如何通过 css 计算元素的绝对定位</a><br>你会发现一个问题，就是页面展示的数字和html文件里的数字不一致<br>1240的价格在html里竟然是4230<br>根据css你会发现他们用了一个字体，打开你就发现了一件事<br>正常字体是0123456789，在去哪儿官方的字体里被替换成了图片里的<br>然后你根据这个做一些对应解析，就可以爬出正确的数据了。    </p>
+<h4 id="投毒，以及喂毒（蜜罐）"><a href="#投毒，以及喂毒（蜜罐）" class="headerlink" title="投毒，以及喂毒（蜜罐）"></a><strong>投毒，以及喂毒（蜜罐）</strong></h4><p>有些网站搞一些正常的url pattern 的页面 链接做成隐藏链接 正常用户看不到，但是大部分爬虫就爬进去了，然后监控这些页面被访问的ip就可以了，基本都是爬虫<br>还有些平台发现爬虫后并不会进行限制封杀，而是给爬虫提供误导的数据，影响他们进行错误的决策，这就是喂毒<br>为了防止被投毒喂毒，需要对数据进行抽样校验。另外需要分析其投毒逻辑以尽量避免自己的爬虫中陷阱被识别出来    </p>
+<h3 id="投毒反爬策略"><a href="#投毒反爬策略" class="headerlink" title="投毒反爬策略"></a>投毒反爬策略</h3><p>从链接发现下手可以搞一些正常的url pattern 的页面 链接做成隐藏链接 正常用户看不到（比如白底白字，或者被遮盖） 但是大部分爬虫就爬进去了 <a href="http://xn--ipwww-g31hye02mx7k98nfsggtafa520o6t2bw8rs48c0w7ae83a.xxx.com?id=12345" target="_blank" rel="noopener">然后就对这些ip做惩罚就行了比如www.xxx.com?id=12345</a> 大部分id参数是正常页面 把一些id做成只有隐藏链接的假id 监控这些页面被访问的ip 然后收割吧 基本都是爬虫  </p>
+<p>青铜反爬：请求头上做点基本的检验<br>白银反爬：限制访问频率，封 IP，跳图形验证码，infinite redirect loop，需要登录<br>黄金反爬：前端 js script 实时计算 parameter 加给请求在后端进行验证<br>铂金反爬：翻页使用 ajax ，没有 pagination ，数据以 json 形式在前端异步加载，验证参数不正确随机截断 html<br>钻石反爬：异地登录需要手机短信验证，拖动、拼图等各类人机验证码<br>王者反爬：我们公司的前端写的代码让你的爬虫在 parse html 阶段的难度上升为 nlp ：）   </p>
+<h3 id="为什么要做分布式爬虫"><a href="#为什么要做分布式爬虫" class="headerlink" title="为什么要做分布式爬虫"></a>为什么要做分布式爬虫</h3><p>分布式爬虫通常会有一些教材告诉你，为了爬取效率，需要把爬虫分布式部署到多台机器上。这完全是骗人的。<br>分布式作用是：防止对方封IP，以及避免使用代理IP，因为一些实时性要求比较高的爬虫系统，使用代理IP响应时间太长  </p>
+<p><a href="https://github.com/paulirish/break-on-access" target="_blank" rel="noopener">干货！分享一个调试 cookies 的东西，只要监控到 cookies 被改写，就自动跳断点</a>  </p>
+<h2 id="算法-排序"><a href="#算法-排序" class="headerlink" title="算法 排序"></a>算法 排序</h2><h3 id="经典排序算法总结与实现"><a href="#经典排序算法总结与实现" class="headerlink" title="经典排序算法总结与实现"></a>经典排序算法总结与实现</h3><p>最简单易懂的Python算法实现，带图示<br><a href="http://wuchong.me/blog/2014/02/09/algorithm-sort-summary/" target="_blank" rel="noopener">经典排序算法总结与实现</a>  </p>
+<h3 id="说一下冒泡排序？"><a href="#说一下冒泡排序？" class="headerlink" title="说一下冒泡排序？"></a>说一下冒泡排序？</h3><p>回答技巧:回答冒泡原理，最好能手写，拓展一下其他排序？<br>冒泡排序的思想: 每次比较两个相邻的元素, 如果他们的顺序错误就把他们交换位置。  </p>
+<h3 id="冒泡排序-BubbleSort"><a href="#冒泡排序-BubbleSort" class="headerlink" title="冒泡排序 BubbleSort"></a>冒泡排序 BubbleSort</h3><p>比较相邻的元素。如果第一个比第二个大，就交换他们两个。<br>对第0个到第n-1个数据做同样的工作。这时，最大的数就“浮”到了数组最后的位置上。<br>针对所有的元素重复以上的步骤，除了最后一个。<br>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 10000个随机数据耗时16s  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maopao</span><span class="params">(l)</span>:</span>  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(l)):  </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(l) - i):  </span><br><span class="line">            <span class="keyword">if</span> l[j] &gt; l[j + <span class="number">1</span>]:  </span><br><span class="line">                l[j], l[j + <span class="number">1</span>] = l[j + <span class="number">1</span>], l[j]  </span><br><span class="line">    print(l)</span><br></pre></td></tr></table></figure></p>
+<h3 id="选择排序-SelectionSort"><a href="#选择排序-SelectionSort" class="headerlink" title="选择排序 SelectionSort"></a>选择排序 SelectionSort</h3><p>在未排序序列中找到最小（大）元素，存放到排序序列的起始位置。<br>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。<br>以此类推，直到所有元素均排序完毕。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 10000个随机数据耗时10s  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">xuanze</span><span class="params">(l)</span>:</span>  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(l)):  </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i, len(l)):  </span><br><span class="line">            <span class="keyword">if</span> l[i] &gt; l[j]:  </span><br><span class="line">                l[i], l[j] = l[j], l[i]</span><br></pre></td></tr></table></figure></p>
+<p>选择排序优化版<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 10000个随机数据耗时5s  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">xuanze_youhua</span><span class="params">(l)</span>:</span>  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(l)):  </span><br><span class="line">        small_index = i  </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i, len(l)):  </span><br><span class="line">            <span class="keyword">if</span> l[small_index] &gt; l[j]:  </span><br><span class="line">                small_index = j  </span><br><span class="line">        l[i], l[small_index] = l[small_index], l[i]</span><br></pre></td></tr></table></figure></p>
+<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p>从第一个元素开始，该元素可以认为已经被排序<br>取出下一个元素，在已经排序的元素序列中从后向前扫描<br>如果被扫描的元素（已排序）大于新元素，将该元素后移一位<br>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置<br>将新元素插入到该位置后<br>重复步骤2~5<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否正确待确认  </span></span><br><span class="line"><span class="comment"># 10000个随机数据耗时10s  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">charu</span><span class="params">(l)</span>:</span>  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(l)):  </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):  </span><br><span class="line">            <span class="keyword">if</span> l[j] &gt; l[i]:  </span><br><span class="line">                l[j], l[i] = l[i], l[j]  </span><br><span class="line">        print(l)</span><br></pre></td></tr></table></figure></p>
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>快速排序通常明显比同为Ο(n log n)的其他算法更快，因此常被采用，而且快排采用了分治法的思想，所以在很多笔试面试中能经常看到快排的影子。可见掌握快排的重要性。<br>从数列中挑出一个元素作为基准数。<br>分区过程，将比基准数大的放到右边，小于或等于它的数都放到左边。<br>再对左右区间递归执行第二步，直至各区间只有一个数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 10000个随机数据排序耗时0.05s  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(ary)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> qsort(ary, <span class="number">0</span>, len(ary) - <span class="number">1</span>)  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">qsort</span><span class="params">(ary, left, right)</span>:</span>  </span><br><span class="line">    <span class="comment"># 快排函数，ary为待排序数组，left为待排序的左边界，right为右边界  </span></span><br><span class="line">    <span class="keyword">if</span> left &gt;= right: <span class="keyword">return</span> ary  </span><br><span class="line">    key = ary[left]  <span class="comment"># 取最左边的为基准数  </span></span><br><span class="line">    lp = left  <span class="comment"># 左指针  </span></span><br><span class="line">    rp = right  <span class="comment"># 右指针  </span></span><br><span class="line">    <span class="keyword">while</span> lp &lt; rp:  <span class="comment"># 如果左指针在右指针右边就死循环  </span></span><br><span class="line">        <span class="keyword">while</span> ary[rp] &gt;= key <span class="keyword">and</span> lp &lt; rp:  <span class="comment"># 拿右指针上的值和key比较, 如果比key大,就向左移指针,直至条件不再成立  </span></span><br><span class="line">            rp -= <span class="number">1</span>  </span><br><span class="line">        <span class="keyword">while</span> ary[lp] &lt;= key <span class="keyword">and</span> lp &lt; rp:  </span><br><span class="line">            lp += <span class="number">1</span>  </span><br><span class="line">        ary[lp], ary[rp] = ary[rp], ary[lp]  <span class="comment"># 对调左右指针上的值  </span></span><br><span class="line">        <span class="comment"># print(ary, 'key:%s lp:%s rp:%s' % (key, lp, rp))  </span></span><br><span class="line">    ary[left], ary[lp] = ary[lp], ary[left]  <span class="comment"># 由上条件知道此时左指针值比key小,对调,下次循环基准数更新  </span></span><br><span class="line">    qsort(ary, left, lp - <span class="number">1</span>)  </span><br><span class="line">    qsort(ary, rp + <span class="number">1</span>, right)  </span><br><span class="line">    <span class="keyword">return</span> ary</span><br></pre></td></tr></table></figure></p>
+<h3 id="堆排序-HeapSort"><a href="#堆排序-HeapSort" class="headerlink" title="堆排序 HeapSort"></a>堆排序 HeapSort</h3><p>  <img src="https://cdn.nlark.com/yuque/0/2018/gif/178857/1537450449821-e61ddc56-93b3-4227-846f-3c1db8ec36d3.gif" alt="Heapsort-example.gif | center | 350x280">  </p>
+<p>堆排序在 top K 问题中使用比较频繁。堆排序是采用二叉堆的数据结构来实现的，虽然实质上还是一维数组。二叉堆是一个近似完全二叉树 。<br>二叉堆具有以下特性：<br>父节点的键值总是大于或等于（小于或等于）任何一个子节点的键值。<br>每个节点的左右子树都是一个二叉堆（都是最大堆或最小堆）。<br>步骤：<br>构造最大堆（Build_Max_Heap）：若数组下标范围为0~n，考虑到单独一个元素是大根堆，则从下标n/2开始的元素均为大根堆。于是只要从n/2-1开始，向前依次构造大根堆，这样就能保证，构造到某个节点时，它的左右子树都已经是大根堆。<br>堆排序（HeapSort）：由于堆是用数组模拟的。得到一个大根堆后，数组内部并不是有序的。因此需要将堆化数组有序化。思想是移除根节点，并做最大堆调整的递归运算。第一次将heap[0]与heap[n-1]交换，再对heap[0…n-2]做最大堆调整。第二次将heap[0]与heap[n-2]交换，再对heap[0…n-3]做最大堆调整。重复该操作直至heap[0]和heap[1]交换。由于每次都是将最大的数并入到后面的有序区间，故操作完后整个数组就是有序的了。<br>最大堆调整（Max_Heapify）：该方法是提供给上述两个过程调用的。目的是将堆的末端子节点作调整，使得子节点永远小于父节点 。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 堆排序 10000个随机数据排序耗时0.1s  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span><span class="params">(ary)</span>:</span>  </span><br><span class="line">    n = len(ary)  </span><br><span class="line">    first = int(n / <span class="number">2</span> - <span class="number">1</span>)  <span class="comment"># 最后一个非叶子节点  </span></span><br><span class="line">    <span class="keyword">for</span> start <span class="keyword">in</span> range(first, <span class="number">-1</span>, <span class="number">-1</span>):  <span class="comment"># 倒序遍历,构造大根堆, 整个数组内部子树都已经是大根堆,但并不是有序的  </span></span><br><span class="line">        max_heapify(ary, start, n - <span class="number">1</span>)  </span><br><span class="line">        print(ary)  </span><br><span class="line">    <span class="keyword">for</span> end <span class="keyword">in</span> range(n - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):  <span class="comment"># 堆排，将大根堆转换成有序数组;思想是移除根节点，并做最大堆调整的递归运算。  每次循环调整边界-1  </span></span><br><span class="line">        ary[end], ary[<span class="number">0</span>] = ary[<span class="number">0</span>], ary[end]  <span class="comment"># 用最后一个元素和第一个元素对调  </span></span><br><span class="line">        max_heapify(ary, <span class="number">0</span>, end - <span class="number">1</span>)  </span><br><span class="line">        print(ary)  </span><br><span class="line">    <span class="keyword">return</span> ary  </span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">max_heapify</span><span class="params">(ary, start, end)</span>:</span>  </span><br><span class="line">    <span class="string">"""  </span></span><br><span class="line"><span class="string">    子树(三个元素)最大堆调整：将堆的末端子节点作调整，使得子节点永远小于父节点  </span></span><br><span class="line"><span class="string">    :param start: 为当前需要调整最大堆的位置  </span></span><br><span class="line"><span class="string">    :param end: 调整边界  </span></span><br><span class="line"><span class="string">    """</span>  </span><br><span class="line">    root = start  </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:  </span><br><span class="line">        child = root * <span class="number">2</span> + <span class="number">1</span>  <span class="comment"># 调整节点的子节点  </span></span><br><span class="line">        <span class="keyword">if</span> child &gt; end: <span class="keyword">break</span>  </span><br><span class="line">        <span class="keyword">if</span> child + <span class="number">1</span> &lt;= end <span class="keyword">and</span> ary[child] &lt; ary[child + <span class="number">1</span>]:  </span><br><span class="line">            child = child + <span class="number">1</span>  <span class="comment"># 取较大的子节点  </span></span><br><span class="line">        <span class="keyword">if</span> ary[root] &lt; ary[child]:  <span class="comment"># 较大的子节点成为父节点  </span></span><br><span class="line">            ary[root], ary[child] = ary[child], ary[root]  <span class="comment"># 交换  </span></span><br><span class="line">            root = child  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_search</span><span class="params">(li,find)</span>:</span>    </span><br><span class="line">    low = <span class="number">0</span>    </span><br><span class="line">    high = len(li)<span class="number">-1</span> <span class="comment"># 需要减一否则会下标越界    </span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high:    </span><br><span class="line">        middle = (low + high) /<span class="number">2</span>    </span><br><span class="line">        <span class="keyword">if</span> li[middle] ==  find :    </span><br><span class="line">            <span class="keyword">return</span> middle    </span><br><span class="line">        <span class="keyword">elif</span> li[middle] &gt; find:    </span><br><span class="line">            high = middle - <span class="number">1</span>    </span><br><span class="line">        <span class="keyword">elif</span> li[middle] &lt; find:    </span><br><span class="line">            low = middle + <span class="number">1</span>    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:    </span><br><span class="line">    li = [x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">101</span>)]    </span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">102</span>):    </span><br><span class="line">        <span class="keyword">print</span> binary_search(li,x)</span><br></pre></td></tr></table></figure>
+<h2 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h2><h3 id="and-or-not运算问题"><a href="#and-or-not运算问题" class="headerlink" title="and or not运算问题"></a>and or not运算问题</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v = <span class="number">1</span> <span class="keyword">and</span> <span class="number">2</span> <span class="keyword">or</span> <span class="number">3</span> <span class="keyword">and</span> <span class="number">4</span>  </span><br><span class="line">print(v)  </span><br><span class="line"></span><br><span class="line">  <span class="comment"># &gt;&gt;&gt; 2</span></span><br></pre></td></tr></table></figure>
+<p>参考：<a href="http://blog.csdn.net/betabin/article/details/8568804" target="_blank" rel="noopener">Python：and和or的特殊性质</a><br>总结：对python而言<br>其一, 在不加括号时候, and优先级大于or<br>其二, x or y 的值只可能是x或y.  x为真就是x, x为假就是y<br>第三, x and y 的值只可能是x或y.  x为真就是y, x为假就是x<br>显然,对于, <code>1 or 5 and 4</code>: 先算5 and 4, 5为真, 值为4. 再算1 or 4, 1 为真,值为1<br>对于, <code>(1 or 5) and 4</code>: 先算1 or 5, 1为真, 值为1. 再算1 and 4, 1为真,值为4  </p>
+<h3 id="排序问题"><a href="#排序问题" class="headerlink" title="排序问题"></a>排序问题</h3><p>list对象 <code>alist [{&#39;name&#39;:&#39;a&#39;,&#39;age&#39;:20},{&#39;name&#39;:&#39;b&#39;,&#39;age&#39;:30},{&#39;name&#39;:&#39;c&#39;,&#39;age&#39;:25}]</code>，请按alist中元素的 age 由大到小排序；<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alist = [&#123;<span class="string">'name'</span>: <span class="string">'a'</span>, <span class="string">'age'</span>: <span class="number">20</span>&#125;, &#123;<span class="string">'name'</span>: <span class="string">'b'</span>, <span class="string">'age'</span>: <span class="number">30</span>&#125;, &#123;<span class="string">'name'</span>: <span class="string">'c'</span>, <span class="string">'age'</span>: <span class="number">25</span>&#125;]  </span><br><span class="line">alist.sort(key=<span class="keyword">lambda</span> x: -x[<span class="string">"age"</span>])  </span><br><span class="line">print(alist)</span><br></pre></td></tr></table></figure></p>
+<h3 id="打乱一个排好序的-list-对象-alist；"><a href="#打乱一个排好序的-list-对象-alist；" class="headerlink" title="打乱一个排好序的 list 对象 alist；"></a>打乱一个排好序的 list 对象 alist；</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> shuffle    </span><br><span class="line">alist = range(<span class="number">10</span>)  </span><br><span class="line">shuffle(alist)  </span><br><span class="line">print(<span class="string">"shuffle"</span>, alist)</span><br></pre></td></tr></table></figure>
+<h3 id="简单实现一个stack；"><a href="#简单实现一个stack；" class="headerlink" title="简单实现一个stack；"></a>简单实现一个stack；</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        self.values = []  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, o)</span>:</span>  </span><br><span class="line">        self.values.append(o)  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> self.values.pop()  </span><br><span class="line">s = Stack()  </span><br><span class="line">s.push(<span class="number">1</span>)  </span><br><span class="line">s.push(<span class="number">2</span>)  </span><br><span class="line"><span class="keyword">assert</span> s.pop() == <span class="number">2</span>  </span><br><span class="line"><span class="keyword">assert</span> s.pop() == <span class="number">1</span>  </span><br><span class="line">s.push(<span class="number">3</span>)  </span><br><span class="line">s.push(<span class="number">4</span>)  </span><br><span class="line"><span class="keyword">assert</span> s.pop() == <span class="number">4</span>  </span><br><span class="line"><span class="keyword">assert</span> s.pop() == <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<h3 id="输入某年某月某日，判断这一天是这一年的第几天？"><a href="#输入某年某月某日，判断这一天是这一年的第几天？" class="headerlink" title="输入某年某月某日，判断这一天是这一年的第几天？"></a>输入某年某月某日，判断这一天是这一年的第几天？</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">day_of_year</span><span class="params">(year, month, day)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> (datetime(year, month, day) - datetime(year, <span class="number">1</span>, <span class="number">1</span>)).days + <span class="number">1</span>  </span><br><span class="line"><span class="keyword">assert</span> day_of_year(<span class="number">2014</span>, <span class="number">1</span>, <span class="number">10</span>) == <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据类型转换"><a href="#数据类型转换" class="headerlink" title="数据类型转换"></a>数据类型转换</h3><p>将字符串：<code>&quot;k:1|k1:2|k2:3|k3:4&quot;</code>，处理成python字典：<code>{k:1, k1:2, ... }</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">string_to_dict</span><span class="params">(string)</span>:</span>  </span><br><span class="line">    d = &#123;&#125;  </span><br><span class="line">    <span class="keyword">for</span> kv <span class="keyword">in</span> string.split(<span class="string">"|"</span>):  </span><br><span class="line">        k, v = kv.split(<span class="string">":"</span>)  </span><br><span class="line">        <span class="keyword">if</span> v.isdigit():  </span><br><span class="line">            v = int(v)  </span><br><span class="line">        d[k] = v  </span><br><span class="line">    <span class="keyword">return</span> d  </span><br><span class="line">string = <span class="string">"k:1|k1:2|k2:3|k3:4"</span>  </span><br><span class="line">print(string_to_dict(string))  </span><br><span class="line">string2 = <span class="string">"k:1"</span>  </span><br><span class="line">print(string_to_dict(string2))</span><br></pre></td></tr></table></figure></p>
+<h3 id="台阶问题-斐波纳挈"><a href="#台阶问题-斐波纳挈" class="headerlink" title="台阶问题/斐波纳挈"></a>台阶问题/斐波纳挈</h3><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法。（用一句代码写斐波那契数列）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fib = <span class="keyword">lambda</span> n: n <span class="keyword">if</span> n &lt;= <span class="number">2</span> <span class="keyword">else</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="变态台阶问题"><a href="#变态台阶问题" class="headerlink" title="变态台阶问题"></a>变态台阶问题</h3><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fib = <span class="keyword">lambda</span> n: n <span class="keyword">if</span> n &lt; <span class="number">2</span> <span class="keyword">else</span> <span class="number">2</span> * fib(n - <span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="找零算法（动态规划）"><a href="#找零算法（动态规划）" class="headerlink" title="找零算法（动态规划）"></a>找零算法（动态规划）</h3><p>我购物花费28元，支付100元纸币，我最少会被找零多少张纸币？<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(values, money, coinsUsed)</span>:</span>  </span><br><span class="line"><span class="comment"># values    T[1:n]数组  </span></span><br><span class="line"><span class="comment"># valuesCounts   钱币对应的种类数  </span></span><br><span class="line"><span class="comment"># money  找出来的总钱数  </span></span><br><span class="line"><span class="comment"># coinsUsed   对应于目前钱币总数i所使用的硬币数目  </span></span><br><span class="line"><span class="keyword">for</span> cents <span class="keyword">in</span> range(<span class="number">1</span>, money + <span class="number">1</span>):  </span><br><span class="line">    minCoins = cents  <span class="comment"># 从第一个开始到money的所有情况初始  </span></span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> values:  </span><br><span class="line">        <span class="keyword">if</span> value &lt;= cents:  </span><br><span class="line">            temp = coinsUsed[cents - value] + <span class="number">1</span>  </span><br><span class="line">            <span class="keyword">if</span> temp &lt; minCoins:  </span><br><span class="line">                minCoins = temp  </span><br><span class="line">    coinsUsed[cents] = minCoins  </span><br><span class="line">    print(<span class="string">'面值为：&#123;0&#125; 的最小硬币数目为：&#123;1&#125; '</span>.format(cents, coinsUsed[cents]))  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">values = [<span class="number">25</span>, <span class="number">21</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">1</span>]  </span><br><span class="line">money = <span class="number">63</span>  </span><br><span class="line">coinsUsed = &#123;i: <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(money + <span class="number">1</span>)&#125;  </span><br><span class="line">coinChange(values, money, coinsUsed)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="码农小杨 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/25/日志查找好帮手-find和grep/" rel="next" title="日志查找好帮手-find和grep">
+                <i class="fa fa-chevron-left"></i> 日志查找好帮手-find和grep
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/06/如何使用Python重命名文件/" rel="prev" title="如何使用Python重命名文件">
+                如何使用Python重命名文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="码农小杨" />
+            
+              <p class="site-author-name" itemprop="name">码农小杨</p>
+              <p class="site-description motion-element" itemprop="description">真想撸代码超过60岁</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">181</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python基础知识"><span class="nav-number">1.</span> <span class="nav-text">Python基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python里面search-和match-的区别"><span class="nav-number">1.1.</span> <span class="nav-text">Python里面search()和match()的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用Python匹配HTML-tag的时候，-lt-gt-和-lt-gt-有什么区别"><span class="nav-number">1.2.</span> <span class="nav-text">用Python匹配HTML tag的时候，&lt;.*&gt;和&lt;.*?&gt;有什么区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是闭包"><span class="nav-number">1.3.</span> <span class="nav-text">什么是闭包?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-JAVA-Python之间的区别？"><span class="nav-number">1.4.</span> <span class="nav-text">C++/C/JAVA/Python之间的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理和垃圾回收机制"><span class="nav-number">1.5.</span> <span class="nav-text">内存管理和垃圾回收机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态语言和静态语言的区别"><span class="nav-number">1.6.</span> <span class="nav-text">动态语言和静态语言的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python中单下划线和双下划线"><span class="nav-number">1.7.</span> <span class="nav-text">Python中单下划线和双下划线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器协议"><span class="nav-number">1.8.</span> <span class="nav-text">迭代器协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器"><span class="nav-number">1.9.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器"><span class="nav-number">1.10.</span> <span class="nav-text">生成器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python语法糖"><span class="nav-number">1.11.</span> <span class="nav-text">python语法糖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python的装饰器内部实现原理"><span class="nav-number">1.12.</span> <span class="nav-text">Python的装饰器内部实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简述Python的作用域以及Python搜索变量的顺序"><span class="nav-number">1.13.</span> <span class="nav-text">简述Python的作用域以及Python搜索变量的顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GIL线程全局锁"><span class="nav-number">1.14.</span> <span class="nav-text">GIL线程全局锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁"><span class="nav-number">1.15.</span> <span class="nav-text">死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调度算法"><span class="nav-number">1.16.</span> <span class="nav-text">调度算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么lambda函数-匿名函数-匿名函数有什么局限性"><span class="nav-number">1.17.</span> <span class="nav-text">什么lambda函数(匿名函数),匿名函数有什么局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KISS原则"><span class="nav-number">1.18.</span> <span class="nav-text">KISS原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简述函数式编程"><span class="nav-number">1.19.</span> <span class="nav-text">简述函数式编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-copy-与deepcopy-区别"><span class="nav-number">1.20.</span> <span class="nav-text">Python-copy()与deepcopy()区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何捕获异常，常用的异常机制有哪些？"><span class="nav-number">1.21.</span> <span class="nav-text">如何捕获异常，常用的异常机制有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有用过with-statement吗？它的好处是什么？具体如何实现？"><span class="nav-number">1.22.</span> <span class="nav-text">有用过with statement吗？它的好处是什么？具体如何实现？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象"><span class="nav-number">2.</span> <span class="nav-text">面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python的面向对象和Java面向对象的区别"><span class="nav-number">2.2.</span> <span class="nav-text">Python的面向对象和Java面向对象的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python的实例方法-类方法-静态方法之间的区别及调用关系"><span class="nav-number">2.3.</span> <span class="nav-text">Python的实例方法,类方法,静态方法之间的区别及调用关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python新式类和旧式类的区别"><span class="nav-number">2.4.</span> <span class="nav-text">python新式类和旧式类的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-和-init-的区别"><span class="nav-number">2.5.</span> <span class="nav-text">__new__和__init__的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式new方法版本"><span class="nav-number">2.6.</span> <span class="nav-text">单例模式new方法版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式装饰器版本"><span class="nav-number">2.7.</span> <span class="nav-text">单例模式装饰器版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL数据库相关"><span class="nav-number">3.</span> <span class="nav-text">MySQL数据库相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL练习题"><span class="nav-number">3.1.</span> <span class="nav-text">MySQL练习题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内联，左外联，右外联，全连接，交叉连接-的区别"><span class="nav-number">3.2.</span> <span class="nav-text">内联，左外联，右外联，全连接，交叉连接 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是视图？以及视图的使用场景有哪些？"><span class="nav-number">3.3.</span> <span class="nav-text">什么是视图？以及视图的使用场景有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图作用"><span class="nav-number">3.4.</span> <span class="nav-text">视图作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说一下事务的特性？"><span class="nav-number">3.5.</span> <span class="nav-text">说一下事务的特性？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是存储过程"><span class="nav-number">3.6.</span> <span class="nav-text">什么是存储过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个完整的存储过程示例"><span class="nav-number">3.7.</span> <span class="nav-text">创建一个完整的存储过程示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sql注入原理"><span class="nav-number">3.8.</span> <span class="nav-text">sql注入原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单说一说drop、delete与truncate的区别"><span class="nav-number">3.9.</span> <span class="nav-text">简单说一说drop、delete与truncate的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库怎么优化查询效率？"><span class="nav-number">3.10.</span> <span class="nav-text">数据库怎么优化查询效率？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库优化方案？"><span class="nav-number">3.11.</span> <span class="nav-text">数据库优化方案？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql-几种锁的区别"><span class="nav-number">3.12.</span> <span class="nav-text">Mysql 几种锁的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.13.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis基础及高可用、高并发、集群相关知识"><span class="nav-number">4.</span> <span class="nav-text">Redis基础及高可用、高并发、集群相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是redis"><span class="nav-number">4.1.</span> <span class="nav-text">什么是redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用redis有哪些好处？"><span class="nav-number">4.2.</span> <span class="nav-text">使用redis有哪些好处？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis解决秒杀-抢红包等高并发事务活动"><span class="nav-number">4.3.</span> <span class="nav-text">Redis解决秒杀/抢红包等高并发事务活动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis数据超过可用内存的处理方式"><span class="nav-number">4.4.</span> <span class="nav-text">redis数据超过可用内存的处理方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是高可用架构"><span class="nav-number">4.5.</span> <span class="nav-text">什么是高可用架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-高可用"><span class="nav-number">4.6.</span> <span class="nav-text">Redis 高可用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-高并发"><span class="nav-number">4.7.</span> <span class="nav-text">Redis 高并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis应用之利用redis高效统计访问量及访问的用户（计数）"><span class="nav-number">4.8.</span> <span class="nav-text">redis应用之利用redis高效统计访问量及访问的用户（计数）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-和-mysql-的区别？"><span class="nav-number">4.9.</span> <span class="nav-text">redis 和 mysql 的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memcache与Redis的区别都有哪些？"><span class="nav-number">4.10.</span> <span class="nav-text">Memcache与Redis的区别都有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis常见的性能问题和解决方法"><span class="nav-number">4.11.</span> <span class="nav-text">Redis常见的性能问题和解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据"><span class="nav-number">4.12.</span> <span class="nav-text">mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis的并发竞争问题如何解决"><span class="nav-number">4.13.</span> <span class="nav-text">redis的并发竞争问题如何解决?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis持久化"><span class="nav-number">4.14.</span> <span class="nav-text">redis持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis如果运行过程中崩溃了怎么办。"><span class="nav-number">4.15.</span> <span class="nav-text">Redis如果运行过程中崩溃了怎么办。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis集群"><span class="nav-number">4.16.</span> <span class="nav-text">Redis集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单说一下Redis集群的工作原理"><span class="nav-number">4.17.</span> <span class="nav-text">简单说一下Redis集群的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#悲观锁和乐观锁区别，乐观锁适用于什么情况"><span class="nav-number">4.18.</span> <span class="nav-text">悲观锁和乐观锁区别，乐观锁适用于什么情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">4.19.</span> <span class="nav-text">MVCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料-1"><span class="nav-number">4.20.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程、多进程、协程、异步编程、I-O多路复用"><span class="nav-number">5.</span> <span class="nav-text">多线程、多进程、协程、异步编程、I/O多路复用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请简述线程、进程、协程的特性"><span class="nav-number">5.1.</span> <span class="nav-text">请简述线程、进程、协程的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程有几种状态-生命周期是怎样的"><span class="nav-number">5.2.</span> <span class="nav-text">线程有几种状态?生命周期是怎样的?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程间通讯的方式有哪些，各有什么优缺点："><span class="nav-number">5.3.</span> <span class="nav-text">进程间通讯的方式有哪些，各有什么优缺点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的原理："><span class="nav-number">5.4.</span> <span class="nav-text">线程池的原理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的实现："><span class="nav-number">5.5.</span> <span class="nav-text">线程池的实现：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步IO-IO多路复用的原理"><span class="nav-number">5.6.</span> <span class="nav-text">异步IO / IO多路复用的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简述事件驱动"><span class="nav-number">5.7.</span> <span class="nav-text">简述事件驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简述I-O多路复用"><span class="nav-number">5.8.</span> <span class="nav-text">简述I/O多路复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O多路复用和异步I-O的区别"><span class="nav-number">5.9.</span> <span class="nav-text">I/O多路复用和异步I/O的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select-poll和epoll之间的异同"><span class="nav-number">5.10.</span> <span class="nav-text">select,poll和epoll之间的异同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#epoll中et和lt的区别与实现原理"><span class="nav-number">5.11.</span> <span class="nav-text">epoll中et和lt的区别与实现原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络编程基础知识"><span class="nav-number">6.</span> <span class="nav-text">网络编程基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解释下Http协议"><span class="nav-number">6.1.</span> <span class="nav-text">解释下Http协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在浏览器地址栏键入URL，按下回车之后会经历以下流程："><span class="nav-number">6.2.</span> <span class="nav-text">在浏览器地址栏键入URL，按下回车之后会经历以下流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP之状态码"><span class="nav-number">6.3.</span> <span class="nav-text">HTTP之状态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见状态码："><span class="nav-number">6.4.</span> <span class="nav-text">常见状态码：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP（传输控制协议）与UDP（用户数据包协议）的区别；"><span class="nav-number">6.5.</span> <span class="nav-text">TCP（传输控制协议）与UDP（用户数据包协议）的区别；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候使用TCP协议，什么时候使用UDP协议；"><span class="nav-number">6.6.</span> <span class="nav-text">什么时候使用TCP协议，什么时候使用UDP协议；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三次握手，四次挥手的详细过程以及作用；"><span class="nav-number">6.7.</span> <span class="nav-text">三次握手，四次挥手的详细过程以及作用；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP为什么不是两次连接？而是三次握手？"><span class="nav-number">6.8.</span> <span class="nav-text">TCP为什么不是两次连接？而是三次握手？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络编程的一般步骤"><span class="nav-number">6.9.</span> <span class="nav-text">网络编程的一般步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写一个简单的python-socket"><span class="nav-number">6.10.</span> <span class="nav-text">写一个简单的python socket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GET和POST，有什么区别"><span class="nav-number">6.11.</span> <span class="nav-text">GET和POST，有什么区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apache和nginx的区别"><span class="nav-number">6.12.</span> <span class="nav-text">apache和nginx的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么保证密码保存和传输是安全的"><span class="nav-number">6.13.</span> <span class="nav-text">怎么保证密码保存和传输是安全的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSRF和XSS区别"><span class="nav-number">6.14.</span> <span class="nav-text">CSRF和XSS区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#幂等-Idempotence"><span class="nav-number">6.15.</span> <span class="nav-text">幂等 Idempotence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC"><span class="nav-number">6.16.</span> <span class="nav-text">RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSGI"><span class="nav-number">6.17.</span> <span class="nav-text">WSGI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间人攻击"><span class="nav-number">6.18.</span> <span class="nav-text">中间人攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-框架之-Django、Tornado"><span class="nav-number">7.</span> <span class="nav-text">Web 框架之 Django、Tornado</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Django请求生命周期"><span class="nav-number">7.1.</span> <span class="nav-text">Django请求生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解释下django-debug-toolbar的使用"><span class="nav-number">7.2.</span> <span class="nav-text">解释下django-debug-toolbar的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何进行Django单元测试"><span class="nav-number">7.3.</span> <span class="nav-text">如何进行Django单元测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model之F-Q操作"><span class="nav-number">7.4.</span> <span class="nav-text">model之F/Q操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q操作-构造搜索条件-用于构造复杂的查询条件如各种筛选过滤"><span class="nav-number">7.5.</span> <span class="nav-text">Q操作,构造搜索条件, 用于构造复杂的查询条件如各种筛选过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-tag用法"><span class="nav-number">7.6.</span> <span class="nav-text">simple_tag用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ORM是什么？"><span class="nav-number">7.7.</span> <span class="nav-text">ORM是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一般的ORM包括以下四部分："><span class="nav-number">7.8.</span> <span class="nav-text">一般的ORM包括以下四部分：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ORM的好处"><span class="nav-number">7.9.</span> <span class="nav-text">使用ORM的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解释一下-Django-和-Tornado-的关系、差别"><span class="nav-number">7.10.</span> <span class="nav-text">解释一下 Django 和 Tornado 的关系、差别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django生产环境部署"><span class="nav-number">7.11.</span> <span class="nav-text">Django生产环境部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tornado-的核心是什么？"><span class="nav-number">7.12.</span> <span class="nav-text">Tornado 的核心是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么使用Tornado-异步非阻塞"><span class="nav-number">7.13.</span> <span class="nav-text">怎么使用Tornado 异步非阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tornado-异步模式"><span class="nav-number">7.14.</span> <span class="nav-text">Tornado 异步模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gen-coroutine的作用"><span class="nav-number">7.15.</span> <span class="nav-text">@gen.coroutine的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端知识之-jQuery、Ajax、JsonP等"><span class="nav-number">8.</span> <span class="nav-text">前端知识之 jQuery、Ajax、JsonP等</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rgba-和opacity的透明效果有什么不同？"><span class="nav-number">8.1.</span> <span class="nav-text">rgba()和opacity的透明效果有什么不同？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#px和em的区别？"><span class="nav-number">8.2.</span> <span class="nav-text">px和em的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#javascript：获取所有的checkbox？"><span class="nav-number">8.3.</span> <span class="nav-text">javascript：获取所有的checkbox？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#window-onload与-document-ready-异同"><span class="nav-number">8.4.</span> <span class="nav-text">window.onload与\$(document).ready()异同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JS作用域"><span class="nav-number">8.5.</span> <span class="nav-text">JS作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以下代码的输出是什么"><span class="nav-number">8.6.</span> <span class="nav-text">以下代码的输出是什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你为什么要使用jquery？"><span class="nav-number">8.7.</span> <span class="nav-text">你为什么要使用jquery？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#讲一下jquery有哪些选择器？"><span class="nav-number">8.8.</span> <span class="nav-text">讲一下jquery有哪些选择器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你是如何使用jquery中的ajax的？"><span class="nav-number">8.9.</span> <span class="nav-text">你是如何使用jquery中的ajax的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jquery中-get-提交和-post-提交有区别吗？"><span class="nav-number">8.10.</span> <span class="nav-text">jquery中$.get()提交和$.post()提交有区别吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在jquery中你是如何去操作样式的？"><span class="nav-number">8.11.</span> <span class="nav-text">在jquery中你是如何去操作样式的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你在jquery中使用过哪些插入节点的方法，它们的区别是什么？"><span class="nav-number">8.12.</span> <span class="nav-text">你在jquery中使用过哪些插入节点的方法，它们的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jquery中如何来获取或和设置属性？"><span class="nav-number">8.13.</span> <span class="nav-text">jquery中如何来获取或和设置属性？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何来设置和获取HTML-和文本的值？"><span class="nav-number">8.14.</span> <span class="nav-text">如何来设置和获取HTML 和文本的值？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jquery中有哪些方法可以遍历节点"><span class="nav-number">8.15.</span> <span class="nav-text">jquery中有哪些方法可以遍历节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#radio单选组的第二个元素为当前选中值，该怎么去取？"><span class="nav-number">8.16.</span> <span class="nav-text">radio单选组的第二个元素为当前选中值，该怎么去取？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你知道jQuery中的事件冒泡吗，它是怎么执行的，何如来停止冒泡事件"><span class="nav-number">8.17.</span> <span class="nav-text">你知道jQuery中的事件冒泡吗，它是怎么执行的，何如来停止冒泡事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在jquery中你有没有编写过插件，插件有什么好处？它应该注意那些？"><span class="nav-number">8.18.</span> <span class="nav-text">在jquery中你有没有编写过插件，插件有什么好处？它应该注意那些？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax相关"><span class="nav-number">9.</span> <span class="nav-text">Ajax相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ajax相关知识点"><span class="nav-number">9.1.</span> <span class="nav-text">Ajax相关知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XMLHttpRequest对象发送请求"><span class="nav-number">9.2.</span> <span class="nav-text">XMLHttpRequest对象发送请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是JSONP？"><span class="nav-number">9.3.</span> <span class="nav-text">什么是JSONP？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ajax与jsonp跨域请求的异同再做一些补充说明："><span class="nav-number">9.4.</span> <span class="nav-text">ajax与jsonp跨域请求的异同再做一些补充说明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浅谈session实现原理-阿里面试题"><span class="nav-number">9.5.</span> <span class="nav-text">浅谈session实现原理(阿里面试题)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cookie机制和session机制的区别"><span class="nav-number">9.6.</span> <span class="nav-text">cookie机制和session机制的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬虫相关知识"><span class="nav-number">10.</span> <span class="nav-text">爬虫相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scrapy需要了解的类"><span class="nav-number">10.1.</span> <span class="nav-text">Scrapy需要了解的类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scrapy框架数据流（重要！面试官一般问：说说Scrapy原理）"><span class="nav-number">10.2.</span> <span class="nav-text">Scrapy框架数据流（重要！面试官一般问：说说Scrapy原理）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反爬的一般手段"><span class="nav-number">10.3.</span> <span class="nav-text">反爬的一般手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的反爬虫和应对方法？（爬虫与反爬虫的博弈）"><span class="nav-number">10.4.</span> <span class="nav-text">常见的反爬虫和应对方法？（爬虫与反爬虫的博弈）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过Headers反爬虫"><span class="nav-number">10.4.1.</span> <span class="nav-text">通过Headers反爬虫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于用户行为反爬虫"><span class="nav-number">10.4.2.</span> <span class="nav-text">基于用户行为反爬虫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态页面的反爬虫"><span class="nav-number">10.4.3.</span> <span class="nav-text">动态页面的反爬虫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过前端CSS和HTML标签进行干扰混淆进行反爬"><span class="nav-number">10.4.4.</span> <span class="nav-text">通过前端CSS和HTML标签进行干扰混淆进行反爬</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#投毒，以及喂毒（蜜罐）"><span class="nav-number">10.4.5.</span> <span class="nav-text">投毒，以及喂毒（蜜罐）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投毒反爬策略"><span class="nav-number">10.5.</span> <span class="nav-text">投毒反爬策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要做分布式爬虫"><span class="nav-number">10.6.</span> <span class="nav-text">为什么要做分布式爬虫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法-排序"><span class="nav-number">11.</span> <span class="nav-text">算法 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#经典排序算法总结与实现"><span class="nav-number">11.1.</span> <span class="nav-text">经典排序算法总结与实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说一下冒泡排序？"><span class="nav-number">11.2.</span> <span class="nav-text">说一下冒泡排序？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冒泡排序-BubbleSort"><span class="nav-number">11.3.</span> <span class="nav-text">冒泡排序 BubbleSort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择排序-SelectionSort"><span class="nav-number">11.4.</span> <span class="nav-text">选择排序 SelectionSort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入排序"><span class="nav-number">11.5.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速排序"><span class="nav-number">11.6.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆排序-HeapSort"><span class="nav-number">11.7.</span> <span class="nav-text">堆排序 HeapSort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二分查找"><span class="nav-number">11.8.</span> <span class="nav-text">二分查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程题"><span class="nav-number">12.</span> <span class="nav-text">编程题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#and-or-not运算问题"><span class="nav-number">12.1.</span> <span class="nav-text">and or not运算问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序问题"><span class="nav-number">12.2.</span> <span class="nav-text">排序问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打乱一个排好序的-list-对象-alist；"><span class="nav-number">12.3.</span> <span class="nav-text">打乱一个排好序的 list 对象 alist；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单实现一个stack；"><span class="nav-number">12.4.</span> <span class="nav-text">简单实现一个stack；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入某年某月某日，判断这一天是这一年的第几天？"><span class="nav-number">12.5.</span> <span class="nav-text">输入某年某月某日，判断这一天是这一年的第几天？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型转换"><span class="nav-number">12.6.</span> <span class="nav-text">数据类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#台阶问题-斐波纳挈"><span class="nav-number">12.7.</span> <span class="nav-text">台阶问题/斐波纳挈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变态台阶问题"><span class="nav-number">12.8.</span> <span class="nav-text">变态台阶问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找零算法（动态规划）"><span class="nav-number">12.9.</span> <span class="nav-text">找零算法（动态规划）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">码农小杨</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

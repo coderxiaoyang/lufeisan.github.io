@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="小公司的困惑，老板撤资，项目组解散。最近半个月一直忙于新公司的项目，新公司技术架构和上家不同，web框架使用Flask，接下来将详细备注慕课网实战课程学习笔记。一起加油ヾ(◍°∇°◍)ﾉﾞ💪 慕课网实战课程网址：https://coding.imooc.com/class/194.html 实例化flask对象：123app = Flask(__name__):param import_name">
+<meta name="description" content="实例化flask对象：123app = Flask(__name__):param import_name: the name of the application package 实例化Flask对象的时候，我们传入参数__name__，该参数作为Flask核心对象的标识（可以是任意字符串），这里传入的是文件目录。 唯一 URL / 重定向行为我们先看下什么是重定向。  当我们从浏览器请求服务器">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask基础学习-配置篇">
 <meta property="og:url" content="https://zhaobugs.com/2018/08/01/Flask基础学习-第一篇/index.html">
 <meta property="og:site_name" content="码农小杨的笔记">
-<meta property="og:description" content="小公司的困惑，老板撤资，项目组解散。最近半个月一直忙于新公司的项目，新公司技术架构和上家不同，web框架使用Flask，接下来将详细备注慕课网实战课程学习笔记。一起加油ヾ(◍°∇°◍)ﾉﾞ💪 慕课网实战课程网址：https://coding.imooc.com/class/194.html 实例化flask对象：123app = Flask(__name__):param import_name">
+<meta property="og:description" content="实例化flask对象：123app = Flask(__name__):param import_name: the name of the application package 实例化Flask对象的时候，我们传入参数__name__，该参数作为Flask核心对象的标识（可以是任意字符串），这里传入的是文件目录。 唯一 URL / 重定向行为我们先看下什么是重定向。  当我们从浏览器请求服务器">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1ftuij7unimj30pe0ku12f.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1ftuivjbnndj31g211edmy.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1ftukm7po7mj30lc080js1.jpg">
-<meta property="og:updated_time" content="2018-08-15T02:00:18.053Z">
+<meta property="og:updated_time" content="2021-03-15T15:20:18.077Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask基础学习-配置篇">
-<meta name="twitter:description" content="小公司的困惑，老板撤资，项目组解散。最近半个月一直忙于新公司的项目，新公司技术架构和上家不同，web框架使用Flask，接下来将详细备注慕课网实战课程学习笔记。一起加油ヾ(◍°∇°◍)ﾉﾞ💪 慕课网实战课程网址：https://coding.imooc.com/class/194.html 实例化flask对象：123app = Flask(__name__):param import_name">
+<meta name="twitter:description" content="实例化flask对象：123app = Flask(__name__):param import_name: the name of the application package 实例化Flask对象的时候，我们传入参数__name__，该参数作为Flask核心对象的标识（可以是任意字符串），这里传入的是文件目录。 唯一 URL / 重定向行为我们先看下什么是重定向。  当我们从浏览器请求服务器">
 <meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1ftuij7unimj30pe0ku12f.jpg">
 
 
@@ -416,7 +416,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,534 字
+                  1,448 字
                 </span>
               
 
@@ -453,9 +453,7 @@
       
 
       
-        <p>小公司的困惑，老板撤资，项目组解散。最近半个月一直忙于新公司的项目，新公司技术架构和上家不同，web框架使用Flask，接下来将详细备注慕课网实战课程学习笔记。一起加油ヾ(◍°∇°◍)ﾉﾞ💪</p>
-<p>慕课网实战课程网址：<a href="https://coding.imooc.com/class/194.html" target="_blank" rel="noopener">https://coding.imooc.com/class/194.html</a></p>
-<h6 id="实例化flask对象："><a href="#实例化flask对象：" class="headerlink" title="实例化flask对象："></a>实例化flask对象：</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">:param import_name: the name of the application package</span><br></pre></td></tr></table></figure>
+        <h6 id="实例化flask对象："><a href="#实例化flask对象：" class="headerlink" title="实例化flask对象："></a>实例化flask对象：</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">:param import_name: the name of the application package</span><br></pre></td></tr></table></figure>
 <p>实例化<code>Flask</code>对象的时候，我们传入参数<code>__name__</code>，该参数作为Flask核心对象的标识（可以是任意字符串），这里传入的是文件目录。</p>
 <h6 id="唯一-URL-重定向行为"><a href="#唯一-URL-重定向行为" class="headerlink" title="唯一 URL / 重定向行为"></a>唯一 URL / 重定向行为</h6><p>我们先看下什么是重定向。</p>
 <p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1ftuij7unimj30pe0ku12f.jpg" alt="image-20180801211823253"></p>
@@ -665,7 +663,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">180</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
