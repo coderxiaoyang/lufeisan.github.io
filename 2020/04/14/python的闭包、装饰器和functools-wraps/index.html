@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="码农小杨的笔记" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="1. 闭包1.1 作用域作用域的概念就是变量可以被感知的空间范围。  LEGB法则： Python会按照优先级依次搜索4个作用域，以此来确定该变量名的意义。首先搜索局部作用域(L)，之后是上一层嵌套结构中def或lambda函数的嵌套作用域(E)，之后是全局作用域(G)，最后是内置作用域(B)。按这个查找原则，在第一处找到的地方停止。如果没有找到，则会出发NameError错误。  引用这篇博客的">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python的闭包、装饰器和functools.wraps">
+<meta property="og:url" content="https://zhaobugs.com/2020/04/14/python的闭包、装饰器和functools-wraps/index.html">
+<meta property="og:site_name" content="码农小杨的笔记">
+<meta property="og:description" content="1. 闭包1.1 作用域作用域的概念就是变量可以被感知的空间范围。  LEGB法则： Python会按照优先级依次搜索4个作用域，以此来确定该变量名的意义。首先搜索局部作用域(L)，之后是上一层嵌套结构中def或lambda函数的嵌套作用域(E)，之后是全局作用域(G)，最后是内置作用域(B)。按这个查找原则，在第一处找到的地方停止。如果没有找到，则会出发NameError错误。  引用这篇博客的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-04-14T03:39:18.880Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python的闭包、装饰器和functools.wraps">
+<meta name="twitter:description" content="1. 闭包1.1 作用域作用域的概念就是变量可以被感知的空间范围。  LEGB法则： Python会按照优先级依次搜索4个作用域，以此来确定该变量名的意义。首先搜索局部作用域(L)，之后是上一层嵌套结构中def或lambda函数的嵌套作用域(E)，之后是全局作用域(G)，最后是内置作用域(B)。按这个查找原则，在第一处找到的地方停止。如果没有找到，则会出发NameError错误。  引用这篇博客的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'XCAWE8DOZ6',
+      apiKey: '1177079624f5060aa4459d3c7349c8c2',
+      indexName: 'dev_zhaobugs',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到有关 ${query} 的内容","hits_stats":"搜索到 ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhaobugs.com/2020/04/14/python的闭包、装饰器和functools-wraps/"/>
+
+
+
+
+
+  <title>python的闭包、装饰器和functools.wraps | 码农小杨的笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">码农小杨的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识就是财富</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhaobugs.com/2020/04/14/python的闭包、装饰器和functools-wraps/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="码农小杨">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ava.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码农小杨的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python的闭包、装饰器和functools.wraps</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-14T11:38:07+08:00">
+                2020-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/14/python的闭包、装饰器和functools-wraps/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/14/python的闭包、装饰器和functools-wraps/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/04/14/python的闭包、装饰器和functools-wraps/" class="leancloud_visitors" data-flag-title="python的闭包、装饰器和functools.wraps">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,617 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-闭包"><a href="#1-闭包" class="headerlink" title="1. 闭包"></a>1. 闭包</h2><h2 id="1-1-作用域"><a href="#1-1-作用域" class="headerlink" title="1.1 作用域"></a>1.1 作用域</h2><p>作用域的概念就是变量可以被<strong>感知</strong>的空间范围。</p>
+<blockquote>
+<p><strong>LEGB</strong>法则： Python会按照优先级依次搜索4个作用域，以此来确定该变量名的意义。首先搜索局部作用域<strong>(L)</strong>，之后是上一层嵌套结构中def或lambda函数的嵌套作用域<strong>(E)</strong>，之后是全局作用域<strong>(G)</strong>，最后是内置作用域<strong>(B)</strong>。按这个查找原则，在第一处找到的地方停止。如果没有找到，则会出发<code>NameError</code>错误。</p>
+</blockquote>
+<p>引用这篇<a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/fireporsche/p/7813961.html" target="_blank" rel="noopener">博客</a>的资料：</p>
+<blockquote>
+<p>Python中并不是所有的语句块中都会产生作用域。只有当变量在<strong>Module(模块)、Class(类)、def(函数)</strong>中定义的时候，才会有作用域的概念。在作用域中定义的变量，一般只在作用域中有效。 需要注意的是：在<strong>if-elif-else、for-else、while、try-except\try-finally</strong>等关键字的语句块中并不会产成作用域。看下面的代码：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 1. 产生作用域</span><br><span class="line">def func():</span><br><span class="line">    variable = 100</span><br><span class="line">    print variable</span><br><span class="line">print variable</span><br><span class="line"></span><br><span class="line"># NameError: name &apos;variable&apos; is not defined</span><br><span class="line"># 2. 不产生作用域</span><br><span class="line">if True:</span><br><span class="line">    variable = 100</span><br><span class="line">    print (variable)</span><br><span class="line">print (&quot;******&quot;)</span><br><span class="line">print (variable)</span><br><span class="line"></span><br><span class="line">#100</span><br><span class="line">#******</span><br><span class="line">#100</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-闭包"><a href="#1-2-闭包" class="headerlink" title="1.2 闭包"></a>1.2 闭包</h2><p>闭包，个人理解是将一些变量打包进了函数中，然后这个函数生成之后供外部调用，打包进去的变量脱离了作用域的限制，和这个闭包函数共存。关于闭包的详情可以看这篇<a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/yssjun/p/9887239.html" target="_blank" rel="noopener">博客</a>。</p>
+<p>闭包的概念：</p>
+<blockquote>
+<p>在计算机科学中，闭包（英语：Closure），又称词法闭包（Lexical Closure）或函数闭包（function closures），是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。</p>
+</blockquote>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function lazy_sum(arr) &#123;</span><br><span class="line">    var sum = function () &#123;</span><br><span class="line">        return arr.reduce(function (x, y) &#123;</span><br><span class="line">            return x + y;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; var f = lazy_sum([1, 2, 3, 4, 5])</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">15</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-闭包陷阱："><a href="#1-3-闭包陷阱：" class="headerlink" title="1.3 闭包陷阱："></a>1.3 闭包陷阱：</h2><p>闭包创建后返回之时，其内部的自由变量是<strong>确定的值</strong>。</p>
+<p>有一个闭包陷阱的例子如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def my_func(*args):</span><br><span class="line">    fs = []</span><br><span class="line">    for i in xrange(3):</span><br><span class="line">        def func():</span><br><span class="line">            return i * i</span><br><span class="line">        fs.append(func)</span><br><span class="line">    return fs</span><br><span class="line"></span><br><span class="line">fs1, fs2, fs3 = my_func()</span><br><span class="line">print fs1()</span><br><span class="line">print fs2()</span><br><span class="line">print fs3()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>返回闭包列表fs之前for循环的变量的值已经发生改变了，而且这个改变会影响到所有引用它的内部定义的函数。因为在函数my_func返回前其内部定义的函数并不是闭包函数，只是一个内部定义的函数。 当然这个内部函数引用的父函数中定义的变量也不是自由变量，而只是当前block中的一个local variable。</p>
+</blockquote>
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">4</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>经过上面的分析，我们得出下面一个重要的经验：<strong>返回闭包中不要引用任何循环变量，或者后续会发生变化的变量。</strong> 这条规则本质上是在返回闭包前，闭包中引用的父函数中定义变量的值可能会发生<strong>不是我们期望的变化</strong>。</p>
+</blockquote>
+<p>正确的改写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def my_func(*args):</span><br><span class="line">    fs = []</span><br><span class="line">    for i in xrange(3):</span><br><span class="line">        def func(_i = i):  # 传给闭包的是一个具体值</span><br><span class="line">            return _i * _i</span><br><span class="line">        fs.append(func)</span><br><span class="line">    return fs</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="2-装饰器"><a href="#2-装饰器" class="headerlink" title="2. 装饰器"></a>2. 装饰器</h2><blockquote>
+<p>何谓“装饰器”？ 《A Byte of Python》中这样讲： “Decorators are a shortcut to applying wrapper functions. This is helpful to “wrap” functionality with the same code over and over again.”<br>《Python参考手册（第4版）》6.5节描述如下： “装饰器是一个函数，其主要用途是包装另一个函数或类。这种包装的首要目的是透明地修改或增强被包装对象的行为。”<br>Python官方文档中这样定义： “A function returning another function, usually applied as a function transformation using the @wrapper syntax. Common examples for decorators are classmethod() and staticmethod().”</p>
+</blockquote>
+<p>总的来说，装饰器(wrapper)是一个<strong>函数的工厂</strong>，他接收一个函数参数，返回的也是一个函数。一般其作用是将原有函数<strong>添加上新的一些功能</strong>，然后将新的功能更强的函数返回。 这里有一个打印函数执行时间的装饰器<code>time_cost</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line"></span><br><span class="line">def time_cost(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        s = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        cost = (time.time() - s) * 1000</span><br><span class="line">        print(&apos;time cost: &#123;&#125; ms&apos;.format(int(cost)))</span><br><span class="line">        return</span><br><span class="line">    return wrapper</span><br></pre></td></tr></table></figure>
+<p>可以看出<code>time_cost</code>这个装饰器做了这么三件事： 1. 将传参<code>func</code>带进闭包函数<code>wrapper</code>中； 2. 闭包中将传递过来的<code>func</code>带上其原有参数<code>*args</code>和<code>**kwargs</code>执行，然后用time模块统计其执行的时间； 3. 将闭包<code>wrapper</code>返回</p>
+<h2 id="2-1-语法糖"><a href="#2-1-语法糖" class="headerlink" title="2.1 语法糖@"></a>2.1 语法糖@</h2><p>被语法糖@装饰的函数，调用的时候等同于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wrapper(func)()</span><br></pre></td></tr></table></figure>
+<p>如果不用语法糖，也可以这么写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def func_wrapper(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        # ···</span><br><span class="line">        func(*args, **kwargs)  # or res = func(*args, **kwargs)</span><br><span class="line">        # ···</span><br><span class="line">        retrun  # return anything like func does</span><br><span class="line"></span><br><span class="line">def _func_name(*args, **kwargs):</span><br><span class="line">    # ···</span><br><span class="line">    return</span><br><span class="line"></span><br><span class="line">func_name = func_wrapper(_func_name)  # func_name具有原函数_func_name的功能，而且还经过了func_wrapper装饰，因此它拥有更多的功能</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-带参数的装饰器"><a href="#2-2-带参数的装饰器" class="headerlink" title="2.2 带参数的装饰器"></a>2.2 带参数的装饰器</h2><p>如果装饰器本身带有参数（如需判断逻辑or其他作用），则需要再包一层，例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 装饰器本身带有参数</span><br><span class="line">def human(sex: str):</span><br><span class="line">    def decorator(func):</span><br><span class="line">        def wrapper():</span><br><span class="line">            if sex == &apos;m&apos;:</span><br><span class="line">                print(&apos;i am male&apos;)</span><br><span class="line">            if sex == &apos;f&apos;:</span><br><span class="line">                print(&apos;i am female&apos;)</span><br><span class="line">            func()</span><br><span class="line">            return</span><br><span class="line">        return wrapper</span><br><span class="line">    return decorator</span><br><span class="line"></span><br><span class="line"># 使用human装饰器   </span><br><span class="line">@human(sex=&apos;m&apos;)</span><br><span class="line">def man():</span><br><span class="line">    print(&apos;in function man()&apos;)</span><br><span class="line"></span><br><span class="line">@human(sex=&apos;f&apos;)</span><br><span class="line">def women():</span><br><span class="line">    print(&apos;in function women()&apos;)</span><br></pre></td></tr></table></figure>
+<p>执行情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; man()</span><br><span class="line">i am male</span><br><span class="line">in function man()</span><br><span class="line">&gt;&gt;&gt; women()</span><br><span class="line">i am female</span><br><span class="line">in function women()</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-装饰带有参数的函数"><a href="#2-3-装饰带有参数的函数" class="headerlink" title="2.3 装饰带有参数的函数"></a>2.3 装饰带有参数的函数</h2><p>其实在前面的例子中，已经有涉及了装饰带有参数的函数。实际上就是被装饰的函数本身是有自身参数的，为了使得wrapper通用，一般采取*args和**kwargs的方式传递参数，我们将前例改写一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 装饰器本身带有参数</span><br><span class="line">def human(sex: str):</span><br><span class="line">    def decorator(func):</span><br><span class="line">        def wrapper(*args, **kwargs):  # 两层的闭包，传递进来sex和func</span><br><span class="line">            if sex == &apos;m&apos;:</span><br><span class="line">                print(&apos;i am male&apos;)</span><br><span class="line">            if sex == &apos;f&apos;:</span><br><span class="line">                print(&apos;i am female&apos;)</span><br><span class="line">            func(*args, **kwargs)</span><br><span class="line">            return</span><br><span class="line">        return wrapper</span><br><span class="line">    return decorator</span><br><span class="line"></span><br><span class="line"># 使用human装饰器   </span><br><span class="line">@human(sex=&apos;m&apos;)</span><br><span class="line">def man(name):</span><br><span class="line">    print(&apos;in function man(), my name is &#123;&#125;&apos;.format(name))</span><br><span class="line"></span><br><span class="line">@human(sex=&apos;f&apos;)</span><br><span class="line">def women(name):</span><br><span class="line">    print(&apos;in function women(), my name is &#123;&#125;&apos;.format(name))</span><br></pre></td></tr></table></figure>
+<p>执行情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; man(&apos;Tom&apos;)</span><br><span class="line">i am male</span><br><span class="line">in function man(), my name is Tom</span><br><span class="line">&gt;&gt;&gt; women(&apos;Lucy&apos;)</span><br><span class="line">i am female</span><br><span class="line">in function women(), my name is Lucy</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="3-functools"><a href="#3-functools" class="headerlink" title="3. functools"></a>3. functools</h2><p>关于<code>functools</code>里的<code>wraps</code>，个人理解的作用就是：装饰后返回的闭包，如果查看其<code>__doc__</code>, <code>__name__</code>等属性，获取到的是<code>wrapper</code>本身的值，用了<code>functools.wraps</code>装饰后，他能将这个返回的闭包的<strong>属性全体更新一遍</strong>，后面的人再次查看，看到的就是<code>wrapped</code>函数中的东西了。</p>
+<hr>
+<p>分割线，下面全是阅读的文章的引用：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/45535784" target="_blank" rel="noopener">知乎有个文章</a>总结了<code>functools.wraps</code>的用法：</li>
+</ul>
+<ol>
+<li><code>functools.wraps</code> 旨在消除装饰器对原函数造成的影响，即对原函数的相关属性进行拷贝，已达到装饰器不修改原函数的目的。</li>
+<li><code>wraps</code>内部通过<code>partial</code>对象和<code>update_wrapper</code>函数实现。</li>
+<li><code>partial</code>是一个类，通过实现了双下方法<code>new</code>，自定义实例化对象过程，使得对象内部保留原函数和固定参数，通过实现双下方法<code>call</code>，使得对象可以像函数一样被调用，再通过内部保留的原函数和固定参数以及传入的其它参数进行原函数调用。</li>
+</ol>
+<p><a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/myd7349/p/how_to_use_wraps_of_functools.htmls.com/myd7349/p/how_to_use_wraps_of_functools.html" target="_blank" rel="noopener">这篇博客</a>中详细讲述了update_wrapper和partial的作用：<code>update_wrapper</code>做的工作很简单，就是用参数<code>wrapped</code>表示的函数对象（例如：<code>square</code>）的一些属性（如：<strong>name</strong>、 <strong>doc</strong>）覆盖参数<code>wrapper</code>表示的函数对象（例如：<code>callf</code>，这里<code>callf</code>只是简单地调用<code>square</code>函数，因此可以说<code>callf</code>是 <code>square</code>的一个wrapper function）的这些相应属性。<br>因此，本例中使用wraps装饰器“装饰”过callf后，callf的<strong>doc</strong>、<strong>name</strong>等属性和trace要“装饰”的函数square的这些属性完全一样。<br>经过上面的分析，相信你也了解了functools.wraps的作用了吧。</p>
+<p>以下篇幅引用自<a href="https://link.zhihu.com/?target=https%3A//stackoverflow.com/questions/47564621/why-is-wrapper-is-better-name-for-a-decorator-than-adder" target="_blank" rel="noopener">stackoverflow的答案</a>：<br>When you use a decorator, you’ve <strong>wrapped</strong> your original code in another function, making the original function <strong>invisible</strong>. To continue your example,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def strong(func):      </span><br><span class="line">    def wrapper():          </span><br><span class="line">        return &apos;&lt;strong&gt;&apos; + func() + &apos;&lt;/strong&gt;&apos;   </span><br><span class="line">    return wrapper</span><br><span class="line"></span><br><span class="line">@strong  </span><br><span class="line">def greet():      </span><br><span class="line">    return &apos;Hello!&apos;</span><br><span class="line"></span><br><span class="line">def weak_greet():      </span><br><span class="line">    return &apos;hi&apos;</span><br><span class="line"></span><br><span class="line">print(greet) </span><br><span class="line">print(weak_greet)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>If you run this, you get the following output. <code>.wrapper at 0x000000000129A268&gt;</code><br>When you used the decorator, you took your function, <strong>created a new function that wrapped code around your old function and returned that new, anonymous, function.</strong> (当你用装饰器时，实际上就是用一个 <strong>新的匿名的</strong> function去 <strong>包装</strong> 传递过来的function，而这个新的匿名的function，他的工作就是加入一些其他的代码将原function wrap起来。)</p>
+</blockquote>
+<p>接下去是<strong>functools.wraps</strong>的作用：</p>
+<blockquote>
+<p>You can see some <strong>unpleasant effects</strong> if you try to pickle it.<br>if you do <code>pickle.dumps(weak_greet)</code>, you get <code>b&#39;\x80\x03c__main__\nweak_great\nq\x00.&#39;</code>. but if you try to <code>pickle.dumps(greet)</code>, you get <code>AttributeError: Can&#39;t pickle local object &#39;strong..wrapper&#39;</code>. (dealing with decorated classes and functions that must be pickled is one of the circles of hell I don’t wish to revisit any time soon).<br>You are not adding to your function. You are wrapping your original function in a shiny new function. That new function says, “There’s something I’m hiding in here and I won’t tell you what it is (functools.wraps can sometimes help with this, as it would in your case). But, when you give me input, I’ll alter it like so (or not at all), pass it to my secret function, (possibly) alter the output and give you that. Your original function is inaccessible (hence pickle’s confusion).<br><strong>NOTE</strong>: You can re-create the look of your original function by further wrapping your wrapper with <a href="mailto:`@functools.wraps" target="_blank" rel="noopener">`@functools.wraps</a>(original_function)`, which does not affect output, but wraps everything in a box to make it look exactly like the original function. so,</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from functools import wraps  </span><br><span class="line">def strong(func):      </span><br><span class="line">    @wraps(func)      </span><br><span class="line">    def wrapper():          </span><br><span class="line">        return &apos;&lt;strong&gt;&apos; + func() + &apos;&lt;/strong&gt;&apos;      </span><br><span class="line">    return wrapper</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>would now look like your original function and be pickle-able. It would be like wrapping a surprise present, and then wrapping the present again with wrapping paper that told you (in great detail) what the surprise was.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">知识就是财富<i class="fa fa-credit-card" aria-hidden="true"></i></div>
+    
+</div>
+
+      
+    </div>
+<div>
+      
+        
+
+      
+</div>
+    
+<div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章对您有帮助, 欢迎请我喝杯水！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="码农小杨 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i>Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/07/Python面试求职知识点简单总结/" rel="next" title="Python面试求职知识点简单总结">
+                <i class="fa fa-chevron-left"></i> Python面试求职知识点简单总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/06/如何使用Python重命名文件/" rel="prev" title="如何使用Python重命名文件">
+                如何使用Python重命名文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ava.jpg"
+                alt="码农小杨" />
+            
+              <p class="site-author-name" itemprop="name">码农小杨</p>
+              <p class="site-description motion-element" itemprop="description">真想撸代码超过60岁</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">182</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lufeisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/bd5d2ec272ca" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-闭包"><span class="nav-number">1.</span> <span class="nav-text">1. 闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-作用域"><span class="nav-number">2.</span> <span class="nav-text">1.1 作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-闭包"><span class="nav-number">3.</span> <span class="nav-text">1.2 闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-闭包陷阱："><span class="nav-number">4.</span> <span class="nav-text">1.3 闭包陷阱：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-装饰器"><span class="nav-number">5.</span> <span class="nav-text">2. 装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-语法糖"><span class="nav-number">6.</span> <span class="nav-text">2.1 语法糖@</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-带参数的装饰器"><span class="nav-number">7.</span> <span class="nav-text">2.2 带参数的装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-装饰带有参数的函数"><span class="nav-number">8.</span> <span class="nav-text">2.3 装饰带有参数的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-functools"><span class="nav-number">9.</span> <span class="nav-text">3. functools</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">码农小杨</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz',
+        appKey: 'ELGmbVcpVvae1YJF2l1RTPPf',
+        placeholder: '有问题请留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sTIaDCPKKiCnMQ18wU7iKor7-gzGzoHsz", "ELGmbVcpVvae1YJF2l1RTPPf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
