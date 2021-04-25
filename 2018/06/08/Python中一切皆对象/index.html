@@ -89,12 +89,12 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="1. Python中一切皆对象123与动态语言比起来 静态语言的Python面向对象更彻底在java中对象时由class实例化，而在Python中class也是对象   类 函数 代码 模块也是对象(可以理解为由模板生成对象) 函数和类也是对象，属于Python的一等公民 一等公民的特性12341. 赋值给一个变量2. 可以添加到集合对象中3. 可以作为参数传递给函数4. 可以当做函数的返回值（装">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3uustjo9j310k0ro0y5.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:34:46.374Z">
+<meta property="og:image" content="https://static01.imgkr.com/temp/e52e5ce2b9b947b99305569e2928fa52.png">
+<meta property="og:updated_time" content="2021-04-24T15:03:47.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中一切皆对象">
 <meta name="twitter:description" content="1. Python中一切皆对象123与动态语言比起来 静态语言的Python面向对象更彻底在java中对象时由class实例化，而在Python中class也是对象   类 函数 代码 模块也是对象(可以理解为由模板生成对象) 函数和类也是对象，属于Python的一等公民 一等公民的特性12341. 赋值给一个变量2. 可以添加到集合对象中3. 可以作为参数传递给函数4. 可以当做函数的返回值（装">
-<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fs3uustjo9j310k0ro0y5.jpg">
+<meta name="twitter:image" content="https://static01.imgkr.com/temp/e52e5ce2b9b947b99305569e2928fa52.png">
 
 
 
@@ -465,7 +465,7 @@
 <p>我们看看type和object的关系<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In [27]: type.__base__</span><br><span class="line">Out[27]: object</span><br><span class="line"></span><br><span class="line">In [28]: type(object)</span><br><span class="line">Out[28]: type</span><br><span class="line"></span><br><span class="line">In [29]: object.__base__</span><br></pre></td></tr></table></figure></p>
 <p>type 的基类是 object， object是由type生成  object的基类为空</p>
 <p>我们通过一张图来详解type object</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fs3uustjo9j310k0ro0y5.jpg" alt="image-20180608163410754"></p>
+<p><img src="https://static01.imgkr.com/temp/e52e5ce2b9b947b99305569e2928fa52.png" alt="type和object的关系"></p>
 <p>我们从图中看到一切对象均由type实例化出来 一切对象都继承object<br>type实例化自己（指针指向同一个块） 因此说python中一切皆对象</p>
 <h6 id="3-Python中常见内置类型"><a href="#3-Python中常见内置类型" class="headerlink" title="3. Python中常见内置类型"></a>3. Python中常见内置类型</h6><p>对象的三个特征<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. 身份 即在内存中的地址可以通过id查看</span><br><span class="line">In [32]: a = 1</span><br><span class="line"></span><br><span class="line">In [33]: id(a)</span><br><span class="line">Out[33]: 4305320448</span><br><span class="line"></span><br><span class="line">2. 类型 任何对象都有一个类型 type可以查看 a的类型是int</span><br><span class="line"></span><br><span class="line">3. 值 比如1就是值</span><br></pre></td></tr></table></figure></p>
 <p>常见内置类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">1. None （全局只有一个）</span><br><span class="line">Python在启动的时候会用None类型生成一个None对象</span><br><span class="line">In [38]: b = None</span><br><span class="line"></span><br><span class="line">In [39]: a = None</span><br><span class="line"></span><br><span class="line">In [40]: id(a) == id(b) </span><br><span class="line">Out[40]: True</span><br><span class="line"></span><br><span class="line">2. 数值 </span><br><span class="line">int float complex（复数） bool</span><br><span class="line"></span><br><span class="line">3. 迭代类型（可迭代）</span><br><span class="line"></span><br><span class="line">4. 序列类型</span><br><span class="line">list bytes bytearray memoryview（二进制序列）range tuple str array</span><br><span class="line"></span><br><span class="line">5. 映射（dict）</span><br><span class="line"></span><br><span class="line">6. 集合 </span><br><span class="line">set frozenset </span><br><span class="line"></span><br><span class="line">7. 上下文管理类型（with）</span><br><span class="line"></span><br><span class="line">8. 其他</span><br><span class="line">模块类型 class和实例 函数类型 方法类型 代码类型 object对象 type类型 ellipsis类型（省略号）  notimplemented类对象</span><br></pre></td></tr></table></figure></p>
@@ -637,7 +637,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">182</span>
+                  <span class="site-state-item-count">183</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

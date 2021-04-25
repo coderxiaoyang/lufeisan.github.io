@@ -89,15 +89,15 @@
 <meta property="og:site_name" content="码农小杨的笔记">
 <meta property="og:description" content="Python的鸭子类型和多态这个概念的名字来源于由James Whitcomb Riley提出的鸭子测试，“鸭子测试”可以这样表述：“当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。”  在鸭子类型中，关注的不是对象的类型本身，而是它是如何使用的。例如，在不使用鸭子类型的语言中，我们可以编写一个函数，它接受一个类型为”鸭子”的对象，并调用它的”走”和”叫”方法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fs850zg82gj314g0jidid.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs7ckgej16j314g0iutb2.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs7clylmerj315a0iywgu.jpg">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fs7cohewsrj316g0jojtq.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:32:23.686Z">
+<meta property="og:image" content="https://static01.imgkr.com/temp/ea749b498fd442ee99b4f2885cd1334b.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/aacd2611530643c099f910e641ee3965.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/d34fe10582814f9bb4fcf8be90000018.png">
+<meta property="og:image" content="https://static01.imgkr.com/temp/1549f4ebf196424880e80a8512661b89.png">
+<meta property="og:updated_time" content="2021-04-25T09:11:14.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Python类和对象">
 <meta name="twitter:description" content="Python的鸭子类型和多态这个概念的名字来源于由James Whitcomb Riley提出的鸭子测试，“鸭子测试”可以这样表述：“当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。”  在鸭子类型中，关注的不是对象的类型本身，而是它是如何使用的。例如，在不使用鸭子类型的语言中，我们可以编写一个函数，它接受一个类型为”鸭子”的对象，并调用它的”走”和”叫”方法">
-<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fs850zg82gj314g0jidid.jpg">
+<meta name="twitter:image" content="https://static01.imgkr.com/temp/ea749b498fd442ee99b4f2885cd1334b.png">
 
 
 
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,652 字
+                  3,696 字
                 </span>
               
 
@@ -494,15 +494,15 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    name = <span class="string">"A"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.name = <span class="string">"obj"</span></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">print(a.name)</span><br></pre></td></tr></table></figure>
 <p>当实例对象查找属性<code>name</code>的时候是由下往上查找的，首先查找实例内部是否存在，然后再查找类属性。</p>
 <p>我们看下多继承情况下的MRO算法：</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fs850zg82gj314g0jidid.jpg" alt="image-20180612092819723"></p>
+<p><img src="https://static01.imgkr.com/temp/ea749b498fd442ee99b4f2885cd1334b.png" alt="深度优先算法"></p>
 <p>上图是深度优先算法。</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs7ckgej16j314g0iutb2.jpg" alt="image-20180611170340098"></p>
-<p> 但是当时这种菱形继承的时候，就会出现问题。因为B和C都继承了D。</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs7clylmerj315a0iywgu.jpg" alt="image-20180611170509264"></p>
-<p>我们看下上图的广度优先算法。</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fs7cohewsrj316g0jojtq.jpg" alt="image-20180611170735415"></p>
-<p> 但是当继承关系如上图所示的时候，因为优先继承的是B，当在B查找不到，而D中存在对应属性的时候会被C覆盖掉。</p>
-<p>Python3之后的查找算法更改为C3算法。 </p>
+<p><img src="https://static01.imgkr.com/temp/aacd2611530643c099f910e641ee3965.png" alt="深度优先弊端"></p>
+<p>但是当时这种菱形继承的时候，就会出现问题。因为B和C都继承了D。如果C重写了D中的方法 是无法被覆盖的（执行到C）</p>
+<p><img src="https://static01.imgkr.com/temp/d34fe10582814f9bb4fcf8be90000018.png" alt="广度优先解决深度优先菱形问题"><br>广度优先解决深度优先菱形问题</p>
+<p><img src="https://static01.imgkr.com/temp/1549f4ebf196424880e80a8512661b89.png" alt="广度优先弊端"></p>
+<p>我们看下上图的广度优先算法 也是有一定弊端的</p>
+<p>但是当继承关系如上图所示s的时候，因为优先继承的是B，当在B查找不到，而D中存在对应属性的时候会被C覆盖掉。</p>
+<p>Python3之后的查找算法更改为C3算法。</p>
 <p>我们看下上图在Python3中的中的继承关系。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#新式类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">E</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(E)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(D)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(B, C)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">print(A.__mro__)</span><br><span class="line">(&lt;class '__main__.A'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.D'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.E'&gt;, &lt;class 'object'&gt;)</span><br></pre></td></tr></table></figure>
 <p>查找顺序是A-B-D-C-E。上述存在的问题就不会再存在了。</p>
@@ -721,7 +721,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">182</span>
+                  <span class="site-state-item-count">183</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
